@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import HomeShopPostCard from '../components/jh/HomePostCard';
@@ -10,10 +10,24 @@ const Home = () => {
     onClick: React.MouseEventHandler<HTMLButtonElement>;
   }
 
-  const navigate = useNavigate();
+  const navi = useNavigate();
   const navigator = (path: string) => {
-    return navigate(path);
+    return navi(path);
   }
+
+  const naverAccessToken = () => {
+    window.location.href.includes('access_token') && getNaverToken();
+}
+
+  const getNaverToken = () => {
+    const token = window.location.href.split('=')[1].split('&')[0];
+    console.log(token);
+    localStorage.setItem('access_token', token);
+  }
+
+  useEffect(() => {
+    naverAccessToken();
+  }, []);
 
   return (
     <HomeWrap>
@@ -38,7 +52,7 @@ const Home = () => {
           {/* {shopList.map((item) => {
             return(
               <HomeShopPostCard
-                key={item.shopId}
+                id={item.shopId}
                 address={item.address}
                 shopName={item.shopName}
                 thumbnail={item.thumbnail}
@@ -50,7 +64,7 @@ const Home = () => {
             )
           })} */}
           <HomeShopPostCard
-            key={1}
+            id={1}
             address={"주소"}
             shopName={"가게이름"}
             thumbnail={"이미지주소"}
@@ -60,7 +74,7 @@ const Home = () => {
             category={"카테고리"}
           />
           <HomeShopPostCard
-            key={2}
+            id={2}
             address={"주소2"}
             shopName={"가게이름2"}
             thumbnail={"이미지주소2"}

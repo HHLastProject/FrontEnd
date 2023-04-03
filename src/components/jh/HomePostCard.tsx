@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export interface IShopPostList {
-    key:number;
+    id:number;
     address:string;
     shopName:string;
     thumbnail:string;
@@ -13,7 +13,7 @@ export interface IShopPostList {
 
 function HomeShopPostCard (
   {
-    key,
+    id,
     address,
     shopName,
     thumbnail,
@@ -24,7 +24,7 @@ function HomeShopPostCard (
   } : IShopPostList) {
 
   return (
-    <HomeShopPostCardContainer key={key}>
+    <HomeShopPostCardContainer key={id}>
       <div className="home-postcard-thumbnail">
         <img src={thumbnail} alt={shopName}/>
       </div>
