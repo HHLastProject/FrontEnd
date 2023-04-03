@@ -1,22 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import HomeShopPostCard from '../components/jh/Home/HomePostCard';
 import { path } from '../shared/path';
+import { getUserLocation } from '../custom/jh/getUserLocation';
 
 const Home = () => {
+  
   interface IClickProps {
     onClick: React.MouseEventHandler<HTMLButtonElement>;
   }
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
 
   const navi = useNavigate();
-  const navigator = (path: string) => {
+  const navigate = (path: string) => {
     return navi(path);
   }
 
   const naverAccessToken = () => {
     window.location.href.includes('access_token') && getNaverToken();
-}
+  }
 
   const getNaverToken = () => {
     const token = window.location.href.split('=')[1].split('&')[0];
@@ -28,11 +32,16 @@ const Home = () => {
     naverAccessToken();
   }, []);
 
+  useEffect(() => {
+    getUserLocation(setLat, setLng);
+    console.log(lat, lng);
+  }, [lat, lng]);
+
   return (
     <HomeWrap>
       <HomeContainer>
         <button
-          onClick={() => navigator(path.login)}
+          onClick={() => navigate(path.login)}
         >
           로그인하기
         </button>
@@ -43,7 +52,7 @@ const Home = () => {
         <button>
           <label htmlFor="by-distance">거리순</label>
         </button>
-        <button onClick={() => navigator(path.mealFilter)}>
+        <button onClick={() => navigate(path.mealFilter)}>
           필터
         </button>
 
