@@ -1,8 +1,8 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Filter from '../pages/Filter'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
+import MealFilter from '../pages/MealFilter'
 import { path } from './path'
 
 const Router = () => {
@@ -11,7 +11,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path={path.filter} element={<Filter />} />
+        <Route path={path.mealFilter} element={<MealFilter />} />
       </Routes>
     </BrowserRouter>
   )

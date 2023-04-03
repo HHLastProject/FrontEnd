@@ -44,7 +44,7 @@ const Home = () => {
         <button>
           <label htmlFor="by-distance">거리순</label>
         </button>
-        <button onClick={() => navigator(path.filter)}>
+        <button onClick={() => navigator(path.mealFilter)}>
           필터
         </button>
 
