@@ -1,6 +1,6 @@
 interface ButtonProps {
-  children: any;
-  onClick: () => void;
+  children: string | any;
+  onClick: (e: React.MouseEvent) => void | undefined;
 }
 
 const TestButton = ({ children, onClick }: ButtonProps) => {

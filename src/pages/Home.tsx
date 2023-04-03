@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import HomeShopPostCard from '../components/jh/HomePostCard';
-import TestButton from '../components/jh/TestButton';
+import HomeShopPostCard from '../components/jh/Home/HomePostCard';
 import { path } from '../shared/path';
 
 const Home = () => {
@@ -32,11 +31,11 @@ const Home = () => {
   return (
     <HomeWrap>
       <HomeContainer>
-        <TestButton
+        <button
           onClick={() => navigator(path.login)}
         >
           로그인하기
-        </TestButton>
+        </button>
 
         <button>지도에서 보기</button>
 
