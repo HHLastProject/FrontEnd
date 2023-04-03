@@ -8,24 +8,14 @@ const Home = () => {
     const loginClickHandler = () => {
         navi('/login');
     }
-
-    const naverAccessToken = () => {
-        window.location.href.includes('access_token') && getNaverToken();
+    const mapClickHandler = () => {
+        navi('/map');
     }
-
-    const getNaverToken = () => {
-        const token = window.location.href.split('=')[1].split('&')[0];
-        console.log(token);
-        localStorage.setItem('access_token', token);
-    }
-
-    useEffect(() => {
-        naverAccessToken();
-    }, []);
 
     return (
         <div>
             <button onClick={loginClickHandler}>Login 화면</button>
+            <button onClick={mapClickHandler}>맵 화면</button>
         </div>
     )
 }

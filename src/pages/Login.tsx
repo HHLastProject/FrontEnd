@@ -3,7 +3,6 @@ import NaverLogin from '../components/login/NaverLogin';
 
 const Login = () => {
 
-
     return (
         <div>
             <NaverLogin />
