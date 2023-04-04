@@ -60,8 +60,8 @@ function HomeShopPostCard (
 export default HomeShopPostCard;
 
 const HomeShopPostCardContainer = styled.div`
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  height: 270px;
   border: 1px solid;
   border-radius: 5px 20px 5px 5px;
   overflow: hidden;
