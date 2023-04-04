@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import HomeShopPostCard from '../components/jh/Home/HomePostCard';
 import { path } from '../shared/path';
 import { getUserLocation } from '../custom/jh/getUserLocation';
+import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 
 const Home = () => {
   
@@ -12,7 +13,7 @@ const Home = () => {
   }
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-
+  
   const navi = useNavigate();
   const navigate = (path: string) => {
     return navi(path);
@@ -28,6 +29,14 @@ const Home = () => {
     localStorage.setItem('access_token', token);
   }
 
+  const { 
+    shopList,
+    getshopList,
+    getshopListIsLoading,
+    getshopListIsSuccess,
+    getshopListIsError,
+  } = useGetHomeShopList(lat, lng);
+
   useEffect(() => {
     naverAccessToken();
   }, []);
@@ -35,18 +44,20 @@ const Home = () => {
   useEffect(() => {
     getUserLocation(setLat, setLng);
     console.log(lat, lng);
+    if (lat === 0 && lng === 0) {getshopList();};
   }, [lat, lng]);
-
+  
+  console.log('샵리스트',shopList);
   return (
     <HomeWrap>
       <HomeContainer>
+        <button>지도에서 보기</button>
+        
         <button
           onClick={() => navigate(path.login)}
         >
           로그인하기
         </button>
-
-        <button>지도에서 보기</button>
 
         <input type="checkbox" id="by-distance" name="by-distance" hidden/>
         <button>
@@ -57,8 +68,8 @@ const Home = () => {
         </button>
 
         <HomeShopListContainer>
-          {/* {shopList.map((item) => {
-            return(
+          {
+            shopList?.shop?.map((item:any) => (
               <HomeShopPostCard
                 id={item.shopId}
                 address={item.address}
@@ -70,27 +81,7 @@ const Home = () => {
                 category={item.category}
               />
             )
-          })} */}
-          <HomeShopPostCard
-            id={1}
-            address={"주소"}
-            shopName={"가게이름"}
-            thumbnail={"이미지주소"}
-            menuName={"메뉴이름..."}
-            maxPrice={19000}
-            minPrice={5000}
-            category={"카테고리"}
-          />
-          <HomeShopPostCard
-            id={2}
-            address={"주소2"}
-            shopName={"가게이름2"}
-            thumbnail={"이미지주소2"}
-            menuName={"메뉴이름2..."}
-            maxPrice={26000}
-            minPrice={8000}
-            category={"카테고리2"}
-          />
+          )}
         </HomeShopListContainer>
       </HomeContainer>
     </HomeWrap>
