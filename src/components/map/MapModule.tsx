@@ -8,13 +8,13 @@ const MapModule = () => {
     return (
         <MapDiv style={{ width: '100%', height: '100%' }}>
             <NaverMap
-                defaultCenter={new navermaps.LatLng("37.5108407", "127.0468975")}
+                defaultCenter={new navermaps.LatLng(37.5108407, 127.0468975)}
                 defaultZoom={15}
                 zoomControl={true}
                 mapTypeControl={true}
             >
                 <Marker
-                    defaultPosition={new navermaps.LatLng("37.5108407", "127.0468975")}
+                    defaultPosition={new navermaps.LatLng(37.5108407, 127.0468975)}
                 />
             </NaverMap>
         </MapDiv>
