@@ -15,7 +15,7 @@ const MealCategoryCheckContainer = ({iconImg, id, idKor, name, children} : IMeal
       <div className='check-category-item'>
           <img src={iconImg} alt={id} />
       </div>
-      <input type="radio" value={idKor} id={id} name={name}/>
+      <input type="radio" value={idKor} id={id} name={name} hidden/>
       <label htmlFor={id}>{idKor}</label>
     </MealCategoryCheck>
   );
@@ -33,6 +33,7 @@ const MealCategoryCheck = styled.div`
     border-radius: 5px 20px 5px 5px;
     background-color: #dfceff;
     display: inline-block;
+    overflow: hidden;
   }
 `;
 
