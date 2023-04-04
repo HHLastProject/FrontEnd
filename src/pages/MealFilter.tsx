@@ -21,6 +21,7 @@ function MealFilter() {
               categoryFilterItem.map((item) => {
                 return (
                   <MealCategoryCheckContainer
+                    key={item.id}
                     iconImg={item.iconImg}
                     id={item.id}
                     idKor={item.idKor}
