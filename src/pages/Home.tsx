@@ -7,7 +7,6 @@ import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 
 const Home = () => {
-  
   interface IClickProps {
     onClick: React.MouseEventHandler<HTMLButtonElement>;
   }
@@ -46,12 +45,14 @@ const Home = () => {
     console.log(lat, lng);
     if (lat === 0 && lng === 0) {getshopList();};
   }, [lat, lng]);
-  
+
+  if(getshopListIsLoading) {return <div>로딩중...</div>;}
+
   console.log('샵리스트',shopList);
   return (
     <HomeWrap>
       <HomeContainer>
-        <button>지도에서 보기</button>
+        <button className='floating-btn'>지도에서 보기</button>
         
         <button
           onClick={() => navigate(path.login)}
@@ -63,14 +64,16 @@ const Home = () => {
         <button>
           <label htmlFor="by-distance">거리순</label>
         </button>
+
         <button onClick={() => navigate(path.mealFilter)}>
           필터
         </button>
 
         <HomeShopListContainer>
           {
-            shopList?.shop?.map((item:any) => (
+            shopList?.map((item:any) => (
               <HomeShopPostCard
+                key={item.shopId}
                 id={item.shopId}
                 address={item.address}
                 shopName={item.shopName}
@@ -94,10 +97,14 @@ export const HomeWrap = styled.div`
   width: 100vw;
   display: flex;
   justify-content: center;
+  background-color: #acacac;
 `;
 
 const HomeContainer = styled.div`
   max-width: 1600px;
+  position: relative;
+  padding: 10px;
+  background-color: #fff;
   @media (max-width: 1600px) {
     
   }
@@ -109,6 +116,13 @@ const HomeContainer = styled.div`
   }
   @media (max-width: 720px) {
     
+  }
+  
+  .floating-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX( -50% );
   }
 `;
 
