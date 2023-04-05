@@ -7,7 +7,7 @@ interface ImageUploadProps {
   accept : string;
   children: React.ReactNode;
   name: string;
-  value: string | string[];
+  value: (File | undefined)[];
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
