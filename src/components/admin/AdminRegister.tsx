@@ -12,16 +12,16 @@ interface ShopRegister {
   address: string,
   operatingTime: string,
   phoneNumber: string,
-  thumbnail: string, 
+  thumbnail: File | undefined, 
   menu: Menu[],
-  menuPictures:[]
+  menuPictures:(File | undefined)[]
 }
 
 interface Menu {
   menuName: string,
   price : number,
   menuDescription : string, 
-  menuPictures: string;
+  menuPictures: File | undefined;
 }
 
 function AdminRegister() {
@@ -32,7 +32,7 @@ function AdminRegister() {
     address: '',
     operatingTime: '',
     phoneNumber: '',
-    thumbnail: '',
+    thumbnail: undefined,
     menu: [],
     menuPictures:[]
   });
@@ -41,7 +41,7 @@ function AdminRegister() {
     menuName: '',
     price : 0,
     menuDescription : '',
-    menuPictures: '',
+    menuPictures: undefined,
   });
 
   const shopRegisterChageHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +60,7 @@ function AdminRegister() {
           menuName: "",
           price: 0,
           menuDescription: "",
-          menuPictures: '',
+          menuPictures: undefined,
         },
       ],
     }));
@@ -90,11 +90,10 @@ function AdminRegister() {
       setPopup(!popup);
   };
 
-  const [image, setImage] = useState({
-    thumbnail_file: '',
-    menuPictures_file :'',
-    preview_URL: '',
-  });
+  // const [image, setImage] = useState({
+  //   thumbnail_file: '',
+  //   menuPictures_file :'',
+  // });
   
   const postHandler = () => {
     const formData = new FormData();
@@ -117,6 +116,7 @@ function AdminRegister() {
     };
     mutation.mutate(newShopRegister);
   };
+
 
   return (
     <StConteiner>
@@ -254,13 +254,13 @@ function AdminRegister() {
                 type = "file"
                 id = "menuPicturesFileInput"
                 name={`menuPictures_${index}`}
-                value={el.menuPictures ? el.menuPictures : ""}
+                value={el.menuPictures ? el.menuPictures : undefined}
                 onChange={(e) =>
                   setShopRegister((old) => {
                     const newMenuList = [...old.menu];
                     newMenuList[index] = {
                       ...el,
-                      menuPictures: e.target.value,
+                      menuPictures: e.target.files[0] as File,
                     };
                     return {
                       ...old,
