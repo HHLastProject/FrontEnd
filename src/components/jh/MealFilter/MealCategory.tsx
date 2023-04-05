@@ -37,33 +37,38 @@ const MealCategoryCheck = styled.div`
   }
 `;
 
+type idKor = "전체" | "샐러드" | "분식" | "육류" | "해산물";
+// interface ICategoryFilterItem implements idKor{
+//   iconImg : string in idKor;
+// };
+
 export const categoryFilterItem = [
   {
-    iconImg : "전체",
+    iconImg : "전체.jpg",
     id : "mealAll",
     idKor : "전체",
     name : "mealFilter",
   },
   {
-    iconImg : "샐러드",
+    iconImg : "샐러드.jpg",
     id : "salad",
     idKor : "샐러드",
     name : "mealFilter",
   },
   {
-    iconImg : "분식",
+    iconImg : "분식.jpg",
     id : "bunsik",
     idKor : "분식",
     name : "mealFilter",
   },
   {
-    iconImg : "육류",
+    iconImg : "육류.jpg",
     id : "meat",
     idKor : "육류",
     name : "mealFilter",
   },
   {
-    iconImg : "해산물",
+    iconImg : "해산물.jpg",
     id : "seafood",
     idKor : "해산물",
     name : "mealFilter",

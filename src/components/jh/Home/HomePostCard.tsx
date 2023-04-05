@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { path } from "../../../shared/path";
 
-
 export interface IShopPostList {
     id:number;
     address:string;
