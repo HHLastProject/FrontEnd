@@ -29,7 +29,7 @@ const Home = () => {
     localStorage.setItem('access_token', token);
   }
 
-  const { 
+  const {
     shopList,
     getshopList,
     getshopListIsLoading,
@@ -37,32 +37,33 @@ const Home = () => {
   } = useGetHomeShopList(lat, lng);
 
   useEffect(() => {
-    naverAccessToken();
-  }, []);
-
-  useEffect(() => {
     getUserLocation(setLat, setLng);
     console.log(lat, lng);
-    if (lat === 0 && lng === 0) {getshopList();};
+    if (lat === 0 && lng === 0) { getshopList(); };
   }, [lat, lng]);
+  const loginClickHandler = () => {
+    navi('/login');
+  }
+  const mapClickHandler = () => {
+    navi('/map');
+  }
 
-  if(getshopListIsLoading) {return <div>로딩중...</div>;}
+  if (getshopListIsLoading) { return <div>로딩중...</div>; }
 
   return (
     <HomeWrap>
       <HomeContainer>
         <button className='floating-btn'>지도에서 보기</button>
-        
+
         <div className='space-between'>
           <label>내 위치로부터 500m</label>
-          <button onClick={() => navigate(path.login)}>
-            로그인하기
-          </button>
+          <button onClick={loginClickHandler}>Login 화면</button>
+          <button onClick={mapClickHandler}>지도로 보기</button>
         </div>
 
         <div className='space-between'>
           <h3>식당</h3>
-          <input type="checkbox" id="by-distance" name="by-distance" hidden/>
+          <input type="checkbox" id="by-distance" name="by-distance" hidden />
           <span>
             <button>
               <label htmlFor="by-distance">
@@ -73,24 +74,17 @@ const Home = () => {
               필터
             </button>
           </span>
+        </div>
 
-    const loginClickHandler = () => {
-        navi('/login');
-    }
-    const mapClickHandler = () => {
-        navi('/map');
-    }
 
-    return (
         <div>
-            <button onClick={loginClickHandler}>Login 화면</button>
-            <button onClick={mapClickHandler}>맵 화면</button>
+
 
         </div>
 
         <HomeShopListContainer>
           {
-            shopList?.map((item:any) => (
+            shopList?.map((item: any) => (
               <HomeShopPostCard
                 key={item.shopId}
                 id={item.shopId}
@@ -103,16 +97,16 @@ const Home = () => {
                 category={item.category}
               />
             )
-          )}
+            )}
         </HomeShopListContainer>
       </HomeContainer>
     </HomeWrap>
-  )
+  );
 }
 
-export default Home
+export default Home;
 
-export const HomeWrap = styled.div`
+const HomeWrap = styled.div`
   width: 100vw;
   display: flex;
   justify-content: center;
