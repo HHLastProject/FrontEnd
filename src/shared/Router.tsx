@@ -2,6 +2,9 @@ import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
+import MealFilter from '../pages/MealFilter'
+import ShopDetail from '../pages/ShopDetail'
+import { path } from './path'
 
 import Admin from '../pages/Admin'
 import AdminRegister from '../components/admin/AdminRegister'
@@ -18,6 +21,10 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+
+        <Route path={path.mealFilter} element={<MealFilter />} />
+        <Route path={path.shopDetail} element={<ShopDetail />} />
+
 
         <Route path="/admin/shoplist" element={<Admin />} />
         <Route path="/admin/register" element={<AdminRegister />} />
