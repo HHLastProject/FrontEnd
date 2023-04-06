@@ -11,3 +11,9 @@ export const keys: IQueryKey = {
   GET_ShopList: ['GetShopList'],
   POST_ShopList: ['PostShopList'],
 }
+
+export const loginKeys: IQueryKey = {
+  POST_NAVER_TOKEN: ["postNaverToken"],
+  POST_KAKAO_TOKEN: ["postKakaoToken"],
+  POST_ADMIN_LOGIN: ["postAdminLogin"]
+}

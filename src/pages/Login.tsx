@@ -2,9 +2,14 @@ import styled from 'styled-components';
 import KakaoLogin from '../components/login/KakaoLogin';
 import NaverLogin from '../components/login/NaverLogin';
 import { VFlexCenter } from '../custom/ym/styleStore';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const navi = useNavigate();
 
+    const adminLoginHandler = () => {
+        navi('/admin/login');
+    }
     return (
         <div style={{
             width: '500px',
@@ -19,7 +24,7 @@ const Login = () => {
                 </div>
                 <KakaoLogin />
                 <NaverLogin />
-                <AdminButton>관리자로 로그인하기</AdminButton>
+                <AdminButton onClick={adminLoginHandler}>관리자로 로그인하기</AdminButton>
             </VFlexCenter>
         </div>
     )

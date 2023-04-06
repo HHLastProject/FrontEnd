@@ -13,6 +13,7 @@ import AdminUpdate from '../components/admin/AdminUpdate'
 import RedirectNaver from '../pages/RedirectNaver'
 import RedirectKakao from '../pages/RedirectKakao'
 import Map from '../pages/Map'
+import AdminLogin from '../pages/AdminLogin'
 
 
 const Router = () => {
@@ -33,6 +34,8 @@ const Router = () => {
         <Route path="/redirect/naver" element={<RedirectNaver />} />
         <Route path="/redirect/kakao" element={<RedirectKakao />} />
         <Route path="/map" element={<Map />} />
+
+        <Route path="/admin/login" element={<AdminLogin />} />
 
       </Routes>
     </BrowserRouter>

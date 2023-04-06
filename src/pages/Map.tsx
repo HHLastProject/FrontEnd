@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MapModule from '../components/map/MapModule';
 import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
+import { getRealtimeLocation } from '../custom/jh/getUserLocation';
 
 type Coordinate = {
     lng: number,
@@ -10,6 +11,11 @@ type Coordinate = {
 const Map = () => {
     const navermaps = useNavermaps();
     const map = useMap();
+
+    const [position, setPosition] = useState<Coordinate>({
+        lng: 0,
+        lat: 0,
+    })
 
     const [coord, setCoord] = useState<Coordinate[]>([{
         lng: 127,
@@ -39,6 +45,9 @@ const Map = () => {
     });
 
     useEffect(() => {
+        getRealtimeLocation(setPosition);
+        console.log(position);
+
         dummy.forEach((element) => {
             console.log('요소', element);
             navermaps.Service.geocode({
@@ -61,6 +70,7 @@ const Map = () => {
             <MapDiv style={{ width: '496px', height: '969px' }}>
                 <NaverMap
                     defaultCenter={new navermaps.LatLng(37.5108407, 127.0468975)}
+                    center={position}
                     defaultZoom={16}
                     zoomControl={true}
                 >

@@ -18,17 +18,6 @@ const Home = () => {
     return navi(path);
   }
 
-
-  const naverAccessToken = () => {
-    window.location.href.includes('access_token') && getNaverToken();
-  }
-
-  const getNaverToken = () => {
-    const token = window.location.href.split('=')[1].split('&')[0];
-    console.log(token);
-    localStorage.setItem('access_token', token);
-  }
-
   const {
     shopList,
     getshopList,
@@ -41,6 +30,7 @@ const Home = () => {
     console.log(lat, lng);
     if (lat === 0 && lng === 0) { getshopList(); };
   }, [lat, lng]);
+
   const loginClickHandler = () => {
     navi('/login');
   }
@@ -53,12 +43,11 @@ const Home = () => {
   return (
     <HomeWrap>
       <HomeContainer>
-        <button className='floating-btn'>지도에서 보기</button>
+        <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
 
         <div className='space-between'>
           <label>내 위치로부터 500m</label>
           <button onClick={loginClickHandler}>Login 화면</button>
-          <button onClick={mapClickHandler}>지도로 보기</button>
         </div>
 
         <div className='space-between'>
