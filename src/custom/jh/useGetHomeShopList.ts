@@ -3,15 +3,21 @@ import { queryKeys } from '../../apis/queries';
 import api from '../../shared/api';
 import { apiPath } from '../../shared/path';
 
-export const useGetHomeShopList = (lat : number, lng : number) => {
+type locationType = {
+  x : number,
+  y : number,
+  distance : number,
+};
+
+export const useGetHomeShopList = ({x, y, distance} : locationType) => {
   const queryClient = useQueryClient();
   const { data, mutate, isLoading, isSuccess, isError } = useMutation({
     mutationKey: queryKeys.GET_HOME_SHOPLIST,
     mutationFn: async () => {
-      const {data} = await api.get(`${apiPath.home}`, {data: {
-        userLat: lat,
-        userLng: lng,
-        distance: "500",
+      const {data} = await api.get(`${apiPath.home}`, { params: {
+        x,
+        y,
+        distance: 500,
       }});
       return data.shop;
     },

@@ -10,14 +10,14 @@ const Home = () => {
   interface IClickProps {
     onClick: React.MouseEventHandler<HTMLButtonElement>;
   }
-  const [lat, setLat] = useState(0);
-  const [lng, setLng] = useState(0);
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+  const [distance, setDistance] = useState(500);
 
   const navi = useNavigate();
   const navigate = (path: string) => {
     return navi(path);
   }
-
 
   const naverAccessToken = () => {
     window.location.href.includes('access_token') && getNaverToken();
@@ -29,18 +29,24 @@ const Home = () => {
     localStorage.setItem('access_token', token);
   }
 
+  //가게 리스트 쿼리
   const {
     shopList,
     getshopList,
     getshopListIsLoading,
     getshopListIsError,
-  } = useGetHomeShopList(lat, lng);
+  } = useGetHomeShopList({x, y, distance});
 
   useEffect(() => {
-    getUserLocation(setLat, setLng);
-    console.log(lat, lng);
-    if (lat === 0 && lng === 0) { getshopList(); };
-  }, [lat, lng]);
+    const errorMsg = getUserLocation(setX, setY);
+    if(errorMsg) {
+      console.log(errorMsg);
+    };
+
+    console.log(x, y);
+    if (x === 0 && y === 0) { getshopList(); };
+  }, [x, y]);
+
   const loginClickHandler = () => {
     navi('/login');
   }
@@ -78,6 +84,9 @@ const Home = () => {
 
         <HomeShopListContainer>
           {
+            (shopList?.length === 0) && <div>주변에 식당이 없습니다.</div>
+          }
+          {
             shopList?.map((item: any) => (
               <HomeShopPostCard
                 key={item.shopId}
@@ -110,7 +119,7 @@ const HomeWrap = styled.div`
 const HomeContainer = styled.div`
   max-width: 1600px;
   width: 375px;
-  position: relative;
+  position: rexive;
   padding: 20px;
   background-color: #fff;
   @media (max-width: 1600px) {
@@ -130,7 +139,7 @@ const HomeContainer = styled.div`
     position: fixed;
     bottom: 30px;
     left: 50%;
-    transform: translateX( -50% );
+    transform: transxeX( -50% );
   }
 
   .space-between {
