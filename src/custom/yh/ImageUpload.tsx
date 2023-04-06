@@ -7,7 +7,7 @@ interface ImageUploadProps {
   accept : string;
   children: React.ReactNode;
   name: string;
-  value: (File | undefined)[];
+  value: File | undefined;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -43,7 +43,7 @@ function ImageUpload({ children, name, value, onChange}: ImageUploadProps) {
             accept="image/*"
             multiple
             name={isMultiUpload? 'menuPictures[]':'menuPictures'}
-            value={value}
+            value={myImage && myImage.length > 0 ? myImage : undefined}
             onChange={addImage}
             id="fileInput"
             style={{display:'none'}}
@@ -62,7 +62,7 @@ function ImageUpload({ children, name, value, onChange}: ImageUploadProps) {
 
 export default ImageUpload;
 
-const StInforInner= styled.div`
+const StInforInner= styled.form`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
