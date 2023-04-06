@@ -76,12 +76,6 @@ const Home = () => {
           </span>
         </div>
 
-
-        <div>
-
-
-        </div>
-
         <HomeShopListContainer>
           {
             shopList?.map((item: any) => (

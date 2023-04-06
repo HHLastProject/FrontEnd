@@ -21,7 +21,6 @@ const RedirectKakao = () => {
             const response = await axios.post(`${url}/api/kakao/login2`, payload);
             localStorage.removeItem("kakaoAuth");
             localStorage.setItem("access_token", response.data.access_token);
-
             navi('/');
         }
     });
