@@ -7,11 +7,6 @@ type Coordinate = {
     lat: number,
 };
 
-interface EachCoord {
-    lng: number,
-    lat: number,
-}
-
 const Map = () => {
     const navermaps = useNavermaps();
     const map = useMap();

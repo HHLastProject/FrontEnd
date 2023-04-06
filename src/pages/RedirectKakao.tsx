@@ -1,7 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+
+type Payload = {
+    code: string
+}
 
 const RedirectKakao = () => {
 
@@ -9,16 +13,15 @@ const RedirectKakao = () => {
 
     const url: string = process.env.REACT_APP_SERVER as string;
 
-    const usequery = useQuery({
-        queryKey: ["getKaKaoToken"],
-        queryFn: async () => {
+    const { mutate } = useMutation({
+        mutationKey: ["getKakaoToken"],
+        mutationFn: async (payload: Payload) => {
             kakaoAccessToken();
-            const response = await axios.get(`${url}/api/kakao/login`, {
-                data: {
-                    code: localStorage.getItem('kakaoAuth')
-                }
-            });
-            console.log(response.headers);
+
+            const response = await axios.post(`${url}/api/kakao/login2`, payload);
+            localStorage.removeItem("kakaoAuth");
+            localStorage.setItem("access_token", response.data.access_token);
+
             navi('/');
         }
     });
@@ -31,6 +34,14 @@ const RedirectKakao = () => {
         const authCode = window.location.href.split('=')[1];
         localStorage.setItem('kakaoAuth', authCode);
     }
+
+    useEffect(() => {
+        kakaoAccessToken();
+        const payload = {
+            code: localStorage.getItem('kakaoAuth') as string,
+        };
+        mutate(payload);
+    }, []);
 
     return (
         <div>RedirectKakao</div>

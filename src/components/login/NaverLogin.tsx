@@ -32,19 +32,19 @@ const NaverLogin = () => {
         naverLogin.init();
     }
 
-    const userAccessToken = () => {
-        window.location.href.includes('access_token') && getToken();
-    }
+    // const userAccessToken = () => {
+    //     window.location.href.includes('access_token') && getToken();
+    // }
 
-    const getToken = () => {
-        const token = window.location.href.split('=')[1].split('&')[0];
-        console.log(token);
-        localStorage.setItem('access_token', token);
-    }
+    // const getToken = () => {
+    //     const token = window.location.href.split('=')[1].split('&')[0];
+    //     console.log(token);
+    //     localStorage.setItem('access_token', token);
+    // }
 
     useEffect(() => {
         initNaverLogin();
-        userAccessToken();
+        // userAccessToken();
     }, []);
 
     return (

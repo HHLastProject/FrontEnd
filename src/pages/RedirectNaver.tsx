@@ -1,21 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+type Payload = {
+    code: string
+}
 
 const RedirectNaver = () => {
     const navi = useNavigate();
     const url: string = process.env.REACT_APP_SERVER as string;
 
-    const usequery = useQuery({
-        queryKey: ["getNaverToken"],
-        queryFn: async () => {
-            naverAccessToken();
-            const response = await axios.get(`${url}/api/naver/login`, {
-                data: {
-                    code: localStorage.getItem('naverAuth')
-                }
-            });
-            console.log(response.headers);
+    const { mutate } = useMutation({
+        mutationKey: ["postNaverToken"],
+        mutationFn: async (payload: Payload) => {
+            const response = await axios.post(`${url}/api/naver/login`, payload);
+            localStorage.removeItem("naverAuth")
+            localStorage.setItem("access_token", response.data.access_token);
             navi('/');
         }
     });
@@ -30,6 +31,14 @@ const RedirectNaver = () => {
         console.log(token);
         localStorage.setItem('naverAuth', token);
     }
+
+    useEffect(() => {
+        naverAccessToken();
+        const payload: Payload = {
+            code: localStorage.getItem("naverAuth") as string
+        }
+        mutate(payload);
+    }, []);
 
     return (
         <div>RedirectNaver</div>
