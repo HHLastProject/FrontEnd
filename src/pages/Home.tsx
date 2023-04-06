@@ -12,7 +12,7 @@ const Home = () => {
   }
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const [distance, setDistance] = useState(500);
+  const [range, setRange] = useState(500);
 
   const navi = useNavigate();
   const navigate = (path: string) => {
@@ -35,7 +35,7 @@ const Home = () => {
     getshopList,
     getshopListIsLoading,
     getshopListIsError,
-  } = useGetHomeShopList({x, y, distance});
+  } = useGetHomeShopList({x, y, range});
 
   //useEffect
   useEffect(() => {
@@ -47,7 +47,7 @@ const Home = () => {
       console.log(errorMsg);
     };
     console.log(x, y);
-    if (x === 0 && y === 0) { getshopList(); };
+    if (x !== 0 && y !== 0) { getshopList(); };
   }, [x, y]);
 
   //로딩 화면
@@ -59,21 +59,21 @@ const Home = () => {
         <button className='floating-btn'>지도에서 보기</button>
 
         <div className='space-between'>
-          <label>내 위치로부터 500m</label>
-          <button onClick={() => navigate(path.login)}>Login 화면</button>
-          <button onClick={() => navigate(path.map)}>지도로 보기</button>
+          <label>내 위치로부터 {range}</label>
+          <button onClick={() => navi(path.login)}>Login 화면</button>
+          <button onClick={() => navi(path.map)}>지도로 보기</button>
         </div>
 
         <div className='space-between'>
           <h3>식당</h3>
-          <input type="checkbox" id="by-distance" name="by-distance" hidden />
+          <input type="checkbox" id="by-range" name="by-range" hidden />
           <span>
             <button>
-              <label htmlFor="by-distance">
+              <label htmlFor="by-range">
                 거리순
               </label>
             </button>
-            <button onClick={() => navigate(path.mealFilter)}>
+            <button onClick={() => navi(path.mealFilter)}>
               필터
             </button>
           </span>
