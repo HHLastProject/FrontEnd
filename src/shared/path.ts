@@ -1,5 +1,5 @@
 interface IPath {
-  [ path : string ] : string;
+  readonly [ path : string ] : string;
 };
 
 export const path : IPath = {
@@ -9,6 +9,7 @@ export const path : IPath = {
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
   mypage: '/mypage',
+  map: '/map',
 }
 
 export const apiPath : IPath = {

@@ -19,10 +19,10 @@ const Home = () => {
     return navi(path);
   }
 
+  //토큰 가져오기
   const naverAccessToken = () => {
     window.location.href.includes('access_token') && getNaverToken();
   }
-
   const getNaverToken = () => {
     const token = window.location.href.split('=')[1].split('&')[0];
     console.log(token);
@@ -37,23 +37,20 @@ const Home = () => {
     getshopListIsError,
   } = useGetHomeShopList({x, y, distance});
 
+  //useEffect
+  useEffect(() => {
+    naverAccessToken();
+  }, []);
   useEffect(() => {
     const errorMsg = getUserLocation(setX, setY);
     if(errorMsg) {
       console.log(errorMsg);
     };
-
     console.log(x, y);
     if (x === 0 && y === 0) { getshopList(); };
   }, [x, y]);
 
-  const loginClickHandler = () => {
-    navi('/login');
-  }
-  const mapClickHandler = () => {
-    navi('/map');
-  }
-
+  //로딩 화면
   if (getshopListIsLoading) { return <div>로딩중...</div>; }
 
   return (
@@ -63,8 +60,8 @@ const Home = () => {
 
         <div className='space-between'>
           <label>내 위치로부터 500m</label>
-          <button onClick={loginClickHandler}>Login 화면</button>
-          <button onClick={mapClickHandler}>지도로 보기</button>
+          <button onClick={() => navigate(path.login)}>Login 화면</button>
+          <button onClick={() => navigate(path.map)}>지도로 보기</button>
         </div>
 
         <div className='space-between'>
@@ -119,7 +116,7 @@ const HomeWrap = styled.div`
 const HomeContainer = styled.div`
   max-width: 1600px;
   width: 375px;
-  position: rexive;
+  position: relative;
   padding: 20px;
   background-color: #fff;
   @media (max-width: 1600px) {

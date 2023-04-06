@@ -17,7 +17,7 @@ export const useGetHomeShopList = ({x, y, distance} : locationType) => {
       const {data} = await api.get(`${apiPath.home}`, { params: {
         x,
         y,
-        distance: 500,
+        distance,
       }});
       return data.shop;
     },
