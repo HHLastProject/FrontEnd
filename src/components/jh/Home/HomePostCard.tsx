@@ -69,8 +69,10 @@ const HomeShopPostCardContainer = styled.div`
     height: 50%;
     background-color: #ffd0d0;
     overflow: hidden;
+    position: relative;
     img {
       width: 100%;
+      bottom: 50%;
       object-fit: cover;
     }
   }

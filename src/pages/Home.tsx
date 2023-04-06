@@ -12,7 +12,7 @@ const Home = () => {
   }
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-  
+
   const navi = useNavigate();
   const navigate = (path: string) => {
     return navi(path);
@@ -32,7 +32,6 @@ const Home = () => {
     shopList,
     getshopList,
     getshopListIsLoading,
-    getshopListIsSuccess,
     getshopListIsError,
   } = useGetHomeShopList(lat, lng);
 
