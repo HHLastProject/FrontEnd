@@ -90,33 +90,46 @@ function AdminRegister() {
       setPopup(!popup);
   };
 
-  // const [image, setImage] = useState({
-  //   thumbnail_file: '',
-  //   menuPictures_file :'',
-  // });
+  interface FileState {
+    thumbnail?: File;
+    menuPictures?: File;
+  }
   
-  const postHandler = () => {
-    const formData = new FormData();
-    formData.append('thumbnail', shopRegister.thumbnail);
+  const [file, setFile] = useState<FileState>({
+    thumbnail: undefined,
+    menuPictures: undefined
+  });
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const thumbnail = event.target.files[0];
+      setFile({ ...file, thumbnail });
+    }
+  };
+
+  const formData = new FormData();
+    if (shopRegister.thumbnail !== undefined) {
+      formData.append('thumbnail', shopRegister.thumbnail);
+    }
     shopRegister.menu.forEach((menu, index) => {
-      if (menu.menuPictures !== null) {
+      if (menu.menuPictures !== null && menu.menuPictures !== undefined) {
         formData.append(`menu[${index}][menuPictures]`, menu.menuPictures);
       }
     });
     
+  const postHandler = () => {
     const newShopRegister = {
       shopName: shopRegister.shopName,
       category: shopRegister.category,
       address: enroll_company.address + shopRegister.address,
       operatingTime: shopRegister.operatingTime,
       phoneNumber: shopRegister.phoneNumber,
-      thumbnail: shopRegister.thumbnail,
+      thumbnail: String(shopRegister.thumbnail || ''),
       menu: shopRegister.menu,
       menuPictures: shopRegister.menuPictures
     };
     mutation.mutate(newShopRegister);
   };
-
 
   return (
     <StConteiner>
@@ -181,7 +194,7 @@ function AdminRegister() {
           name = "thumbnail"
           id = "thumbnailFile"
           value={shopRegister.thumbnail}
-          onChange={shopRegisterChageHandle}
+          onChange={handleFileChange}
         />
         <div>
         {shopRegister?.menu.map((el, index) => {
@@ -260,7 +273,7 @@ function AdminRegister() {
                     const newMenuList = [...old.menu];
                     newMenuList[index] = {
                       ...el,
-                      menuPictures: e.target.files[0] as File,
+                      menuPictures: e.target.files ? e.target.files[0] as File : undefined,
                     };
                     return {
                       ...old,
