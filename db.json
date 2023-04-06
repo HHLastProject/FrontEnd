@@ -1,0 +1,22 @@
+{
+    "shopList": [
+      {
+        "shopId" : 1,
+        "shopName" : "샐러드 맛있다",
+        "category" : "샐러드",
+        "address" : "수원시 장안구 율전동 123"
+      },
+      {
+        "shopId" : 2,
+        "shopName" : "샐러드 맛있다",
+        "category" : "샐러드",
+        "address" : "수원시 팔달구 인계동 123"
+      },
+      {
+        "shopId" : 3,
+        "shopName" : "샐러드 맛있다",
+        "category" : "샐러드",
+        "address" : "수원시 권선구 권선동 123"
+      }
+    ]
+  }

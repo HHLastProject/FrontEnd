@@ -18,6 +18,7 @@ const Home = () => {
     return navi(path);
   }
 
+
   const naverAccessToken = () => {
     window.location.href.includes('access_token') && getNaverToken();
   }
@@ -72,6 +73,19 @@ const Home = () => {
               필터
             </button>
           </span>
+
+    const loginClickHandler = () => {
+        navi('/login');
+    }
+    const mapClickHandler = () => {
+        navi('/map');
+    }
+
+    return (
+        <div>
+            <button onClick={loginClickHandler}>Login 화면</button>
+            <button onClick={mapClickHandler}>맵 화면</button>
+
         </div>
 
         <HomeShopListContainer>

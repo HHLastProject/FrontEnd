@@ -3,6 +3,9 @@ import './App.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Router from './shared/Router';
 import './shared/reset.css';
+import { NavermapsProvider } from 'react-naver-maps';
+import { NAVER_MAPS_CLIENT } from './custom/ym/variables';
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,7 +20,9 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
+      <NavermapsProvider ncpClientId={NAVER_MAPS_CLIENT}>
+        <Router />
+      </NavermapsProvider>
     </QueryClientProvider>
   );
 }
