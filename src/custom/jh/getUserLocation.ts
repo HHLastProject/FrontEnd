@@ -1,8 +1,8 @@
 export function getUserLocation (setX : React.Dispatch<React.SetStateAction<number>>, setY : React.Dispatch<React.SetStateAction<number>>) : string | undefined {
   navigator.geolocation.getCurrentPosition((position) => {
     //성공했을 때 위도 경도 알아냄
-    let x = position.coords.latitude;
-    let y = position.coords.longitude;
+    let x = position.coords.longitude;  //경도
+    let y = position.coords.latitude;   //위도
     setX(x);
     setY(y);
   }, (err) => {

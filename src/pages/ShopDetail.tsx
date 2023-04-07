@@ -4,13 +4,20 @@ import styled from 'styled-components';
 
 function ShopDetail() {
   const param = useParams().shopId;
+  const tabInfoRef = useRef();
+  const tabMenuRef = useRef();
+  const tabReviewRef = useRef();
+
+  const scrollToTabInfo = () => {
+    // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
   // const [isCheckedTabInfo, setIsCheckedTabInfo] = useState(true);     //정보
   // const [isCheckedTabMenu, setIsCheckedTabMenu] = useState(false);    //메뉴
   // const [isCheckedTabReview, setIsCheckedTabReview] = useState(false);//리뷰
-  const tabInfo = document.getElementById('detail-tab-info');
-  if(tabInfo) {
-    // const isCheckedTabInfo: boolean = tabInfo.checked;
-  }
+  // const tabInfo = document.getElementById('detail-tab-info');
+  // if(tabInfo) {
+  //   // const isCheckedTabInfo: boolean = tabInfo.checked;
+  // }
 
   return (
     <ShopDetailContainer>
@@ -20,7 +27,7 @@ function ShopDetail() {
       </Header>
       <ShopDetailContent>
         <img 
-          src="" 
+          src=""
           alt=""
           className='thumbnail-img'/>
         <div>
@@ -32,29 +39,29 @@ function ShopDetail() {
           </span>
         </div>
       </ShopDetailContent>
+      <ShopDetailTab>
+        <ul id='detail-tab'>
+          <li id="">
+            <input type="radio" id='detail-tab-info' name='detail-tab' hidden/>
+            <div className='detail-tab-div'>
+              <label htmlFor="detail-tab-info">정보</label> 
+            </div>
+          </li>
+          <li id="">
+            <input type="radio" id='detail-tab-menu' name='detail-tab' hidden/>
+            <div className='detail-tab-div'>
+              <label htmlFor="detail-tab-menu">메뉴</label>
+            </div>
+          </li>
+          <li id="">
+            <input type="radio" id='detail-tab-review' name='detail-tab' hidden/>
+            <div className='detail-tab-div'>
+              <label htmlFor="detail-tab-review">리뷰</label>
+            </div>
+          </li>
+        </ul>
+      </ShopDetailTab>
       <ShopDetailContent>
-        <ShopDetailTab>
-          <ul id='detail-tab'>
-            <li id="">
-              <input type="radio" id='detail-tab-info' name='detail-tab' hidden/>
-              <div className='detail-tab-div'>
-                <label htmlFor="detail-tab-info">정보</label> 
-              </div>
-            </li>
-            <li id="">
-              <input type="radio" id='detail-tab-menu' name='detail-tab' hidden/>
-              <div className='detail-tab-div'>
-                <label htmlFor="detail-tab-menu">메뉴</label>
-              </div>
-            </li>
-            <li id="">
-              <input type="radio" id='detail-tab-review' name='detail-tab' hidden/>
-              <div className='detail-tab-div'>
-                <label htmlFor="detail-tab-review">리뷰</label>
-              </div>
-            </li>
-          </ul>
-        </ShopDetailTab>
         
       </ShopDetailContent>
 
