@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components';
+import useGetShopDetail from '../custom/jh/useGetShopDetail';
 
 function ShopDetail() {
-  const param = useParams().shopId;
+  const param = Number(useParams().shopId);
   const tabInfoRef = useRef();
   const tabMenuRef = useRef();
   const tabReviewRef = useRef();
@@ -11,6 +12,8 @@ function ShopDetail() {
   const scrollToTabInfo = () => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const {shopDetailData, shopDetailIsLoading, shopDetailIsError} = useGetShopDetail(param);
   // const [isCheckedTabInfo, setIsCheckedTabInfo] = useState(true);     //정보
   // const [isCheckedTabMenu, setIsCheckedTabMenu] = useState(false);    //메뉴
   // const [isCheckedTabReview, setIsCheckedTabReview] = useState(false);//리뷰
@@ -18,6 +21,11 @@ function ShopDetail() {
   // if(tabInfo) {
   //   // const isCheckedTabInfo: boolean = tabInfo.checked;
   // }
+  
+  
+  useEffect(() => {
+    console.log(shopDetailData);
+  }, [shopDetailData])
 
   return (
     <ShopDetailContainer>
@@ -62,9 +70,12 @@ function ShopDetail() {
         </ul>
       </ShopDetailTab>
       <ShopDetailContent>
-        
-      </ShopDetailContent>
+        <h2></h2>
 
+
+        <h2></h2>
+
+      </ShopDetailContent>
     </ShopDetailContainer>
   )
 }

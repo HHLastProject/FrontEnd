@@ -15,6 +15,7 @@ export const path : IPath = {
 export const apiPath : IPath = {
   home: '/api/shop/main',
   shopDetail: '/api/shop/:shopId',
+  toShopDetail: '/api/shop',
   shopDetailReview: '/api/shop/:shopId/review',
   shopDetailReviewEdit: '/api/shop/:shopId/review/:reviewId',
 };
