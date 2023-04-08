@@ -28,7 +28,7 @@ const Router = () => {
 
         <Route path="/admin/shoplist" element={<Admin />} />
         <Route path="/admin/register" element={<AdminRegister />} />
-        <Route path="/admin/update/:shopId" element={<AdminUpdate />} />
+        <Route path="/admin/:id" element={<AdminUpdate />} />
 
         <Route path="/redirect/naver" element={<RedirectNaver />} />
         <Route path="/redirect/kakao" element={<RedirectKakao />} />
