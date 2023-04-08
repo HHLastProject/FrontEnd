@@ -1,9 +1,12 @@
 import React from 'react'
+import ShopListCard from './ShopListCard'
 
 function AdminUpdate() {
   return (
-    <div>AdminUpdate</div>
-  )
+    <div>
+      <ShopListCard/>
+    </div>
+  );
 }
 
-export default AdminUpdate
+export default AdminUpdate;
