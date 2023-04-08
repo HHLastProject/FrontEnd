@@ -10,4 +10,5 @@ export const queryKeys: IQueryKey = {
 export const keys: IQueryKey = {
   GET_ShopList: ['GetShopList'],
   POST_ShopList: ['PostShopList'],
-}
+  GET_ShopList_Detail : ['GetDetail']
+};
