@@ -17,13 +17,15 @@ type MutationVariables = {
   }[];
 };
 
-const useAdminRegister = () => {
+export const usePostAdminRegister = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (newShopRegister: MutationVariables) => {
-      const response = await apis.post(`/admin/register`, newShopRegister, {
+      const response = await apis.post(`/api/admin/register`, newShopRegister, {
         headers: {
-          Authorization: getCookie('token'),
+          authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbkVtYWlsIjoicXdlckBuYXZlci5jb20iLCJpYXQiOjE2ODA3ODMxNDQsImV4cCI6MTY4MTY0NzE0NH0.BeigA3zgwDM-E4tAn3hKesYxeD9enog8w9RPtXsHOh8",
+          // authorization: getCookie('token'), 
+          "Content-Type": "multipart/form-data",
         },
       });
       return response;
@@ -39,4 +41,3 @@ const useAdminRegister = () => {
 
   return mutation;
 };
-export default useAdminRegister;
