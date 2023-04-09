@@ -19,7 +19,7 @@ const RedirectKakao = () => {
         mutationFn: async (payload: Payload) => {
             kakaoAccessToken();
 
-            const response = await axios.post(`http://54.180.105.213/api/login/kakao`, payload);
+            const response = await axios.post(`${process.env.SERVER_URL}/api/login/kakao`, payload);
             // localStorage.removeItem("kakaoAuth");
             // localStorage.setItem("access_token", response.data.access_token);
             console.log(response);

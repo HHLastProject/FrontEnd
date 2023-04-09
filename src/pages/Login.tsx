@@ -12,7 +12,7 @@ const Login = () => {
     }
     return (
         <div style={{
-            width: '500px',
+            width: '390px',
             minHeight: '100vh',
             margin: '0 auto',
         }}>

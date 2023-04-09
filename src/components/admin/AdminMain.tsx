@@ -15,7 +15,7 @@ interface ShopListItem {
 
 function AdminMain(): JSX.Element {
   const navigate = useNavigate();
-  const keys = {GET_ShopList: 'GetShopList',} as const;
+  const keys = { GET_ShopList: 'GetShopList', } as const;
   const { data, isLoading } = useQuery<ShopListItem[]>({
     queryKey: [keys.GET_ShopList],
     queryFn: async () => {
@@ -27,40 +27,43 @@ function AdminMain(): JSX.Element {
       return data.data;
     },
   });
+
+  const logoutBtnHandler = () => {
+    localStorage.removeItem("admin_token");
+    navigate('/');
+  }
   console.log(data)
 
   return (
     <StConteiner>
-       <StHeaderLogo>
-          <StHeaderLogoInner>
-            <StInformationbox>
-               <StUserIdBox>asdf@naver.com</StUserIdBox>
-              <LogoutBtn 
-              type="submit" 
-              onClick={()=>{
-                navigate('/')
-              }}>로그아웃</LogoutBtn>
-            </StInformationbox>
-          </StHeaderLogoInner>
-          <StAddbox>
-            <Addbutton
-            type="submit" 
-            onClick={()=>{
+      <StHeaderLogo>
+        <StHeaderLogoInner>
+          <StInformationbox>
+            <StUserIdBox>asdf@naver.com</StUserIdBox>
+            <LogoutBtn
+              type="submit"
+              onClick={logoutBtnHandler}>로그아웃</LogoutBtn>
+          </StInformationbox>
+        </StHeaderLogoInner>
+        <StAddbox>
+          <Addbutton
+            type="submit"
+            onClick={() => {
               navigate('/admin/register')
             }}
-            >등록하기 + </Addbutton>
-          </StAddbox>
-          <ShopListBox>
-            {data?.map((el) => {
+          >등록하기 + </Addbutton>
+        </StAddbox>
+        <ShopListBox>
+          {data?.map((el) => {
             return (
-              <ShopList 
-              key={el.shopId}
+              <ShopList
+                key={el.shopId}
               // onClick={()=> {
               //   navigate(`/admin/update/:${shopId}`)
               // }}
               >
                 <ShopNameBox>
-                <ShopName>{el.shopName}</ShopName>
+                  <ShopName>{el.shopName}</ShopName>
                 </ShopNameBox>
                 <ShopCategoryBox>
                   <ShopCategory>{el.category}</ShopCategory>
@@ -70,8 +73,8 @@ function AdminMain(): JSX.Element {
                 </ShopAddrBox>
               </ShopList>
             );
-            })} 
-          </ShopListBox>
+          })}
+        </ShopListBox>
       </StHeaderLogo>
     </StConteiner>
   );
@@ -151,7 +154,7 @@ const ShopList = styled.button`
   border : none;
   cursor: pointer;
 `
-const ShopNameBox =styled.div`
+const ShopNameBox = styled.div`
   margin-left : 10px;
 `
 const ShopName = styled.div`
@@ -161,7 +164,7 @@ const ShopName = styled.div`
   font-size : 15px;
 `
 
-const ShopCategoryBox =styled.div`
+const ShopCategoryBox = styled.div`
   margin-left : 15px;
 `
 const ShopCategory = styled.div`
@@ -171,7 +174,7 @@ const ShopCategory = styled.div`
   color : gray;
 `
 
-const ShopAddrBox =styled.div`
+const ShopAddrBox = styled.div`
   margin-left : 15px;
 `
 

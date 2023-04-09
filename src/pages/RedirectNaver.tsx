@@ -28,7 +28,8 @@ const RedirectNaver = () => {
     }
 
     const getNaverToken = () => {
-        const token = window.location.href.split('=')[1].split('&')[0];
+        // const token = window.location.href.split('=')[1].split('&')[0];
+        const token = window.location.href.split('=')[1];
         console.log(token);
         localStorage.setItem('naverAuth', token);
     }

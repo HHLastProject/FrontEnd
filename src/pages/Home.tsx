@@ -26,6 +26,7 @@ const Home = () => {
   } = useGetHomeShopList(lat, lng);
 
   useEffect(() => {
+    localStorage.getItem('admin_token') && navi('/admin/shoplist');
     getUserLocation(setLat, setLng);
     console.log(lat, lng);
     if (lat === 0 && lng === 0) { getshopList(); };
