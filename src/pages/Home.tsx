@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import HomeShopPostCard from '../components/jh/Home/HomePostCard';
 import { apiPath, path } from '../shared/path';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 import NoShop from '../components/home/NoShop';
+import HomeShopPostCard from '../components/home/HomePostCard';
 
 const Home = () => {
   const [x, setX] = useState(0);
@@ -44,6 +44,7 @@ const Home = () => {
     if(errorMsg) {
       console.log(errorMsg);
     };
+    console.log('x', x, 'y', y);
     if (x !== 0 && y !== 0) { getshopList(); };
   }, [x, y]);
 

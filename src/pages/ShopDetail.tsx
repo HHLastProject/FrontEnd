@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailReview } from '../custom/jh/useGetShopDetail';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
 import ShopDetailReview from '../components/shopDetail/ShopDetailReview';
-import { apiPath, path } from '../shared/path';
+import { apiPath } from '../shared/path';
+import ShopDetailMap from '../components/map/ShopDetailMap';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -69,8 +70,7 @@ function ShopDetail() {
           <div>
             <h1>{shopDetailData?.shopName}</h1>
             <span>
-              <label>★별점</label>
-              <label>(리뷰수)</label>
+              <label>(피드수)</label>
               <div className='category'>카테고리{shopDetailData?.category}</div>
             </span>
           </div>
@@ -99,13 +99,18 @@ function ShopDetail() {
         </ShopDetailTab>
         <ShopDetailContent>
           <div className='shop-detail-info'>
+            <ShopDetailMap
+              width={350}
+              height={150}
+              lng={shopDetailData?.x}
+              lat={shopDetailData?.y}
+            />
             <h2>정보</h2>
             <div>
               <p>{shopDetailData?.address}</p>
               <p>{shopDetailData?.operatingTime}</p>
               <p>{shopDetailData?.phoneNumber}</p>
             </div>
-            맵 위치
           </div>
           <div className='shop-detail-menu'>
             <hr />
@@ -123,18 +128,20 @@ function ShopDetail() {
           <div className='shop-detail-review'>
             <hr />
             <div className='shop-detail-review-sub'>
-              <h2>리뷰</h2>
+              <h2>피드</h2>
               <button
                 onClick={() => navi(toShopDetailReviewForm)}
               >댓글 쓰기</button>
             </div>
-            {shopDetailReviewList?.map((item:any) => {
-              return (
-                <>리뷰111</>
-              )
-            })}
-            {(shopDetailReviewList?.length === 0) && (<div>리뷰가 없습니다.</div>)}
-            {shopDetailReviewIsError && (<div>댓글 에러</div>)}
+            <div>
+              {shopDetailReviewList?.map((item:any) => {
+                return (
+                  <>리뷰111</>
+                )
+              })}
+              {(shopDetailReviewList?.length === 0) && (<div>피드가 없습니다.</div>)}
+              {shopDetailReviewIsError && (<div>댓글 에러</div>)}
+            </div>
             <ShopDetailReview/>
           </div>
         </ShopDetailContent>
