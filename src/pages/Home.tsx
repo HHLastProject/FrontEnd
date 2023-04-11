@@ -2,14 +2,11 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import HomeShopPostCard from '../components/jh/Home/HomePostCard';
-import { path } from '../shared/path';
+import { apiPath, path } from '../shared/path';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 
 const Home = () => {
-  interface IClickProps {
-    onClick: React.MouseEventHandler<HTMLButtonElement>;
-  }
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [range, setRange] = useState(500);
@@ -22,12 +19,12 @@ const Home = () => {
   //토큰 가져오기
   const naverAccessToken = () => {
     window.location.href.includes('access_token') && getNaverToken();
-  }
+  };
   const getNaverToken = () => {
     const token = window.location.href.split('=')[1].split('&')[0];
     console.log(token);
     localStorage.setItem('access_token', token);
-  }
+  };
 
   //가게 리스트 쿼리
   const {
@@ -54,82 +51,80 @@ const Home = () => {
   if (getshopListIsLoading) { return <div>로딩중...</div>; }
 
   return (
-    <HomeWrap>
-      <HomeContainer>
-        <button className='floating-btn'>지도에서 보기</button>
+    <Wrap>
+      <HomeWrap>
+        <HomeContainer>
+          <button className='floating-btn'>지도에서 보기</button>
 
-        <div className='space-between'>
-          <label>내 위치로부터 {range}</label>
-          <button onClick={() => navi(path.login)}>Login 화면</button>
-          <button onClick={() => navi(path.map)}>지도로 보기</button>
-        </div>
+          <div className='space-between'>
+            <span>
+              <label>내 주변</label>
+              {shopList?.length}
+            </span>
+            <button onClick={() => navi(path.login)}>Login 화면</button>
+            <button onClick={() => navi(path.map)}>지도로 보기</button>
+          </div>
 
-        <div className='space-between'>
-          <h3>식당</h3>
-          <input type="checkbox" id="by-range" name="by-range" hidden />
-          <span>
-            <button>
-              <label htmlFor="by-range">
-                거리순
-              </label>
-            </button>
-            <button onClick={() => navi(path.mealFilter)}>
-              필터
-            </button>
-          </span>
-        </div>
+          <div className='space-between'>
+            <h3>식당</h3>
+            <input type="checkbox" id="by-range" name="by-range" hidden />
+            <span>
+              <button>
+                <label htmlFor="by-range">
+                  거리순
+                </label>
+              </button>
+              <button onClick={() => navi(path.mealFilter)}>
+                필터
+              </button>
+            </span>
+          </div>
 
-        <HomeShopListContainer>
-          {
-            (shopList?.length === 0) && <div>주변에 식당이 없습니다.</div>
-          }
-          {
-            shopList?.map((item: any) => (
-              <HomeShopPostCard
-                key={item.shopId}
-                id={item.shopId}
-                address={item.address}
-                shopName={item.shopName}
-                thumbnail={item.thumbnail}
-                menuName={item.menuName}
-                maxPrice={item.maxPrice}
-                minPrice={item.minPrice}
-                category={item.category}
-              />
-            )
-            )}
-        </HomeShopListContainer>
-      </HomeContainer>
-    </HomeWrap>
+          <HomeShopListContainer>
+            {
+              (shopList?.length === 0) && <div>주변에 식당이 없습니다.</div>
+            }
+            {
+              shopList?.map((item: any) => (
+                <HomeShopPostCard
+                  key={item.shopId}
+                  id={item.shopId}
+                  address={item.address}
+                  shopName={item.shopName}
+                  thumbnail={`${apiPath.imgUrl}${item.thumbnail}`}
+                  menuName={item.menuName}
+                  maxPrice={item.maxPrice}
+                  minPrice={item.minPrice}
+                  category={item.category}
+                />
+              ))
+            }
+          </HomeShopListContainer>
+        </HomeContainer>
+      </HomeWrap>
+    </Wrap>
   );
 }
 
 export default Home;
 
-const HomeWrap = styled.div`
+const Wrap = styled.div`
   width: 100vw;
   display: flex;
   justify-content: center;
   background-color: #acacac;
 `;
 
-const HomeContainer = styled.div`
-  max-width: 1600px;
-  width: 375px;
-  position: relative;
-  padding: 20px;
+const HomeWrap = styled.div`
+  width: 390px;
   background-color: #fff;
-  @media (max-width: 1600px) {
-    
-  }
-  @media (max-width: 1334px) {
-    
-  }
-  @media (max-width: 1024px) {
-    
-  }
-  @media (max-width: 720px) {
-    
+`;
+
+const HomeContainer = styled.div`
+  width: (100%-20)px;
+  position: relative;
+  margin: 20px;
+  @media (max-width: 390px) {
   }
   
   .floating-btn {
@@ -149,6 +144,6 @@ const HomeShopListContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
+  justify-content: center;
+  gap: 12px;
 `;

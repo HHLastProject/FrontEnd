@@ -42,14 +42,23 @@ function HomeShopPostCard (
             onError={onErrorImg}
           />
         </div>
-        <div className="home-postcard-content">
+        <div className="home-postcard-content-wrap">
           <h4>{shopName}</h4>
-          <label>{address}</label>
-          <label>{menuName}</label>
-          <span>
-            <label>최소주문</label>
-            <label>{minPrice}</label>
-          </span>
+          <label className="address">{address}</label>
+          <div>
+            <span>
+              <label className="bold">{202}</label>
+              <label>m</label>
+            </span>
+            <span>
+              <label>별점</label>
+              <label className="bold">{4.8}</label>
+            </span>
+            <span>
+              <label>리뷰</label>
+              <label className="bold">{10}</label>
+            </span>
+          </div>
         </div>
       </HomeShopPostCardContainer>
     </Link>
@@ -60,20 +69,34 @@ export default HomeShopPostCard;
 
 const HomeShopPostCardContainer = styled.div`
   width: 100%;
-  height: 270px;
-  border: 1px solid;
-  border-radius: 5px 20px 5px 5px;
+  height: 268px;
+  border-radius: 5px 40px 5px 5px;
+  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.15));
   overflow: hidden;
+  background-color: #ffffff;
   .home-postcard-thumbnail {
     width: 100%;
-    height: 50%;
-    background-color: #ffd0d0;
-    overflow: hidden;
+    height: 172px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
+    overflow: hidden;
+    background-color: #ffffff;
     img {
       width: 100%;
       bottom: 50%;
       object-fit: cover;
+    }
+  }
+  .home-postcard-content-wrap {
+    width: 100%;
+    height: 100%;
+    padding: 16px 20px;
+    h4 {
+      font-size: 16px;
+      font-weight: 600;
     }
   }
 `;

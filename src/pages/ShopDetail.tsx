@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailReview } from '../custom/jh/useGetShopDetail';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
 import ShopDetailReview from '../components/shopDetail/ShopDetailReview';
-import { path } from '../shared/path';
+import { apiPath, path } from '../shared/path';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -60,11 +60,10 @@ function ShopDetail() {
       </Header>
       <ShopDetailContainer>
         <ShopDetailThumbnail>
-          <div>
-            <img 
-              src={shopDetailData?.thumbnail}
+          <div className='thumbnail-img'>
+            <img
+              src={`${apiPath.imgUrl}${shopDetailData?.thumbnail}`}
               alt={shopDetailData?.shopName}
-              className='thumbnail-img'
             />
           </div>
           <div>
@@ -209,6 +208,17 @@ const ShopDetailThumbnail = styled.div`
   width: 100%;
   h1 {
     font-size: 1.5rem;
+  }
+  .thumbnail-img {
+    width: 100%;
+    height: 346px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 100%;
+    }
   }
 `;
 

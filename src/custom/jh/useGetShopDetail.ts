@@ -33,7 +33,7 @@ export const useGetShopDetailReview = (param: number | undefined) => {
       return data;
     },
     onSuccess: () => {
-      // console.log('리뷰 데이터', data);
+      console.log('리뷰 데이터', data);
 
     },
     onError: () => {
@@ -53,6 +53,20 @@ export const useAddShopDetailReview = (param: number | undefined) => {
     mutationKey: queryKeys.ADD_SHOP_DETAIL_REVIEW,
     mutationFn: async () => {
       const {data} = await api.post(`${apiPath.toShopDetail}/${param}/review`);
+      return data;
     },
-  })
+    onSuccess: () => {
+      console.log('리뷰 작성한 데이터', data);
+
+    },
+    onError: () => {
+      console.log('리뷰 작성 에러');
+    },
+  });
+  return {
+    shopDetailReviewList : data,
+    getShopDetailReviewList : mutate,
+    shopDetailReviewIsLoading: isLoading,
+    shopDetailReviewIsError: isError,
+  };
 }
