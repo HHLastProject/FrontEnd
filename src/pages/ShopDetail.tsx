@@ -62,7 +62,7 @@ function ShopDetail() {
         <ShopDetailThumbnail>
           <div className='thumbnail-img'>
             <img
-              src={`${apiPath.imgUrl}${shopDetailData?.thumbnail}`}
+              src={`${apiPath.imgUrl + shopDetailData?.thumbnail}`}
               alt={shopDetailData?.shopName}
             />
           </div>

@@ -14,7 +14,7 @@ function ShopDetailMenu({menuName, price, picture}: IShopDetailMenu) {
         <label>{menuName}</label>
         <label>{price}</label>
       </div>
-      {picture && (
+      { picture && (
         <div className="shop-detail-menu-picture">
           <img src={`${apiPath.imgUrl}${picture}`} alt={menuName}/>
         </div>
@@ -36,12 +36,16 @@ const ShopDetailMenuContainer = styled.div`
     gap: 20px;
   }
   .shop-detail-menu-picture {
-    overflow: hidden;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 5px;
+    overflow: hidden;
     img {
-      height: 80px;
-      object-fit: cover;
-      object-position: center;
+      width: ${(80)} 80px;
+      
     }
   }
 `;

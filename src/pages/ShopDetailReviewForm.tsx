@@ -18,15 +18,17 @@ function ShopDetailReviewForm() {
           <ShopDetailReviewTextarea 
             onChange={textCountHnadler}
             maxLength={500}
+            placeholder='후기를 작성해 주세요 :)'
           />
           <div className='text-count'>
             <label>{count}/500</label>
           </div>
 
           <button
+            className='sticky-btn'
             // onClick={}
           >
-            리뷰 작성
+            작성 완료
           </button>
         </ShopDetailReviewFormContainer>
       </form>
@@ -46,6 +48,10 @@ const ShopDetailReviewFormContainer = styled.div`
   .text-count {
     display: flex;
     justify-content: flex-end;
+  }
+  .sticky-btn {
+    position: sticky;
+    bottom: 0;
   }
 `;
 

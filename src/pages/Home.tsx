@@ -5,6 +5,7 @@ import HomeShopPostCard from '../components/jh/Home/HomePostCard';
 import { apiPath, path } from '../shared/path';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
+import NoShop from '../components/home/NoShop';
 
 const Home = () => {
   const [x, setX] = useState(0);
@@ -43,27 +44,27 @@ const Home = () => {
     if(errorMsg) {
       console.log(errorMsg);
     };
-    console.log(x, y);
     if (x !== 0 && y !== 0) { getshopList(); };
   }, [x, y]);
 
   //로딩 화면
-  if (getshopListIsLoading) { return <div>로딩중...</div>; }
+  if(getshopListIsLoading) { return <div>로딩중...</div>; }
 
   return (
     <Wrap>
       <HomeWrap>
         <HomeContainer>
           <button className='floating-btn'>지도에서 보기</button>
-
-          <div className='space-between'>
-            <span>
-              <label>내 주변</label>
-              {shopList?.length}
-            </span>
-            <button onClick={() => navi(path.login)}>Login 화면</button>
-            <button onClick={() => navi(path.map)}>지도로 보기</button>
-          </div>
+          <header>
+            <div className='space-between'>
+              <span>
+                <label>내 주변</label>
+                {shopList?.length}
+              </span>
+              <button onClick={() => navi(path.login)}>로그인 하기</button>
+              <button onClick={() => navi(path.map)}>지도로 보기</button>
+            </div>
+          </header>
 
           <div className='space-between'>
             <h3>식당</h3>
@@ -81,8 +82,10 @@ const Home = () => {
           </div>
 
           <HomeShopListContainer>
+            
+          <NoShop/>
             {
-              (shopList?.length === 0) && <div>주변에 식당이 없습니다.</div>
+              (shopList?.length === 0) && <NoShop/>
             }
             {
               shopList?.map((item: any) => (
@@ -91,7 +94,7 @@ const Home = () => {
                   id={item.shopId}
                   address={item.address}
                   shopName={item.shopName}
-                  thumbnail={`${apiPath.imgUrl}${item.thumbnail}`}
+                  thumbnail={`${apiPath.imgUrl + item.thumbnail}`}
                   menuName={item.menuName}
                   maxPrice={item.maxPrice}
                   minPrice={item.minPrice}
@@ -99,12 +102,13 @@ const Home = () => {
                 />
               ))
             }
+            <button>더 보기</button>
           </HomeShopListContainer>
         </HomeContainer>
       </HomeWrap>
     </Wrap>
   );
-}
+};
 
 export default Home;
 
@@ -125,8 +129,9 @@ const HomeContainer = styled.div`
   position: relative;
   margin: 20px;
   @media (max-width: 390px) {
+
   }
-  
+
   .floating-btn {
     position: fixed;
     bottom: 30px;

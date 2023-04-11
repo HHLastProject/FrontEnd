@@ -5,7 +5,7 @@ function ShopDetailReview() {
   return (
     <ShopDetailReviewContent>
       <div className='shop-detail-review-profile'>
-        <div>
+        <div className='userprofile-pic'>
           <img src="" alt="" />
         </div>
         <div>
