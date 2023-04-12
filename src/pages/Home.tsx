@@ -27,7 +27,6 @@ const Home = () => {
     localStorage.setItem('access_token', token);
   };
 
-  //가게 리스트 쿼리
   const {
     shopList,
     getshopList,
@@ -38,7 +37,9 @@ const Home = () => {
   //useEffect
   useEffect(() => {
     naverAccessToken();
+    localStorage.getItem('admin_token') && navi('/admin/shoplist');
   }, []);
+  
   useEffect(() => {
     const errorMsg = getUserLocation(setX, setY);
     if(errorMsg) {
@@ -47,6 +48,13 @@ const Home = () => {
     console.log('x', x, 'y', y);
     if (x !== 0 && y !== 0) { getshopList(); };
   }, [x, y]);
+
+  const loginClickHandler = () => {
+    navi('/login');
+  }
+  const mapClickHandler = () => {
+    navi('/map');
+  }
 
   //로딩 화면
   if(getshopListIsLoading) { return <div>로딩중...</div>; }
@@ -107,26 +115,22 @@ const Home = () => {
 
 export default Home;
 
+
 const Wrap = styled.div`
-  width: 100vw;
+  width: 100%;
+
+const HomeWrap = styled.div`
+  width: 100%;
   display: flex;
   justify-content: center;
   background-color: #acacac;
 `;
 
-const HomeWrap = styled.div`
-  width: 390px;
-  background-color: #fff;
-`;
 
 const HomeContainer = styled.div`
   width: (100%-20)px;
   position: relative;
   margin: 20px;
-  @media (max-width: 390px) {
-
-  }
-
   .floating-btn {
     position: fixed;
     bottom: 30px;

@@ -12,3 +12,25 @@ export function getUserLocation (setX : React.Dispatch<React.SetStateAction<numb
   })
   return undefined;
 };
+
+type Coordinate = {
+  lng: number,
+  lat: number,
+};
+
+export function getRealtimeLocation(
+  setState: React.Dispatch<React.SetStateAction<Coordinate>>
+) {
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    const newCoord: Coordinate = {
+      lng: position.coords.longitude,
+      lat: position.coords.latitude,
+    }
+
+    setState(newCoord);
+
+  }, (err) => {
+    alert('위치정보를 가져오지 못했습니다.');
+  })
+};
