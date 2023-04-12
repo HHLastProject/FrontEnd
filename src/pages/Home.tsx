@@ -32,17 +32,17 @@ const Home = () => {
     getshopList,
     getshopListIsLoading,
     getshopListIsError,
-  } = useGetHomeShopList({x, y, range});
+  } = useGetHomeShopList({ x, y, range });
 
   //useEffect
   useEffect(() => {
     naverAccessToken();
     localStorage.getItem('admin_token') && navi('/admin/shoplist');
   }, []);
-  
+
   useEffect(() => {
     const errorMsg = getUserLocation(setX, setY);
-    if(errorMsg) {
+    if (errorMsg) {
       console.log(errorMsg);
     };
     console.log('x', x, 'y', y);
@@ -57,7 +57,7 @@ const Home = () => {
   }
 
   //로딩 화면
-  if(getshopListIsLoading) { return <div>로딩중...</div>; }
+  if (getshopListIsLoading) { return <div>로딩중...</div>; }
 
   return (
     <Wrap>
@@ -88,7 +88,7 @@ const Home = () => {
 
           <HomeShopListContainer>
             {
-              (shopList?.length === 0) && <NoShop/>
+              (shopList?.length === 0) && <NoShop />
             }
             {
               shopList?.map((item: any) => (
@@ -118,12 +118,13 @@ export default Home;
 
 const Wrap = styled.div`
   width: 100%;
-
+  height: 400px;
+`
 const HomeWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: #acacac;
+  background-color: #fff;
 `;
 
 

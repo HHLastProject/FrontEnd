@@ -34,4 +34,5 @@ const NavContainer = styled.nav`
     width: 100%;
     background-color: white;
     gap : 8px;
+    z-index: 50;
 `
