@@ -3,8 +3,8 @@ import ShopListCard from './ShopListCard'
 
 function AdminUpdate() {
   return (
-    <div>
-      <ShopListCard/>
+    <div style={{ backgroundColor: 'white', height: '100vh' }}>
+      <ShopListCard />
     </div>
   );
 }

@@ -91,15 +91,15 @@ const Home = () => {
 export default Home;
 
 const HomeWrap = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   background-color: #acacac;
 `;
 
 const HomeContainer = styled.div`
-  max-width: 1600px;
-  width: 375px;
+  /* max-width: 1600px; */
+  min-width: 100%;
   position: relative;
   padding: 20px;
   background-color: #fff;

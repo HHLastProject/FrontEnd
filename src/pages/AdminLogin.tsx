@@ -30,7 +30,7 @@ const AdminLogin = () => {
     }
 
     return (
-        <div style={{ width: '100%', height: '100vh' }}>
+        <div style={{ backgroundColor: 'white', height: '100vh' }}>
             <VFlexCenter gap="20px">
                 <input placeholder="ID" value={id} onChange={(e) => setId(e.target.value)} />
                 <input placeholder="Password" value={pw} onChange={(e) => setPw(e.target.value)} />

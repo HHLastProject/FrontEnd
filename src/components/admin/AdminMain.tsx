@@ -92,6 +92,7 @@ const StConteiner = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  background-color: white;
 `;
 const StHeaderLogo = styled.div`
   width: 1135px;
