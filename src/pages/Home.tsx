@@ -15,7 +15,7 @@ const Home = () => {
   const navi = useNavigate();
   const navigate = (path: string) => {
     return navi(path);
-  }
+  };
 
   //토큰 가져오기
   const naverAccessToken = () => {
@@ -55,7 +55,7 @@ const Home = () => {
     <Wrap>
       <HomeWrap>
         <HomeContainer>
-          <button className='floating-btn'>지도에서 보기</button>
+          <button className='floating-btn' onClick={() => navi(path.map)}>지도에서 보기</button>
           <header>
             <div className='space-between'>
               <span>
@@ -63,7 +63,6 @@ const Home = () => {
                 {shopList?.length}
               </span>
               <button onClick={() => navi(path.login)}>로그인 하기</button>
-              <button onClick={() => navi(path.map)}>지도로 보기</button>
             </div>
           </header>
 
@@ -76,15 +75,10 @@ const Home = () => {
                   거리순
                 </label>
               </button>
-              <button onClick={() => navi(path.mealFilter)}>
-                필터
-              </button>
             </span>
           </div>
 
           <HomeShopListContainer>
-            
-          <NoShop/>
             {
               (shopList?.length === 0) && <NoShop/>
             }

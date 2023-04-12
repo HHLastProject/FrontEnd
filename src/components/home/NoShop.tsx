@@ -7,7 +7,7 @@ function NoShop() {
     <NoShopContainer>
       <img src={noImg} alt="카페가 없습니다." />
       <label>쳇, 주변에 카페가 없어요</label>
-      <button>추천 식당 보기</button>
+      <button>추천 카페 보기</button>
     </NoShopContainer>
   )
 }
