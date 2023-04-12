@@ -5,14 +5,14 @@ import MealCategoryCheckContainer, { categoryFilterItem } from '../components/jh
 import { path } from '../shared/path';
 
 function MealFilter() {
-  const [priceRange, setPriceRange] = useState("0");
-  const priceRangeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const [priceRange, setPriceRange] = useState("20");
+  const priceRangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPriceRange(e.target.value);
   }
 
   return (
     <>
-      <Background/>
+      <Background />
       <MealFilterWrap>
         <form action={path.home} method="get">
           <Link to={'/'}>뒤로가기</Link>
@@ -38,7 +38,7 @@ function MealFilter() {
           <div className='category-content'>
             <h3>가격대</h3>
             <div className='center'>
-              <input 
+              <input
                 type="range"
                 id="priceRange"
                 name="priceRange"
@@ -51,12 +51,12 @@ function MealFilter() {
               />
             </div>
             <datalist id="values">
-              <option value="0" label="최소"/>
-              <option value="20" label="1만"/>
-              <option value="40" label="1만 5천"/>
-              <option value="60" label="2만"/>
-              <option value="80" label="2만5천"/>
-              <option value="100" label="최대"/>
+              <option value="0" label="최소" />
+              <option value="20" label="1만" />
+              <option value="40" label="1만 5천" />
+              <option value="60" label="2만" />
+              <option value="80" label="2만5천" />
+              <option value="100" label="최대" />
             </datalist>
           </div>
 
@@ -64,7 +64,7 @@ function MealFilter() {
         </form>
       </MealFilterWrap>
     </>
-    
+
   )
 }
 

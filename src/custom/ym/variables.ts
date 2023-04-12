@@ -8,3 +8,20 @@ export const KAKAO_AUTH_URL: string = `https://kauth.kakao.com/oauth/authorize?c
 
 
 export const NAVER_MAPS_CLIENT: string = 'ldgh7n9aiz';
+
+export const FILTER_LIST: string[] = ["카페", "보드카페", "사주카페", "애견카페", "전통찻집"];
+export const STRONG = '191919';
+export const STRONG_MEDIUM = '2E3338';
+export const MEDIUM = '717176';
+export const LIGHT = 'A1A1AC';
+
+export const PRIMARY_01 = '767676';
+export const PRIMARY_02 = 'ADADAD';
+
+export const BG_MEDIUM = 'F1F1F5';
+export const BG_LIGHT = 'F8F8FA';
+
+export const LINE_STRONG = '909096';
+export const LINE_MEDIUM = 'DBDBDB';
+export const LINE_LIGHT = 'EDEDED';
+

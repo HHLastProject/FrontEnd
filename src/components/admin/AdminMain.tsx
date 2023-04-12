@@ -15,6 +15,7 @@ interface ShopListItem {
 
 function AdminMain(): JSX.Element {
   const navigate = useNavigate();
+  const keys = { GET_ShopList: 'GetShopList', } as const;
   const { data, isLoading } = useQuery<ShopListItem[]>({
     queryKey: [keys.GET_ShopList] as const,
     queryFn: async () => {
@@ -30,6 +31,12 @@ function AdminMain(): JSX.Element {
     },
   });
 
+  const logoutBtnHandler = () => {
+    localStorage.removeItem("admin_token");
+    navigate('/');
+  }
+  console.log(data)
+
   return (
     <StConteiner>
       <StHeaderLogo>
@@ -38,19 +45,14 @@ function AdminMain(): JSX.Element {
             <StUserIdBox>asdf@naver.com</StUserIdBox>
             <LogoutBtn
               type="submit"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              로그아웃
-            </LogoutBtn>
+              onClick={logoutBtnHandler}>로그아웃</LogoutBtn>
           </StInformationbox>
         </StHeaderLogoInner>
         <StAddbox>
           <Addbutton
             type="submit"
             onClick={() => {
-              navigate("/admin/register");
+              navigate('/admin/register')
             }}
           >
             등록하기 +{" "}
@@ -90,6 +92,7 @@ const StConteiner = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  background-color: white;
 `;
 const StHeaderLogo = styled.div`
   width: 1135px;

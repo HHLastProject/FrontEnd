@@ -66,3 +66,12 @@ export const VFlexCenter = styled.div<{
     gap : ${({ gap }) => gap ? gap : null};
     ${({ etc }) => etc};
 `;
+
+export const PublicContainer = styled.div<{
+    etc?: string | null
+}>`
+    width: 100%;
+    background-color: white;
+
+    ${({ etc }) => etc};
+`

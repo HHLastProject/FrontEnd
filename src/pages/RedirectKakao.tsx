@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { loginKeys } from '../apis/queries';
 
 type Payload = {
     code: string
@@ -14,13 +15,14 @@ const RedirectKakao = () => {
     const url: string = process.env.REACT_APP_SERVER as string;
 
     const { mutate } = useMutation({
-        mutationKey: ["getKakaoToken"],
+        mutationKey: loginKeys.POST_KAKAO_TOKEN,
         mutationFn: async (payload: Payload) => {
             kakaoAccessToken();
 
-            const response = await axios.post(`${url}/api/kakao/login2`, payload);
-            localStorage.removeItem("kakaoAuth");
-            localStorage.setItem("access_token", response.data.access_token);
+            const response = await axios.post(`${process.env.SERVER_URL}/api/login/kakao`, payload);
+            // localStorage.removeItem("kakaoAuth");
+            // localStorage.setItem("access_token", response.data.access_token);
+            console.log(response);
             navi('/');
         }
     });
@@ -43,7 +45,7 @@ const RedirectKakao = () => {
     }, []);
 
     return (
-        <div>RedirectKakao</div>
+        <div>카카오 로그인 중입니다.</div>
     )
 }
 
