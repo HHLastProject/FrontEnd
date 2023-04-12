@@ -7,7 +7,7 @@ import { HFlex, HFlexSpaceBetween, PublicContainer, VFlex, VFlexCenter } from '.
 import styled from 'styled-components';
 import MapHeader from '../components/map/MapHeader';
 import CarouselBox from '../components/map/carousel/CarouselBox';
-import { FILTER_LIST, LINE_MEDIUM, STRONG_MEDIUM } from '../custom/ym/variables';
+import { FILTER_LIST, LINE_MEDIUM, STRONG_MEDIUM, SAMPLE_DATA } from '../custom/ym/variables';
 import uuid from 'react-uuid';
 import { MEDIUM } from '../custom/ym/variables';
 
@@ -25,12 +25,15 @@ type JsonData = {
 }
 export interface EachData {
     shopId: number,
+    category: string,
     shopName: string,
     thumbnail: string,
     region: string,
     distance: number,
     rate: number,
-    reviews: number
+    reviews: number,
+    lat: number,
+    lng: number
 }
 
 
@@ -41,6 +44,7 @@ const Map = () => {
     const [range, setRange] = useState(500);
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState<string>('');
+    const [list, setList] = useState<(EachData | null)[]>([]);
     // const map = useRef(null);
 
     const [temp, setTemp] = useState({ lat: 37.5108407, lng: 127.0468975 });
@@ -77,36 +81,6 @@ const Map = () => {
         })
     }
 
-    const sampleArr: EachData[] = [
-        {
-            shopId: 1,
-            shopName: "밥에 꽃피다",
-            thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
-            region: "서울 송파구",
-            distance: 202,
-            rate: 4.8,
-            reviews: 1
-        },
-        {
-            shopId: 2,
-            shopName: "밥에 꽃피다",
-            thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
-            region: "서울 송파구",
-            distance: 202,
-            rate: 4.8,
-            reviews: 1
-        },
-        {
-            shopId: 3,
-            shopName: "밥에 꽃피다",
-            thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
-            region: "서울 송파구",
-            distance: 202,
-            rate: 4.8,
-            reviews: 1
-        }
-    ];
-
     const filterClickHandler = (buttonName: string) => {
         if (category === buttonName) {
             setCategory("");
@@ -119,15 +93,24 @@ const Map = () => {
     }
 
     useEffect(() => {
-        getRealtimeLocation(setUserCoord);
+        // getRealtimeLocation(setUserCoord);
         // console.log(userCoord);
-    }, []);
+        if (category) {
+            setList(prev => {
+                const searchResult = SAMPLE_DATA.map((item) => item.category === category ? item : null);
+                return searchResult;
+            })
+        } else {
+            setList(SAMPLE_DATA);
+        }
+
+    }, [category]);
 
     return (
         <VFlex etc='position: relative;'>
             <VFlexCenter etc="min-width:500px;min-width:390px;height:100%;flex:1;">
                 <MapHeader />
-                <MapModule />
+                <MapModule category={category} />
             </VFlexCenter>
             <CategoryButtons>
                 {FILTER_LIST.map((element) => <FilterBtn
@@ -141,7 +124,7 @@ const Map = () => {
                 <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
             </AimBtn>
             <CarouselModule>
-                <CarouselBox>{sampleArr}</CarouselBox>
+                <CarouselBox>{list}</CarouselBox>
             </CarouselModule>
         </VFlex>
     );

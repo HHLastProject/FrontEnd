@@ -1,3 +1,5 @@
+import { EachData } from "../../pages/Map";
+
 export const NAVER_KEY: string = "8A68yt_6sjtArfei4u69";
 export const NAVER_CALLBACK_URL: string = "http://localhost:3000/redirect/naver";
 
@@ -25,3 +27,42 @@ export const LINE_STRONG = '909096';
 export const LINE_MEDIUM = 'DBDBDB';
 export const LINE_LIGHT = 'EDEDED';
 
+
+export const SAMPLE_DATA: EachData[] = [
+    {
+        shopId: 1,
+        category: "카페",
+        shopName: "1번 일반카페",
+        thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
+        region: "서울 강남구",
+        distance: 202,
+        rate: 4.8,
+        reviews: 1,
+        lat: 37.5104457,
+        lng: 127.0469272,
+    },
+    {
+        shopId: 2,
+        category: "사주카페",
+        shopName: "2번 사주카페",
+        thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
+        region: "서울 강남구",
+        distance: 302,
+        rate: 4.8,
+        reviews: 1,
+        lat: 37.5104457,
+        lng: 127.0466590,
+    },
+    {
+        shopId: 3,
+        category: "사주카페",
+        shopName: "3번 사주카페",
+        thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
+        region: "서울 강남구",
+        distance: 102,
+        rate: 4.8,
+        reviews: 1,
+        lat: 37.5109321,
+        lng: 127.0471200,
+    }
+];

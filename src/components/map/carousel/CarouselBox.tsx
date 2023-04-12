@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
 type CarouselProps = {
-    children: EachData[]
+    children: (EachData | null)[]
 }
 const CarouselBox = ({ children }: CarouselProps) => {
     const navi = useNavigate();
@@ -24,8 +24,9 @@ const CarouselBox = ({ children }: CarouselProps) => {
             parallax
         >
             {children.map((item, index) => {
+                if (!item) return null;
                 return <SwiperSlide>
-                    <Box onClick={() => openDetail(item.shopId)}>
+                    <Box onClick={() => openDetail((item as EachData).shopId)}>
                         <VFlex>
                             <HFlexSpaceBetween>
                                 <div style={{ fontSize: '12px', fontWeight: '400' }}>
@@ -39,15 +40,15 @@ const CarouselBox = ({ children }: CarouselProps) => {
                                 </CountBox>
                             </HFlexSpaceBetween>
                             <HFlex gap='8px'>
-                                <PictureDiv pic={item.thumbnail}>
+                                <PictureDiv pic={(item as EachData).thumbnail}>
                                     <Bookmark>
                                         <img src={`${process.env.PUBLIC_URL}/bookmark.png`} alt=""></img>
                                     </Bookmark>
                                 </PictureDiv>
                                 <VFlex>
-                                    <ShopName>{item.shopName}</ShopName>
-                                    <Region>{item.region}</Region>
-                                    <Summary>{item.distance} m | 별점 {item.rate} | 리뷰 {item.reviews}</Summary>
+                                    <ShopName>{(item as EachData).shopName}</ShopName>
+                                    <Region>{(item as EachData).region}</Region>
+                                    <Summary>{(item as EachData).distance} m | 별점 {(item as EachData).rate} | 리뷰 {(item as EachData).reviews}</Summary>
                                 </VFlex>
                             </HFlex>
                         </VFlex>
