@@ -1,5 +1,5 @@
 interface IPath {
-  [ path : string ] : string;
+  readonly [ path : string ] : string;
 };
 
 export const path : IPath = {
@@ -8,14 +8,18 @@ export const path : IPath = {
   mealFilter: '/mealfilter',
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
+  shopDetailReviewForm: '/shop/:shopId/reviewForm',
   mypage: '/mypage',
+  map: '/map',
 }
 
 export const apiPath : IPath = {
   home: '/api/shop/main',
   shopDetail: '/api/shop/:shopId',
+  toShopDetail: '/api/shop',
   shopDetailReview: '/api/shop/:shopId/review',
-  shopDetailReviewEdit: '/api/shop/:shopId/review/:reviewId',
+  editShopDetailReview: '/api/shop/:shopId/review/:reviewId',
+  imgUrl: `${process.env.REACT_APP_SERVER_URL}/uploads/`,
 };
 
 export const defaultImgPath : IPath = {

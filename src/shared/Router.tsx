@@ -13,10 +13,14 @@ import AdminUpdate from '../components/admin/AdminUpdate'
 import RedirectNaver from '../pages/RedirectNaver'
 import RedirectKakao from '../pages/RedirectKakao'
 import Map from '../pages/Map'
+
+import ShopDetailReviewForm from '../pages/ShopDetailReviewForm'
+
 import AdminLogin from '../pages/AdminLogin'
 import BottomNav from '../components/BottomNav'
 import { VFlex } from '../custom/ym/styleStore'
 import styled from 'styled-components'
+
 
 
 const Router = () => {
@@ -27,10 +31,8 @@ const Router = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-
-            <Route path={path.mealFilter} element={<MealFilter />} />
             <Route path={path.shopDetail} element={<ShopDetail />} />
-
+            <Route path={path.shopDetailReviewForm} element={<ShopDetailReviewForm />} />
 
             <Route path="/admin/shoplist" element={<Admin />} />
             <Route path="/admin/register" element={<AdminRegister />} />
