@@ -63,6 +63,7 @@ const Home = () => {
     <>
       <HomeWrap>
         <HomeContainer>
+          {/* <NoShop/> */}
           <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
           <header>
             <div className='space-between'>

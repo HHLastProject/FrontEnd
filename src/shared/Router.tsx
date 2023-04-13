@@ -20,6 +20,7 @@ import AdminLogin from '../pages/AdminLogin'
 import BottomNav from '../components/BottomNav'
 import { VFlex } from '../custom/ym/styleStore'
 import styled from 'styled-components'
+import Search from '../pages/Search'
 
 
 
@@ -31,6 +32,7 @@ const Router = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path={path.search} element={<Search />} />
             <Route path={path.shopDetail} element={<ShopDetail />} />
             <Route path={path.shopDetailReviewForm} element={<ShopDetailReviewForm />} />
 
@@ -57,10 +59,11 @@ export default Router;
 const PageContainer = styled.div`
   flex: 1;
   overflow: scroll;
-  
-  -ms-overflow-style: none; /* 인터넷 익스플로러 */
-  scrollbar-width: none; /* 파이어폭스 */
+
+  /* 스크롤바 안 보이게 */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
-    display: none; /* 크롬, 사파리, 오페라, 엣지 */
+    display: none;
   }
 `;
