@@ -55,7 +55,12 @@ const Router = () => {
 export default Router;
 
 const PageContainer = styled.div`
-  flex:1;
-  /* width: 100%; */
-  height: 100%;
-`
+  flex: 1;
+  overflow: scroll;
+  
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+  &::-webkit-scrollbar {
+    display: none; /* 크롬, 사파리, 오페라, 엣지 */
+  }
+`;

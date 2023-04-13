@@ -60,7 +60,7 @@ const Home = () => {
   if (getshopListIsLoading) { return <div>로딩중...</div>; }
 
   return (
-    <Wrap>
+    <>
       <HomeWrap>
         <HomeContainer>
           <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
@@ -109,17 +109,12 @@ const Home = () => {
           </HomeShopListContainer>
         </HomeContainer>
       </HomeWrap>
-    </Wrap>
+      </>
   );
 };
 
 export default Home;
 
-
-const Wrap = styled.div`
-  width: 100%;
-  height: 400px;
-`
 const HomeWrap = styled.div`
   width: 100%;
   display: flex;
@@ -127,11 +122,11 @@ const HomeWrap = styled.div`
   background-color: #fff;
 `;
 
-
 const HomeContainer = styled.div`
   width: (100%-20)px;
   position: relative;
   margin: 20px;
+
   .floating-btn {
     position: fixed;
     bottom: 30px;
