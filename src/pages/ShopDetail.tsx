@@ -102,9 +102,10 @@ function ShopDetail() {
             <ShopDetailMap
               width={350}
               height={150}
-              lng={shopDetailData?.x}
-              lat={shopDetailData?.y}
+              lng={shopDetailData?.lng}
+              lat={shopDetailData?.lat}
             />
+            {/* <span ref={tabInfoRef}/> */}
             <h2>정보</h2>
             <div>
               <p>{shopDetailData?.address}</p>

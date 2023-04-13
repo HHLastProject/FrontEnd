@@ -50,10 +50,10 @@ const Home = () => {
   }, [x, y]);
 
   const loginClickHandler = () => {
-    navi('/login');
+    navi(path.login);
   }
   const mapClickHandler = () => {
-    navi('/map');
+    navi(path.map);
   }
 
   //로딩 화면
@@ -63,14 +63,14 @@ const Home = () => {
     <Wrap>
       <HomeWrap>
         <HomeContainer>
-          <button className='floating-btn' onClick={() => navi(path.map)}>지도에서 보기</button>
+          <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
           <header>
             <div className='space-between'>
               <span>
                 <label>내 주변</label>
                 {shopList?.length}
               </span>
-              <button onClick={() => navi(path.login)}>로그인 하기</button>
+              <button onClick={loginClickHandler}>로그인 하기</button>
             </div>
           </header>
 
