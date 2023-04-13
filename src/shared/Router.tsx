@@ -22,6 +22,7 @@ import { VFlex } from '../custom/ym/styleStore'
 import styled from 'styled-components'
 import Mypage from '../pages/Mypage'
 import AllFeeds from '../pages/AllFeeds'
+import FeedDetail from '../pages/FeedDetail'
 
 
 
@@ -48,6 +49,7 @@ const Router = () => {
 
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/mypage/feeds/:userId" element={<AllFeeds />} />
+            <Route path="/feed/detail/:feedId" element={<FeedDetail />} />
 
           </Routes>
         </PageContainer>

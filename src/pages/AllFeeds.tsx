@@ -13,9 +13,6 @@ const AllFeeds = () => {
     const param = useParams();
     const { userId } = param;
     const temp = parseInt(userId as string);
-    // console.log(param.userId);
-    // console.log(typeof temp);
-    // console.log(temp);
 
     return (
         <AllfeedContainer>

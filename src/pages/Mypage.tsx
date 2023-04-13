@@ -13,6 +13,13 @@ export type StateContextType = {
 export interface EachFeed {
     feedId: number,
     feedPic: string,
+    comment: string,
+    tags: string[] | null,
+    shopId: number,
+    shopName: string,
+    shopAddress: string,
+    shopThumbnail: string,
+    isScrap: boolean,
 }
 export interface Feed {
     nickname: string,

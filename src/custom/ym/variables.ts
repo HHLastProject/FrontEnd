@@ -52,12 +52,25 @@ export const TITLE_4: Font = {
     fontWeight: '600',
     color: `#${MEDIUM}`,
 }
+export const TITLE_5: Font = {
+    fontSize: '14px',
+    lineHeight: '20px',
+    fontWeight: '600',
+    color: `#${STRONG}`,
+}
 
 export const BODY_1: Font = {
     fontSize: '16px',
     lineHeight: '22px',
     fontWeight: '400',
     color: 'black',
+}
+
+export const BODY_3: Font = {
+    fontSize: '14px',
+    lineHeight: '20px',
+    fontWeight: '400',
+    color: `#${STRONG_MEDIUM}`,
 }
 
 export const BODY_4: Font = {
@@ -67,6 +80,19 @@ export const BODY_4: Font = {
     color: 'black',
 }
 
+export const BODY_5: Font = {
+    fontSize: '12px',
+    lineHeight: '16px',
+    fontWeight: '400',
+    color: `#${MEDIUM}`,
+}
+
+export const B14: Font = {
+    fontSize: '14px',
+    lineHeight: '22px',
+    fontWeight: '600',
+    color: `#${STRONG_MEDIUM}`,
+}
 
 
 export const SAMPLE_DATA: EachData[] = [
