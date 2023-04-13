@@ -21,6 +21,7 @@ import BottomNav from '../components/BottomNav'
 import { VFlex } from '../custom/ym/styleStore'
 import styled from 'styled-components'
 import Mypage from '../pages/Mypage'
+import AllFeeds from '../pages/AllFeeds'
 
 
 
@@ -46,6 +47,7 @@ const Router = () => {
             <Route path="/admin/login" element={<AdminLogin />} />
 
             <Route path="/mypage" element={<Mypage />} />
+            <Route path="/mypage/feeds/:userId" element={<AllFeeds />} />
 
           </Routes>
         </PageContainer>

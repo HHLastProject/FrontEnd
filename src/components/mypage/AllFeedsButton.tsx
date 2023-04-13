@@ -1,16 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
 import { TITLE_4 } from '../../custom/ym/variables'
+import { useNavigate } from 'react-router-dom'
 
-const MyAllFeeds = () => {
+
+// 통신 연결 전까지만 통신으로 피드의 수를 전달함
+type Props = {
+    temp: number
+}
+
+
+
+const MyAllFeedsButton = ({ temp }: Props) => {
+    const navi = useNavigate();
+    const buttonClickHandler = () => {
+        navi(`/mypage/feeds/${temp}`);
+    }
     return (
-        <ButtonLarge>
+        <ButtonLarge onClick={buttonClickHandler}>
             <ButtonText>전체 보기</ButtonText>
         </ButtonLarge>
     )
 }
 
-export default MyAllFeeds
+export default MyAllFeedsButton
 const ButtonLarge = styled.button`
     border: none;
     background-color: transparent;
