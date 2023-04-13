@@ -77,7 +77,7 @@ const Map = () => {
                     lat: parseFloat(response.v2.addresses[0].y),
                     lng: parseFloat(response.v2.addresses[0].x),
                 }
-            })
+            });
         })
     }
 

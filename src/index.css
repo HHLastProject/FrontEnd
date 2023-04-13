@@ -29,3 +29,7 @@ code {
 .swiper-slide {
   width: 300px;
 }
+
+#page-container::-webkit-scrollbar {
+  display: none;
+}

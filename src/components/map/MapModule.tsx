@@ -19,10 +19,10 @@ type JsonData = {
     roadAddress: string,
     lat: number,
     lng: number
-}
+};
 type MapModuleProps = {
     category: string
-}
+};
 const MapModule = ({ category }: MapModuleProps) => {
 
     const navermaps = useNavermaps();
@@ -80,7 +80,7 @@ const MapModule = ({ category }: MapModuleProps) => {
     }
 
     useEffect(() => {
-        // getRealtimeLocation(setUserCoord);
+        getRealtimeLocation(setUserCoord);
         // console.log(userCoord);
         if (category) {
             setList(prev => {

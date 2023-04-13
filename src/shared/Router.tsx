@@ -20,6 +20,7 @@ import AdminLogin from '../pages/AdminLogin'
 import BottomNav from '../components/BottomNav'
 import { VFlex } from '../custom/ym/styleStore'
 import styled from 'styled-components'
+import Mypage from '../pages/Mypage'
 
 
 
@@ -27,7 +28,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <VFlex>
-        <PageContainer>
+        <PageContainer id='page-container'>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -44,6 +45,8 @@ const Router = () => {
 
             <Route path="/admin/login" element={<AdminLogin />} />
 
+            <Route path="/mypage" element={<Mypage />} />
+
           </Routes>
         </PageContainer>
         <BottomNav />
@@ -57,5 +60,6 @@ export default Router;
 const PageContainer = styled.div`
   flex:1;
   /* width: 100%; */
-  height: 100%;
+  height: fit-content;
+  overflow-y : scroll;
 `

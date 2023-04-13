@@ -1,5 +1,12 @@
 import { EachData } from "../../pages/Map";
 
+
+type Font = {
+    fontSize: string,
+    lineHeight: string,
+    fontWeight: string,
+    color: string,
+}
 export const NAVER_KEY: string = "8A68yt_6sjtArfei4u69";
 export const NAVER_CALLBACK_URL: string = "http://localhost:3000/redirect/naver";
 
@@ -26,6 +33,40 @@ export const BG_LIGHT = 'F8F8FA';
 export const LINE_STRONG = '909096';
 export const LINE_MEDIUM = 'DBDBDB';
 export const LINE_LIGHT = 'EDEDED';
+
+export const TITLE_2: Font = {
+    fontSize: '20px',
+    lineHeight: '30px',
+    fontWeight: '600',
+    color: `#${STRONG}`
+}
+export const TITLE_3: Font = {
+    fontSize: '18px',
+    lineHeight: '24px',
+    fontWeight: '600',
+    color: `#${STRONG}`
+}
+export const TITLE_4: Font = {
+    fontSize: '16px',
+    lineHeight: '22px',
+    fontWeight: '600',
+    color: `#${MEDIUM}`,
+}
+
+export const BODY_1: Font = {
+    fontSize: '16px',
+    lineHeight: '22px',
+    fontWeight: '400',
+    color: 'black',
+}
+
+export const BODY_4: Font = {
+    fontSize: '13px',
+    lineHeight: '18px',
+    fontWeight: '400',
+    color: 'black',
+}
+
 
 
 export const SAMPLE_DATA: EachData[] = [
