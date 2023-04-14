@@ -10,11 +10,12 @@ const BottomNav = () => {
         console.log(e.currentTarget.name);
         navi('/' + e.currentTarget.name);
     }
+
     return (
         <NavContainer>
             <NavButton name='' onClick={mapClickHandler}>홈</NavButton>
             <NavButton name='map' onClick={mapClickHandler}>지도</NavButton>
-            <NavButton name='login'>마이페이지</NavButton>
+            <NavButton name='mypage' onClick={mapClickHandler}>마이페이지</NavButton>
         </NavContainer>
     )
 }

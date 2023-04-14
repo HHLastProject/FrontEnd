@@ -12,17 +12,15 @@ const RedirectKakao = () => {
 
     const navi = useNavigate();
 
-    const url: string = process.env.REACT_APP_SERVER as string;
-
     const { mutate } = useMutation({
         mutationKey: loginKeys.POST_KAKAO_TOKEN,
         mutationFn: async (payload: Payload) => {
             kakaoAccessToken();
 
-            const response = await axios.post(`${process.env.SERVER_URL}/api/login/kakao`, payload);
-            // localStorage.removeItem("kakaoAuth");
-            // localStorage.setItem("access_token", response.data.access_token);
-            console.log(response);
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/login/kakao`, payload);
+            localStorage.removeItem("kakaoAuth");
+            localStorage.setItem("access_token", response.headers.authorization);
+            // console.log(response.headers.authorization);
             navi('/');
         }
     });
