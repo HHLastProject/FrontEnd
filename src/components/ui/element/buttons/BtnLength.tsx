@@ -48,8 +48,8 @@ const SDCase = styled.div`
 `
 
 const MDCase = styled.div`
-width: 156px;
-height: fit-content;
+    width: 156px;
+    height: fit-content;
 `
 
 const LongCase = styled.div`
