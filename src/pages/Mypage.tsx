@@ -6,6 +6,8 @@ import MyFeeds from '../components/mypage/MyFeeds';
 import CustomerCenter from '../components/mypage/CustomerCenter';
 import { mypageData } from '../custom/ym/dummydata';
 import { Buttons } from '../components/ui/element/buttons/Buttons';
+import { Tags } from '../components/ui/element/tags/Tags';
+import { Categorys } from '../components/ui/element/tags/Categorys';
 
 export type StateContextType = {
     props: Feed | null,
@@ -45,6 +47,9 @@ const Mypage = () => {
                 <VFlex gap='40px' height='fit-content'>
                     <UserProfile />
                     <MyFeeds />
+                    <Tags.Active>태그</Tags.Active>
+                    <Categorys.Inactive>인액티브</Categorys.Inactive>
+                    <Categorys.Active>액티브</Categorys.Active>
                     <CustomerCenter />
                 </VFlex>
             </MypageContainer>
