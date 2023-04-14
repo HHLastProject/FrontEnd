@@ -1,25 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SearchResultList, { ISearchResult } from '../components/search/SearchResultList';
 import styled from 'styled-components';
+import SearchInput from '../components/search/SearchInput';
 
 const loupeIcon = `${process.env.PUBLIC_URL}/loupe.png`;
 
+export type ISearchInput = {
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+};
+
 function Search() {
+  const [inputValue, setInputValue] = useState('');
 
   return (
     <SearchWrap>
       <SearchWrapContainer>
-        <div id='search-input'>
-          <div>
+        <div id='search-input-div'>
+          <div id='search-input'>
             <img src={loupeIcon} alt="검색하기" />
-            <input type="text" />
+            <SearchInput
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+            />
           </div>
         </div>
-        <div>
+        <div className='search-result-list'>
           {
           result.map((item) => {
             return(
               <SearchResultList
+                key={item.shopId}
                 shopId={item.shopId}
                 shopName={item.shopName}
                 shopAddress={item.shopAddress}
@@ -39,11 +50,12 @@ const SearchWrap = styled.div`
   width: 390px;
   height: 100vh;
   background-color: #fff;
+  display: inline-block;
 `;
 
 const SearchWrapContainer = styled.div`
   margin: 20px;
-  #search-input {
+  #search-input-div {
     width: 100%;
     height: 56px;
     display: flex;
@@ -51,7 +63,7 @@ const SearchWrapContainer = styled.div`
     align-items: center;
     border: 1px solid #DBDBDB;
     border-radius: 8px;
-    div {
+    #search-input {
       width: 100%;
       margin: 19px;
       display: flex;
@@ -61,16 +73,7 @@ const SearchWrapContainer = styled.div`
     img {
       width: 20px;
     }
-    input {
-      width: 100%;
-      border-style: none;
-      margin-left: 11px;
-      font-weight: 400;
-      font-size: 14px;
-      &:focus {
-        outline: none;
-      }
-    }
+    
   }
 `;
 

@@ -6,6 +6,7 @@ import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 import NoShop from '../components/home/NoShop';
 import HomeShopPostCard from '../components/home/HomePostCard';
+import ListCount from '../components/ListCount';
 
 const Home = () => {
   const [x, setX] = useState(0);
@@ -67,9 +68,9 @@ const Home = () => {
           <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
           <header>
             <div className='space-between'>
-              <span>
+              <span className=''>
                 <label>내 주변</label>
-                {shopList?.length}
+                <ListCount>{shopList?.length}</ListCount>
               </span>
               <button onClick={loginClickHandler}>로그인 하기</button>
               <button onClick={() => navi('/search')}>검색 페이지</button>

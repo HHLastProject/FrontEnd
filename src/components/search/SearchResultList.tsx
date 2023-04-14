@@ -11,19 +11,34 @@ const searchMarkerImg = `${process.env.PUBLIC_URL}/images/search/search_result_m
 
 function SearchResultList({shopId, shopName, shopAddress}: ISearchResult) {
   return (
-    <SearchResultListContainer>
-      <span>
-        <img src={searchMarkerImg} alt="마커" className='search-marker'/>
-      </span>
-      <span className='search-shop-result'>
-        <h4>{shopName}</h4>
-        <label>{shopAddress}</label>
-      </span>
-    </SearchResultListContainer>
+    <OnClickDivWrap
+      // onClick={}
+    >
+      <SearchResultListContainer>
+        <span>
+          <img src={searchMarkerImg} alt="마커" className='search-marker'/>
+        </span>
+        <span className='search-shop-result'>
+          <h4>{shopName}</h4>
+          <label>{shopAddress}</label>
+        </span>
+      </SearchResultListContainer>
+    </OnClickDivWrap>
   )
 };
 
 export default SearchResultList
+
+const OnClickDivWrap = ({children, onClick}: any) => {
+  return (
+    <div
+      style={{cursor: 'pointer'}}
+      onClick={onClick}
+    >
+      {children}
+    </div>
+  )
+};
 
 const SearchResultListContainer = styled.div`
   display: flex;
@@ -46,6 +61,7 @@ const SearchResultListContainer = styled.div`
       font-weight: 400;
       font-size: 13px;
       line-height: 18px;
+      color: #717176;
     }
   }
 `;
