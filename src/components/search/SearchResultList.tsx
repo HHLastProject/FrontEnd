@@ -7,11 +7,15 @@ export interface ISearchResult {
   shopAddress : string,
 } ;
 
+const searchMarkerImg = `${process.env.PUBLIC_URL}/images/search/search_result_marker.png`;
+
 function SearchResultList({shopId, shopName, shopAddress}: ISearchResult) {
   return (
     <SearchResultListContainer>
-      <span>마커위치</span>
-      <span className='shop-result'>
+      <span>
+        <img src={searchMarkerImg} alt="마커" className='search-marker'/>
+      </span>
+      <span className='search-shop-result'>
         <h4>{shopName}</h4>
         <label>{shopAddress}</label>
       </span>
@@ -22,13 +26,26 @@ function SearchResultList({shopId, shopName, shopAddress}: ISearchResult) {
 export default SearchResultList
 
 const SearchResultListContainer = styled.div`
-  .shop-result {
+  display: flex;
+  padding: 12px 0;
+  line-height: 22px;
+  border-bottom: 1px solid #DBDBDB;
+  .search-marker {
+    width: 16px;
+  }
+  .search-shop-result {
     display: flex;
     flex-direction: column;
-    line-height: 22px;
+    padding: 0 12px;
     h4 {
       font-size: 16px;
       font-weight: 400;
+      line-height: 22px;
+    }
+    label {
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 18px;
     }
   }
 `;

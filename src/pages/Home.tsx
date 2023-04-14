@@ -72,6 +72,7 @@ const Home = () => {
                 {shopList?.length}
               </span>
               <button onClick={loginClickHandler}>로그인 하기</button>
+              <button onClick={() => navi('/search')}>검색 페이지</button>
             </div>
           </header>
 
@@ -116,7 +117,7 @@ const Home = () => {
 
 export default Home;
 
-const HomeWrap = styled.div`
+export const HomeWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
