@@ -5,6 +5,7 @@ import UserProfile from '../components/mypage/UserProfile';
 import MyFeeds from '../components/mypage/MyFeeds';
 import CustomerCenter from '../components/mypage/CustomerCenter';
 import { mypageData } from '../custom/ym/dummydata';
+import { Buttons } from '../components/ui/element/buttons/Buttons';
 
 export type StateContextType = {
     props: Feed | null,

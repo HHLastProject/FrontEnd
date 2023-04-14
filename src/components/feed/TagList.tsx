@@ -1,6 +1,6 @@
 import React from 'react'
 import { HFlex } from '../../custom/ym/styleStore'
-import FeedTag from './FeedTag'
+import { Tags } from '../ui/element/tags/Tags'
 type Prop = {
     children: string[] | null | undefined
 }
@@ -8,7 +8,7 @@ const TagList = ({ children }: Prop) => {
     return (
         <HFlex gap='4px' height='fit-content' etc='flex-wrap:wrap;'>
             {children?.map((item) => {
-                return <FeedTag>{item}</FeedTag>;
+                return <Tags.Default>{item}</Tags.Default>;
             })}
         </HFlex>
     )

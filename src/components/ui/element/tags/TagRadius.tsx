@@ -1,15 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-type Prop = {
-    children: JSX.Element
-}
-const TagRound = ({ children }: Prop) => {
+import { ChildrenForJSX } from '../../../../custom/ym/types'
+
+const Default = ({ children }: ChildrenForJSX) => {
     return (
         <Round>{children}</Round>
     )
 }
 
-export default TagRound;
+export const TagRadius = { Default, };
 
 const Round = styled.div`
     flex:none;
