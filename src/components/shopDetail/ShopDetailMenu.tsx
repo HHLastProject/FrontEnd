@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { apiPath } from "../../shared/path";
+import { apiPath, imgPath } from "../../shared/path";
 
 interface IShopDetailMenu {
   menuName: string;
@@ -8,6 +8,7 @@ interface IShopDetailMenu {
 }
 
 function ShopDetailMenu({menuName, price, picture}: IShopDetailMenu) {
+  const menuImgUrl = `${imgPath.shopMenuImg + picture}`;
   return (
     <ShopDetailMenuContainer>
       <div className="shop-detail-menu-content">
@@ -16,7 +17,7 @@ function ShopDetailMenu({menuName, price, picture}: IShopDetailMenu) {
       </div>
       { picture && (
         <div className="shop-detail-menu-picture">
-          <img src={`${apiPath.imgUrl}${picture}`} alt={menuName}/>
+          <img src={menuImgUrl} alt={menuName}/>
         </div>
       )}
     </ShopDetailMenuContainer>
@@ -44,8 +45,7 @@ const ShopDetailMenuContainer = styled.div`
     border-radius: 5px;
     overflow: hidden;
     img {
-      width: ${(80)} 80px;
-      
+      width: 80px;
     }
   }
 `;

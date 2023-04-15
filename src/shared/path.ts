@@ -20,7 +20,12 @@ export const apiPath : IPath = {
   toShopDetail: '/api/shop',
   shopDetailReview: '/api/shop/:shopId/review',
   editShopDetailReview: '/api/shop/:shopId/review/:reviewId',
-  imgUrl: `${process.env.REACT_APP_SERVER_URL}/uploads/`,
+};
+
+export const imgPath : IPath = {
+  shopMenuImg: `${process.env.REACT_APP_SERVER_URL}/uploads/shopMenu/`,
+  shopThumbnailImg: `${process.env.REACT_APP_SERVER_URL}/uploads/shopThumbnail/`,
+  feedImg: `${process.env.REACT_APP_SERVER_URL}/uploads/feedPic/`,
 };
 
 export const defaultImgPath : IPath = {

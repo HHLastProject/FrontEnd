@@ -4,19 +4,19 @@ import api from '../../shared/api';
 import { apiPath } from '../../shared/path';
 
 type locationType = {
-  x : number,
-  y : number,
+  lng : number,
+  lat : number,
   range : number,
 };
 
-export const useGetHomeShopList = ({x, y, range} : locationType) => {
+export const useGetHomeShopList = ({lng, lat, range} : locationType) => {
   const queryClient = useQueryClient();
   const { data, mutate, isLoading, isSuccess, isError } = useMutation({
     mutationKey: queryKeys.GET_HOME_SHOPLIST,
     mutationFn: async () => {
       const {data} = await api.get(`${apiPath.home}`, { params: {
-        x,
-        y,
+        lng,
+        lat,
         range,
       }});
       return data.shop;

@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailReview } from '../custom/jh/useGetShopDetail';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
 import ShopDetailReview from '../components/shopDetail/ShopDetailReview';
-import { apiPath } from '../shared/path';
+import { imgPath } from '../shared/path';
 import ShopDetailMap from '../components/map/ShopDetailMap';
 import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
 import { colorSet } from '../components/ui/styles/color';
+import { fontType } from '../components/ui/styles/typo';
 
 function ShopDetail() {
   const icon = {
@@ -67,105 +68,101 @@ function ShopDetail() {
       </Header>
       <div>
         <ShopDetailThumbnail>
-        <div className='thumbnail-img'>
-          <img
-            src={`${apiPath.imgUrl + shopDetailData?.thumbnail}`}
-            alt={shopDetailData?.shopName}
+          <div className='thumbnail-img'>
+            <img
+              src={`${imgPath.shopThumbnailImg + shopDetailData?.thumbnail}`}
+              alt={shopDetailData?.shopName}
+            />
+          </div>
+          <ShopDetailStoreName
+            shopName={shopDetailData?.shopName}
+            category={shopDetailData?.category}
           />
-        </div>
-        <ShopDetailStoreName
-          shopName={shopDetailData?.shopName}
-          category={shopDetailData?.category}
-        />
-      </ShopDetailThumbnail>
-      <ShopDetailContainer>
-        
-        <ShopDetailTab>
-          <ul id='detail-tab'>
-            <li id="">
-              <input type="radio" id='detail-tab-info' name='detail-tab' hidden/>
-              <div className='detail-tab-div'>
-                <label htmlFor="detail-tab-info">정보</label> 
-              </div>
-            </li>
-            <li id="">
-              <input type="radio" id='detail-tab-menu' name='detail-tab' hidden/>
-              <div className='detail-tab-div'>
-                <label htmlFor="detail-tab-menu">메뉴</label>
-              </div>
-            </li>
-            <li id="">
-              <input type="radio" id='detail-tab-review' name='detail-tab' hidden/>
-              <div className='detail-tab-div'>
-                <label htmlFor="detail-tab-review">리뷰</label>
-              </div>
-            </li>
-          </ul>
-        </ShopDetailTab>
-        <ShopDetailContentContainer>
-          <h2>정보</h2>
-          <div>
-            <ShopDetailContentInfo
-              icon={icon.detailInfo.mapPin}
-              content={shopDetailData?.address}
-            />
-            <ShopDetailContentInfo
-              icon={icon.detailInfo.clock}
-              content={shopDetailData?.operatingTime}
-            />
-            <ShopDetailContentInfo
-              icon={icon.detailInfo.phone}
-              content={shopDetailData?.phoneNumber}
-            />
-          </div>
-          <XFlexCenter>
-            <ShopDetailMap
-              width={350}
-              height={150}
-              lng={shopDetailData?.lng}
-              lat={shopDetailData?.lat}
-            />
-          </XFlexCenter>
-        </ShopDetailContentContainer>
-        <ShopDetailContentContainer>
-          <div className='shop-detail-menu'>
-            <hr />
-            <h2>메뉴</h2>
-            { shopDetailData?.Menus?.map((item:any) => {
-              return (
-                <ShopDetailMenu
-                  menuName={item.menuName}
-                  price={item.price}
-                  picture={item.picture}
-                />
-              )
-            })}
-          </div>
-        </ShopDetailContentContainer>
-        <ShopDetailContentContainer>
-          <div className='shop-detail-review'>
-            <hr />
-            <div className='shop-detail-review-sub'>
-              <h2>피드</h2>
-              <button
-                onClick={() => navi(toShopDetailReviewForm)}
-              >댓글 쓰기</button>
-            </div>
+        </ShopDetailThumbnail>
+        <ShopDetailContainer>
+          <ShopDetailTab>
+            <ul id='detail-tab'>
+              <li id="">
+                <input type="radio" id='detail-tab-info' name='detail-tab' hidden/>
+                <div className='detail-tab-div'>
+                  <label htmlFor="detail-tab-info">정보</label> 
+                </div>
+              </li>
+              <li id="">
+                <input type="radio" id='detail-tab-menu' name='detail-tab' hidden/>
+                <div className='detail-tab-div'>
+                  <label htmlFor="detail-tab-menu">메뉴</label>
+                </div>
+              </li>
+              <li id="">
+                <input type="radio" id='detail-tab-review' name='detail-tab' hidden/>
+                <div className='detail-tab-div'>
+                  <label htmlFor="detail-tab-review">리뷰</label>
+                </div>
+              </li>
+            </ul>
+          </ShopDetailTab>
+          <ShopDetailContentContainer>
+            <h2>정보</h2>
             <div>
-              {shopDetailReviewList?.map((item:any) => {
+              <ShopDetailContentInfo
+                icon={icon.detailInfo.mapPin}
+                content={shopDetailData?.address}
+              />
+              <ShopDetailContentInfo
+                icon={icon.detailInfo.clock}
+                content={shopDetailData?.operatingTime}
+              />
+              <ShopDetailContentInfo
+                icon={icon.detailInfo.phone}
+                content={shopDetailData?.phoneNumber}
+              />
+            </div>
+            <XFlexCenter>
+              <ShopDetailMap
+                width={350}
+                height={150}
+                lng={shopDetailData?.lng}
+                lat={shopDetailData?.lat}
+              />
+            </XFlexCenter>
+          </ShopDetailContentContainer>
+          <ShopDetailContentContainer>
+            <div className='shop-detail-menu'>
+              <h2>메뉴</h2>
+              { shopDetailData?.Menus?.map((item:any) => {
                 return (
-                  <>리뷰111</>
+                  <ShopDetailMenu
+                    menuName={item.menuName}
+                    price={item.price}
+                    picture={item.picture}
+                  />
                 )
               })}
-              {(shopDetailReviewList?.length === 0) && (<div>피드가 없습니다.</div>)}
-              {shopDetailReviewIsError && (<div>댓글 에러</div>)}
             </div>
-            <ShopDetailReview/>
-          </div>
-        </ShopDetailContentContainer>
-      </ShopDetailContainer>
+          </ShopDetailContentContainer>
+          <ShopDetailContentContainer>
+            <div className='shop-detail-review'>
+              <div className='shop-detail-review-sub'>
+                <h2>피드</h2>
+                <button
+                  onClick={() => navi(toShopDetailReviewForm)}
+                >댓글 쓰기</button>
+              </div>
+              <div>
+                {shopDetailReviewList?.map((item:any) => {
+                  return (
+                    <>리뷰111</>
+                  )
+                })}
+                {(shopDetailReviewList?.length === 0) && (<div>피드가 없습니다.</div>)}
+                {shopDetailReviewIsError && (<div>댓글 에러</div>)}
+              </div>
+              <ShopDetailReview/>
+            </div>
+          </ShopDetailContentContainer>
+        </ShopDetailContainer>
       </div>
-      
     </>
   )
 }
@@ -217,12 +214,18 @@ const ShopDetailTab = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+      border-bottom: 3px solid #fff;
+      label {
+        ${fontType.body_1}
+        color: ${colorSet.textMedium};
+      }
     }
 
-    input[type="radio"]:checked f+ div {
-      border-bottom: 3px solid #2e975a;
+    input[type="radio"]:checked + div {
+      border-bottom: 3px solid ${colorSet.primary_01};
       label {
-        color: ${colorSet.primary_01};
+        ${fontType.title_4}
+        color: ${colorSet.textStrong};
       }
     }
   }

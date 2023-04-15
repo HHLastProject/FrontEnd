@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { apiPath, path } from '../shared/path';
+import { apiPath, imgPath, path } from '../shared/path';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 import NoShop from '../components/home/NoShop';
 import HomeShopPostCard from '../components/home/HomePostCard';
 import ListCount from '../components/ListCount';
+import { HomeTabMenuStyle, TabMenuLi, TabMenuUl } from '../components/TabMenu';
 
 const Home = () => {
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
+  const [lng, setLng] = useState(0);
+  const [lat, setLat] = useState(0);
   const [range, setRange] = useState(500);
 
   const navi = useNavigate();
@@ -33,7 +34,7 @@ const Home = () => {
     getshopList,
     getshopListIsLoading,
     getshopListIsError,
-  } = useGetHomeShopList({ x, y, range });
+  } = useGetHomeShopList({ lng, lat, range });
 
   //useEffect
   useEffect(() => {
@@ -42,13 +43,12 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    const errorMsg = getUserLocation(setX, setY);
+    const errorMsg = getUserLocation(setLng, setLat);
     if (errorMsg) {
       console.log(errorMsg);
     };
-    console.log('x', x, 'y', y);
-    if (x !== 0 && y !== 0) { getshopList(); };
-  }, [x, y]);
+    if (lng !== 0 && lat !== 0) { getshopList(); };
+  }, [lng, lat]);
 
   const loginClickHandler = () => {
     navi(path.login);
@@ -68,17 +68,28 @@ const Home = () => {
           <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
           <header>
             <div className='space-between'>
-              <span className=''>
-                <label>내 주변</label>
-                <ListCount>{shopList?.length}</ListCount>
-              </span>
               <button onClick={loginClickHandler}>로그인 하기</button>
               <button onClick={() => navi('/search')}>검색 페이지</button>
             </div>
           </header>
 
+          <header>
+            <HomeTabMenuStyle>
+              <TabMenuUl>
+                <TabMenuLi id={1} isChecked={true}>
+                  <div>
+                    내 주변
+                    <ListCount>{shopList?.length}</ListCount>
+                  </div>
+                </TabMenuLi>
+                <TabMenuLi id={2}>
+                  추천식당
+                </TabMenuLi>
+              </TabMenuUl>
+            </HomeTabMenuStyle>
+          </header>
+
           <div className='space-between'>
-            <h3>식당</h3>
             <input type="checkbox" id="by-range" name="by-range" hidden />
             <span>
               <button>
@@ -100,10 +111,7 @@ const Home = () => {
                   id={item.shopId}
                   address={item.address}
                   shopName={item.shopName}
-                  thumbnail={`${apiPath.imgUrl + item.thumbnail}`}
-                  menuName={item.menuName}
-                  maxPrice={item.maxPrice}
-                  minPrice={item.minPrice}
+                  thumbnail={item.thumbnail}
                   category={item.category}
                 />
               ))
@@ -127,7 +135,6 @@ export const HomeWrap = styled.div`
 
 const HomeContainer = styled.div`
   width: (100%-20)px;
-  position: relative;
   margin: 20px;
 
   .floating-btn {
@@ -145,6 +152,7 @@ const HomeContainer = styled.div`
 
 const HomeShopListContainer = styled.div`
   width: 100%;
+  margin: 20px 0 120px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -1,9 +1,13 @@
-import { PropsWithChildren } from 'react'
 import styled from 'styled-components'
+import { PropsWithChildren } from 'react'
+import { colorSet } from './ui/styles/color';
+import { fontType } from './ui/styles/typo';
 
 function ListCount({children}: PropsWithChildren) {
   return (
-    <ListCountStyle>
+    <ListCountStyle
+      className='list-count'
+    >
       {children}
     </ListCountStyle>
   )
@@ -12,16 +16,10 @@ function ListCount({children}: PropsWithChildren) {
 export default ListCount
 
 const ListCountStyle = styled.span`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 3px 12px;
   border-radius: 100px;
 
-  background: #F1F1F5;
-  color: #717176;
-
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 18px;
+  background: ${colorSet.bgMedium};
+  color: ${colorSet.textMedium};
+  ${fontType.body_4}
 `;
