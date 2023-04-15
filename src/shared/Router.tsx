@@ -1,10 +1,9 @@
-import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { VFlex } from '../custom/ym/styleStore'
+import { path } from './path'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
-import MealFilter from '../pages/MealFilter'
 import ShopDetail from '../pages/ShopDetail'
-import { path } from './path'
 
 import Admin from '../pages/Admin'
 import AdminRegister from '../components/admin/AdminRegister'
@@ -18,13 +17,11 @@ import ShopDetailReviewForm from '../pages/ShopDetailReviewForm'
 
 import AdminLogin from '../pages/AdminLogin'
 import BottomNav from '../components/BottomNav'
-import { VFlex } from '../custom/ym/styleStore'
 import styled from 'styled-components'
+import Search from '../pages/Search'
 import Mypage from '../pages/Mypage'
 import AllFeeds from '../pages/AllFeeds'
 import FeedDetail from '../pages/FeedDetail'
-
-
 
 const Router = () => {
   return (
@@ -34,6 +31,7 @@ const Router = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path={path.search} element={<Search />} />
             <Route path={path.shopDetail} element={<ShopDetail />} />
             <Route path={path.shopDetailReviewForm} element={<ShopDetailReviewForm />} />
 
@@ -62,8 +60,14 @@ const Router = () => {
 export default Router;
 
 const PageContainer = styled.div`
-  flex:1;
-  /* width: 100%; */
+  flex: 1;
   height: fit-content;
   overflow-y : scroll;
-`
+
+  /* 스크롤바 안 보이게 */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;

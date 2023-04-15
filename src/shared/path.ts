@@ -9,6 +9,7 @@ export const path : IPath = {
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
   shopDetailReviewForm: '/shop/:shopId/reviewForm',
+  search: '/search',
   mypage: '/mypage',
   map: '/map',
 }

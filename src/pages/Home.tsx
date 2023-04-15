@@ -6,6 +6,7 @@ import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 import NoShop from '../components/home/NoShop';
 import HomeShopPostCard from '../components/home/HomePostCard';
+import ListCount from '../components/ListCount';
 
 const Home = () => {
   const [x, setX] = useState(0);
@@ -50,27 +51,29 @@ const Home = () => {
   }, [x, y]);
 
   const loginClickHandler = () => {
-    navi('/login');
+    navi(path.login);
   }
   const mapClickHandler = () => {
-    navi('/map');
+    navi(path.map);
   }
 
   //로딩 화면
   if (getshopListIsLoading) { return <div>로딩중...</div>; }
 
   return (
-    <Wrap>
+    <>
       <HomeWrap>
         <HomeContainer>
-          <button className='floating-btn' onClick={() => navi(path.map)}>지도에서 보기</button>
+          {/* <NoShop/> */}
+          <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
           <header>
             <div className='space-between'>
-              <span>
+              <span className=''>
                 <label>내 주변</label>
-                {shopList?.length}
+                <ListCount>{shopList?.length}</ListCount>
               </span>
-              <button onClick={() => navi(path.login)}>로그인 하기</button>
+              <button onClick={loginClickHandler}>로그인 하기</button>
+              <button onClick={() => navi('/search')}>검색 페이지</button>
             </div>
           </header>
 
@@ -109,29 +112,24 @@ const Home = () => {
           </HomeShopListContainer>
         </HomeContainer>
       </HomeWrap>
-    </Wrap>
+      </>
   );
 };
 
 export default Home;
 
-
-const Wrap = styled.div`
-  width: 100%;
-  height: 400px;
-`
-const HomeWrap = styled.div`
+export const HomeWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   background-color: #fff;
 `;
 
-
 const HomeContainer = styled.div`
   width: (100%-20)px;
   position: relative;
   margin: 20px;
+
   .floating-btn {
     position: fixed;
     bottom: 30px;

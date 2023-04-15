@@ -6,8 +6,18 @@ import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
 import ShopDetailReview from '../components/shopDetail/ShopDetailReview';
 import { apiPath } from '../shared/path';
 import ShopDetailMap from '../components/map/ShopDetailMap';
+import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
+import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
+import { colorSet } from '../components/ui/styles/color';
 
 function ShopDetail() {
+  const icon = {
+    detailInfo: {
+      mapPin: `${process.env.PUBLIC_URL}/images/detail/map_pin_20.png`,
+      clock: `${process.env.PUBLIC_URL}/images/detail/clock_20.png`,
+      phone: `${process.env.PUBLIC_URL}/images/detail/phone_20.png`,
+    }
+  };
   const navi = useNavigate();
   const param = Number(useParams().shopId);
   const tabInfoRef = useRef();
@@ -15,11 +25,6 @@ function ShopDetail() {
   const tabReviewRef = useRef();
   
   const toShopDetailReviewForm = `/shop/${param}/reviewForm`;
-
-  const [review, setReview] = useState({
-    title: "",
-    author: "",
-  });
 
   const scrollToTabInfo = () => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -48,6 +53,7 @@ function ShopDetail() {
 
   useEffect(() => {
     console.log(shopDetailData);
+
   }, [shopDetailData])
   useEffect(() => {
     getShopDetailReviewList();
@@ -59,22 +65,21 @@ function ShopDetail() {
         <span><Link to={'/'}>뒤로가기</Link></span>
         <span>책갈피</span>
       </Header>
-      <ShopDetailContainer>
+      <div>
         <ShopDetailThumbnail>
-          <div className='thumbnail-img'>
-            <img
-              src={`${apiPath.imgUrl + shopDetailData?.thumbnail}`}
-              alt={shopDetailData?.shopName}
-            />
-          </div>
-          <div>
-            <h1>{shopDetailData?.shopName}</h1>
-            <span>
-              <label>(피드수)</label>
-              <div className='category'>카테고리{shopDetailData?.category}</div>
-            </span>
-          </div>
-        </ShopDetailThumbnail>
+        <div className='thumbnail-img'>
+          <img
+            src={`${apiPath.imgUrl + shopDetailData?.thumbnail}`}
+            alt={shopDetailData?.shopName}
+          />
+        </div>
+        <ShopDetailStoreName
+          shopName={shopDetailData?.shopName}
+          category={shopDetailData?.category}
+        />
+      </ShopDetailThumbnail>
+      <ShopDetailContainer>
+        
         <ShopDetailTab>
           <ul id='detail-tab'>
             <li id="">
@@ -97,21 +102,32 @@ function ShopDetail() {
             </li>
           </ul>
         </ShopDetailTab>
-        <ShopDetailContent>
-          <div className='shop-detail-info'>
+        <ShopDetailContentContainer>
+          <h2>정보</h2>
+          <div>
+            <ShopDetailContentInfo
+              icon={icon.detailInfo.mapPin}
+              content={shopDetailData?.address}
+            />
+            <ShopDetailContentInfo
+              icon={icon.detailInfo.clock}
+              content={shopDetailData?.operatingTime}
+            />
+            <ShopDetailContentInfo
+              icon={icon.detailInfo.phone}
+              content={shopDetailData?.phoneNumber}
+            />
+          </div>
+          <XFlexCenter>
             <ShopDetailMap
               width={350}
               height={150}
-              lng={shopDetailData?.x}
-              lat={shopDetailData?.y}
+              lng={shopDetailData?.lng}
+              lat={shopDetailData?.lat}
             />
-            <h2>정보</h2>
-            <div>
-              <p>{shopDetailData?.address}</p>
-              <p>{shopDetailData?.operatingTime}</p>
-              <p>{shopDetailData?.phoneNumber}</p>
-            </div>
-          </div>
+          </XFlexCenter>
+        </ShopDetailContentContainer>
+        <ShopDetailContentContainer>
           <div className='shop-detail-menu'>
             <hr />
             <h2>메뉴</h2>
@@ -125,6 +141,8 @@ function ShopDetail() {
               )
             })}
           </div>
+        </ShopDetailContentContainer>
+        <ShopDetailContentContainer>
           <div className='shop-detail-review'>
             <hr />
             <div className='shop-detail-review-sub'>
@@ -144,24 +162,32 @@ function ShopDetail() {
             </div>
             <ShopDetailReview/>
           </div>
-        </ShopDetailContent>
+        </ShopDetailContentContainer>
       </ShopDetailContainer>
+      </div>
+      
     </>
   )
 }
 
 export default ShopDetail
 
+const XFlexCenter = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
 const Header = styled.header`
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   background-color: #ffffff;
   border-bottom: 1px solid;
+  z-index: 9999;
   span {
     margin: 20px;
   }
@@ -177,7 +203,6 @@ const ShopDetailTab = styled.div`
 
     li {
       width: 33.33%; 
-      background-color: #ffc9c9;
     }
 
     label {
@@ -194,10 +219,10 @@ const ShopDetailTab = styled.div`
       align-items: center;
     }
 
-    input[type="radio"]:checked + div {
+    input[type="radio"]:checked f+ div {
       border-bottom: 3px solid #2e975a;
       label {
-        color: #2e975a;
+        color: ${colorSet.primary_01};
       }
     }
   }
@@ -205,7 +230,8 @@ const ShopDetailTab = styled.div`
 
 const ShopDetailContainer = styled.div`
   width: 100%;
-  margin-top: 60px;
+  border-top: 12px solid #EDEDED;
+  background-color: #fff;
   hr {
     border: 1px 0 0 0 solid #bbb;
   }
@@ -213,12 +239,15 @@ const ShopDetailContainer = styled.div`
 
 const ShopDetailThumbnail = styled.div`
   width: 100%;
+  position: relative;
+  padding-bottom: 72px;
+  background-color: #fff;
   h1 {
     font-size: 1.5rem;
   }
   .thumbnail-img {
     width: 100%;
-    height: 346px;
+    height: 252px;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -229,11 +258,11 @@ const ShopDetailThumbnail = styled.div`
   }
 `;
 
-const ShopDetailContent = styled.div`
-  /* width: 100%; */
+const ShopDetailContentContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  position: relative;
   h2 {
     font-size: 1.2rem;
     margin: 10px 0;
@@ -245,4 +274,3 @@ const ShopDetailContent = styled.div`
     justify-content: space-between;
   }
 `;
-
