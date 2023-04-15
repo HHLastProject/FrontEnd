@@ -1,10 +1,9 @@
-import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { VFlex } from '../custom/ym/styleStore'
+import { path } from './path'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
-import MealFilter from '../pages/MealFilter'
 import ShopDetail from '../pages/ShopDetail'
-import { path } from './path'
 
 import Admin from '../pages/Admin'
 import AdminRegister from '../components/admin/AdminRegister'
@@ -18,17 +17,17 @@ import ShopDetailReviewForm from '../pages/ShopDetailReviewForm'
 
 import AdminLogin from '../pages/AdminLogin'
 import BottomNav from '../components/BottomNav'
-import { VFlex } from '../custom/ym/styleStore'
 import styled from 'styled-components'
 import Search from '../pages/Search'
-
-
+import Mypage from '../pages/Mypage'
+import AllFeeds from '../pages/AllFeeds'
+import FeedDetail from '../pages/FeedDetail'
 
 const Router = () => {
   return (
     <BrowserRouter>
       <VFlex>
-        <PageContainer>
+        <PageContainer id='page-container'>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -46,6 +45,10 @@ const Router = () => {
 
             <Route path="/admin/login" element={<AdminLogin />} />
 
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/mypage/feeds/:userId" element={<AllFeeds />} />
+            <Route path="/feed/detail/:feedId" element={<FeedDetail />} />
+
           </Routes>
         </PageContainer>
         <BottomNav />
@@ -58,7 +61,8 @@ export default Router;
 
 const PageContainer = styled.div`
   flex: 1;
-  overflow: scroll;
+  height: fit-content;
+  overflow-y : scroll;
 
   /* 스크롤바 안 보이게 */
   -ms-overflow-style: none;
