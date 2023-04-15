@@ -8,6 +8,7 @@ import { apiPath } from '../shared/path';
 import ShopDetailMap from '../components/map/ShopDetailMap';
 import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
+import { colorSet } from '../components/ui/styles/color';
 
 function ShopDetail() {
   const icon = {
@@ -218,10 +219,10 @@ const ShopDetailTab = styled.div`
       align-items: center;
     }
 
-    input[type="radio"]:checked + div {
+    input[type="radio"]:checked f+ div {
       border-bottom: 3px solid #2e975a;
       label {
-        color: #2e975a;
+        color: ${colorSet.primary_01};
       }
     }
   }
@@ -273,4 +274,3 @@ const ShopDetailContentContainer = styled.div`
     justify-content: space-between;
   }
 `;
-

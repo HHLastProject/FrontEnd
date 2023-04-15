@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Container as MapDiv, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 import styled from 'styled-components';
 
@@ -30,20 +30,20 @@ const ShopDetailMap = ({ width, height, lng, lat }: IShopDetailMap) => {
       width={width}
       height={height}
     >
-      <div>
-        <MapDiv style={{ width: '500px', height: '500px' }}>
-          <NaverMap
-            center={new navermaps.LatLng(lat, lng)}
-            defaultZoom={16}
-            zoomControl={true}
-          >
-            <Marker
-              icon={`${process.env.PUBLIC_URL}/markers/me.png`}
-              position={new navermaps.LatLng(lat, lng)}
-            />
-          </NaverMap>
-        </MapDiv>
-      </div>
+    <div>
+      <MapDiv style={{ width: '500px', height: '500px' }}>
+        <NaverMap
+          center={new navermaps.LatLng(lat, lng)}
+          defaultZoom={16}
+          zoomControl={true}
+        >
+          <Marker
+            icon={`${process.env.PUBLIC_URL}/markers/me.png`}
+            position={new navermaps.LatLng(lat, lng)}
+          />
+        </NaverMap>
+      </MapDiv>
+    </div>
     </ShopDetailMapWrap>
   );
 };
