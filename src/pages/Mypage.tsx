@@ -47,9 +47,6 @@ const Mypage = () => {
                 <VFlex gap='40px' height='fit-content'>
                     <UserProfile />
                     <MyFeeds />
-                    <Tags.Active>태그</Tags.Active>
-                    <Categorys.Inactive>인액티브</Categorys.Inactive>
-                    <Categorys.Active>액티브</Categorys.Active>
                     <CustomerCenter />
                 </VFlex>
             </MypageContainer>
