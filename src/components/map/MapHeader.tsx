@@ -1,8 +1,14 @@
 import React from 'react'
 import styled from 'styled-components';
 import { HFlex, VFlex, VFlexCenter } from '../../custom/ym/styleStore';
+import { useNavigate } from 'react-router-dom';
 
 const MapHeader = () => {
+
+    const navi = useNavigate();
+    const searchClickHandler = () => {
+        navi('/search');
+    }
     return (
         <HeaderContainer>
             <HFlex etc="padding: 0px 5px;" width='100%'>
@@ -18,7 +24,7 @@ const MapHeader = () => {
                         <Image2 src={`${process.env.PUBLIC_URL}/down.png`} alt="" />
                     </HFlex>
                 </VFlex>
-                <ButtonContainer>
+                <ButtonContainer onClick={searchClickHandler}>
                     <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
                 </ButtonContainer>
             </HFlex>

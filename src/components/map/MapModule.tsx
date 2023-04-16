@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { VFlexCenter } from '../../custom/ym/styleStore';
 import uuid from 'react-uuid';
 import { SAMPLE_DATA } from '../../custom/ym/variables';
-import { EachData } from '../../pages/Map';
+import { EachData } from '../../pages/Home';
 
 type Coordinate = {
     lng: number,

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import { HFlex, HFlexSpaceBetween, VFlex, VFlexCenter } from '../../../custom/ym/styleStore';
-import { EachData } from '../../../pages/Map';
+import { EachData } from '../../../pages/Home';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 

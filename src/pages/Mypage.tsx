@@ -1,13 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { VFlex } from '../custom/ym/styleStore';
 import UserProfile from '../components/mypage/UserProfile';
 import MyFeeds from '../components/mypage/MyFeeds';
 import CustomerCenter from '../components/mypage/CustomerCenter';
 import { mypageData } from '../custom/ym/dummydata';
-import { Buttons } from '../components/ui/element/buttons/Buttons';
-import { Tags } from '../components/ui/element/tags/Tags';
-import { Categorys } from '../components/ui/element/tags/Categorys';
 
 export type StateContextType = {
     props: Feed | null,
@@ -59,7 +56,7 @@ export default Mypage;
 const MypageContainer = styled.div`
     width: 100%;
     height: fit-content;
-    /* min-height: 100%; */
+    min-height: 100%;
     padding: 40px 20px;
     background-color: white;
     box-sizing: border-box;

@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import { fontType } from '../../styles/typo';
 import { colorSet } from '../../styles/color';
+import { ChildrenForBtnContents } from "../../../../custom/ym/types";
 
-export type ChildrenForBtnContents = {
-    children: JSX.Element | string
-};
 
 const White = ({ children }: ChildrenForBtnContents) => {
     return (

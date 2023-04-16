@@ -1,3 +1,6 @@
+import { ComponentPropsWithoutRef, ElementType } from "react";
+import { StringLiteralType } from "typescript";
+
 export type Font = {
     fontSize: string,
     lineHeight: string,
@@ -5,7 +8,7 @@ export type Font = {
     color: string,
 };
 
-export type ChildrenForJSX = {
+export interface ChildrenForJSX extends ComponentPropsWithoutRef<'button'> {
     children: JSX.Element
 };
 
@@ -13,6 +16,38 @@ export type Coordinate = {
     lng: number,
     lat: number,
 };
+
+export type NavButtonInputLimit = "home" | "list" | "feed" | "bookmark" | "mypage";
+export const NavButtonList: NavButtonInputLimit[] = ["home", "list", "feed", "bookmark", "mypage"];
+
+export type ChildrenForBtnContents = {
+    children: React.ReactNode
+};
+
+export interface BtnNavProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    isActive: boolean,
+    btnType: NavButtonInputLimit,
+}
+
+export interface NavStateProp extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    isActive: boolean;
+    name: NavButtonInputLimit;
+    children?: React.ReactNode;
+}
+
+export interface InternalJSX extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+};
+
+// export interface NavStateProp extends ComponentPropsWithoutRef<'button'> {
+//     isActive: boolean;
+//     onClick: React.MouseEventHandler<HTMLButtonElement>;
+//     children?: JSX.Element;
+// }
+
+export interface DivProp extends ComponentPropsWithoutRef<'button'> {
+    isActive: boolean,
+    name: string,
+}
 
 export interface EachData {
     shopId: number,

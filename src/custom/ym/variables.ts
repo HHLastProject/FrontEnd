@@ -1,4 +1,4 @@
-import { EachData } from "../../pages/Map";
+import { EachData } from "../../pages/Home";
 
 
 type Font = {
@@ -92,6 +92,29 @@ export const B14: Font = {
     lineHeight: '22px',
     fontWeight: '600',
     color: `#${STRONG_MEDIUM}`,
+}
+
+export const navIcons = {
+    home: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/home_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/home_inactive.png`
+    },
+    list: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/list_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/list_inactive.png`
+    },
+    feed: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/feed_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/feed_inactive.png`
+    },
+    bookmark: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/bookmark_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/bookmark_inactive.png`
+    },
+    mypage: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/mypage_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/mypage_inactive.png`
+    },
 }
 
 

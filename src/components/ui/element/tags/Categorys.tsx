@@ -1,10 +1,10 @@
 import React from 'react'
-import { ChildrenForBtnContents } from '../buttons/BtnContent';
 import { TagRadius } from './TagRadius';
 import { TagBg } from './TagBg';
 import { TagSize } from './TagSize';
 import { TagTextColor } from './TagTextColor';
 import { TagContent } from './TagContent';
+import { ChildrenForBtnContents } from '../../../../custom/ym/types';
 
 const Inactive = ({ children }: ChildrenForBtnContents) => {
     return (
