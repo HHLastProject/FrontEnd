@@ -1,9 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-
-export type InternalJSX = {
-    children: JSX.Element
-}
+import { InternalJSX } from '../../../../custom/ym/types';
 
 const Long = ({ children }: InternalJSX) => {
     return (
@@ -38,9 +35,20 @@ const BtnSmallDefault = ({ children }: InternalJSX) => {
     );
 }
 
+const BtnSmallNav = ({ children }: InternalJSX) => {
+    return (
+        <NavCase>{children}</NavCase>
+    );
+}
+
 
 export const BtnMediumLength = { Default: BtnMediumDefault }
-export const BtnSmallLength = { Default: BtnSmallDefault }
+export const BtnSmallLength = { Default: BtnSmallDefault, Nav: BtnSmallNav }
+
+const NavCase = styled.div`
+    width: 68px;
+    height: fit-content;
+`
 
 const SDCase = styled.div`
     width: 93px;

@@ -1,152 +1,190 @@
-import React, { useEffect, useState } from 'react'
+import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react'
+import MapModule from '../components/map/MapModule';
+import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
+import { getRealtimeLocation } from '../custom/jh/getUserLocation';
+import data from "../datasample/data.json"
+import { HFlex, HFlexSpaceBetween, PublicContainer, VFlex, VFlexCenter } from '../custom/ym/styleStore';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { apiPath, path } from '../shared/path';
-import { getUserLocation } from '../custom/jh/getUserLocation';
-import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
-import NoShop from '../components/home/NoShop';
-import HomeShopPostCard from '../components/home/HomePostCard';
-import ListCount from '../components/ListCount';
+import MapHeader from '../components/map/MapHeader';
+import CarouselBox from '../components/map/carousel/CarouselBox';
+import { FILTER_LIST, LINE_MEDIUM, STRONG_MEDIUM, SAMPLE_DATA } from '../custom/ym/variables';
+import uuid from 'react-uuid';
+import { MEDIUM } from '../custom/ym/variables';
+
+type Coordinate = {
+    lng: number,
+    lat: number,
+};
+type JsonData = {
+    shopName: string,
+    category: string,
+    jibunAddress: string,
+    roadAddress: string,
+    lat: number,
+    lng: number
+}
+export interface EachData {
+    shopId: number,
+    category: string,
+    shopName: string,
+    thumbnail: string,
+    region: string,
+    distance: number,
+    rate: number,
+    reviews: number,
+    lat: number,
+    lng: number
+}
+
 
 const Home = () => {
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-  const [range, setRange] = useState(500);
 
-  const navi = useNavigate();
-  const navigate = (path: string) => {
-    return navi(path);
-  };
+    const navermaps = useNavermaps();
+    // const map = useMap();
+    const [range, setRange] = useState(500);
+    const [search, setSearch] = useState('');
+    const [category, setCategory] = useState<string>('');
+    const [list, setList] = useState<(EachData | null)[]>([]);
+    // const map = useRef(null);
 
-  //토큰 가져오기
-  const naverAccessToken = () => {
-    window.location.href.includes('access_token') && getNaverToken();
-  };
-  const getNaverToken = () => {
-    const token = window.location.href.split('=')[1].split('&')[0];
-    console.log(token);
-    localStorage.setItem('access_token', token);
-  };
+    const [temp, setTemp] = useState({ lat: 37.5108407, lng: 127.0468975 });
 
-  const {
-    shopList,
-    getshopList,
-    getshopListIsLoading,
-    getshopListIsError,
-  } = useGetHomeShopList({ x, y, range });
 
-  //useEffect
-  useEffect(() => {
-    naverAccessToken();
-    localStorage.getItem('admin_token') && navi('/admin/shoplist');
-  }, []);
+    // 실시간 유저 위치
+    const [userCoord, setUserCoord] = useState<Coordinate>({
+        lng: 0,
+        lat: 0,
+    });
 
-  useEffect(() => {
-    const errorMsg = getUserLocation(setX, setY);
-    if (errorMsg) {
-      console.log(errorMsg);
-    };
-    console.log('x', x, 'y', y);
-    if (x !== 0 && y !== 0) { getshopList(); };
-  }, [x, y]);
+    // 샵 위치
+    const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
 
-  const loginClickHandler = () => {
-    navi(path.login);
-  }
-  const mapClickHandler = () => {
-    navi(path.map);
-  }
+    const icon = {
+        url: `${process.env.PUBLIC_URL}/markers/shop3.png`,
+        anchor: new navermaps.Point(0, 0),
+    }
 
-  //로딩 화면
-  if (getshopListIsLoading) { return <div>로딩중...</div>; }
-
-  return (
-    <>
-      <HomeWrap>
-        <HomeContainer>
-          {/* <NoShop/> */}
-          <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
-          <header>
-            <div className='space-between'>
-              <span className=''>
-                <label>내 주변</label>
-                <ListCount>{shopList?.length}</ListCount>
-              </span>
-              <button onClick={loginClickHandler}>로그인 하기</button>
-              <button onClick={() => navi('/search')}>검색 페이지</button>
-            </div>
-          </header>
-
-          <div className='space-between'>
-            <h3>식당</h3>
-            <input type="checkbox" id="by-range" name="by-range" hidden />
-            <span>
-              <button>
-                <label htmlFor="by-range">
-                  거리순
-                </label>
-              </button>
-            </span>
-          </div>
-
-          <HomeShopListContainer>
-            {
-              (shopList?.length === 0) && <NoShop />
+    const moveCenter = () => {
+        navermaps.Service.geocode({
+            query: search,
+        }, (status, response) => {
+            if (status !== navermaps.Service.Status.OK) {
+                return alert("Something wrong!");
             }
-            {
-              shopList?.map((item: any) => (
-                <HomeShopPostCard
-                  key={item.shopId}
-                  id={item.shopId}
-                  address={item.address}
-                  shopName={item.shopName}
-                  thumbnail={`${apiPath.imgUrl + item.thumbnail}`}
-                  menuName={item.menuName}
-                  maxPrice={item.maxPrice}
-                  minPrice={item.minPrice}
-                  category={item.category}
-                />
-              ))
-            }
-            <button>더 보기</button>
-          </HomeShopListContainer>
-        </HomeContainer>
-      </HomeWrap>
-      </>
-  );
-};
+            console.log(response);
+            setTemp((prev) => {
+                return {
+                    lat: parseFloat(response.v2.addresses[0].y),
+                    lng: parseFloat(response.v2.addresses[0].x),
+                }
+            });
+        })
+    }
+
+    const filterClickHandler = (buttonName: string) => {
+        if (category === buttonName) {
+            setCategory("");
+        } else {
+            setCategory(prev => buttonName);
+        }
+
+        console.log(category);
+        // console.log(buttonName);
+    }
+
+    useEffect(() => {
+        // getRealtimeLocation(setUserCoord);
+        // console.log(userCoord);
+        if (category) {
+            setList(prev => {
+                const searchResult = SAMPLE_DATA.map((item) => item.category === category ? item : null);
+                return searchResult;
+            })
+        } else {
+            setList(SAMPLE_DATA);
+        }
+
+    }, [category]);
+
+    return (
+        <VFlex etc='position: relative;'>
+            <VFlexCenter etc="min-width:500px;min-width:390px;height:100%;flex:1;">
+                <MapHeader />
+                <MapModule category={category} />
+            </VFlexCenter>
+            <CategoryButtons>
+                {FILTER_LIST.map((element) => <FilterBtn
+                    selected={category}
+                    name={element}
+                    key={uuid()}
+                    onClick={(e) => filterClickHandler(element)}
+                >{element}</FilterBtn>)}
+            </CategoryButtons>
+            <AimBtn>
+                <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
+            </AimBtn>
+            <CarouselModule>
+                <CarouselBox>{list}</CarouselBox>
+            </CarouselModule>
+        </VFlex>
+    );
+}
 
 export default Home;
 
-export const HomeWrap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  background-color: #fff;
-`;
-
-const HomeContainer = styled.div`
-  width: (100%-20)px;
-  position: relative;
-  margin: 20px;
-
-  .floating-btn {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: transxeX( -50% );
-  }
-
-  .space-between {
+const CategoryButtons = styled.div`
+    position: absolute;
     display: flex;
-    justify-content: space-between;
-  }
+    gap : 4px;
+    z-index: 50;
+    top: 80px;
+    left : 20px;
+`
+
+const FilterBtn = styled.button<{
+    selected: string,
+    name: string,
+}>`
+    height: 36px;
+    padding : 7px 12px;
+    border : 1px solid ${({ selected, name }) =>
+        selected === name ? `#${MEDIUM}` : `#${LINE_MEDIUM}`};
+    border-radius: 18px;
+    color : ${({ selected, name }) =>
+        selected === name ? 'white' : `#${STRONG_MEDIUM}`};
+    font-family : "Pretendard";
+    font-weight : 400;
+    line-height : 22px;
+    font-size : 14px;
+    background-color : ${({ selected, name }) => selected === name ? `#${MEDIUM}` : 'white'};
 `;
 
-const HomeShopListContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
+const Image = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+`;
+
+const AimBtn = styled.button`
+    position: absolute;
+    bottom: 236px;
+    z-index: 1;
+    width: 40px;
+    height : 40px;
+    right: 35px;
+    padding: 6px;
+    border : none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    background-color: white;
+`;
+
+const CarouselModule = styled.div`
+    position: absolute;
+    bottom: 0;
+    width: 332px;
+    height: 214px;
+    /* padding : 20px; */
+    padding-right: 0px;
+    background-color: transparent;
 `;

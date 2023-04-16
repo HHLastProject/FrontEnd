@@ -9,8 +9,6 @@ type Props = {
     temp: number
 }
 
-
-
 const MyAllFeedsButton = ({ temp }: Props) => {
     const navi = useNavigate();
     const buttonClickHandler = () => {

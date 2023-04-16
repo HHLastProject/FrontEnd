@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { VFlex } from '../custom/ym/styleStore'
 import { path } from './path'
-import Home from '../pages/Home'
 import Login from '../pages/Login'
 import ShopDetail from '../pages/ShopDetail'
 
@@ -11,7 +10,6 @@ import AdminUpdate from '../components/admin/AdminUpdate'
 
 import RedirectNaver from '../pages/RedirectNaver'
 import RedirectKakao from '../pages/RedirectKakao'
-import Map from '../pages/Map'
 
 import ShopDetailReviewForm from '../pages/ShopDetailReviewForm'
 
@@ -22,6 +20,8 @@ import Search from '../pages/Search'
 import Mypage from '../pages/Mypage'
 import AllFeeds from '../pages/AllFeeds'
 import FeedDetail from '../pages/FeedDetail'
+import List from '../pages/List'
+import Home from '../pages/Home'
 
 const Router = () => {
   return (
@@ -30,6 +30,7 @@ const Router = () => {
         <PageContainer id='page-container'>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/list" element={<List />} />
             <Route path="/login" element={<Login />} />
             <Route path={path.search} element={<Search />} />
             <Route path={path.shopDetail} element={<ShopDetail />} />
@@ -41,7 +42,7 @@ const Router = () => {
 
             <Route path="/redirect/naver" element={<RedirectNaver />} />
             <Route path="/redirect/kakao" element={<RedirectKakao />} />
-            <Route path="/map" element={<Map />} />
+
 
             <Route path="/admin/login" element={<AdminLogin />} />
 
