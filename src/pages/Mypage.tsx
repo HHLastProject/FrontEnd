@@ -58,7 +58,8 @@ export default Mypage;
 
 const MypageContainer = styled.div`
     width: 100%;
-    height: 100%;
+    height: fit-content;
+    /* min-height: 100%; */
     padding: 40px 20px;
     background-color: white;
     box-sizing: border-box;
