@@ -8,8 +8,12 @@ export type Font = {
     color: string,
 };
 
+export interface ChildrenForSpan extends ComponentPropsWithoutRef<'span'> {
+    children: React.ReactNode
+};
+
 export interface ChildrenForJSX extends ComponentPropsWithoutRef<'button'> {
-    children: JSX.Element
+    children: React.ReactNode
 };
 
 export type Coordinate = {
@@ -60,4 +64,8 @@ export interface EachData {
     reviews: number,
     lat: number,
     lng: number
+}
+
+export interface BookmarkChildren {
+    children: EachData;
 }
