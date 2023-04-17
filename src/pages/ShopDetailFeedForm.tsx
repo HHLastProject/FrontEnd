@@ -1,13 +1,9 @@
-import React, { useState } from 'react'
 import styled from 'styled-components'
+import useTextCountHandler from '../custom/jh/useTextCountHandler';
 
 function ShopDetailFeedForm() {
-  const [count, setCount] = useState<number>(0);
-  const textCountHnadler = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
-    if(e.target.value.length <= 500) {
-      setCount(e.target.value.length);
-    }
-  };
+  const maxLength = 500;
+  const {count, textCountHandler} = useTextCountHandler(maxLength);
 
   return (
     <>
@@ -16,12 +12,12 @@ function ShopDetailFeedForm() {
           <h2>이 곳은 어땠나요?</h2>
           
           <ShopDetailReviewTextarea
-            onChange={textCountHnadler}
-            maxLength={500}
+            onChange={textCountHandler}
+            maxLength={maxLength}
             placeholder='후기를 작성해 주세요 :)'
           />
           <div className='text-count'>
-            <label>{count}/500</label>
+            <label>{count}/{maxLength}</label>
           </div>
 
           <button
