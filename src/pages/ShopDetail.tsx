@@ -10,6 +10,9 @@ import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
 import { colorSet } from '../components/ui/styles/color';
 import { fontType } from '../components/ui/styles/typo';
 import ShopDetailFeed from '../components/shopDetail/ShopDetailFeed';
+import useNavigateHandler from '../custom/jh/useNavigateHandler';
+import { Buttons } from '../components/ui/element/buttons/Buttons';
+import PencilIcon from '../components/ui/element/icons/IconsStyle';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -17,8 +20,7 @@ function ShopDetail() {
   const tabInfoRef = useRef();
   const tabMenuRef = useRef();
   const tabReviewRef = useRef();
-  
-  const toShopDetailReviewForm = `/shop/${param}/feedform`;
+  const {feedFormClickHandler} = useNavigateHandler();
 
   const scrollToTabInfo = () => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -137,18 +139,22 @@ function ShopDetail() {
             <div className='shop-detail-review'>
               <div className='shop-detail-review-sub'>
                 <h2>피드</h2>
-                <button
-                  onClick={() => navi(toShopDetailReviewForm)}
-                >피드 쓰기</button>
+                <div
+                  onClick={() => feedFormClickHandler(param)}
+                >
+                  <Buttons.Small.Default>
+                    <><PencilIcon/>피드 쓰기</>
+                  </Buttons.Small.Default>
+                </div>
               </div>
               <div>
                 {shopDetailReviewList?.map((item:any) => {
                   return (
-                    <>리뷰111</>
+                    <>피드들</>
                   )
                 })}
                 {(shopDetailReviewList?.length === 0) && (<div>피드가 없습니다.</div>)}
-                {shopDetailReviewIsError && (<div>댓글 에러</div>)}
+                {shopDetailReviewIsError && (<div>피드 에러</div>)}
               </div>
               <ShopDetailFeed/>
             </div>
