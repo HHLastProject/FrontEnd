@@ -1,16 +1,33 @@
 import styled from 'styled-components'
 import useTextCountHandler from '../custom/jh/useTextCountHandler';
+import useNavigateHandler from '../custom/jh/useNavigateHandler';
+import { useState } from 'react';
+import SearchStore from '../components/search/SearchInput';
 
 function ShopDetailFeedForm() {
   const maxLength = 500;
   const {count, textCountHandler} = useTextCountHandler(maxLength);
-
+  const [inputValue, setInputValue] = useState('');
+  const {searchClickHandler} = useNavigateHandler();
   return (
     <>
       <form action="/">
         <ShopDetailReviewFormContainer>
-          <h2>이 곳은 어땠나요?</h2>
-          
+          <h2>새로운 기록</h2>
+          <div>
+            <div>
+              <h3>방문한 카페</h3>
+              <label>선택</label>
+            </div>
+            <div
+              onClick={searchClickHandler}
+            >
+              <SearchStore
+                inputValue={inputValue}
+                setInputValue={setInputValue}
+              />
+            </div>
+          </div>
           <ShopDetailReviewTextarea
             onChange={textCountHandler}
             maxLength={maxLength}

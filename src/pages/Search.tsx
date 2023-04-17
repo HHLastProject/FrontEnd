@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import SearchResultList, { ISearchResult } from '../components/search/SearchResultList';
 import styled from 'styled-components';
-import SearchInput from '../components/search/SearchInput';
-
-const loupeIcon = `${process.env.PUBLIC_URL}/loupe.png`;
+import SearchStore from '../components/search/SearchInput';
 
 export type ISearchInput = {
   inputValue: string;
@@ -16,15 +14,10 @@ function Search() {
   return (
     <SearchWrap>
       <SearchWrapContainer>
-        <div id='search-input-div'>
-          <div id='search-input'>
-            <img src={loupeIcon} alt="검색하기" />
-            <SearchInput
-              inputValue={inputValue}
-              setInputValue={setInputValue}
-            />
-          </div>
-        </div>
+        <SearchStore
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+        />
         <div className='search-result-list'>
           {
           result.map((item) => {

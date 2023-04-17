@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import { HFlex, VFlex } from '../../custom/ym/styleStore';
+import useNavigateHandler from '../../custom/jh/useNavigateHandler';
 
 const ListHeader = ({range}: {range: number}) => {
+  const {loginClickHandler, mapClickHandler, searchClickHandler} = useNavigateHandler();
+
   return (
     <HeaderContainer>
       <HFlex etc="padding: 0px 5px;" width='100%'>
@@ -17,9 +20,13 @@ const ListHeader = ({range}: {range: number}) => {
             <Image2 src={`${process.env.PUBLIC_URL}/down.png`} alt="" />
           </HFlex>
         </VFlex>
-        <ButtonContainer>
-          <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
-        </ButtonContainer>
+        <div
+          onClick={searchClickHandler}
+        >
+          <ButtonContainer>
+            <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
+          </ButtonContainer>
+        </div>
       </HFlex>
     </HeaderContainer>
   )

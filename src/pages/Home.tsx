@@ -79,7 +79,6 @@ const Home = () => {
           <header>
             <div className='space-between'>
               <button onClick={loginClickHandler}>로그인 하기</button>
-              <button onClick={searchClickHandler}>검색 페이지</button>
             </div>
           </header>
   
