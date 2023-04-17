@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { Buttons } from './ui/element/buttons/Buttons';
@@ -13,10 +13,13 @@ const BottomNav = () => {
         navi(`/${(page === "home" ? "" : page)}`);
     }
     const stateChecker = (checker: string) => {
-        // console.log('액티브', active);
-        // console.log('체커', checker);
         return checker === active ? true : false;
     }
+
+    useEffect(() => {
+        const pageUrl = window.location.href.split('/')[3];
+        pageUrl && setActive(pageUrl);
+    }, []);
 
     return (
         <NavContainer>

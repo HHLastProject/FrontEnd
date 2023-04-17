@@ -4,17 +4,25 @@ import styled from 'styled-components';
 import { BODY_3, TITLE_3 } from '../../../../custom/ym/variables';
 import { colorSet } from '../../styles/color';
 import { BookmarkChildren } from '../../../../custom/ym/types';
+import { useNavigate } from 'react-router-dom';
 
-const BookmarkCard = ({ children }: BookmarkChildren) => {
+const BookmarkCard = ({ data }: BookmarkChildren) => {
+
+    const navi = useNavigate();
+
+    const divClickHandler = () => {
+        navi(`/shop/${data.shopId}`)
+    }
+
     return (
-        <HFlex gap='8px' height={'fit-content'}>
+        <HFlex gap='8px' height={'fit-content'} onClick={divClickHandler}>
             <ThumbnailFrame>
-                <Thumbnail src={children.thumbnail} alt={children.shopName} />
+                <Thumbnail src={data.thumbnail} alt={data.shopName} />
             </ThumbnailFrame>
             <VFlex height='100px' etc='align-items:base-line;'>
-                <ShopName>{children.shopName}</ShopName>
-                <ShopSummary>{children.region}</ShopSummary>
-                <ShopSummary>피드 {children.reviews}</ShopSummary>
+                <ShopName>{data.shopName}</ShopName>
+                <ShopSummary>{data.region}</ShopSummary>
+                <ShopSummary>피드 {data.reviews}</ShopSummary>
             </VFlex>
         </HFlex>
     )

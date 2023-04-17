@@ -36,7 +36,7 @@ export interface BtnNavProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 export interface NavStateProp extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     isActive?: boolean;
-    name?: NavButtonInputLimit;
+    name?: NavButtonInputLimit | categoryTypes;
     id?: categoryTypes;
     children?: React.ReactNode;
 }
@@ -67,6 +67,10 @@ export interface EachData {
     lng: number
 }
 
-export interface BookmarkChildren {
-    children: EachData;
+export interface BookmarkChildren extends ComponentPropsWithoutRef<'div'> {
+    data: EachData;
+}
+
+export interface CategoryProp {
+    categoryState: categoryTypes | null;
 }
