@@ -1,17 +1,21 @@
 import styled from 'styled-components'
-import useTextCountHandler from '../custom/jh/useTextCountHandler';
-import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import { useState } from 'react';
+import { useParams } from 'react-router';
+import useNavigateHandler from '../custom/jh/useNavigateHandler';
+import useTextCountHandler from '../custom/jh/useTextCountHandler';
 import SearchStore from '../components/search/SearchInput';
 
 function ShopDetailFeedForm() {
   const maxLength = 500;
   const {count, textCountHandler} = useTextCountHandler(maxLength);
   const [inputValue, setInputValue] = useState('');
+  const [imgFile, setImgFile] = useState(null);
   const {searchClickHandler} = useNavigateHandler();
+  const param = useParams().shopId;
+  console.log(param);
   return (
     <>
-      <form action="/">
+      <form action={`/${param}`}>
         <ShopDetailReviewFormContainer>
           <h2>새로운 기록</h2>
           <div>
@@ -25,16 +29,34 @@ function ShopDetailFeedForm() {
               <SearchStore
                 inputValue={inputValue}
                 setInputValue={setInputValue}
+                placeholder='카페 이름 입력하기'
               />
             </div>
           </div>
-          <ShopDetailReviewTextarea
-            onChange={textCountHandler}
-            maxLength={maxLength}
-            placeholder='후기를 작성해 주세요 :)'
-          />
-          <div className='text-count'>
-            <label>{count}/{maxLength}</label>
+          <div>
+            <div>
+              <h3>사진</h3>
+              <label>필수</label>
+            </div>
+            <div
+              // onClick={}
+            >
+              {imgFile && <img src='' alt=''/>}
+            </div>
+          </div>
+          <div>
+            <div>
+              <h3>코멘트</h3>
+              <label>선택</label>
+            </div>
+            <ShopDetailReviewTextarea
+              onChange={textCountHandler}
+              maxLength={maxLength}
+              placeholder='카페에서의 순간을 작성해 주세요.'
+            />
+            <div className='text-count'>
+              <label>{count}/{maxLength}</label>
+            </div>
           </div>
 
           <button
@@ -72,6 +94,7 @@ const ShopDetailReviewFormContainer = styled.div`
 `;
 
 const ShopDetailReviewTextarea = styled.textarea`
+  width: 100%;
   height: 220px;
   border: 1px solid #DBDBDB;
   border-radius: 10px;

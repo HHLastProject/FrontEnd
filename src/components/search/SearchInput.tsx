@@ -1,9 +1,13 @@
 import styled from 'styled-components'
-import { ISearchInput } from '../../pages/Search';
 import { iconImgPath } from '../../shared/path';
 
-function SearchStore({inputValue, setInputValue}
-  : {inputValue: string, setInputValue: React.Dispatch<React.SetStateAction<string>>}) {
+export type ISearchInput = {
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  placeholder?: string;
+};
+
+function SearchStore({inputValue, setInputValue, placeholder}: ISearchInput) {
   return(
     <SearchStoreStyle>
       <div id='search-input'>
@@ -11,6 +15,7 @@ function SearchStore({inputValue, setInputValue}
         <SearchInput
           inputValue={inputValue}
           setInputValue={setInputValue}
+          placeholder={placeholder}
         />
       </div>
     </SearchStoreStyle>
@@ -39,7 +44,7 @@ const SearchStoreStyle = styled.div`
     }
 `;
 
-export function SearchInput({inputValue, setInputValue}: ISearchInput) {
+export function SearchInput({inputValue, setInputValue, placeholder}: ISearchInput) {
   const onChangeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     console.log(inputValue);
@@ -49,6 +54,7 @@ export function SearchInput({inputValue, setInputValue}: ISearchInput) {
       type='text'
       onChange={onChangeInputHandler}
       value={inputValue}
+      placeholder={placeholder}
     />
   )
 }

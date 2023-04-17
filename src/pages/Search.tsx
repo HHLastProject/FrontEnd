@@ -3,11 +3,6 @@ import SearchResultList, { ISearchResult } from '../components/search/SearchResu
 import styled from 'styled-components';
 import SearchStore from '../components/search/SearchInput';
 
-export type ISearchInput = {
-  inputValue: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
-};
-
 function Search() {
   const [inputValue, setInputValue] = useState('');
 
