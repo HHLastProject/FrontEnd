@@ -8,7 +8,7 @@ import { BtnSize } from './BtnSize'
 import { BtnLargeLength, BtnMediumLength, BtnSmallLength } from './BtnLength'
 import { BtnText } from './BtnText'
 import BtnNavContents from './BtnNavContents'
-import { BtnNavProps, ChildrenForJSX, DivProp, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
+import { BtnNavProps, CategoryStateProp, ChildrenForJSX, DivProp, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,14 +18,16 @@ import { useNavigate } from 'react-router-dom'
 버튼 property 전달 component
 */
 
-export const BtnPropertyThrower = ({ children, isActive, ...props }: NavStateProp) => {
-    return <Thrower isActive={isActive} {...props}>{children}</Thrower>
+export const BtnPropertyThrower = ({ children, isActive = false, id, ...props }: NavStateProp) => {
+    return <Thrower isActive={isActive} id={id} {...props}>{children}</Thrower>
 }
 
 
-const Thrower = styled.button<{ isActive: boolean }>`
+const Thrower = styled.button<{ isActive?: boolean }>`
+    flex : none;
     width: fit-content;
     height: fit-content;
+    background-color: transparent;
     border : none;
     padding: 0px;
     margin : 0px;
