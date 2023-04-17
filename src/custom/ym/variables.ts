@@ -1,4 +1,5 @@
 import { EachData } from "../../pages/Home";
+import { categoryTypes } from "./types";
 
 
 type Font = {
@@ -18,7 +19,7 @@ export const KAKAO_AUTH_URL: string = `https://kauth.kakao.com/oauth/authorize?c
 
 export const NAVER_MAPS_CLIENT: string = 'ldgh7n9aiz';
 
-export const FILTER_LIST: string[] = ["카페", "보드카페", "사주카페", "애견카페", "전통찻집"];
+export const FILTER_LIST: categoryTypes[] = ["카페", "보드카페", "사주카페", "애견카페", "전통찻집"];
 export const STRONG = '191919';
 export const STRONG_MEDIUM = '2E3338';
 export const MEDIUM = '717176';

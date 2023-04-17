@@ -24,7 +24,9 @@ export type Coordinate = {
 export type NavButtonInputLimit = "home" | "list" | "feed" | "bookmark" | "mypage";
 export const NavButtonList: NavButtonInputLimit[] = ["home", "list", "feed", "bookmark", "mypage"];
 
-export type ChildrenForBtnContents = {
+export type categoryTypes = "카페" | "보드카페" | "사주카페" | "애견카페" | "전통찻집";
+
+export interface ChildrenForBtnContents extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode
 };
 
@@ -32,21 +34,20 @@ export interface BtnNavProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     isActive: boolean,
     btnType: NavButtonInputLimit,
 }
-
 export interface NavStateProp extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    isActive: boolean;
-    name: NavButtonInputLimit;
+    isActive?: boolean;
+    name?: NavButtonInputLimit | categoryTypes;
+    id?: categoryTypes;
+    children?: React.ReactNode;
+}
+export interface CategoryStateProp extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    isActive?: boolean;
+    id: categoryTypes;
     children?: React.ReactNode;
 }
 
 export interface InternalJSX extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 };
-
-// export interface NavStateProp extends ComponentPropsWithoutRef<'button'> {
-//     isActive: boolean;
-//     onClick: React.MouseEventHandler<HTMLButtonElement>;
-//     children?: JSX.Element;
-// }
 
 export interface DivProp extends ComponentPropsWithoutRef<'button'> {
     isActive: boolean,
@@ -66,6 +67,10 @@ export interface EachData {
     lng: number
 }
 
-export interface BookmarkChildren {
-    children: EachData;
+export interface BookmarkChildren extends ComponentPropsWithoutRef<'div'> {
+    data: EachData;
+}
+
+export interface CategoryProp {
+    categoryState: categoryTypes | null;
 }

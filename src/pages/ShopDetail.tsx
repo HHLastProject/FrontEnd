@@ -23,7 +23,7 @@ function ShopDetail() {
   const tabInfoRef = useRef();
   const tabMenuRef = useRef();
   const tabReviewRef = useRef();
-  
+
   const toShopDetailReviewForm = `/shop/${param}/reviewForm`;
 
   const scrollToTabInfo = () => {
@@ -31,8 +31,8 @@ function ShopDetail() {
   };
 
   const {
-    shopDetailData, 
-    shopDetailIsLoading, 
+    shopDetailData,
+    shopDetailIsLoading,
     shopDetailIsError
   } = useGetShopDetail(param);
   const {
@@ -42,9 +42,9 @@ function ShopDetail() {
     shopDetailReviewIsError
   } = useGetShopDetailReview(param);
 
-  if(shopDetailIsError) {
-    alert("페이지를 불러올 수 없어 메인 페이지로 돌아갑니다.");
-    navi('/');
+  if (shopDetailIsError) {
+    alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
+    navi(-1);
   };
   // const [isCheckedTabInfo, setIsCheckedTabInfo] = useState(true);     //정보
   // const [isCheckedTabMenu, setIsCheckedTabMenu] = useState(false);    //메뉴
@@ -67,105 +67,105 @@ function ShopDetail() {
       </Header>
       <div>
         <ShopDetailThumbnail>
-        <div className='thumbnail-img'>
-          <img
-            src={`${apiPath.imgUrl + shopDetailData?.thumbnail}`}
-            alt={shopDetailData?.shopName}
+          <div className='thumbnail-img'>
+            <img
+              src={`${apiPath.imgUrl + shopDetailData?.thumbnail}`}
+              alt={shopDetailData?.shopName}
+            />
+          </div>
+          <ShopDetailStoreName
+            shopName={shopDetailData?.shopName}
+            category={shopDetailData?.category}
           />
-        </div>
-        <ShopDetailStoreName
-          shopName={shopDetailData?.shopName}
-          category={shopDetailData?.category}
-        />
-      </ShopDetailThumbnail>
-      <ShopDetailContainer>
-        
-        <ShopDetailTab>
-          <ul id='detail-tab'>
-            <li id="">
-              <input type="radio" id='detail-tab-info' name='detail-tab' hidden/>
-              <div className='detail-tab-div'>
-                <label htmlFor="detail-tab-info">정보</label> 
-              </div>
-            </li>
-            <li id="">
-              <input type="radio" id='detail-tab-menu' name='detail-tab' hidden/>
-              <div className='detail-tab-div'>
-                <label htmlFor="detail-tab-menu">메뉴</label>
-              </div>
-            </li>
-            <li id="">
-              <input type="radio" id='detail-tab-review' name='detail-tab' hidden/>
-              <div className='detail-tab-div'>
-                <label htmlFor="detail-tab-review">리뷰</label>
-              </div>
-            </li>
-          </ul>
-        </ShopDetailTab>
-        <ShopDetailContentContainer>
-          <h2>정보</h2>
-          <div>
-            <ShopDetailContentInfo
-              icon={icon.detailInfo.mapPin}
-              content={shopDetailData?.address}
-            />
-            <ShopDetailContentInfo
-              icon={icon.detailInfo.clock}
-              content={shopDetailData?.operatingTime}
-            />
-            <ShopDetailContentInfo
-              icon={icon.detailInfo.phone}
-              content={shopDetailData?.phoneNumber}
-            />
-          </div>
-          <XFlexCenter>
-            <ShopDetailMap
-              width={350}
-              height={150}
-              lng={shopDetailData?.lng}
-              lat={shopDetailData?.lat}
-            />
-          </XFlexCenter>
-        </ShopDetailContentContainer>
-        <ShopDetailContentContainer>
-          <div className='shop-detail-menu'>
-            <hr />
-            <h2>메뉴</h2>
-            { shopDetailData?.Menus?.map((item:any) => {
-              return (
-                <ShopDetailMenu
-                  menuName={item.menuName}
-                  price={item.price}
-                  picture={item.picture}
-                />
-              )
-            })}
-          </div>
-        </ShopDetailContentContainer>
-        <ShopDetailContentContainer>
-          <div className='shop-detail-review'>
-            <hr />
-            <div className='shop-detail-review-sub'>
-              <h2>피드</h2>
-              <button
-                onClick={() => navi(toShopDetailReviewForm)}
-              >댓글 쓰기</button>
-            </div>
+        </ShopDetailThumbnail>
+        <ShopDetailContainer>
+
+          <ShopDetailTab>
+            <ul id='detail-tab'>
+              <li id="">
+                <input type="radio" id='detail-tab-info' name='detail-tab' hidden />
+                <div className='detail-tab-div'>
+                  <label htmlFor="detail-tab-info">정보</label>
+                </div>
+              </li>
+              <li id="">
+                <input type="radio" id='detail-tab-menu' name='detail-tab' hidden />
+                <div className='detail-tab-div'>
+                  <label htmlFor="detail-tab-menu">메뉴</label>
+                </div>
+              </li>
+              <li id="">
+                <input type="radio" id='detail-tab-review' name='detail-tab' hidden />
+                <div className='detail-tab-div'>
+                  <label htmlFor="detail-tab-review">리뷰</label>
+                </div>
+              </li>
+            </ul>
+          </ShopDetailTab>
+          <ShopDetailContentContainer>
+            <h2>정보</h2>
             <div>
-              {shopDetailReviewList?.map((item:any) => {
+              <ShopDetailContentInfo
+                icon={icon.detailInfo.mapPin}
+                content={shopDetailData?.address}
+              />
+              <ShopDetailContentInfo
+                icon={icon.detailInfo.clock}
+                content={shopDetailData?.operatingTime}
+              />
+              <ShopDetailContentInfo
+                icon={icon.detailInfo.phone}
+                content={shopDetailData?.phoneNumber}
+              />
+            </div>
+            <XFlexCenter>
+              <ShopDetailMap
+                width={350}
+                height={150}
+                lng={shopDetailData?.lng}
+                lat={shopDetailData?.lat}
+              />
+            </XFlexCenter>
+          </ShopDetailContentContainer>
+          <ShopDetailContentContainer>
+            <div className='shop-detail-menu'>
+              <hr />
+              <h2>메뉴</h2>
+              {shopDetailData?.Menus?.map((item: any) => {
                 return (
-                  <>리뷰111</>
+                  <ShopDetailMenu
+                    menuName={item.menuName}
+                    price={item.price}
+                    picture={item.picture}
+                  />
                 )
               })}
-              {(shopDetailReviewList?.length === 0) && (<div>피드가 없습니다.</div>)}
-              {shopDetailReviewIsError && (<div>댓글 에러</div>)}
             </div>
-            <ShopDetailReview/>
-          </div>
-        </ShopDetailContentContainer>
-      </ShopDetailContainer>
+          </ShopDetailContentContainer>
+          <ShopDetailContentContainer>
+            <div className='shop-detail-review'>
+              <hr />
+              <div className='shop-detail-review-sub'>
+                <h2>피드</h2>
+                <button
+                  onClick={() => navi(toShopDetailReviewForm)}
+                >댓글 쓰기</button>
+              </div>
+              <div>
+                {shopDetailReviewList?.map((item: any) => {
+                  return (
+                    <>리뷰111</>
+                  )
+                })}
+                {(shopDetailReviewList?.length === 0) && (<div>피드가 없습니다.</div>)}
+                {shopDetailReviewIsError && (<div>댓글 에러</div>)}
+              </div>
+              <ShopDetailReview />
+            </div>
+          </ShopDetailContentContainer>
+        </ShopDetailContainer>
       </div>
-      
+
     </>
   )
 }
