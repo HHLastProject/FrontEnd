@@ -6,12 +6,12 @@ import { fontType } from "../ui/styles/typo";
 import { colorSet } from "../ui/styles/color";
 
 export interface IShopPostList {
-    id:number;
-    address:string;
-    shopName:string;
-    thumbnail:string;
-    category:string;
-  }
+  id:number;
+  address:string;
+  shopName:string;
+  thumbnail:string;
+  category:string;
+};
 
 function HomeShopPostCard (
   {
@@ -23,7 +23,6 @@ function HomeShopPostCard (
   } : IShopPostList) {
   
   const thumbnailUrl = `${imgPath.shopThumbnailImg + thumbnail}`;
-  console.log(thumbnailUrl)
   const [imgSrc, setImgSrc] = useState<string>(thumbnailUrl);
 
   const onErrorImg = () => {

@@ -21,7 +21,7 @@ export const TabMenuLi = ({children, id, isChecked}: {children: React.ReactNode,
           type="radio" 
           id={`tab-menu-li${id}`} 
           name='tab-menu-li'
-          checked={isChecked && true}
+          defaultChecked={isChecked && true}
           hidden
         />
         <div className='tab-menu-div'>

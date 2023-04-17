@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailReview } from '../custom/jh/useGetShopDetail';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
 import ShopDetailReview from '../components/shopDetail/ShopDetailReview';
-import { imgPath } from '../shared/path';
+import { iconImgPath, imgPath } from '../shared/path';
 import ShopDetailMap from '../components/map/ShopDetailMap';
 import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
@@ -12,13 +12,6 @@ import { colorSet } from '../components/ui/styles/color';
 import { fontType } from '../components/ui/styles/typo';
 
 function ShopDetail() {
-  const icon = {
-    detailInfo: {
-      mapPin: `${process.env.PUBLIC_URL}/images/detail/map_pin_20.png`,
-      clock: `${process.env.PUBLIC_URL}/images/detail/clock_20.png`,
-      phone: `${process.env.PUBLIC_URL}/images/detail/phone_20.png`,
-    }
-  };
   const navi = useNavigate();
   const param = Number(useParams().shopId);
   const tabInfoRef = useRef();
@@ -83,7 +76,7 @@ function ShopDetail() {
           <ShopDetailTab>
             <ul id='detail-tab'>
               <li id="">
-                <input type="radio" id='detail-tab-info' name='detail-tab' hidden/>
+                <input type="radio" id='detail-tab-info' name='detail-tab' defaultChecked hidden/>
                 <div className='detail-tab-div'>
                   <label htmlFor="detail-tab-info">정보</label> 
                 </div>
@@ -106,15 +99,15 @@ function ShopDetail() {
             <h2>정보</h2>
             <div>
               <ShopDetailContentInfo
-                icon={icon.detailInfo.mapPin}
+                iconImg={iconImgPath.detailInfo.mapPin}
                 content={shopDetailData?.address}
               />
               <ShopDetailContentInfo
-                icon={icon.detailInfo.clock}
+                iconImg={iconImgPath.detailInfo.clock}
                 content={shopDetailData?.operatingTime}
               />
               <ShopDetailContentInfo
-                icon={icon.detailInfo.phone}
+                iconImg={iconImgPath.detailInfo.phone}
                 content={shopDetailData?.phoneNumber}
               />
             </div>
