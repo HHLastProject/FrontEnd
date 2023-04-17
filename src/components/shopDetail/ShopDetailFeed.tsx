@@ -1,7 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 
-function ShopDetailReview() {
+function ShopDetailFeed() {
   return (
     <ShopDetailReviewContent>
       <div className='shop-detail-review-profile'>
@@ -26,7 +25,7 @@ function ShopDetailReview() {
   )
 }
 
-export default ShopDetailReview
+export default ShopDetailFeed
 
 const ShopDetailReviewContent = styled.div`
   

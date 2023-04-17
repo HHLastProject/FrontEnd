@@ -3,6 +3,7 @@ import { colorSet } from './ui/styles/color';
 import { fontType } from './ui/styles/typo';
 
 function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: boolean, onClickHiddenHandler: any}) {
+  
   return (
     <div
       style={{

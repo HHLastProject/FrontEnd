@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { path } from '../shared/path';
 import { getUserLocation } from '../custom/jh/getUserLocation';
@@ -12,15 +12,20 @@ import SelectBox from '../components/SelectBox';
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
 import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import { useNavigate } from 'react-router';
+import { RangeContext } from '../apis/context';
+import ListHeader from '../components/home/ListHeader';
 
 const Home = () => {
   const [lng, setLng] = useState(0);
   const [lat, setLat] = useState(0);
+  const [orderBy, setOrderBy] = useState<string>('거리순');
+  // const {range, setRange} = useContext(RangeContext);
   const [range, setRange] = useState(500);
-  const [orderBy, setOrderBy] = useState('거리순');
-  const navi = useNavigate();
 
-  //모달 보이기
+  const navi = useNavigate();
+  const {loginClickHandler, mapClickHandler, searchClickHandler} = useNavigateHandler();
+
+  //선택창 보이기
   const {isSelectHidden, onClickHiddenHandler} = useOnClickHiddenHandler(true);
 
   //토큰 가져오기
@@ -33,6 +38,7 @@ const Home = () => {
     localStorage.setItem('access_token', token);
   };
 
+  //리스트 데이터
   const {
     shopList,
     getshopList,
@@ -54,21 +60,21 @@ const Home = () => {
     if (lng !== 0 && lat !== 0) { getshopList(); };
   }, [lng, lat]);
 
-  const {loginClickHandler, mapClickHandler, searchClickHandler, adminClickHandler} = useNavigateHandler();
-
   //로딩 화면
   if (getshopListIsLoading) { return <div>로딩중...</div>; }
 
   return (
     <>
-    <SelectBox
-      arr={['거리순', '인기순']}
-      hidden={isSelectHidden}
-      onClickHiddenHandler={onClickHiddenHandler}
-    />
+      <SelectBox
+        arr={['거리순', '인기순']}
+        hidden={isSelectHidden}
+        onClickHiddenHandler={onClickHiddenHandler}
+      />
+      <ListHeader
+        range={500}
+      />
       <HomeWrap>
         <HomeContainer>
-          {/* <NoShop/> */}
           <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
           <header>
             <div className='space-between'>
@@ -76,7 +82,7 @@ const Home = () => {
               <button onClick={searchClickHandler}>검색 페이지</button>
             </div>
           </header>
-
+  
           <header>
             <HomeTabMenuStyle>
               <TabMenuUl>
@@ -92,7 +98,7 @@ const Home = () => {
               </TabMenuUl>
             </HomeTabMenuStyle>
           </header>
-
+  
           <div className='space-between'>
             <input type="checkbox" id="by-range" name="by-range" hidden />
             <span>
@@ -103,7 +109,7 @@ const Home = () => {
               </button>
             </span>
           </div>
-
+  
           {/* <Swiper
             
           >
@@ -131,7 +137,7 @@ const Home = () => {
           
         </HomeContainer>
       </HomeWrap>
-      </>
+    </>
   );
 };
 

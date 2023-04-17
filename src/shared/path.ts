@@ -8,7 +8,7 @@ export const path : IPath = {
   mealFilter: '/mealfilter',
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
-  shopDetailReviewForm: '/shop/:shopId/reviewForm',
+  shopDetailFeedForm: '/shop/:shopId/feedform',
   search: '/search',
   mypage: '/mypage',
   map: '/map',
@@ -38,5 +38,6 @@ export const iconImgPath = {
     mapPin: `${process.env.PUBLIC_URL}/images/detail/map_pin_20.png`,
     clock: `${process.env.PUBLIC_URL}/images/detail/clock_20.png`,
     phone: `${process.env.PUBLIC_URL}/images/detail/phone_20.png`,
-  }
+  },
+
 };

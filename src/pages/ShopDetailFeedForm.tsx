@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-function ShopDetailReviewForm() {
+function ShopDetailFeedForm() {
   const [count, setCount] = useState<number>(0);
   const textCountHnadler = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
     if(e.target.value.length <= 500) {
@@ -15,7 +15,7 @@ function ShopDetailReviewForm() {
         <ShopDetailReviewFormContainer>
           <h2>이 곳은 어땠나요?</h2>
           
-          <ShopDetailReviewTextarea 
+          <ShopDetailReviewTextarea
             onChange={textCountHnadler}
             maxLength={500}
             placeholder='후기를 작성해 주세요 :)'
@@ -36,11 +36,14 @@ function ShopDetailReviewForm() {
   )
 }
 
-export default ShopDetailReviewForm
+export default ShopDetailFeedForm
 
 const ShopDetailReviewFormContainer = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: #fff;
   h2 {
     font-size: 18px;
     font-weight: 600;

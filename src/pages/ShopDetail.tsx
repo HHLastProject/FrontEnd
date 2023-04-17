@@ -3,13 +3,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailReview } from '../custom/jh/useGetShopDetail';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
-import ShopDetailReview from '../components/shopDetail/ShopDetailReview';
 import { iconImgPath, imgPath } from '../shared/path';
 import ShopDetailMap from '../components/map/ShopDetailMap';
 import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
 import { colorSet } from '../components/ui/styles/color';
 import { fontType } from '../components/ui/styles/typo';
+import ShopDetailFeed from '../components/shopDetail/ShopDetailFeed';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -18,7 +18,7 @@ function ShopDetail() {
   const tabMenuRef = useRef();
   const tabReviewRef = useRef();
   
-  const toShopDetailReviewForm = `/shop/${param}/reviewForm`;
+  const toShopDetailReviewForm = `/shop/${param}/feedform`;
 
   const scrollToTabInfo = () => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -47,7 +47,6 @@ function ShopDetail() {
 
   useEffect(() => {
     console.log(shopDetailData);
-
   }, [shopDetailData])
   useEffect(() => {
     getShopDetailReviewList();
@@ -90,7 +89,7 @@ function ShopDetail() {
               <li id="">
                 <input type="radio" id='detail-tab-review' name='detail-tab' hidden/>
                 <div className='detail-tab-div'>
-                  <label htmlFor="detail-tab-review">리뷰</label>
+                  <label htmlFor="detail-tab-review">피드</label>
                 </div>
               </li>
             </ul>
@@ -140,7 +139,7 @@ function ShopDetail() {
                 <h2>피드</h2>
                 <button
                   onClick={() => navi(toShopDetailReviewForm)}
-                >댓글 쓰기</button>
+                >피드 쓰기</button>
               </div>
               <div>
                 {shopDetailReviewList?.map((item:any) => {
@@ -151,7 +150,7 @@ function ShopDetail() {
                 {(shopDetailReviewList?.length === 0) && (<div>피드가 없습니다.</div>)}
                 {shopDetailReviewIsError && (<div>댓글 에러</div>)}
               </div>
-              <ShopDetailReview/>
+              <ShopDetailFeed/>
             </div>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
