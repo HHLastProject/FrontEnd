@@ -30,6 +30,7 @@ function ShopDetailFeedForm() {
                 inputValue={inputValue}
                 setInputValue={setInputValue}
                 placeholder='카페 이름 입력하기'
+                
               />
             </div>
           </div>

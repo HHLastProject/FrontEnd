@@ -2,17 +2,17 @@ import { useEffect, useRef } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailReview } from '../custom/jh/useGetShopDetail';
+import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
-import { iconImgPath, imgPath } from '../shared/path';
 import ShopDetailMap from '../components/map/ShopDetailMap';
 import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
+import ShopDetailFeed from '../components/shopDetail/ShopDetailFeed';
+import { iconImgPath, imgPath } from '../shared/path';
 import { colorSet } from '../components/ui/styles/color';
 import { fontType } from '../components/ui/styles/typo';
-import ShopDetailFeed from '../components/shopDetail/ShopDetailFeed';
-import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import { Buttons } from '../components/ui/element/buttons/Buttons';
-import PencilIcon from '../components/ui/element/icons/IconsStyle';
+import { IconPencil } from '../components/ui/element/icons/IconsStyle';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -143,7 +143,7 @@ function ShopDetail() {
                   onClick={() => feedFormClickHandler(param)}
                 >
                   <Buttons.Small.Default>
-                    <><PencilIcon/>피드 쓰기</>
+                    <><IconPencil/>피드 쓰기</>
                   </Buttons.Small.Default>
                 </div>
               </div>

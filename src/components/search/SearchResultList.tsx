@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { iconImgPath } from '../../shared/path';
+import { IconMapFilled24 } from '../ui/element/icons/IconsStyle';
 
 export interface ISearchResult {
   shopId : number,
@@ -14,9 +14,7 @@ function SearchResultList({shopId, shopName, shopAddress}: ISearchResult) {
       // onClick={}
     >
       <SearchResultListContainer>
-        <span>
-          <img src={iconImgPath.search.marker} alt="위치" className='search-marker'/>
-        </span>
+        <IconMapFilled24/>
         <span className='search-shop-result'>
           <h4>{shopName}</h4>
           <label>{shopAddress}</label>
@@ -44,9 +42,6 @@ const SearchResultListContainer = styled.div`
   padding: 12px 0;
   line-height: 22px;
   border-bottom: 1px solid #DBDBDB;
-  .search-marker {
-    width: 16px;
-  }
   .search-shop-result {
     display: flex;
     flex-direction: column;

@@ -1,12 +1,18 @@
-import { IconSize16 } from "./IconSize"
+import { iconImgPath } from "../../../../shared/path"
+import { IconSize16, IconSize24 } from "./IconSize"
 
-
-function PencilIcon() {
+export const IconPencil = () => {
   return (
     <IconSize16>
-      <img src={`${process.env.PUBLIC_URL}/images/feed/write_24.png`} alt="피드 작성하기" />
+      <img src={iconImgPath.write.pencil} alt="피드 작성하기" />
     </IconSize16>
   )
 }
 
-export default PencilIcon
+export const IconMapFilled24 = () => {
+  return(
+    <IconSize24>
+      <img src={iconImgPath.search.marker} alt="위치" />
+    </IconSize24>
+  )
+}

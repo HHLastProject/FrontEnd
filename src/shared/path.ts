@@ -51,5 +51,8 @@ export const iconImgPath : IPathObject = {
   },
   map: {
     shopLocation: `${process.env.PUBLIC_URL}/images/markers/icon_mappin_36.png`,
+  },
+  write: {
+    pencil: `${process.env.PUBLIC_URL}/images/feed/write_24.png`,
   }
 };
