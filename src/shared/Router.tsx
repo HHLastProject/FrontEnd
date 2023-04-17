@@ -22,6 +22,7 @@ import AllFeeds from '../pages/AllFeeds'
 import FeedDetail from '../pages/FeedDetail'
 import List from '../pages/List'
 import Home from '../pages/Home'
+import Bookmark from '../pages/Bookmark'
 
 const Router = () => {
   return (
@@ -39,12 +40,11 @@ const Router = () => {
             <Route path="/admin/shoplist" element={<Admin />} />
             <Route path="/admin/register" element={<AdminRegister />} />
             <Route path="/admin/:id" element={<AdminUpdate />} />
-
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/redirect/naver" element={<RedirectNaver />} />
             <Route path="/redirect/kakao" element={<RedirectKakao />} />
 
-
-            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/bookmark" element={<Bookmark />} />
 
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/mypage/feeds/:userId" element={<AllFeeds />} />
@@ -64,6 +64,7 @@ const PageContainer = styled.div`
   flex: 1;
   height: fit-content;
   overflow-y : scroll;
+  background-color: white;
 
   /* 스크롤바 안 보이게 */
   -ms-overflow-style: none;

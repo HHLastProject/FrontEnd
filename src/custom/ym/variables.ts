@@ -94,6 +94,13 @@ export const B14: Font = {
     color: `#${STRONG_MEDIUM}`,
 }
 
+export const HEADING_1: Font = {
+    fontSize: '32px',
+    lineHeight: '40px',
+    fontWeight: '700',
+    color: `black`
+}
+
 export const navIcons = {
     home: {
         true: `${process.env.PUBLIC_URL}/icon/nav_icons/home_active.png`,
