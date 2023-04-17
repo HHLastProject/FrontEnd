@@ -1,13 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
+import { iconImgPath } from '../../shared/path';
 
 export interface ISearchResult {
   shopId : number,
   shopName : string,
   shopAddress : string,
 } ;
-
-const searchMarkerImg = `${process.env.PUBLIC_URL}/images/search/search_result_marker.png`;
 
 function SearchResultList({shopId, shopName, shopAddress}: ISearchResult) {
   return (
@@ -16,7 +15,7 @@ function SearchResultList({shopId, shopName, shopAddress}: ISearchResult) {
     >
       <SearchResultListContainer>
         <span>
-          <img src={searchMarkerImg} alt="마커" className='search-marker'/>
+          <img src={iconImgPath.search.marker} alt="위치" className='search-marker'/>
         </span>
         <span className='search-shop-result'>
           <h4>{shopName}</h4>

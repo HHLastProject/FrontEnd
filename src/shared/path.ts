@@ -47,5 +47,9 @@ export const iconImgPath : IPathObject = {
   },
   search: {
     loupe: `${process.env.PUBLIC_URL}/loupe.png`,
+    marker: `${process.env.PUBLIC_URL}/images/search/mapfilled_24.png`,
+  },
+  map: {
+    shopLocation: `${process.env.PUBLIC_URL}/images/markers/icon_mappin_36.png`,
   }
 };
