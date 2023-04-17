@@ -10,12 +10,13 @@ function ShopDetailFeedForm() {
   const {count, textCountHandler} = useTextCountHandler(maxLength);
   const [inputValue, setInputValue] = useState('');
   const [imgFile, setImgFile] = useState(null);
+  const [dataList, setDataList] = useState([]);
   const {searchClickHandler} = useNavigateHandler();
   const param = useParams().shopId;
-  console.log(param);
+  
   return (
     <>
-      <form action={`/${param}`}>
+      <form action={`/api/shop/${param}/feed`}>
         <ShopDetailReviewFormContainer>
           <h2>새로운 기록</h2>
           <div>
@@ -30,7 +31,7 @@ function ShopDetailFeedForm() {
                 inputValue={inputValue}
                 setInputValue={setInputValue}
                 placeholder='카페 이름 입력하기'
-                
+                setDataList={setDataList}
               />
             </div>
           </div>
@@ -42,6 +43,7 @@ function ShopDetailFeedForm() {
             <div
               // onClick={}
             >
+              <input type="file" name="shopFeedImg"/>
               {imgFile && <img src='' alt=''/>}
             </div>
           </div>
@@ -76,7 +78,7 @@ export default ShopDetailFeedForm
 
 const ShopDetailReviewFormContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #fff;

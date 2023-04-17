@@ -5,6 +5,13 @@ import SearchStore from '../components/search/SearchInput';
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
+  const [dataList, setDataList] = useState([
+    {
+      shopId : 0,
+      shopName : '',
+      shopAddress : '',
+    },
+  ]);
 
   return (
     <SearchWrap>
@@ -12,10 +19,26 @@ function Search() {
         <SearchStore
           inputValue={inputValue}
           setInputValue={setInputValue}
+          setDataList={setDataList}
         />
+
         <div className='search-result-list'>
           {
-          result.map((item) => {
+          result?.map((item) => {
+            return(
+              <SearchResultList
+                key={item.shopId}
+                shopId={item.shopId}
+                shopName={item.shopName}
+                shopAddress={item.shopAddress}
+              />
+            )
+          })
+        }
+        </div>
+        <div className='search-result-list'>
+          {
+          dataList?.map((item) => {
             return(
               <SearchResultList
                 key={item.shopId}

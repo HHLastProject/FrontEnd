@@ -27,6 +27,7 @@ export const apiPath : IPath = {
   toShopDetail: '/api/shop',
   shopDetailReview: '/api/shop/:shopId/review',
   editShopDetailReview: '/api/shop/:shopId/review/:reviewId',
+  search: '/api/search',
 };
 
 export const imgPath : IPath = {

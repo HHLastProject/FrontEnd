@@ -1,13 +1,29 @@
 import styled from 'styled-components'
 import { iconImgPath } from '../../shared/path';
+import { debounce } from '../../custom/jh/debounce';
+import { useCallback, useEffect } from 'react';
+import getSearchResult from '../../custom/jh/useSearchResult';
 
-export type ISearchInput = {
+export interface ISearchInput {
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   placeholder?: string;
+  dataList?: [];
+  setDataList: React.Dispatch<React.SetStateAction<never[]>> | ISearchResult[] | any;
 };
 
-function SearchStore({inputValue, setInputValue, placeholder}: ISearchInput) {
+export interface ISearchResult {
+  shopId : number;
+  shopName : string;
+  shopAddress : string;
+};
+
+function SearchStore({
+  inputValue, 
+  setInputValue, 
+  placeholder,
+  setDataList,
+  }: ISearchInput) {
   return(
     <SearchStoreStyle>
       <div id='search-input'>
@@ -16,6 +32,7 @@ function SearchStore({inputValue, setInputValue, placeholder}: ISearchInput) {
           inputValue={inputValue}
           setInputValue={setInputValue}
           placeholder={placeholder}
+          setDataList={setDataList}
         />
       </div>
     </SearchStoreStyle>
@@ -44,15 +61,34 @@ const SearchStoreStyle = styled.div`
     }
 `;
 
-export function SearchInput({inputValue, setInputValue, placeholder}: ISearchInput) {
-  const onChangeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+export function SearchInput({
+  inputValue, 
+  setInputValue, 
+  placeholder,
+  dataList,
+  setDataList,
+}: ISearchInput) {
+
+  const delaySec: number = 1;
+  const debounceCallback = useCallback(
+    debounce((value: string, delaySec?: number) => {
+      getSearchResult(value, setDataList);
+    }, (delaySec ? delaySec*1000 : 2000))
+  , []);
+
+  const onChangeInputCallback = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
-    console.log(inputValue);
+    debounceCallback(e.target.value);
   };
+
+  useEffect(() => {
+    console.log('검색 결과 데이터',dataList);
+  }, [dataList]);
+
   return (
     <SearchInputStyle
       type='text'
-      onChange={onChangeInputHandler}
+      onChange={onChangeInputCallback}
       value={inputValue}
       placeholder={placeholder}
     />
