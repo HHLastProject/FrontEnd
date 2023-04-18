@@ -14,12 +14,12 @@ export const useGetHomeShopList = ({lng, lat, range} : locationType) => {
   const { data, mutate, isLoading, isSuccess, isError } = useMutation({
     mutationKey: queryKeys.GET_HOME_SHOPLIST,
     mutationFn: async () => {
-      const {data} = await api.post(`${apiPath.shopList}`, { data: {
+      const {data} = await api.post(`${apiPath.shopList}`, {
         lng,
         lat,
         range,
-      }});
-      return data.shop;
+      });
+      return data.shops;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: queryKeys.GET_HOME_SHOPLIST});
