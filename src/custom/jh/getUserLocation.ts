@@ -1,4 +1,6 @@
-export function getUserLocation (setX : React.Dispatch<React.SetStateAction<number>>, setY : React.Dispatch<React.SetStateAction<number>>) : string | undefined {
+import { Coordinate } from "../ym/types";
+
+export function getUserLocation(setX: React.Dispatch<React.SetStateAction<number>>, setY: React.Dispatch<React.SetStateAction<number>>): string | undefined {
   navigator.geolocation.getCurrentPosition((position) => {
     //성공했을 때 위도 경도 알아냄
     let x = position.coords.longitude;  //경도
@@ -13,24 +15,18 @@ export function getUserLocation (setX : React.Dispatch<React.SetStateAction<numb
   return undefined;
 };
 
-type Coordinate = {
-  lng: number,
-  lat: number,
-};
-
 export function getRealtimeLocation(
   setState: React.Dispatch<React.SetStateAction<Coordinate>>
 ) {
-
   navigator.geolocation.getCurrentPosition((position) => {
     const newCoord: Coordinate = {
       lng: position.coords.longitude,
       lat: position.coords.latitude,
     }
-
     setState(newCoord);
 
   }, (err) => {
     alert('위치정보를 가져오지 못했습니다.');
-  })
+  });
+  return null;
 };

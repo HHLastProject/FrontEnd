@@ -15,9 +15,12 @@ export const keys: IQueryKey = {
   GET_ShopList_Detail: ['GetDetail']
 };
 
-
 export const loginKeys: IQueryKey = {
   POST_NAVER_TOKEN: ["postNaverToken"],
   POST_KAKAO_TOKEN: ["postKakaoToken"],
   POST_ADMIN_LOGIN: ["postAdminLogin"]
+}
+
+export const mapQueryKeys: IQueryKey = {
+  POST_SHOPS_IN_RANGE: ["POST_SHOPS_IN_RANGE"],
 }

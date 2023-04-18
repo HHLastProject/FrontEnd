@@ -1,28 +1,20 @@
-import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react'
+import React, { ButtonHTMLAttributes, createContext, useContext, useEffect, useRef, useState } from 'react'
 import MapModule from '../components/map/MapModule';
 import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
-import { getRealtimeLocation } from '../custom/jh/getUserLocation';
+import { getRealtimeLocation, getUserLocation } from '../custom/jh/getUserLocation';
 import data from "../datasample/data.json"
 import { HFlex, HFlexSpaceBetween, PublicContainer, VFlex, VFlexCenter } from '../custom/ym/styleStore';
 import styled from 'styled-components';
 import MapHeader from '../components/map/MapHeader';
 import CarouselBox from '../components/map/carousel/CarouselBox';
-import { FILTER_LIST, LINE_MEDIUM, STRONG_MEDIUM, SAMPLE_DATA } from '../custom/ym/variables';
+import { FILTER_LIST, LINE_MEDIUM, STRONG_MEDIUM, SAMPLE_DATA, ShopData } from '../custom/ym/variables';
 import uuid from 'react-uuid';
 import { MEDIUM } from '../custom/ym/variables';
+import { Coordinate, categoryTypes } from '../custom/ym/types';
+import useMapDataCall from '../hooks/useMapDataCall';
+import { dispatches, states } from '../custom/ym/contextValues';
 
-type Coordinate = {
-    lng: number,
-    lat: number,
-};
-type JsonData = {
-    shopName: string,
-    category: string,
-    jibunAddress: string,
-    roadAddress: string,
-    lat: number,
-    lng: number
-}
+
 export interface EachData {
     shopId: number,
     category: string,
@@ -36,16 +28,19 @@ export interface EachData {
     lng: number
 }
 
+export const StateContext = createContext(states);
+export const DispatchContext = createContext(dispatches);
 
 const Home = () => {
 
     const navermaps = useNavermaps();
     // const map = useMap();
+    const [lng, setLng] = useState(0);
+    const [lat, setLat] = useState(0);
     const [range, setRange] = useState(500);
     const [search, setSearch] = useState('');
-    const [category, setCategory] = useState<string>('');
-    const [list, setList] = useState<(EachData | null)[]>([]);
-    // const map = useRef(null);
+    const [category, setCategory] = useState<categoryTypes | ''>('');
+    const [list, setList] = useState<(ShopData | null)[]>([]);
 
     const [temp, setTemp] = useState({ lat: 37.5108407, lng: 127.0468975 });
 
@@ -59,29 +54,47 @@ const Home = () => {
     // 샵 위치
     const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
 
+
     const icon = {
         url: `${process.env.PUBLIC_URL}/markers/shop3.png`,
         anchor: new navermaps.Point(0, 0),
     }
 
-    const moveCenter = () => {
-        navermaps.Service.geocode({
-            query: search,
-        }, (status, response) => {
-            if (status !== navermaps.Service.Status.OK) {
-                return alert("Something wrong!");
+    // const { data, mutate, isSuccess, isError, isLoading }
+    //     = useMapDataCall({ lng: temp.lng, lat: temp.lat, range: range });
+    const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
+
+    const shopCoordList = (arr: ShopData[]) => {
+        const result: Coordinate[] = arr?.map((item) => {
+            return {
+                lng: item.lng,
+                lat: item.lat
             }
-            console.log(response);
-            setTemp((prev) => {
-                return {
-                    lat: parseFloat(response.v2.addresses[0].y),
-                    lng: parseFloat(response.v2.addresses[0].x),
-                }
-            });
         })
+
+        console.log('shopCoordlist:', result);
+        return result;
     }
 
-    const filterClickHandler = (buttonName: string) => {
+
+    // const moveCenter = () => {
+    //     navermaps.Service.geocode({
+    //         query: search,
+    //     }, (status, response) => {
+    //         if (status !== navermaps.Service.Status.OK) {
+    //             return alert("Something wrong!");
+    //         }
+    //         console.log(response);
+    //         setTemp((prev) => {
+    //             return {
+    //                 lat: parseFloat(response.v2.addresses[0].y),
+    //                 lng: parseFloat(response.v2.addresses[0].x),
+    //             }
+    //         });
+    //     })
+    // }
+
+    const filterClickHandler = (buttonName: categoryTypes) => {
         if (category === buttonName) {
             setCategory("");
         } else {
@@ -92,40 +105,54 @@ const Home = () => {
         // console.log(buttonName);
     }
 
+    /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch를 진행 */
     useEffect(() => {
-        // getRealtimeLocation(setUserCoord);
-        // console.log(userCoord);
+        mutateAsync({ lng: temp.lng, lat: temp.lat, range: range })
+            .then((data) => {
+                setList(data);
+                setShopCoord(shopCoordList(data));
+            });
+    }, [range]);
+
+    useEffect(() => {
         if (category) {
             setList(prev => {
-                const searchResult = SAMPLE_DATA.map((item) => item.category === category ? item : null);
+                const searchResult = data?.filter((item: ShopData) => item.category === category);
                 return searchResult;
             })
         } else {
-            setList(SAMPLE_DATA);
+            setList(data);
         }
-
     }, [category]);
+
+
+
 
     return (
         <VFlex etc='position: relative;'>
-            <VFlexCenter etc="min-width:500px;min-width:390px;height:100%;flex:1;">
-                <MapHeader />
-                <MapModule category={category} />
-            </VFlexCenter>
-            <CategoryButtons>
-                {FILTER_LIST.map((element) => <FilterBtn
-                    selected={category}
-                    name={element}
-                    key={uuid()}
-                    onClick={(e) => filterClickHandler(element)}
-                >{element}</FilterBtn>)}
-            </CategoryButtons>
-            <AimBtn>
-                <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
-            </AimBtn>
-            <CarouselModule>
-                <CarouselBox>{list}</CarouselBox>
-            </CarouselModule>
+            <StateContext.Provider value={{ userCoord, shopCoord, category, range, list }}>
+                <DispatchContext.Provider value={{ setRange, setCategory, setList, setUserCoord, setShopCoord }}>
+                    <VFlexCenter etc="min-width:500px;min-width:390px;height:100%;flex:1;">
+                        <MapHeader />
+                        <MapModule category={category} />
+                    </VFlexCenter>
+                    <CategoryButtons>
+                        {FILTER_LIST.map((element) => <FilterBtn
+                            selected={category}
+                            name={element}
+                            key={uuid()}
+                            onClick={(e) => filterClickHandler(element)}
+                        >{element}</FilterBtn>)}
+                    </CategoryButtons>
+                    <AimBtn>
+                        <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
+                    </AimBtn>
+                    <CarouselModule>
+                        {/* <CarouselBox>{list}</CarouselBox> */}
+                        <CarouselBox />
+                    </CarouselModule>
+                </DispatchContext.Provider>
+            </StateContext.Provider>
         </VFlex>
     );
 }

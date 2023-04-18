@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { navIcons } from '../../../../custom/ym/variables';
 
 const BtnNavContents = ({ isActive, btnType }: BtnNavProps) => {
-    console.log(btnType, isActive);
     return (
         <Container>
             <Image src={navIcons[btnType][`${isActive}`]} alt={btnType} />

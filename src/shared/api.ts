@@ -1,8 +1,18 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
+
+const axiosConfig: AxiosRequestConfig = {
+  baseURL: `${process.env.REACT_APP_SERVER_URL}`,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Authorization": localStorage.getItem("access_token"),
+  },
+}
 
 const api = axios.create({
-  baseURL:`${process.env.REACT_APP_SERVER_URL}`,
+  baseURL: `${process.env.REACT_APP_SERVER_URL}`,
 })
+
+export const api_token = axios.create(axiosConfig)
 
 api.interceptors.request.use(
   // 요청을 보내기 전 수행되는 함수

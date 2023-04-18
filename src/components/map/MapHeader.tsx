@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components';
 import { HFlex, VFlex, VFlexCenter } from '../../custom/ym/styleStore';
 import { useNavigate } from 'react-router-dom';
+import { DispatchContext } from '../../pages/Home';
 
 const MapHeader = () => {
 
+    const { setRange } = useContext(DispatchContext);
+
+    const temp: React.Dispatch<React.SetStateAction<number>> = setRange as React.Dispatch<React.SetStateAction<number>>;
+
+    const [count, setCount] = useState(500);
+
     const navi = useNavigate();
     const searchClickHandler = () => {
-        navi('/search');
+        // navi('/search');
+        setCount(prev => prev += 50);
+        temp(count);
+        console.log('증가한 카운트:', count);
     }
     return (
         <HeaderContainer>
