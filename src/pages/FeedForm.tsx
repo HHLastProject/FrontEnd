@@ -13,7 +13,7 @@ interface IFeedResister {
   tags : string [];   //null허용
 };
 
-function ShopDetailFeedForm() {
+function FeedForm() {
   const param = useParams().shopId;
   const maxLength = 500;
   const {count, textCountHandler} = useTextCountHandler(maxLength);
@@ -148,7 +148,7 @@ function ShopDetailFeedForm() {
   )
 }
 
-export default ShopDetailFeedForm
+export default FeedForm
 
 const ShopDetailReviewFormContainer = styled.div`
   width: 100%;

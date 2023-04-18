@@ -20,7 +20,7 @@ import Search from '../pages/Search'
 import Mypage from '../pages/Mypage'
 import AllFeeds from '../pages/AllFeeds'
 import FeedDetail from '../pages/FeedDetail'
-import ShopDetailFeedForm from '../pages/ShopDetailFeedForm'
+import FeedForm from '../pages/FeedForm'
 
 const Router = () => {
   return (
@@ -32,7 +32,7 @@ const Router = () => {
             <Route path="/login" element={<Login />} />
             <Route path={path.search} element={<Search />} />
             <Route path={path.shopDetail} element={<ShopDetail />} />
-            <Route path={path.shopDetailFeedForm} element={<ShopDetailFeedForm />} />
+            <Route path={path.shopDetailFeedForm} element={<FeedForm />} />
 
             <Route path="/admin/shoplist" element={<Admin />} />
             <Route path="/admin/register" element={<AdminRegister />} />
