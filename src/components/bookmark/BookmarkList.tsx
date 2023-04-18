@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { HFlex, VFlex } from '../../custom/ym/styleStore'
-import { FILTER_LIST, SAMPLE_DATA } from '../../custom/ym/variables'
-import BookmarkCard from '../ui/element/cards/BookmarkCard'
+import { HFlex } from '../../custom/ym/styleStore'
+import { FILTER_LIST } from '../../custom/ym/variables'
 import { Categorys } from '../ui/element/tags/Categorys'
 import uuid from 'react-uuid'
 import { categoryTypes } from '../../custom/ym/types'
@@ -25,7 +24,6 @@ const BookmarkList = () => {
 
     useEffect(() => {
         localStorage.getItem("access_token") && setIsLogin(prev => !prev);
-        console.log(isLogin);
     }, [])
 
     return (

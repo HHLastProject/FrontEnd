@@ -1,5 +1,6 @@
+import React from "react";
 import { EachData } from "../../pages/Home";
-import { categoryTypes } from "./types";
+import { Coordinate, categoryTypes } from "./types";
 
 
 type Font = {
@@ -125,6 +126,23 @@ export const navIcons = {
     },
 }
 
+export interface ShopData {
+    shopId: number,
+    shopName: string,
+    thumbnail: string,
+    address: string,
+    category: categoryTypes,
+    lat: number,
+    lng: number,
+    maxPrice: string,
+    minPrice: string,
+    menuName: string,
+    distance: number,
+    feedCount: number,
+    isScrap: boolean,
+}
+
+export type ZoomValues = 15 | 16 | 17 | 18 | 19;
 
 export const SAMPLE_DATA: EachData[] = [
     {

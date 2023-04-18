@@ -1,28 +1,21 @@
-import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react'
+import React, { ButtonHTMLAttributes, createContext, useContext, useEffect, useRef, useState } from 'react'
 import MapModule from '../components/map/MapModule';
 import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
-import { getRealtimeLocation } from '../custom/jh/getUserLocation';
+import { getRealtimeLocation, getUserLocation } from '../custom/jh/getUserLocation';
 import data from "../datasample/data.json"
 import { HFlex, HFlexSpaceBetween, PublicContainer, VFlex, VFlexCenter } from '../custom/ym/styleStore';
 import styled from 'styled-components';
 import MapHeader from '../components/map/MapHeader';
 import CarouselBox from '../components/map/carousel/CarouselBox';
-import { FILTER_LIST, LINE_MEDIUM, STRONG_MEDIUM, SAMPLE_DATA } from '../custom/ym/variables';
+import { FILTER_LIST, LINE_MEDIUM, STRONG_MEDIUM, SAMPLE_DATA, ShopData } from '../custom/ym/variables';
 import uuid from 'react-uuid';
 import { MEDIUM } from '../custom/ym/variables';
+import { Coordinate, categoryTypes } from '../custom/ym/types';
+import useMapDataCall from '../hooks/useMapDataCall';
+import { dispatches, states } from '../custom/ym/contextValues';
+import CategoryButtonBar from '../components/map/CategoryButtonBar';
 
-type Coordinate = {
-    lng: number,
-    lat: number,
-};
-type JsonData = {
-    shopName: string,
-    category: string,
-    jibunAddress: string,
-    roadAddress: string,
-    lat: number,
-    lng: number
-}
+
 export interface EachData {
     shopId: number,
     category: string,
@@ -36,128 +29,97 @@ export interface EachData {
     lng: number
 }
 
+export const StateContext = createContext(states);
+export const DispatchContext = createContext(dispatches);
 
 const Home = () => {
 
     const navermaps = useNavermaps();
     // const map = useMap();
-    const [range, setRange] = useState(500);
+    const [range, setRange] = useState(300);
     const [search, setSearch] = useState('');
-    const [category, setCategory] = useState<string>('');
-    const [list, setList] = useState<(EachData | null)[]>([]);
-    // const map = useRef(null);
-
-    const [temp, setTemp] = useState({ lat: 37.5108407, lng: 127.0468975 });
-
+    const [category, setCategory] = useState<categoryTypes | ''>('');
+    const [list, setList] = useState<(ShopData | null)[]>([]);
+    const [center, setCenter] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
 
     // 실시간 유저 위치
-    const [userCoord, setUserCoord] = useState<Coordinate>({
-        lng: 0,
-        lat: 0,
-    });
+    const [userCoord, setUserCoord] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
 
     // 샵 위치
     const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
+
+    const stateList = { userCoord, shopCoord, category, range, list, center };
+    const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter };
+
 
     const icon = {
         url: `${process.env.PUBLIC_URL}/markers/shop3.png`,
         anchor: new navermaps.Point(0, 0),
     }
 
-    const moveCenter = () => {
-        navermaps.Service.geocode({
-            query: search,
-        }, (status, response) => {
-            if (status !== navermaps.Service.Status.OK) {
-                return alert("Something wrong!");
+    const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
+
+    const shopCoordList = (arr: ShopData[]) => {
+        const result: Coordinate[] = arr?.map((item) => {
+            return {
+                lng: item.lng,
+                lat: item.lat
             }
-            console.log(response);
-            setTemp((prev) => {
-                return {
-                    lat: parseFloat(response.v2.addresses[0].y),
-                    lng: parseFloat(response.v2.addresses[0].x),
-                }
-            });
         })
+        return result;
     }
 
-    const filterClickHandler = (buttonName: string) => {
-        if (category === buttonName) {
-            setCategory("");
-        } else {
-            setCategory(prev => buttonName);
-        }
-
-        console.log(category);
-        // console.log(buttonName);
-    }
+    /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch를 진행 */
+    useEffect(() => {
+        console.log('실행되는중');
+        console.log(center.lng, center.lat);
+        mutateAsync({ lng: center.lng, lat: center.lat, range: range })
+            .then((data) => {
+                setList(data);
+                setShopCoord(shopCoordList(data));
+                console.log('새로바뀐 list :', list);
+                console.log('새로바뀐 shopCoord:', shopCoord);
+            });
+    }, [range, center]);
 
     useEffect(() => {
-        // getRealtimeLocation(setUserCoord);
-        // console.log(userCoord);
         if (category) {
             setList(prev => {
-                const searchResult = SAMPLE_DATA.map((item) => item.category === category ? item : null);
+                const searchResult = data?.filter(
+                    (item: ShopData) => item.category === category);
                 return searchResult;
             })
         } else {
-            setList(SAMPLE_DATA);
+            setList(data);
         }
-
     }, [category]);
+
+    const aimClickListner = () => {
+        setCenter(userCoord);
+    }
 
     return (
         <VFlex etc='position: relative;'>
-            <VFlexCenter etc="min-width:500px;min-width:390px;height:100%;flex:1;">
-                <MapHeader />
-                <MapModule category={category} />
-            </VFlexCenter>
-            <CategoryButtons>
-                {FILTER_LIST.map((element) => <FilterBtn
-                    selected={category}
-                    name={element}
-                    key={uuid()}
-                    onClick={(e) => filterClickHandler(element)}
-                >{element}</FilterBtn>)}
-            </CategoryButtons>
-            <AimBtn>
-                <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
-            </AimBtn>
-            <CarouselModule>
-                <CarouselBox>{list}</CarouselBox>
-            </CarouselModule>
+            <StateContext.Provider value={{ ...stateList }}>
+                <DispatchContext.Provider value={{ ...dispatchList }}>
+                    <VFlexCenter etc="min-width:390px; height:100%; flex:1;">
+                        <MapHeader />
+                        <MapModule />
+                    </VFlexCenter>
+                    <CategoryButtonBar />
+                    <AimBtn onClick={aimClickListner}>
+                        <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
+                    </AimBtn>
+                    <CarouselModule>
+                        <CarouselBox />
+                    </CarouselModule>
+                </DispatchContext.Provider>
+            </StateContext.Provider>
         </VFlex>
     );
 }
 
 export default Home;
-
-const CategoryButtons = styled.div`
-    position: absolute;
-    display: flex;
-    gap : 4px;
-    z-index: 50;
-    top: 80px;
-    left : 20px;
-`
-
-const FilterBtn = styled.button<{
-    selected: string,
-    name: string,
-}>`
-    height: 36px;
-    padding : 7px 12px;
-    border : 1px solid ${({ selected, name }) =>
-        selected === name ? `#${MEDIUM}` : `#${LINE_MEDIUM}`};
-    border-radius: 18px;
-    color : ${({ selected, name }) =>
-        selected === name ? 'white' : `#${STRONG_MEDIUM}`};
-    font-family : "Pretendard";
-    font-weight : 400;
-    line-height : 22px;
-    font-size : 14px;
-    background-color : ${({ selected, name }) => selected === name ? `#${MEDIUM}` : 'white'};
-`;
 
 const Image = styled.img`
     width: 100%;
