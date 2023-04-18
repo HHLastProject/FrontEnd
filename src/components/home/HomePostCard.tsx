@@ -11,6 +11,8 @@ export interface IShopPostList {
   shopName:string;
   thumbnail:string;
   category:string;
+  distance:number;
+  feedCount:number;
 };
 
 function HomeShopPostCard (
@@ -20,6 +22,8 @@ function HomeShopPostCard (
     shopName,
     thumbnail,
     category,
+    distance,
+    feedCount,
   } : IShopPostList) {
   
   const thumbnailUrl = `${imgPath.shopThumbnailImg + thumbnail}`;
@@ -44,13 +48,13 @@ function HomeShopPostCard (
           <label className="address">{address}</label>
           <div className="postcard-content-bottom">
             <span>
-              <label className="bold">{202}</label>
+              <label className="bold">{distance}</label>
               <label>m</label>
             </span>
             <LineDiv/>
             <span>
               <label>피드</label>
-              <label className="bold feed-count">{10}</label>
+              <label className="bold feed-count">{feedCount}</label>
             </span>
           </div>
         </div>

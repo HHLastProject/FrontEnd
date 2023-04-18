@@ -126,6 +126,8 @@ const Home = () => {
                       shopName={item.shopName}
                       thumbnail={item.thumbnail}
                       category={item.category}
+                      distance={item.distance}
+                      feedCount={item.feedCount}
                     />
                   ))
                 }
