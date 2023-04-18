@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import SearchResultList, { ISearchResult } from '../components/search/SearchResultList';
 import styled from 'styled-components';
 import SearchStore from '../components/search/SearchInput';
+import { useParams } from 'react-router';
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
@@ -12,6 +13,11 @@ function Search() {
       shopAddress : '',
     },
   ]);
+
+  let link = '';
+  let param = Number(useParams().isfeed); //피드페이지에서 넘어올때만 있는 파라미터
+  console.log(param);
+  if(!param) param = 0;
 
   return (
     <SearchWrap>

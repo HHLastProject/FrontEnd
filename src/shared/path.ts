@@ -14,14 +14,16 @@ export const path : IPath = {
   mealFilter: '/mealfilter',
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
-  shopDetailFeedForm: '/shop/:shopId/feedform',
+  feedForm: '/shop/:shopId/feedform',
   search: '/search',
+  feedFormSearch: '/search/:isfeed',
   mypage: '/mypage',
   map: '/map',
   adminShoplist: '/admin/shoplist',
 }
 
 export const apiPath : IPath = {
+  home: '/api/shop/main',
   shopList: '/api/shop/main',
   shopDetail: '/api/shop/:shopId',
   toShopDetail: '/api/shop',

@@ -31,8 +31,9 @@ const Router = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path={path.search} element={<Search />} />
+            <Route path={path.feedFormSearch} element={<Search />} />
             <Route path={path.shopDetail} element={<ShopDetail />} />
-            <Route path={path.shopDetailFeedForm} element={<FeedForm />} />
+            <Route path={path.feedForm} element={<FeedForm />} />
 
             <Route path="/admin/shoplist" element={<Admin />} />
             <Route path="/admin/register" element={<AdminRegister />} />
