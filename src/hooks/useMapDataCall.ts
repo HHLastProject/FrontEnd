@@ -11,18 +11,16 @@ type Payload = {
     range: number
 }
 
-const useMapDataCall = (payload?: Payload) => {
+const useMapDataCall = () => {
     const queryClient = useQueryClient();
 
     const { data, isSuccess, isError, mutate, isLoading, mutateAsync } = useMutation({
         mutationKey: mapQueryKeys.POST_SHOPS_IN_RANGE,
         mutationFn: async (payload: Payload) => {
-            console.log('mutation 안에서: ', payload);
             const res = await api.post(apiPath.shopList, payload);
-            console.log('mutation 안에서:', res.data.shops);
             return res.data.shops;
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: mapQueryKeys.POST_SHOPS_IN_RANGE });
         },
         onError: (err) => {

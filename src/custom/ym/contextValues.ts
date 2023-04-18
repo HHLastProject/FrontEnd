@@ -7,6 +7,7 @@ export interface States {
     list: (ShopData | null)[],
     userCoord: Coordinate,
     shopCoord: (Coordinate | null)[],
+    center: Coordinate,
 }
 
 export const states: States = {
@@ -14,7 +15,8 @@ export const states: States = {
     category: "",
     list: [],
     userCoord: { lat: 37.5108407, lng: 127.0468975 },
-    shopCoord: []
+    shopCoord: [],
+    center: { lat: 37.5108407, lng: 127.0468975 },
 }
 
 export interface Dispatches {
@@ -22,12 +24,14 @@ export interface Dispatches {
     setCategory: React.Dispatch<React.SetStateAction<"" | categoryTypes>> | null,
     setList: React.Dispatch<React.SetStateAction<(ShopData | null)[]>> | null,
     setUserCoord: React.Dispatch<React.SetStateAction<Coordinate>> | null,
-    setShopCoord: React.Dispatch<React.SetStateAction<Coordinate[]>> | null
+    setShopCoord: React.Dispatch<React.SetStateAction<Coordinate[]>> | null,
+    setCenter: React.Dispatch<React.SetStateAction<Coordinate>> | null,
 }
 export const dispatches: Dispatches = {
     setRange: null,
     setCategory: null,
     setList: null,
     setUserCoord: null,
-    setShopCoord: null
+    setShopCoord: null,
+    setCenter: null
 }

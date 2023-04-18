@@ -20,11 +20,8 @@ const CarouselBox = () => {
     }
     const swiper = useSwiper();
 
-    // swiper.translateTo(300, 1000);
-
     const { range, category, list, userCoord, shopCoord } = useContext(StateContext);
 
-    console.log('list:', list);
     return (
         <Swiper
             spaceBetween={8}

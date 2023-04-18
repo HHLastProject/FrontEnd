@@ -142,6 +142,8 @@ export interface ShopData {
     isScrap: boolean,
 }
 
+export type ZoomValues = 15 | 16 | 17 | 18 | 19;
+
 export const SAMPLE_DATA: EachData[] = [
     {
         shopId: 1,
