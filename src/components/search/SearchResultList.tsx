@@ -3,15 +3,19 @@ import styled from 'styled-components'
 import { IconMapFilled24 } from '../ui/element/icons/IconsStyle';
 
 export interface ISearchResult {
-  shopId : number,
-  shopName : string,
-  shopAddress : string,
+  shopId : number;
+  shopName : string;
+  shopAddress : string;
 } ;
 
 function SearchResultList({shopId, shopName, shopAddress}: ISearchResult) {
+  const onClickSetValueHadler = () => {
+
+  };
+
   return (
-    <OnClickDivWrap
-      // onClick={}
+    <div
+      onClick={onClickSetValueHadler}
     >
       <SearchResultListContainer>
         <IconMapFilled24/>
@@ -20,28 +24,20 @@ function SearchResultList({shopId, shopName, shopAddress}: ISearchResult) {
           <label>{shopAddress}</label>
         </span>
       </SearchResultListContainer>
-    </OnClickDivWrap>
+    </div>
   )
 };
 
 export default SearchResultList
 
-const OnClickDivWrap = ({children, onClick}: any) => {
-  return (
-    <div
-      style={{cursor: 'pointer'}}
-      onClick={onClick}
-    >
-      {children}
-    </div>
-  )
-};
-
 const SearchResultListContainer = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   padding: 12px 0;
   line-height: 22px;
   border-bottom: 1px solid #DBDBDB;
+  cursor: pointer;
   .search-shop-result {
     display: flex;
     flex-direction: column;

@@ -1,22 +1,96 @@
 import styled from 'styled-components'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import useTextCountHandler from '../custom/jh/useTextCountHandler';
 import SearchStore from '../components/search/SearchInput';
+import api from '../shared/api';
+
+interface IFeedResister {
+  shopId: string;
+  feedPic : string;
+  comment : string;   //null허용
+  tags : string [];   //null허용
+};
 
 function ShopDetailFeedForm() {
+  const param = useParams().shopId;
   const maxLength = 500;
   const {count, textCountHandler} = useTextCountHandler(maxLength);
+
   const [inputValue, setInputValue] = useState('');
   const [imgFile, setImgFile] = useState(null);
   const [dataList, setDataList] = useState([]);
   const {searchClickHandler} = useNavigateHandler();
-  const param = useParams().shopId;
-  
+  const [shopData, setShopData] = useState({
+    shopId : 0,
+    shopName : '',
+    shopAddress : '',
+  });
+
+  type imgFile = {
+    image_file: File | string;
+    preview_URL: string | ArrayBuffer | null;
+  }
+
+  const [image, setImage] = useState<imgFile>({
+    image_file: "",
+    preview_URL: "img/default_image.png",
+  });
+
+  // const saveImg = (e: ) => {
+  //   e.preventDefault();
+  //   const fileReader = new FileReader();
+    
+  //   if(e.target.files[0]){
+  //     fileReader.readAsDataURL(e.target.files[0])
+  //   }
+  //   fileReader.onload = () => {
+  //     setImage(
+  //       {
+  //         image_file: e.target.files[0],
+  //         preview_URL: fileReader.result
+  //       }
+  //     )
+  //   }
+  // }
+
+  const sendImg = async () => {
+    if(image.image_file){
+      const formData = new FormData()
+      formData.append('file', image.image_file);
+      await api.post(`/api/shop/${param}/feed`, formData);
+      alert("서버에 등록이 완료되었습니다!");
+      setImage({
+        image_file: "",
+        preview_URL: "img/default_image.png",
+      });
+    }
+    else{
+      alert("사진을 등록해주세요.")
+    }
+  }
+
+  const naverAccessToken = () => {
+    window.location.href.includes('access_token') && getNaverToken();
+  };
+  const getNaverToken = () => {
+    const token = window.location.href.split('=')[1].split('&')[0];
+    console.log(token);
+    localStorage.setItem('access_token', token);
+  };
+
+  useEffect(() => {
+    naverAccessToken();
+  },[])
+
   return (
     <>
-      <form action={`/api/shop/${param}/feed`}>
+      <form 
+        action={`/api/shop/${param}/feed`} 
+        method='POST'
+        encType='multipart/form-data'
+      >
         <ShopDetailReviewFormContainer>
           <h2>새로운 기록</h2>
           <div>
@@ -44,7 +118,7 @@ function ShopDetailFeedForm() {
               // onClick={}
             >
               <input type="file" name="shopFeedImg"/>
-              {imgFile && <img src='' alt=''/>}
+              {/* {imgFile && <img src='' alt=''/>} */}
             </div>
           </div>
           <div>

@@ -24,7 +24,7 @@ function Search() {
 
         <div className='search-result-list'>
           {
-          result?.map((item) => {
+          (dataList?.length !== 0) && dataList?.map((item) => {
             return(
               <SearchResultList
                 key={item.shopId}
@@ -33,22 +33,7 @@ function Search() {
                 shopAddress={item.shopAddress}
               />
             )
-          })
-        }
-        </div>
-        <div className='search-result-list'>
-          {
-          dataList?.map((item) => {
-            return(
-              <SearchResultList
-                key={item.shopId}
-                shopId={item.shopId}
-                shopName={item.shopName}
-                shopAddress={item.shopAddress}
-              />
-            )
-          })
-        }
+          })}
         </div>
       </SearchWrapContainer>
     </SearchWrap>
@@ -59,7 +44,7 @@ export default Search
 
 const SearchWrap = styled.div`
   width: 390px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #fff;
   display: inline-block;
 `;
