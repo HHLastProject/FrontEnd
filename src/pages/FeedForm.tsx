@@ -1,19 +1,20 @@
 import styled from 'styled-components'
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useNavigateHandler from '../custom/jh/useNavigateHandler';
-import useTextCountHandler from '../custom/jh/useTextCountHandler';
 import SearchStore from '../components/search/SearchInput';
 import api from '../shared/api';
 import { useGetShopDetail } from '../custom/jh/useGetShopDetail';
 import { defaultImgPath } from '../shared/path';
 import { fontType } from '../components/ui/styles/typo';
+import { colorSet } from '../components/ui/styles/color';
+import useTextHandler from '../custom/jh/useTextCountHandler';
 
 interface IFeedResister {
   shopId: number;
   feedPic : File | string | FormData;
-  comment : string | null;   //null허용
-  tags : string[] | null;   //null허용
+  comment : string | null;
+  tags : string[] | null;
 };
 
 type imgFile = {
@@ -22,21 +23,13 @@ type imgFile = {
 };
 
 function FeedForm() {
+  const navi = useNavigate();
   const param = Number(useParams().shopId);
-  const maxLength = 500;
-  const {count, textCountHandler} = useTextCountHandler(maxLength);
-  const {searchClickHandler} = useNavigateHandler();
-  const [comment, setComment] = useState(null);
-  const [hashTags, setHashTags] = useState(null);
   let tags: string[] = [];
-
-  const {
-    shopDetailData,
-    shopDetailIsLoading,
-    shopDetailIsError
-  } = useGetShopDetail(param);
-
-  const [inputValue, setInputValue] = useState(shopDetailData?.shopName ? shopDetailData?.shopName : '');
+  const maxLength = 500;
+  const {searchClickHandler} = useNavigateHandler();
+  const [comment, setComment] = useState<string | null>(null);
+  const [hashTags, setHashTags] = useState<string[] | null>(null);
   const [imgFile, setImgFile] = useState<imgFile>({
     feedPic: "",
     previewPic: `${defaultImgPath.shopList}`,
@@ -47,62 +40,74 @@ function FeedForm() {
     comment : comment,
     tags : hashTags,
   });
+  
+  const {count, textCountAndSetHandler} = useTextHandler(maxLength, setComment);
+  const { shopDetailData, shopDetailIsError } = useGetShopDetail(param);
+  const [inputValue, setInputValue] = useState(shopDetailData?.shopName ? shopDetailData?.shopName : '');
 
+  if(!shopDetailData.shopName) {setInputValue('')};
+  if(shopDetailIsError) {};
 
-  const saveImg = (e: any) => {
-    e.preventDefault();
-    const fileReader = new FileReader();
-    if(e.target.files[0]){
-      fileReader.readAsDataURL(e.target.files[0]);
-    }
-    fileReader.onload = () => {
-      setImgFile({
-        feedPic: e.target.files[0],
-        previewPic: fileReader.result
-      });
-    }
+  //이미지 미리보기
+  const previewImg = (e: React.ChangeEvent<HTMLInputElement> | any) => {
+    if((e !== null) && (e.target.files !== null)) {
+      const fileReader = new FileReader();
+      // e.preventDefault();
+      if(e.target.files[0]){
+        fileReader.readAsDataURL(e.target.files[0]);
+      };
+      fileReader.onload = () => {
+        setImgFile({
+          feedPic: e.target.files[0],
+          previewPic: fileReader.result
+        });
+      };
+    };
   };
 
   const sendFeedData = async (param: number) => {
-    if(imgFile.feedPic){
+    console.log('버튼 누름');
+    setHashTags(tags);
+    if(imgFile.feedPic && (param !== 0)){
       const formData = new FormData();
-      formData.append('file', imgFile.feedPic);
+      formData.append('feedPic', imgFile.feedPic);
       setFormDataList({
         shopId: param,
         feedPic : formData,
-        comment : null,
-        tags : null,
+        comment : comment,
+        tags : hashTags,
       });
-      await api.post(`/api/shop/${param}/feed`, formDataList);
-      setImgFile({
-        feedPic: "",
-        previewPic: "img/default_image.png",
-      });
-      alert("서버에 등록이 완료되었습니다!");
+      console.log("formDataList", formDataList);
+      await api.post(`/api/shop/${param}/feed`, {
+        // headers: {authorization: `Bearer ${token}`},
+        data: formDataList,
+        })
+        .then((resolve) => {
+          console.log("성공");
+          alert("등록이 완료되었습니다!");
+          navi(-1);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     else{
-      alert("사진을 등록해주세요.")
-    }
-  }
-
-  if(!shopDetailData?.shopName) {setInputValue('')};
-
-  const naverAccessToken = () => {
-    window.location.href.includes('access_token') && getNaverToken();
-  };
-  const getNaverToken = () => {
-    const token = window.location.href.split('=')[1].split('&')[0];
-    console.log(token);
-    localStorage.setItem('access_token', token);
+      alert("가게명 또는 사진을 등록해주세요.");
+    };
   };
 
+  //토큰 가져오기
+
+
+  //태그 추가
   const addTag = (value: string) => {
     tags.push(value);
     console.log(tags);
   };
 
   useEffect(() => {
-    naverAccessToken();
+    const token = localStorage.getItem('authorization');
+    console.log(token,'토큰');
     console.log(shopDetailData);
   },[]);
 
@@ -111,10 +116,10 @@ function FeedForm() {
       <ShopDetailReviewFormContainer>
         <Title3>새로운 기록</Title3>
         <div>
-          <div>
+          <FeedFormTitle>
             <Title4>방문한 카페</Title4>
             <Body4>선택</Body4>
-          </div>
+          </FeedFormTitle>
           <div
             onClick={searchClickHandler}
           >
@@ -128,29 +133,27 @@ function FeedForm() {
         </div>
     
         <div>
-          <div>
+          <FeedFormTitle>
             <Title4>사진</Title4>
             <Body4>필수</Body4>
-          </div>
-
+          </FeedFormTitle>
           <input 
             type="file" 
             name="feedPic"
-            onChange={saveImg}
+            onChange={previewImg}
           />
-          <ImgPreview
-            // onClick={}
-          >
+          <ImgPreview>
             {(typeof imgFile.previewPic === "string") && <img src={imgFile.previewPic} alt="이미지 미리보기" />}
           </ImgPreview>
         </div>
+
         <div>
-          <div>
+          <FeedFormTitle>
             <Title4>코멘트</Title4>
             <Body4>선택</Body4>
-          </div>
+          </FeedFormTitle>
           <ShopDetailReviewTextarea
-            onChange={textCountHandler}
+            onChange={textCountAndSetHandler}
             maxLength={maxLength}
             placeholder='카페에서의 순간을 작성해 주세요.'
           />
@@ -160,28 +163,28 @@ function FeedForm() {
         </div>
     
         <div>
-          <div>
+          <FeedFormTitle>
             <Title4>태그</Title4>
             <Body4>3개까지 선택</Body4>
-          </div>
+          </FeedFormTitle>
           <div>
             <button
-              onClick={(e) => addTag("분위기 맛집")}
+              onClick={() => addTag("분위기 맛집")}
             >
               분위기 맛집
             </button>
             <button
-              onClick={(e) => addTag("디저트 맛집")}
+              onClick={() => addTag("디저트 맛집")}
             >
               디저트 맛집
             </button>
             <button
-              onClick={(e) => addTag("커피 맛집")}
+              onClick={() => addTag("커피 맛집")}
             >
               커피 맛집
             </button>
             <button
-              onClick={(e) => addTag("뷰 맛집")}
+              onClick={() => addTag("뷰 맛집")}
             >
               뷰 맛집
             </button>
@@ -190,7 +193,7 @@ function FeedForm() {
 
         <button
           className='sticky-btn'
-          // onClick={}
+          onClick={() => sendFeedData(param)}
         >
           완료
         </button>
@@ -239,6 +242,12 @@ const ImgPreview = styled.div`
   }
 `;
 
+const FeedFormTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2px;
+`;
+
 export const Title4 = styled.label`
   ${fontType.title_4}
 `;
@@ -247,4 +256,5 @@ export const Title3 = styled.label`
 `;
 export const Body4 = styled.label`
   ${fontType.body_4}
+  color: ${colorSet.textMedium};
 `;
