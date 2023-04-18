@@ -19,7 +19,10 @@ function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: 
         {
           arr?.map((item) => {
             return(
-              <div className='order-value'>
+              <div 
+                className='order-value'
+                key={item}
+              >
                 {item}
               </div>
             )

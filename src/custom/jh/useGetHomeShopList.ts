@@ -14,7 +14,7 @@ export const useGetHomeShopList = ({lng, lat, range} : locationType) => {
   const { data, mutate, isLoading, isSuccess, isError } = useMutation({
     mutationKey: queryKeys.GET_HOME_SHOPLIST,
     mutationFn: async () => {
-      const {data} = await api.get(`${apiPath.home}`, { params: {
+      const {data} = await api.post(`${apiPath.shopList}`, { data: {
         lng,
         lat,
         range,
@@ -26,7 +26,6 @@ export const useGetHomeShopList = ({lng, lat, range} : locationType) => {
     },
     onError: (error) => {
       console.log('메인 불러오기 error', error);
-      console.log('에러');
       return error;
     }
   });
