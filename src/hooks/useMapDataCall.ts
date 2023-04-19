@@ -4,14 +4,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { mapQueryKeys } from '../apis/queries';
 import api, { api_token } from '../shared/api';
 import { apiPath } from '../shared/path';
-import { MapCoordPayload } from '../custom/ym/variables';
+
+type Payload = {
+    lng: number,
+    lat: number,
+    range: number
+}
 
 const useMapDataCall = () => {
     const queryClient = useQueryClient();
 
     const { data, isSuccess, isError, mutate, isLoading, mutateAsync } = useMutation({
         mutationKey: mapQueryKeys.POST_SHOPS_IN_RANGE,
-        mutationFn: async (payload: MapCoordPayload) => {
+        mutationFn: async (payload: Payload) => {
             const res = await api.post(apiPath.shopList, payload);
             return res.data.shops;
         },
