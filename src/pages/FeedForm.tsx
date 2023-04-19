@@ -10,28 +10,33 @@ import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
 import useTextHandler from '../custom/jh/useTextCountHandler';
 
+type Ttag = {tag:string};
+type Ttags = Ttag[] | [] | null | any;
+type Ttoken = string | null;
+
 interface IFeedResister {
   shopId: number;
   feedPic : File | string | FormData;
   comment : string | null;
-  tags : string[] | null;
+  tags : Ttags;
 };
 
 type imgFile = {
   feedPic: File | string;
-  previewPic: string | ArrayBuffer | null; 
+  previewPic: string | ArrayBuffer | null;
 };
 
 function FeedForm() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
-  let tags: string[] = [];
+  let tags: Ttags = [];
+  let token: Ttoken = null;
   const maxLength = 500;
   const {searchClickHandler} = useNavigateHandler();
   const [comment, setComment] = useState<string | null>(null);
-  const [hashTags, setHashTags] = useState<string[] | null>(null);
+  const [hashTags, setHashTags] = useState<Ttags>(null);
   const [imgFile, setImgFile] = useState<imgFile>({
-    feedPic: "",
+    feedPic: '',
     previewPic: `${defaultImgPath.shopList}`,
   });
   const [formDataList, setFormDataList] = useState<IFeedResister>({
@@ -40,35 +45,48 @@ function FeedForm() {
     comment : comment,
     tags : hashTags,
   });
-  
+
   const {count, textCountAndSetHandler} = useTextHandler(maxLength, setComment);
   const { shopDetailData, shopDetailIsError } = useGetShopDetail(param);
   const [inputValue, setInputValue] = useState(shopDetailData?.shopName ? shopDetailData?.shopName : '');
 
   if(!shopDetailData.shopName) {setInputValue('')};
-  if(shopDetailIsError) {};
+  if(shopDetailIsError) {alert('에러')};
 
   //이미지 미리보기
   const previewImg = (e: React.ChangeEvent<HTMLInputElement> | any) => {
     if((e !== null) && (e.target.files !== null)) {
       const fileReader = new FileReader();
-      // e.preventDefault();
+      e.preventDefault();
       if(e.target.files[0]){
         fileReader.readAsDataURL(e.target.files[0]);
-      };
-      fileReader.onload = () => {
-        setImgFile({
-          feedPic: e.target.files[0],
-          previewPic: fileReader.result
-        });
+        console.log('이미지 파일', e.target.files[0]);
+
+        fileReader.onload = () => {
+          setImgFile({
+            feedPic: e.target.files[0],
+            previewPic: fileReader.result
+          });
+          console.log('onload',imgFile);
+        };
       };
     };
   };
 
-  const sendFeedData = async (param: number) => {
+  const onClickSendFeedData = (param: number) => {
+    token = getToken();
     console.log('버튼 누름');
     setHashTags(tags);
-    if(imgFile.feedPic && (param !== 0)){
+    console.log('해시set', hashTags, tags);
+
+    if(!token) {
+      alert('로그인 해야 이용 가능합니다.');
+      // navi('/login');
+      return;
+    };
+
+    if (imgFile.feedPic && (param !== 0) && token) {
+      console.log('코멘트', comment, '해시태그', hashTags);
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
       setFormDataList({
@@ -78,38 +96,45 @@ function FeedForm() {
         tags : hashTags,
       });
       console.log("formDataList", formDataList);
-      await api.post(`/api/shop/${param}/feed`, {
-        // headers: {authorization: `Bearer ${token}`},
-        data: formDataList,
-        })
-        .then((resolve) => {
-          console.log("성공");
-          alert("등록이 완료되었습니다!");
-          navi(-1);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    else{
+      sendFeedData(param);
+    } else {
       alert("가게명 또는 사진을 등록해주세요.");
     };
   };
 
-  //토큰 가져오기
+  const sendFeedData = async (param: number) => {
+    console.log('send');
+    await api.post(`/api/shop/${param}/feed`, formDataList, {
+      headers: {authorization: `${token}`},
+      })
+      .then((resolve) => {
+        console.log("피드 등록 성공");
+        alert("등록이 완료되었습니다!");
+        navi(-1);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
+  //토큰 가져오기
+  const getToken = () => {
+    const token = localStorage.getItem('access_token');
+    return token;
+  };
 
   //태그 추가
   const addTag = (value: string) => {
-    tags.push(value);
-    console.log(tags);
+    if(value && tags) {
+      tags.push({tag : value});
+      console.log(tags);
+    };
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('authorization');
-    console.log(token,'토큰');
-    console.log(shopDetailData);
-  },[]);
+    token = getToken();
+    console.log(token);
+  }, []);
 
   return (
     <>
@@ -193,7 +218,7 @@ function FeedForm() {
 
         <button
           className='sticky-btn'
-          onClick={() => sendFeedData(param)}
+          onClick={() => onClickSendFeedData(param)}
         >
           완료
         </button>

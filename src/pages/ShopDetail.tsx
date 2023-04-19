@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
-import { useGetShopDetail, useGetShopDetailReview } from '../custom/jh/useGetShopDetail';
+import { useGetShopDetail, useGetShopDetailFeed } from '../custom/jh/useGetShopDetail';
 import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
 import ShopDetailMap from '../components/map/ShopDetailMap';
@@ -32,11 +32,11 @@ function ShopDetail() {
     shopDetailIsError
   } = useGetShopDetail(param);
   const {
-    getShopDetailReviewList,
-    shopDetailReviewList,
-    shopDetailReviewIsLoading,
-    shopDetailReviewIsError
-  } = useGetShopDetailReview(param);
+    shopDetailFeedList,
+    getShopDetailFeedList,
+    shopDetailFeedIsLoading,
+    shopDetailFeedIsError,
+  } = useGetShopDetailFeed(param);
 
   if(shopDetailIsError) {
     alert("페이지를 불러올 수 없어 메인 페이지로 돌아갑니다.");
@@ -51,7 +51,7 @@ function ShopDetail() {
     console.log(shopDetailData);
   }, [shopDetailData])
   useEffect(() => {
-    getShopDetailReviewList();
+    getShopDetailFeedList();
   }, []);
 
   return (
@@ -148,13 +148,13 @@ function ShopDetail() {
                 </div>
               </div>
               <div>
-                {shopDetailReviewList?.map((item:any) => {
+                {shopDetailFeedList?.map((item:any) => {
                   return (
                     <>피드들</>
                   )
                 })}
-                {(shopDetailReviewList?.length === 0) && (<div>피드가 없습니다.</div>)}
-                {shopDetailReviewIsError && (<div>피드 에러</div>)}
+                {(shopDetailFeedList?.length === 0) && (<div>피드가 없습니다.</div>)}
+                {shopDetailFeedIsError && (<div>피드 에러</div>)}
               </div>
               <ShopDetailFeed/>
             </div>
