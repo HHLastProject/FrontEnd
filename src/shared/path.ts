@@ -10,6 +10,7 @@ interface IPathObject {
 
 export const path: IPath = {
   home: '/',
+  list: '/list',
   login: '/login',
   mealFilter: '/mealfilter',
   toShopDetail: '/shop',
@@ -18,9 +19,19 @@ export const path: IPath = {
   feedForm: '/shop/:shopId/feedform',
   search: '/search',
   feedFormSearch: '/search/:isfeed',
-  mypage: '/mypage',
+
   map: '/map',
   adminShoplist: '/admin/shoplist',
+  adminRegister: '/admin/register',
+  adminUpdate: "/admin/:id",
+
+  adminLogin: "/admin/login",
+  redirectNaver: "/redirect/naver",
+  redirectKakao: "/redirect/kakao",
+  bookmark: "/bookmark",
+  mypage: '/mypage',
+  allFeeds: "/mypage/feeds/:userId",
+  feedDetail: "/feed/detail/:feedId"
 }
 
 export const apiPath: IPath = {
