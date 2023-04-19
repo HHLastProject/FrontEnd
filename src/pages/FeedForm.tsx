@@ -16,7 +16,7 @@ type Ttoken = string | null;
 
 interface IFeedResister {
   shopId: number;
-  feedPic : File | string | FormData;
+  feedPic : FormData | null;
   comment : string | null;
   tags : Ttags;
 };
@@ -41,7 +41,7 @@ function FeedForm() {
   });
   const [formDataList, setFormDataList] = useState<IFeedResister>({
     shopId: param,
-    feedPic : '',
+    feedPic : null,
     comment : comment,
     tags : hashTags,
   });
@@ -55,8 +55,8 @@ function FeedForm() {
   //이미지 미리보기
   const previewImg = (e: React.ChangeEvent<HTMLInputElement> | any) => {
     if((e !== null) && (e.target.files !== null)) {
-      const fileReader = new FileReader();
       e.preventDefault();
+      const fileReader = new FileReader();
       if(e.target.files[0]){
         fileReader.readAsDataURL(e.target.files[0]);
         console.log('이미지 파일', e.target.files[0]);
@@ -66,21 +66,22 @@ function FeedForm() {
             feedPic: e.target.files[0],
             previewPic: fileReader.result
           });
-          console.log('onload',imgFile);
         };
       };
     };
   };
 
-  const onClickSendFeedData = (param: number) => {
+  const onClickSendFeedData = (param: number, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
     token = getToken();
     console.log('버튼 누름');
     setHashTags(tags);
-    console.log('해시set', hashTags, tags);
+    console.log(hashTags);
+    console.log('해시set', hashTags);
 
     if(!token) {
       alert('로그인 해야 이용 가능합니다.');
-      // navi('/login');
+      navi('/login');
       return;
     };
 
@@ -88,14 +89,16 @@ function FeedForm() {
       console.log('코멘트', comment, '해시태그', hashTags);
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
-      setFormDataList({
+      const newData = {
         shopId: param,
         feedPic : formData,
         comment : comment,
         tags : hashTags,
-      });
-      console.log("formDataList", formDataList);
-      sendFeedData(param);
+      };
+      setFormDataList(newData);
+      console.log("formDataList", formData);
+      const value = formData.get('feedPic');
+      console.log('value', value);
     } else {
       alert("가게명 또는 사진을 등록해주세요.");
     };
@@ -103,8 +106,12 @@ function FeedForm() {
 
   const sendFeedData = async (param: number) => {
     console.log('send');
-    await api.post(`/api/shop/${param}/feed`, formDataList, {
-      headers: {authorization: `${token}`},
+    console.log('send  다음',formDataList);
+    // console.log(imgFile.feedPic.get())
+    const value =  formDataList.feedPic && formDataList.feedPic.get('feedPic');
+    console.log('2value',value);
+    const result = await api.post(`/api/shop/${param}/feed`, formDataList, {
+      headers: {Authorization: `${token}`},
       })
       .then((resolve) => {
         console.log("피드 등록 성공");
@@ -114,6 +121,7 @@ function FeedForm() {
       .catch((error) => {
         console.log(error);
       });
+    console.log('result',result);
   };
 
   //토큰 가져오기
@@ -123,7 +131,8 @@ function FeedForm() {
   };
 
   //태그 추가
-  const addTag = (value: string) => {
+  const addTag = (value: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
     if(value && tags) {
       tags.push({tag : value});
       console.log(tags);
@@ -136,9 +145,15 @@ function FeedForm() {
     console.log(token);
   }, []);
 
+  useEffect(() => {
+    sendFeedData(param);
+    console.log('폼데이터',formDataList);
+  }, [formDataList]);
+
   return (
     <>
       <ShopDetailReviewFormContainer>
+      <form encType='multipart/form-data'>
         <Title3>새로운 기록</Title3>
         <div>
           <FeedFormTitle>
@@ -194,22 +209,22 @@ function FeedForm() {
           </FeedFormTitle>
           <div>
             <button
-              onClick={() => addTag("분위기 맛집")}
+              onClick={(e) => addTag("분위기 맛집", e)}
             >
               분위기 맛집
             </button>
             <button
-              onClick={() => addTag("디저트 맛집")}
+              onClick={(e) => addTag("디저트 맛집", e)}
             >
               디저트 맛집
             </button>
             <button
-              onClick={() => addTag("커피 맛집")}
+              onClick={(e) => addTag("커피 맛집", e)}
             >
               커피 맛집
             </button>
             <button
-              onClick={() => addTag("뷰 맛집")}
+              onClick={(e) => addTag("뷰 맛집", e)}
             >
               뷰 맛집
             </button>
@@ -217,11 +232,13 @@ function FeedForm() {
         </div>
 
         <button
+          type='submit'
           className='sticky-btn'
-          onClick={() => onClickSendFeedData(param)}
+          onClick={(e) => onClickSendFeedData(param, e)}
         >
           완료
         </button>
+      </form>
       </ShopDetailReviewFormContainer>
     </>
   )

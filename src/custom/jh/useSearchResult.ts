@@ -8,7 +8,7 @@ const getSearchResult = async (inputValue: string, setState: React.Dispatch<Reac
     searchName: inputValue,
   }).then((result) => {
     setState(result.data);
-    console.log('데이터 가져왔나?', result.data);
+    console.log('성공 데이터 가져왔나?', result);
   }).catch((error) => {
     console.log('error',error);
   });
