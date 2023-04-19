@@ -6,7 +6,15 @@ interface IPathObject {
   readonly [key: string]: {
     readonly [path: string]: string;
   }
-}
+};
+
+function setServerUrl(link: string) {
+  return `${process.env.REACT_APP_SERVER_URL + link}`;
+};
+
+function setPublicUrl(link: string) {
+  return `${process.env.PUBLIC_URL + link}`;
+};
 
 export const path: IPath = {
   home: '/',
@@ -45,9 +53,9 @@ export const apiPath: IPath = {
 };
 
 export const imgPath: IPath = {
-  shopMenuImg: `${process.env.REACT_APP_SERVER_URL}/uploads/shopMenu/`,
-  shopThumbnailImg: `${process.env.REACT_APP_SERVER_URL}/uploads/shopThumbnail/`,
-  feedImg: `${process.env.REACT_APP_SERVER_URL}/uploads/feedPic/`,
+  shopMenuImg: setServerUrl(`/uploads/shopMenu/`),
+  shopThumbnailImg: setServerUrl(`/uploads/shopThumbnail/`),
+  feedImg: setServerUrl(`/uploads/feedPic/`),
 };
 
 export const defaultImgPath: IPath = {
@@ -56,21 +64,21 @@ export const defaultImgPath: IPath = {
 
 export const iconImgPath: IPathObject = {
   detailInfo: {
-    mapPin: `${process.env.PUBLIC_URL}/images/detail/map_pin_20.png`,
-    clock: `${process.env.PUBLIC_URL}/images/detail/clock_20.png`,
-    phone: `${process.env.PUBLIC_URL}/images/detail/phone_20.png`,
+    mapPin: setPublicUrl(`/images/detail/map_pin_20.png`),
+    clock: setPublicUrl(`/images/detail/clock_20.png`),
+    phone: setPublicUrl(`/images/detail/phone_20.png`),
   },
   search: {
-    loupe: `${process.env.PUBLIC_URL}/loupe.png`,
-    marker: `${process.env.PUBLIC_URL}/images/search/mapfilled_24.png`,
+    loupe: setPublicUrl(`/loupe.png`),
+    marker: setPublicUrl(`/images/search/mapfilled_24.png`),
   },
   map: {
-    shopLocation: `${process.env.PUBLIC_URL}/images/markers/icon_mappin_36.png`,
+    shopLocation: setPublicUrl(`/images/markers/icon_mappin_36.png`),
   },
   write: {
-    pencil: `${process.env.PUBLIC_URL}/images/feed/write_24.png`,
+    pencil: setPublicUrl(`/images/feed/write_24.png`),
   },
   arrow: {
-    chevrondown16: `${process.env.PUBLIC_URL}/chevrondown_16.png`,
+    chevrondown16: setPublicUrl(`/chevrondown_16.png`),
   }
 };
