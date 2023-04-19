@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { PropsWithChildren, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { path } from '../shared/path';
 import { getUserLocation } from '../custom/jh/getUserLocation';
@@ -14,6 +14,15 @@ import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import { useNavigate } from 'react-router';
 import { RangeContext } from '../apis/context';
 import ListHeader from '../components/home/ListHeader';
+import { LoginCheck } from '../components/Authentication';
+import CategoryButtonBar from '../components/map/CategoryButtonBar';
+import ListCategoryButtonBar from '../components/home/ListCategoryButtonBar';
+import { Link } from 'react-router-dom';
+import { fontType } from '../components/ui/styles/typo';
+import { colorSet } from '../components/ui/styles/color';
+import { Body3, Title5 } from '../components/FontStyle';
+import { Buttons } from '../components/ui/element/buttons/Buttons';
+import { IconSmallDownArrow } from '../components/ui/element/icons/IconsStyle';
 
 const List = () => {
   const [lng, setLng] = useState(0);
@@ -75,13 +84,6 @@ const List = () => {
       />
       <HomeWrap>
         <HomeContainer>
-          <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
-          <header>
-            <div className='space-between'>
-              <button onClick={loginClickHandler}>로그인 하기</button>
-            </div>
-          </header>
-  
           <header>
             <HomeTabMenuStyle>
               <TabMenuUl>
@@ -100,13 +102,14 @@ const List = () => {
   
           <div className='space-between'>
             <input type="checkbox" id="by-range" name="by-range" hidden />
-            <span>
-              <button
+            <div>
+              <FilterBtn
                 onClick={onClickHiddenHandler}
               >
-                거리순
-              </button>
-            </span>
+                <label>거리순</label><IconSmallDownArrow/>
+              </FilterBtn>
+              <ListCategoryButtonBar/>
+            </div>
           </div>
   
           {/* <Swiper
@@ -154,7 +157,7 @@ export const HomeWrap = styled.div`
 
 const HomeContainer = styled.div`
   width: (100%-20)px;
-  margin: 20px;
+  margin: 0 20px 120px 20px;
 
   .floating-btn {
     position: fixed;
@@ -176,4 +179,23 @@ const HomeShopListContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 12px;
+`;
+
+const FilterBtn = ({children, onClick}: {children: React.ReactNode, onClick: React.MouseEventHandler<HTMLButtonElement>}) => {
+  return(
+    <FilterBtnStyle
+      onClick={onClick}
+    >
+      <Body3>
+        {children}
+      </Body3>
+    </FilterBtnStyle>
+  )
+}
+
+const FilterBtnStyle = styled.button`
+  background-color: ${colorSet.bgMedium};
+  border: none;
+  padding: 8px 12px;
+  border-radius: 100px;
 `;

@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { HFlex, VFlex } from '../../custom/ym/styleStore';
 import useNavigateHandler from '../../custom/jh/useNavigateHandler';
+import { LoginCheck } from '../Authentication';
+import { Title5 } from '../FontStyle';
+import { Link } from 'react-router-dom';
 
 const ListHeader = ({range}: {range: number}) => {
   const {loginClickHandler, mapClickHandler, searchClickHandler} = useNavigateHandler();
@@ -20,13 +23,20 @@ const ListHeader = ({range}: {range: number}) => {
             <Image2 src={`${process.env.PUBLIC_URL}/down.png`} alt="" />
           </HFlex>
         </VFlex>
-        <div
-          onClick={searchClickHandler}
-        >
-          <ButtonContainer>
-            <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
-          </ButtonContainer>
-        </div>
+        <RightContainer>
+          {/* <LoginCheck> */}
+            <Title5>
+              <Link to={'/login'}>로그인 하기</Link>
+            </Title5>
+          {/* </LoginCheck> */}
+          <div
+            onClick={searchClickHandler}
+          >
+            <ButtonContainer>
+              <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
+            </ButtonContainer>
+          </div>
+        </RightContainer>
       </HFlex>
     </HeaderContainer>
   )
@@ -70,4 +80,9 @@ const Image2 = styled.img`
   height: 18px;
   object-fit: contain;
   background-color: none;
+`;
+
+const RightContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;

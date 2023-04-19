@@ -56,5 +56,8 @@ export const iconImgPath: IPathObject = {
   },
   write: {
     pencil: `${process.env.PUBLIC_URL}/images/feed/write_24.png`,
+  },
+  arrow: {
+    chevrondown16: `${process.env.PUBLIC_URL}/chevrondown_16.png`,
   }
 };

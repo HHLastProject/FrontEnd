@@ -121,6 +121,8 @@ function ShopDetail() {
               />
             </XFlexCenter>
           </ShopDetailContentContainer>
+        </ShopDetailContainer>
+        <ShopDetailContainer>
           <ShopDetailContentContainer>
             <div className='shop-detail-menu'>
               <h2>메뉴</h2>
@@ -135,6 +137,8 @@ function ShopDetail() {
               })}
             </div>
           </ShopDetailContentContainer>
+        </ShopDetailContainer>
+        <ShopDetailContainer>
           <ShopDetailContentContainer>
             <div className='shop-detail-review'>
               <div className='shop-detail-review-sub'>
@@ -156,7 +160,7 @@ function ShopDetail() {
                 {(shopDetailFeedList?.length === 0) && (<div>피드가 없습니다.</div>)}
                 {shopDetailFeedIsError && (<div>피드 에러</div>)}
               </div>
-              <ShopDetailFeed/>
+              {/* <ShopDetailFeed/> */}
             </div>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
@@ -233,9 +237,6 @@ const ShopDetailContainer = styled.div`
   width: 100%;
   border-top: 12px solid #EDEDED;
   background-color: #fff;
-  hr {
-    border: 1px 0 0 0 solid #bbb;
-  }
 `;
 
 const ShopDetailThumbnail = styled.div`
@@ -260,7 +261,8 @@ const ShopDetailThumbnail = styled.div`
 `;
 
 const ShopDetailContentContainer = styled.div`
-  width: 100%;
+  /* width: 100%; */
+  padding: 40px 20px 40px 20px;
   display: flex;
   flex-direction: column;
   position: relative;

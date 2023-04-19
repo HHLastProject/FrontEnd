@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+export const IconSize12 = styled.span`
+  img {
+    width: 12px;
+    height: 12px;
+  }
+`;
+
 export const IconSize16 = styled.span`
   img {
     width: 16px;

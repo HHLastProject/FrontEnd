@@ -9,7 +9,6 @@ import { context } from './Mypage';
 import { useParams } from 'react-router-dom';
 
 const AllFeeds = () => {
-
     const param = useParams();
     const { userId } = param;
     const temp = parseInt(userId as string);
