@@ -1,17 +1,17 @@
 import React from 'react'
-import { InternalJSX } from './BtnLength'
 import styled from 'styled-components';
 import { colorSet } from '../../styles/color';
+import { InternalJSX } from '../../../../custom/ym/types';
 
-const Default = ({ children }: InternalJSX) => {
+const Default = ({ onClick, children, ...props }: InternalJSX) => {
     return (
-        <DefaultContainer>{children}</DefaultContainer>
+        <DefaultContainer onClick={onClick}>{children}</DefaultContainer>
     )
 }
 
-const Others = ({ children }: InternalJSX) => {
+const Others = ({ onClick, children, ...props }: InternalJSX) => {
     return (
-        <OtherContainer>{children}</OtherContainer>
+        <OtherContainer onClick={onClick}>{children}</OtherContainer>
     )
 }
 

@@ -1,14 +1,14 @@
 interface IPath {
-  readonly [ path : string ] : string;
+  readonly [path: string]: string;
 };
 
 interface IPathObject {
-  readonly [key : string] : {
-    readonly [ path : string ] : string;
+  readonly [key: string]: {
+    readonly [path: string]: string;
   }
 }
 
-export const path : IPath = {
+export const path: IPath = {
   home: '/',
   login: '/login',
   mealFilter: '/mealfilter',
@@ -22,8 +22,7 @@ export const path : IPath = {
   adminShoplist: '/admin/shoplist',
 }
 
-export const apiPath : IPath = {
-  home: '/api/shop/main',
+export const apiPath: IPath = {
   shopList: '/api/shop/main',
   shopDetail: '/api/shop/:shopId',
   toShopDetail: '/api/shop',
@@ -32,17 +31,17 @@ export const apiPath : IPath = {
   search: '/api/search',
 };
 
-export const imgPath : IPath = {
+export const imgPath: IPath = {
   shopMenuImg: `${process.env.REACT_APP_SERVER_URL}/uploads/shopMenu/`,
   shopThumbnailImg: `${process.env.REACT_APP_SERVER_URL}/uploads/shopThumbnail/`,
   feedImg: `${process.env.REACT_APP_SERVER_URL}/uploads/feedPic/`,
 };
 
-export const defaultImgPath : IPath = {
+export const defaultImgPath: IPath = {
   shopList: `${process.env.PUBLIC_URL}/shop-default-img.jpg`,
 };
 
-export const iconImgPath : IPathObject = {
+export const iconImgPath: IPathObject = {
   detailInfo: {
     mapPin: `${process.env.PUBLIC_URL}/images/detail/map_pin_20.png`,
     clock: `${process.env.PUBLIC_URL}/images/detail/clock_20.png`,

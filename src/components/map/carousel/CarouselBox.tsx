@@ -1,21 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components';
 import { HFlex, HFlexSpaceBetween, VFlex, VFlexCenter } from '../../../custom/ym/styleStore';
-import { EachData } from '../../../pages/Map';
+import { EachData, StateContext } from '../../../pages/Home';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import uuid from 'react-uuid';
+import { ShopData } from '../../../custom/ym/variables';
+import { states } from '../../../custom/ym/contextValues';
+import { imgPath } from '../../../shared/path';
 
 type CarouselProps = {
-    children: (EachData | null)[]
+    children: (ShopData | null)[]
 }
-const CarouselBox = ({ children }: CarouselProps) => {
+// const CarouselBox = ({ children }: CarouselProps) => {
+const CarouselBox = () => {
     const navi = useNavigate();
     const openDetail = (shopId: number) => {
         navi(`/shop/${shopId}`);
     }
     const swiper = useSwiper();
 
-    // swiper.translateTo(300, 1000);
+    const { range, category, list, userCoord, shopCoord } = useContext(StateContext);
 
     return (
         <Swiper
@@ -23,32 +28,35 @@ const CarouselBox = ({ children }: CarouselProps) => {
             slidesPerView={1}
             parallax
         >
-            {children.map((item, index) => {
+            {list?.map((item, index) => {
                 if (!item) return null;
-                return <SwiperSlide>
-                    <Box onClick={() => openDetail((item as EachData).shopId)}>
+                return <SwiperSlide key={uuid()}>
+                    <Box onClick={() => openDetail((item as ShopData).shopId)}>
                         <VFlex>
                             <HFlexSpaceBetween>
                                 <div style={{ fontSize: '12px', fontWeight: '400' }}>
                                     <span>검색된 식당</span>
-                                    <span> {children.length}</span>
+                                    <span> {list.length}</span>
                                 </div>
                                 <CountBox>
                                     <VFlexCenter>
-                                        {index + 1} / {children.length}
+                                        {index + 1} / {list.length}
                                     </VFlexCenter>
                                 </CountBox>
                             </HFlexSpaceBetween>
                             <HFlex gap='8px'>
-                                <PictureDiv pic={(item as EachData).thumbnail}>
+                                <PictureDiv pic={`${imgPath.shopThumbnailImg + item.thumbnail}`}>
                                     <Bookmark>
-                                        <img src={`${process.env.PUBLIC_URL}/bookmark.png`} alt=""></img>
+                                        {item.isScrap
+                                            ? <Thumbnail src={`${process.env.PUBLIC_URL}/icon/book mark white_28.png`} alt="즐겨찾기 추가"></Thumbnail>
+                                            : <Thumbnail src={`${process.env.PUBLIC_URL}/icon/book mark line_28.png`} alt="즐겨찾기 제거"></Thumbnail>}
                                     </Bookmark>
                                 </PictureDiv>
                                 <VFlex>
-                                    <ShopName>{(item as EachData).shopName}</ShopName>
-                                    <Region>{(item as EachData).region}</Region>
-                                    <Summary>{(item as EachData).distance} m | 별점 {(item as EachData).rate} | 리뷰 {(item as EachData).reviews}</Summary>
+                                    <ShopName>{(item).shopName}</ShopName>
+                                    <Region>{(item).address}</Region>
+                                    <Summary>{`${item.distance} m | 피드 ${item.feedCount}`}</Summary>
+                                    {/* <Summary>{(item as ShopData).distance} m | 피드 {(item as ShopData).reviews}</Summary> */}
                                 </VFlex>
                             </HFlex>
                         </VFlex>
@@ -60,6 +68,12 @@ const CarouselBox = ({ children }: CarouselProps) => {
 }
 
 export default CarouselBox;
+
+const Thumbnail = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+`
 
 const Box = styled.div`
     width: 300px;
@@ -114,6 +128,8 @@ const CountBox = styled.span`
 `;
 const Bookmark = styled.button`
     position: absolute;
+    width: 28px;
+    height: 28px;
     padding: 0;
     bottom: 9px;
     right: 11px;

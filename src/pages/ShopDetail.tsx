@@ -27,8 +27,8 @@ function ShopDetail() {
   };
 
   const {
-    shopDetailData, 
-    shopDetailIsLoading, 
+    shopDetailData,
+    shopDetailIsLoading,
     shopDetailIsError
   } = useGetShopDetail(param);
   const {
@@ -38,9 +38,9 @@ function ShopDetail() {
     shopDetailFeedIsError,
   } = useGetShopDetailFeed(param);
 
-  if(shopDetailIsError) {
-    alert("페이지를 불러올 수 없어 메인 페이지로 돌아갑니다.");
-    navi('/');
+  if (shopDetailIsError) {
+    alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
+    navi(-1);
   };
   // const [isCheckedTabInfo, setIsCheckedTabInfo] = useState(true);     //정보
   // const [isCheckedTabMenu, setIsCheckedTabMenu] = useState(false);    //메뉴

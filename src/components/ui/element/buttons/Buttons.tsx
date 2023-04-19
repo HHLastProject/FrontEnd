@@ -2,16 +2,46 @@ import React from 'react'
 import { BtnPosition } from './BtnPosition'
 import { BtnRadius } from './BtnRadius'
 import { BtnBg } from './BtnBg'
-import { BtnTextColor, ChildrenForBtnContents } from './BtnContent'
+import { BtnTextColor } from './BtnContent'
 import { BtnBorder } from './BtnBorder'
 import { BtnSize } from './BtnSize'
 import { BtnLargeLength, BtnMediumLength, BtnSmallLength } from './BtnLength'
 import { BtnText } from './BtnText'
+import BtnNavContents from './BtnNavContents'
+import { BtnNavProps, CategoryStateProp, ChildrenForJSX, DivProp, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
+import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 
 
-const Default = ({ children }: ChildrenForBtnContents) => {
+
+/*
+버튼 property 전달 component
+*/
+
+export const BtnPropertyThrower = ({ children, isActive = false, id, ...props }: NavStateProp) => {
+    return <Thrower isActive={isActive} id={id} {...props}>{children}</Thrower>
+}
+
+
+const Thrower = styled.button<{ isActive?: boolean }>`
+    flex : none;
+    width: fit-content;
+    height: fit-content;
+    background-color: transparent;
+    border : none;
+    padding: 0px;
+    margin : 0px;
+`
+
+/*
+*****************
+Large 사이즈 버튼
+*****************
+*/
+
+const Default = ({ onClick, children }: InternalJSX) => {
     return (
-        <BtnRadius.Default>
+        <BtnRadius.Default onClick={onClick}>
             <BtnLargeLength.Long>
                 <BtnSize.Large>
                     <BtnBg.Gray>
@@ -29,9 +59,9 @@ const Default = ({ children }: ChildrenForBtnContents) => {
     );
 };
 
-const Inactive = ({ children }: ChildrenForBtnContents) => {
+const Inactive = ({ onClick, children }: InternalJSX) => {
     return (
-        <BtnRadius.Default>
+        <BtnRadius.Default onClick={onClick}>
             <BtnLargeLength.Long>
                 <BtnSize.Large>
                     <BtnBg.Lightgray>
@@ -49,9 +79,9 @@ const Inactive = ({ children }: ChildrenForBtnContents) => {
     );
 };
 
-const Done = ({ children }: ChildrenForBtnContents) => {
+const Done = ({ onClick, children }: InternalJSX) => {
     return (
-        <BtnRadius.Default>
+        <BtnRadius.Default onClick={onClick}>
             <BtnLargeLength.Long>
                 <BtnSize.Large>
                     <BtnBg.Black>
@@ -69,9 +99,9 @@ const Done = ({ children }: ChildrenForBtnContents) => {
     );
 };
 
-const Apply = ({ children }: ChildrenForBtnContents) => {
+const Apply = ({ onClick, children }: InternalJSX) => {
     return (
-        <BtnRadius.Default>
+        <BtnRadius.Default onClick={onClick}>
             <BtnLargeLength.Medium>
                 <BtnSize.Large>
                     <BtnBg.Gray>
@@ -89,9 +119,9 @@ const Apply = ({ children }: ChildrenForBtnContents) => {
     );
 };
 
-const Init = ({ children }: ChildrenForBtnContents) => {
+const Init = ({ onClick, children }: InternalJSX) => {
     return (
-        <BtnRadius.Default>
+        <BtnRadius.Default onClick={onClick}>
             <BtnLargeLength.Short>
                 <BtnSize.Large>
                     <BtnBg.White>
@@ -109,9 +139,9 @@ const Init = ({ children }: ChildrenForBtnContents) => {
     );
 };
 
-const ShowAll = ({ children }: ChildrenForBtnContents) => {
+const ShowAll = ({ onClick, children }: InternalJSX) => {
     return (
-        <BtnRadius.Default>
+        <BtnRadius.Default onClick={onClick}>
             <BtnLargeLength.Long>
                 <BtnSize.Large>
                     <BtnBg.Transparent>
@@ -138,9 +168,16 @@ const Large = {
     ShowAll                 // 전체보기
 }
 
-const MediumDefault = ({ children }: ChildrenForBtnContents) => {
+
+/*
+******************
+Medium 사이즈 버튼
+******************
+*/
+
+const MediumDefault = ({ onClick, children }: InternalJSX) => {
     return (
-        <BtnRadius.Others>
+        <BtnRadius.Others onClick={onClick}>
             <BtnMediumLength.Default>
                 <BtnSize.Medium>
                     <BtnBg.White>
@@ -163,9 +200,17 @@ const Medium = {
     Default: MediumDefault,
 };
 
-const SmallDefault = ({ children }: ChildrenForBtnContents) => {
+
+
+/*
+******************
+Medium 사이즈 버튼
+******************
+*/
+
+const SmallDefault = ({ onClick, children }: InternalJSX) => {
     return (
-        <BtnRadius.Others>
+        <BtnRadius.Others onClick={onClick}>
             <BtnSmallLength.Default>
                 <BtnSize.Small>
                     <BtnBg.White>
@@ -187,6 +232,86 @@ const Small = {
     Default: SmallDefault
 }
 
-export const Buttons = {
-    Large, Medium, Small
+
+
+/*
+*********************************************
+하단 네비게이션바 버튼 
+Boolean형 State(isActive)에 따라 활성화 결정됨
+*********************************************
+*/
+
+const NavButtonGenerator = ({ onClick, isActive, btnType }: BtnNavProps) => {
+    return (
+        <BtnRadius.Default onClick={onClick} name={btnType}>
+            <BtnSmallLength.Nav>
+                <BtnSize.Nav>
+                    <BtnBg.White>
+                        <BtnPosition.Center>
+                            <BtnNavContents isActive={isActive} btnType={btnType} />
+                        </BtnPosition.Center>
+                    </BtnBg.White>
+                </BtnSize.Nav>
+            </BtnSmallLength.Nav>
+        </BtnRadius.Default>
+    );
+};
+
+
+const NavButton = ({ isActive = true, onClick, name, ...props }: NavStateProp) => {
+    return (
+        <NavButtonGenerator
+            name={name}
+            onClick={onClick}
+            isActive={isActive}
+            btnType={name as NavButtonInputLimit}
+        />
+    )
 }
+// const List = ({ isActive = false, onClick, name, ...props }: NavStateProp) => {
+//     return (
+//         <NavButtonGenerator
+//             onClick={onClick}
+//             isActive={isActive}
+//             btnType={name as NavButtonInputLimit}
+//         />
+//     )
+// }
+// const Feed = ({ isActive = false, onClick, name, ...props }: NavStateProp) => {
+//     return (
+//         <NavButtonGenerator
+//             onClick={onClick}
+//             isActive={isActive}
+//             btnType={name as NavButtonInputLimit}
+//         />
+//     )
+// }
+// const Bookmark = ({ isActive = false, onClick, name, ...props }: NavStateProp) => {
+//     return (
+//         <NavButtonGenerator
+//             onClick={onClick}
+//             isActive={isActive}
+//             btnType={name as NavButtonInputLimit}
+//         />
+//     )
+// }
+// const Mypage = ({ isActive = false, onClick, name, ...props }: NavStateProp) => {
+//     return (
+//         <NavButtonGenerator
+//             onClick={onClick}
+//             isActive={isActive}
+//             btnType={name as NavButtonInputLimit}
+//         />
+//     )
+// }
+
+// const Others = { Home, List, Feed, Bookmark, Mypage };
+const Others = { NavButton };
+
+export const Buttons = {
+    Large, Medium, Small, Others
+}
+
+
+
+

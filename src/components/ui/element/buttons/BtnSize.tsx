@@ -21,9 +21,20 @@ const Small = ({ children }: ChildrenForJSX) => {
     )
 }
 
+const Nav = ({ children }: ChildrenForJSX) => {
+    return (
+        <NavContainer>{children}</NavContainer>
+    )
+}
 
-export const BtnSize = { Large, Medium, Small };
 
+export const BtnSize = { Large, Medium, Small, Nav };
+
+
+const NavContainer = styled.div`
+    width: 100%;
+    height: 56px;
+`
 
 const LargeContainer = styled.div`
     width: 100%;

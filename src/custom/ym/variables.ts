@@ -1,4 +1,6 @@
-import { EachData } from "../../pages/Map";
+import React from "react";
+import { EachData } from "../../pages/Home";
+import { Coordinate, categoryTypes } from "./types";
 
 
 type Font = {
@@ -18,7 +20,7 @@ export const KAKAO_AUTH_URL: string = `https://kauth.kakao.com/oauth/authorize?c
 
 export const NAVER_MAPS_CLIENT: string = 'ldgh7n9aiz';
 
-export const FILTER_LIST: string[] = ["카페", "보드카페", "사주카페", "애견카페", "전통찻집"];
+export const FILTER_LIST: categoryTypes[] = ["카페", "보드카페", "사주카페", "애견카페", "전통찻집"];
 export const STRONG = '191919';
 export const STRONG_MEDIUM = '2E3338';
 export const MEDIUM = '717176';
@@ -94,6 +96,53 @@ export const B14: Font = {
     color: `#${STRONG_MEDIUM}`,
 }
 
+export const HEADING_1: Font = {
+    fontSize: '32px',
+    lineHeight: '40px',
+    fontWeight: '700',
+    color: `black`
+}
+
+export const navIcons = {
+    home: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/home_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/home_inactive.png`
+    },
+    list: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/list_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/list_inactive.png`
+    },
+    feed: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/feed_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/feed_inactive.png`
+    },
+    bookmark: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/bookmark_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/bookmark_inactive.png`
+    },
+    mypage: {
+        true: `${process.env.PUBLIC_URL}/icon/nav_icons/mypage_active.png`,
+        false: `${process.env.PUBLIC_URL}/icon/nav_icons/mypage_inactive.png`
+    },
+}
+
+export interface ShopData {
+    shopId: number,
+    shopName: string,
+    thumbnail: string,
+    address: string,
+    category: categoryTypes,
+    lat: number,
+    lng: number,
+    maxPrice: string,
+    minPrice: string,
+    menuName: string,
+    distance: number,
+    feedCount: number,
+    isScrap: boolean,
+}
+
+export type ZoomValues = 15 | 16 | 17 | 18 | 19;
 
 export const SAMPLE_DATA: EachData[] = [
     {

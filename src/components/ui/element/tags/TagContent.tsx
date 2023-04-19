@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import { BODY_3 } from '../../../../custom/ym/variables';
-import { ChildrenForBtnContents } from '../buttons/BtnContent';
+import { ChildrenForBtnContents } from '../../../../custom/ym/types';
 
 const Default = ({ children }: ChildrenForBtnContents) => {
     return (

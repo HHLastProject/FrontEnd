@@ -1,179 +1,151 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { ButtonHTMLAttributes, createContext, useContext, useEffect, useRef, useState } from 'react'
+import MapModule from '../components/map/MapModule';
+import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
+import { getRealtimeLocation, getUserLocation } from '../custom/jh/getUserLocation';
+import data from "../datasample/data.json"
+import { HFlex, HFlexSpaceBetween, PublicContainer, VFlex, VFlexCenter } from '../custom/ym/styleStore';
 import styled from 'styled-components';
-import { path } from '../shared/path';
-import { getUserLocation } from '../custom/jh/getUserLocation';
-import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
-import NoShop from '../components/home/NoShop';
-import HomeShopPostCard from '../components/home/HomePostCard';
-import ListCount from '../components/ListCount';
-import { HomeTabMenuStyle, TabMenuLi, TabMenuUl } from '../components/TabMenu';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SelectBox from '../components/SelectBox';
-import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
-import useNavigateHandler from '../custom/jh/useNavigateHandler';
-import { useNavigate } from 'react-router';
-import { RangeContext } from '../apis/context';
-import ListHeader from '../components/home/ListHeader';
+import MapHeader from '../components/map/MapHeader';
+import CarouselBox from '../components/map/carousel/CarouselBox';
+import { FILTER_LIST, LINE_MEDIUM, STRONG_MEDIUM, SAMPLE_DATA, ShopData } from '../custom/ym/variables';
+import uuid from 'react-uuid';
+import { MEDIUM } from '../custom/ym/variables';
+import { Coordinate, categoryTypes } from '../custom/ym/types';
+import useMapDataCall from '../hooks/useMapDataCall';
+import { dispatches, states } from '../custom/ym/contextValues';
+import CategoryButtonBar from '../components/map/CategoryButtonBar';
+
+export interface EachData {
+    shopId: number,
+    category: string,
+    shopName: string,
+    thumbnail: string,
+    region: string,
+    distance: number,
+    rate: number,
+    reviews: number,
+    lat: number,
+    lng: number
+}
+
+export const StateContext = createContext(states);
+export const DispatchContext = createContext(dispatches);
 
 const Home = () => {
-  const [lng, setLng] = useState(0);
-  const [lat, setLat] = useState(0);
-  const [orderBy, setOrderBy] = useState<string>('거리순');
-  // const {range, setRange} = useContext(RangeContext);
-  const [range, setRange] = useState(500);
 
-  const navi = useNavigate();
-  const {loginClickHandler, mapClickHandler, searchClickHandler} = useNavigateHandler();
+    const navermaps = useNavermaps();
+    // const map = useMap();
+    const [range, setRange] = useState(300);
+    const [search, setSearch] = useState('');
+    const [category, setCategory] = useState<categoryTypes | ''>('');
+    const [list, setList] = useState<(ShopData | null)[]>([]);
+    const [center, setCenter] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
 
-  //선택창 보이기
-  const {isSelectHidden, onClickHiddenHandler} = useOnClickHiddenHandler(true);
+    // 실시간 유저 위치
+    const [userCoord, setUserCoord] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
 
-  //토큰 가져오기
-  const naverAccessToken = () => {
-    window.location.href.includes('access_token') && getNaverToken();
-  };
-  const getNaverToken = () => {
-    const token = window.location.href.split('=')[1].split('&')[0];
-    console.log(token);
-    localStorage.setItem('access_token', token);
-  };
+    // 샵 위치
+    const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
 
-  //리스트 데이터
-  const {
-    shopList,
-    getshopList,
-    getshopListIsLoading,
-    getshopListIsError,
-  } = useGetHomeShopList({ lng, lat, range });
+    const stateList = { userCoord, shopCoord, category, range, list, center };
+    const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter };
 
-  //useEffect
-  useEffect(() => {
-    naverAccessToken();
-    localStorage.getItem('admin_token') && navi(path.adminShoplist);
-  }, []);
 
-  useEffect(() => {
-    const errorMsg = getUserLocation(setLng, setLat);
-    if (errorMsg) {
-      console.log(errorMsg);
-    };
-    if (lng !== 0 && lat !== 0) { getshopList(); };
-  }, [lng, lat]);
+    const icon = {
+        url: `${process.env.PUBLIC_URL}/markers/shop3.png`,
+        anchor: new navermaps.Point(0, 0),
+    }
 
-  //로딩 화면
-  if (getshopListIsLoading) { return <div>로딩중...</div>; }
+    const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
 
-  return (
-    <>
-      <SelectBox
-        arr={['거리순', '인기순']}
-        hidden={isSelectHidden}
-        onClickHiddenHandler={onClickHiddenHandler}
-      />
-      <ListHeader
-        range={500}
-      />
-      <HomeWrap>
-        <HomeContainer>
-          <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
-          <header>
-            <div className='space-between'>
-              <button onClick={loginClickHandler}>로그인 하기</button>
-            </div>
-          </header>
-  
-          <header>
-            <HomeTabMenuStyle>
-              <TabMenuUl>
-                <TabMenuLi id={1} isChecked={true}>
-                  <div>
-                    내 주변
-                    <ListCount>{shopList?.length}</ListCount>
-                  </div>
-                </TabMenuLi>
-                <TabMenuLi id={2}>
-                  추천식당
-                </TabMenuLi>
-              </TabMenuUl>
-            </HomeTabMenuStyle>
-          </header>
-  
-          <div className='space-between'>
-            <input type="checkbox" id="by-range" name="by-range" hidden />
-            <span>
-              <button
-                onClick={onClickHiddenHandler}
-              >
-                거리순
-              </button>
-            </span>
-          </div>
-  
-          {/* <Swiper
-            
-          >
-            <SwiperSlide> */}
-              <HomeShopListContainer>
-                {
-                  (shopList?.length === 0) && <NoShop />
-                }
-                {
-                  shopList?.map((item: any) => (
-                    <HomeShopPostCard
-                      key={item.shopId}
-                      id={item.shopId}
-                      address={item.address}
-                      shopName={item.shopName}
-                      thumbnail={item.thumbnail}
-                      category={item.category}
-                      distance={item.distance}
-                      feedCount={item.feedCount}
-                    />
-                  ))
-                }
-                <button>더 보기</button>
-              </HomeShopListContainer>
-            {/* </SwiperSlide>
-          </Swiper> */}
-          
-        </HomeContainer>
-      </HomeWrap>
-    </>
-  );
-};
+    const shopCoordList = (arr: ShopData[]) => {
+        const result: Coordinate[] = arr?.map((item) => {
+            return {
+                lng: item.lng,
+                lat: item.lat
+            }
+        })
+        return result;
+    }
+
+    /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch를 진행 */
+    useEffect(() => {
+        console.log('실행되는중');
+        console.log(center.lng, center.lat);
+        mutateAsync({ lng: center.lng, lat: center.lat, range: range })
+            .then((data) => {
+                setList(data);
+                setShopCoord(shopCoordList(data));
+                console.log('새로바뀐 list :', list);
+                console.log('새로바뀐 shopCoord:', shopCoord);
+            });
+    }, [range, center]);
+
+    useEffect(() => {
+        if (category) {
+            setList(prev => {
+                const searchResult = data?.filter(
+                    (item: ShopData) => item.category === category);
+                return searchResult;
+            })
+        } else {
+            setList(data);
+        }
+    }, [category]);
+
+    const aimClickListner = () => {
+        setCenter(userCoord);
+    }
+
+    return (
+        <VFlex etc='position: relative;'>
+            <StateContext.Provider value={{ ...stateList }}>
+                <DispatchContext.Provider value={{ ...dispatchList }}>
+                    <VFlexCenter etc="min-width:390px; height:100%; flex:1;">
+                        <MapHeader />
+                        <MapModule />
+                    </VFlexCenter>
+                    <CategoryButtonBar />
+                    <AimBtn onClick={aimClickListner}>
+                        <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
+                    </AimBtn>
+                    <CarouselModule>
+                        <CarouselBox />
+                    </CarouselModule>
+                </DispatchContext.Provider>
+            </StateContext.Provider>
+        </VFlex>
+    );
+}
 
 export default Home;
 
-export const HomeWrap = styled.div`
-  width: 100%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  background-color: #fff;
+const Image = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
 `;
 
-const HomeContainer = styled.div`
-  width: (100%-20)px;
-  margin: 20px;
-
-  .floating-btn {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: transxeX( -50% );
-  }
-
-  .space-between {
-    display: flex;
-    justify-content: space-between;
-  }
+const AimBtn = styled.button`
+    position: absolute;
+    bottom: 236px;
+    z-index: 1;
+    width: 40px;
+    height : 40px;
+    right: 35px;
+    padding: 6px;
+    border : none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    background-color: white;
 `;
 
-const HomeShopListContainer = styled.div`
-  width: 100%;
-  margin: 20px 0 120px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
+const CarouselModule = styled.div`
+    position: absolute;
+    bottom: 0;
+    width: 332px;
+    height: 214px;
+    /* padding : 20px; */
+    padding-right: 0px;
+    background-color: transparent;
 `;

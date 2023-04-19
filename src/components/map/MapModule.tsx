@@ -1,14 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
-import data from "../../datasample/data.json"
-import styled from 'styled-components';
-import { VFlexCenter } from '../../custom/ym/styleStore';
 import uuid from 'react-uuid';
-import { SAMPLE_DATA } from '../../custom/ym/variables';
-import { EachData } from '../../pages/Map';
+import { DispatchContext, EachData, StateContext } from '../../pages/Home';
 
-type Coordinate = {
+export type Coordinate = {
     lng: number,
     lat: number,
 };
@@ -23,89 +19,97 @@ type JsonData = {
 type MapModuleProps = {
     category: string
 };
-const MapModule = ({ category }: MapModuleProps) => {
+const MapModule = () => {
 
     const navermaps = useNavermaps();
-    // const map = useMap();
-    const [range, setRange] = useState(500);
-    const [search, setSearch] = useState('');
-    const [list, setList] = useState<(EachData | null)[]>([]);
-    // const map = useRef(null);
-
-    const [temp, setTemp] = useState({ lat: 37.5108407, lng: 127.0468975 });
-
     const mapRef = useRef(null);
+    const [zoom, setZoom] = useState<number>(17);
 
-    // 실시간 유저 위치
-    const [userCoord, setUserCoord] = useState<Coordinate>({
-        lng: 0,
-        lat: 0,
-    });
+    let timeCheck: NodeJS.Timeout | null = null;
 
-    // 샵 위치
-    const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
+    const { center, list, userCoord } = useContext(StateContext);
+    const { setShopCoord, setRange, setCenter } = useContext(DispatchContext);
 
     const icon = {
         url: `${process.env.PUBLIC_URL}/markers/icon_mappin_36.png`,
         anchor: new navermaps.Point(0, 0),
     }
 
-    // const circle = new navermaps.Circle(circleData);
-
-    const btnHandler = () => {
-        // setCircleData((prev) => {
-        //     return { ...prev, radius: 200 };
-        // });
-        // console.log(circleData);
-        // setRange(200);
-        setTemp({ lat: 37.5103407, lng: 127.0438975 });
-    }
-
-
-    const moveCenter = () => {
-        navermaps.Service.geocode({
-            query: search,
-        }, (status, response) => {
-            if (status !== navermaps.Service.Status.OK) {
-                return alert("Something wrong!");
-            }
-            // console.log(response);
-            setTemp((prev) => {
-                return {
-                    lat: parseFloat(response.v2.addresses[0].y),
-                    lng: parseFloat(response.v2.addresses[0].x),
-                }
-            })
-        })
-    }
-
-    useEffect(() => {
-        getRealtimeLocation(setUserCoord);
-        // console.log(userCoord);
-        if (category) {
-            setList(prev => {
-                const searchResult = SAMPLE_DATA.map((item) => item.category === category ? item : null);
-                return searchResult;
-            })
-        } else {
-            setList(SAMPLE_DATA);
+    const centerChangeHandler = (
+        centerOnMap: naver.maps.Coord,
+        setState: React.Dispatch<React.SetStateAction<Coordinate>>
+    ) => {
+        const newCoord: Coordinate = {
+            lng: centerOnMap.x,
+            lat: centerOnMap.y,
         }
+        timeCheck && clearTimeout(timeCheck);
+        timeCheck = setTimeout(() => {
+            setState(newCoord);
+            timeCheck = null;
+        }, 500);
+    }
 
-    }, [category]);
+    const returnRadius = (value: number) => {
+        switch (value) {
+            case 19:
+                return 100;
+            case 18:
+                return 200;
+            case 17:
+                return 300;
+            case 16:
+                return 500;
+            case 15:
+                return 1000;
+            default:
+                return 300;
+        }
+    }
+
+    const initZoom = (value: number) => {
+        setZoom(value);
+        return value;
+    }
+
+    const zoomChangeHandler = (zoomUnit: number) => {
+        setZoom(zoomUnit);
+        const changeRange =
+            setRange as React.Dispatch<React.SetStateAction<number>>;
+        if (zoomUnit > 14 && zoomUnit < 20) {
+            changeRange(returnRadius(zoomUnit));
+        } else {
+            changeRange(0);
+            /* 클러스터링은 이쪽에서 향후에 컨트z롤 할 것 */
+        }
+    }
+
 
     return (
         <MapDiv style={{ width: '100%', height: '100%' }} id="react-naver-map">
             <NaverMap
-                center={temp}
-                defaultZoom={18}
+                center={center}
+                // defaultZoom={initZoom(17)}
+                defaultZoom={17}
                 ref={mapRef}
+                onCenterChanged={
+                    (centerCoord) => {
+                        centerChangeHandler(
+                            centerCoord,
+                            setCenter as React.Dispatch<React.SetStateAction<Coordinate>>
+                        )
+                    }
+                }
+                onZoomChanged={(value) => zoomChangeHandler(value)}
+                zoomOrigin={center}
+                maxZoom={19}
             >
                 <Marker
                     icon={`${process.env.PUBLIC_URL}/markers/icon_mylocation_36.png`}
-                    position={temp}
+                    position={userCoord}
                 />
-                {/* <Overlay element={circleState} /> */}
-                {list.map((element) => {
+                {/* <Overlay element={radius} /> */}
+                {list?.map((element) => {
                     // console.log(element);
                     // return null;
                     if (element) {
