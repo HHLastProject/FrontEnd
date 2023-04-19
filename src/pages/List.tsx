@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router';
 import { RangeContext } from '../apis/context';
 import ListHeader from '../components/home/ListHeader';
 
-const Home = () => {
+const List = () => {
   const [lng, setLng] = useState(0);
   const [lat, setLat] = useState(0);
   const [orderBy, setOrderBy] = useState<string>('거리순');
@@ -142,7 +142,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default List;
 
 export const HomeWrap = styled.div`
   width: 100%;
