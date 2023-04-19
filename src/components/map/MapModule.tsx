@@ -3,6 +3,8 @@ import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps } from 're
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
 import uuid from 'react-uuid';
 import { DispatchContext, EachData, StateContext } from '../../pages/Home';
+import { NavermapPointType } from '../../custom/ym/variables';
+import styled from 'styled-components';
 
 export type Coordinate = {
     lng: number,
@@ -27,8 +29,19 @@ const MapModule = () => {
 
     let timeCheck: NodeJS.Timeout | null = null;
 
-    const { center, list, userCoord } = useContext(StateContext);
-    const { setShopCoord, setRange, setCenter } = useContext(DispatchContext);
+
+    const {
+        center,
+        list,
+        userCoord,
+        isMoving } = useContext(StateContext);
+
+    const {
+        setShopCoord,
+        setRange,
+        setCenter,
+        setIsMoving } = useContext(DispatchContext);
+
 
     const icon = {
         url: `${process.env.PUBLIC_URL}/markers/icon_mappin_36.png`,
@@ -36,18 +49,20 @@ const MapModule = () => {
     }
 
     const centerChangeHandler = (
-        centerOnMap: naver.maps.Coord,
-        setState: React.Dispatch<React.SetStateAction<Coordinate>>
+        setState: React.Dispatch<React.SetStateAction<Coordinate>>,
+        centerOnMap: naver.maps.Coord | NavermapPointType
     ) => {
+
         const newCoord: Coordinate = {
             lng: centerOnMap.x,
             lat: centerOnMap.y,
         }
         timeCheck && clearTimeout(timeCheck);
+
         timeCheck = setTimeout(() => {
             setState(newCoord);
             timeCheck = null;
-        }, 500);
+        }, 300);
     }
 
     const returnRadius = (value: number) => {
@@ -67,10 +82,10 @@ const MapModule = () => {
         }
     }
 
-    const initZoom = (value: number) => {
-        setZoom(value);
-        return value;
-    }
+    // const initZoom = (value: number) => {
+    //     setZoom(value);
+    //     return value;
+    // }
 
     const zoomChangeHandler = (zoomUnit: number) => {
         setZoom(zoomUnit);
@@ -84,20 +99,51 @@ const MapModule = () => {
         }
     }
 
+    const aimClickListner = () => {
+        const tempData: NavermapPointType = {
+            x: userCoord.lng,
+            y: userCoord.lat,
+        }
+        const tempSetCenter = setCenter as React.Dispatch<React.SetStateAction<Coordinate>>;
+        const tempSetIsMoving = setIsMoving as React.Dispatch<React.SetStateAction<boolean>>;
+        tempSetIsMoving(true);
+        tempSetCenter(userCoord);
+
+        // centerChangeHandler(
+        //     setCenter as React.Dispatch<React.SetStateAction<Coordinate>>,
+        //     tempData
+        // );
+    }
+
+
+    /* 메모리누수 방지 */
+    useEffect(() => {
+        return () => {
+            if (timeCheck) {
+                clearTimeout(timeCheck);
+            }
+        }
+    }, [timeCheck])
+
+    // useEffect(() => {
+
+    // })
+
 
     return (
         <MapDiv style={{ width: '100%', height: '100%' }} id="react-naver-map">
             <NaverMap
                 center={center}
-                // defaultZoom={initZoom(17)}
                 defaultZoom={17}
                 ref={mapRef}
+                disableKineticPan={false}
                 onCenterChanged={
                     (centerCoord) => {
-                        centerChangeHandler(
-                            centerCoord,
-                            setCenter as React.Dispatch<React.SetStateAction<Coordinate>>
-                        )
+                        !isMoving &&
+                            centerChangeHandler(
+                                setCenter as React.Dispatch<React.SetStateAction<Coordinate>>,
+                                centerCoord
+                            );
                     }
                 }
                 onZoomChanged={(value) => zoomChangeHandler(value)}
@@ -122,8 +168,31 @@ const MapModule = () => {
                     }
                 })}
             </NaverMap>
+            <AimBtn onClick={aimClickListner}>
+                <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
+            </AimBtn>
         </MapDiv>
     );
 }
 
 export default MapModule;
+
+
+const AimBtn = styled.button`
+    position: absolute;
+    bottom: 236px;
+    z-index: 1;
+    width: 40px;
+    height : 40px;
+    right: 35px;
+    padding: 6px;
+    border : none;
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    background-color: white;
+`;
+const Image = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+`;
