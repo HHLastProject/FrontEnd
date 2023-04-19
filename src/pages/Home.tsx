@@ -56,10 +56,6 @@ const Home = () => {
         })
         return result;
     }
-
-    const a = "경기도 수원시 권선구 ㅇㅇ로";
-    const b = a.replace('경기도 ', "");
-    console.log(b);
     /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
     useEffect(() => {
         const newPayload = { lng: center.lng, lat: center.lat, range: range };
