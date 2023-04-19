@@ -16,8 +16,9 @@ function Search() {
 
   let link = '';
   let param = Number(useParams().isfeed); //피드페이지에서 넘어올때만 있는 파라미터
-  console.log(param);
-  if(!param) param = 0;
+  if(!param) {
+    param = 0;
+  };
 
   return (
     <SearchWrap>

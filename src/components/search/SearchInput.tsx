@@ -10,6 +10,7 @@ export interface ISearchInput {
   placeholder?: string;
   dataList?: [];
   setDataList: React.Dispatch<React.SetStateAction<never[]>> | ISearchResult[] | any;
+  children?: React.ReactNode;
 };
 
 export interface ISearchResult {
@@ -23,6 +24,7 @@ function SearchStore({
   setInputValue, 
   placeholder,
   setDataList,
+  children,
   }: ISearchInput) {
   return(
     <SearchStoreStyle>
@@ -34,6 +36,7 @@ function SearchStore({
           placeholder={placeholder}
           setDataList={setDataList}
         />
+        {children}
       </div>
     </SearchStoreStyle>
   )
