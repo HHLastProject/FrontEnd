@@ -20,7 +20,7 @@ function ShopDetail() {
   const tabInfoRef = useRef();
   const tabMenuRef = useRef();
   const tabReviewRef = useRef();
-  const {feedFormClickHandler} = useNavigateHandler();
+  const { feedFormClickHandler } = useNavigateHandler();
 
   const scrollToTabInfo = () => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -77,19 +77,19 @@ function ShopDetail() {
           <ShopDetailTab>
             <ul id='detail-tab'>
               <li id="">
-                <input type="radio" id='detail-tab-info' name='detail-tab' defaultChecked hidden/>
+                <input type="radio" id='detail-tab-info' name='detail-tab' defaultChecked hidden />
                 <div className='detail-tab-div'>
-                  <label htmlFor="detail-tab-info">정보</label> 
+                  <label htmlFor="detail-tab-info">정보</label>
                 </div>
               </li>
               <li id="">
-                <input type="radio" id='detail-tab-menu' name='detail-tab' hidden/>
+                <input type="radio" id='detail-tab-menu' name='detail-tab' hidden />
                 <div className='detail-tab-div'>
                   <label htmlFor="detail-tab-menu">메뉴</label>
                 </div>
               </li>
               <li id="">
-                <input type="radio" id='detail-tab-review' name='detail-tab' hidden/>
+                <input type="radio" id='detail-tab-review' name='detail-tab' hidden />
                 <div className='detail-tab-div'>
                   <label htmlFor="detail-tab-review">피드</label>
                 </div>
@@ -126,7 +126,7 @@ function ShopDetail() {
           <ShopDetailContentContainer>
             <div className='shop-detail-menu'>
               <h2>메뉴</h2>
-              { shopDetailData?.Menus?.map((item:any) => {
+              {shopDetailData?.Menus?.map((item: any) => {
                 return (
                   <ShopDetailMenu
                     menuName={item.menuName}
@@ -147,12 +147,12 @@ function ShopDetail() {
                   onClick={() => feedFormClickHandler(param)}
                 >
                   <Buttons.Small.Default>
-                    <><IconPencil/>피드 쓰기</>
+                    <><IconPencil />피드 쓰기</>
                   </Buttons.Small.Default>
                 </div>
               </div>
               <div>
-                {shopDetailFeedList?.map((item:any) => {
+                {shopDetailFeedList?.map((item: any) => {
                   return (
                     <>피드들</>
                   )
