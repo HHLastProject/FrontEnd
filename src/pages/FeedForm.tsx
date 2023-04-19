@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import SearchStore from '../components/search/SearchInput';
@@ -10,76 +10,72 @@ import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
 import useTextHandler from '../custom/jh/useTextCountHandler';
 
-type Ttag = {tag:string};
+type Ttag = { tag: string };
 type Ttags = Ttag[] | [] | null | any;
-type Ttoken = string | null;
 
 interface IFeedResister {
   shopId: number;
-  feedPic : FormData | null;
-  comment : string | null;
-  tags : Ttags;
+  comment: string | null;
+  tags: Ttags;
 };
 
-type imgFile = {
-  feedPic: File | string;
+interface IImgFile {
+  feedPic: File | null;
   previewPic: string | ArrayBuffer | null;
 };
 
 function FeedForm() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
-  let tags: Ttags = [];
-  let token: Ttoken = null;
+  const tags: Ttags = useRef([]);
+  let token: string | null = null;
   const maxLength = 500;
-  const {searchClickHandler} = useNavigateHandler();
+  const { searchClickHandler } = useNavigateHandler();
   const [comment, setComment] = useState<string | null>(null);
   const [hashTags, setHashTags] = useState<Ttags>(null);
-  const [imgFile, setImgFile] = useState<imgFile>({
-    feedPic: '',
+  const [imgFile, setImgFile] = useState<IImgFile>({
+    feedPic: null,
     previewPic: `${defaultImgPath.shopList}`,
   });
   const [formDataList, setFormDataList] = useState<IFeedResister>({
     shopId: param,
-    feedPic : null,
-    comment : comment,
-    tags : hashTags,
+    comment: null,
+    tags: null,
   });
 
-  const {count, textCountAndSetHandler} = useTextHandler(maxLength, setComment);
+  const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
   const { shopDetailData, shopDetailIsError } = useGetShopDetail(param);
   const [inputValue, setInputValue] = useState('');
 
-  if(shopDetailIsError) {alert('에러')};
+  if (shopDetailIsError) { alert('에러') };
 
   //이미지 미리보기
   const previewImg = (e: React.ChangeEvent<HTMLInputElement> | any) => {
-    if((e !== null) && (e.target.files !== null)) {
-      e.preventDefault();
+    e.preventDefault();
+    if ((e !== null) && (e.target.files !== null)) {
       const fileReader = new FileReader();
-      if(e.target.files[0]){
+      if (e.target.files[0]) {
         fileReader.readAsDataURL(e.target.files[0]);
-        console.log('이미지 파일', e.target.files[0]);
-
         fileReader.onload = () => {
           setImgFile({
             feedPic: e.target.files[0],
             previewPic: fileReader.result
           });
+          console.log('onload', imgFile);
         };
       };
     };
   };
 
-  const onClickSendFeedData = (param: number, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
+  //전송 버튼 눌렀을때
+  const onClickSendFeedData = (param: number) => {
     token = getToken();
-    console.log('버튼 누름');
-    setHashTags(tags);
-    console.log(hashTags);
-    console.log('해시set', hashTags);
+    console.log('버튼 누름', tags.current);
+    setHashTags(tags.current);
+    console.log('해시set', hashTags, tags.current);
+    console.log('imgFile.feedPic: ', imgFile.feedPic);
 
-    if(!token) {
+    if (!token) {
       alert('로그인 해야 이용 가능합니다.');
       navi('/login');
       return;
@@ -89,39 +85,35 @@ function FeedForm() {
       console.log('코멘트', comment, '해시태그', hashTags);
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
-      const newData = {
+      console.log("처음 formData 셋팅할때 formData('feedPic') :", formData.get('feedPic'));
+      setFormDataList({
         shopId: param,
-        feedPic : formData,
-        comment : comment,
-        tags : hashTags,
-      };
-      setFormDataList(newData);
-      console.log("formDataList", formData);
-      const value = formData.get('feedPic');
-      console.log('value', value);
+        comment: comment,
+        tags: [...tags.current],
+      });
+      sendFeedData(param, formData);
     } else {
       alert("가게명 또는 사진을 등록해주세요.");
     };
   };
 
-  const sendFeedData = async (param: number) => {
-    console.log('send');
-    console.log('send  다음',formDataList);
-    // console.log(imgFile.feedPic.get())
-    const value =  formDataList.feedPic && formDataList.feedPic.get('feedPic');
-    console.log('2value',value);
-    const result = await api.post(`/api/shop/${param}/feed`, formDataList, {
-      headers: {Authorization: `${token}`},
+  const sendFeedData = async (param: number, formData: FormData) => {
+    console.log('state에 안넣고 보낼때 formData:', formData.get('feedPic'));
+    const newData = { feedPic: formData, ...formDataList };
+    console.log('객체 합쳤을때 newData.get(feedPic):', newData.feedPic.get('feedPic'));
+
+    await api.post(`/api/shop/${param}/feed22`, newData, {
+      headers: { authorization: `${token}` },
       })
       .then((resolve) => {
         console.log("피드 등록 성공");
         alert("등록이 완료되었습니다!");
-        navi(-1);
+        console.log('성공',formDataList);
+        // navi(-1);
       })
       .catch((error) => {
         console.log(error);
       });
-    console.log('result',result);
   };
 
   //토큰 가져오기
@@ -133,27 +125,24 @@ function FeedForm() {
   //태그 추가
   const addTag = (value: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if(value && tags) {
-      tags.push({tag : value});
-      console.log(tags);
+    if (value) {
+      tags.current.push({ tag: value });
     };
   };
 
   useEffect(() => {
-    if(shopDetailData?.shopName) {setInputValue(shopDetailData?.shopName)};
+    if (shopDetailData?.shopName) { setInputValue(shopDetailData?.shopName) };
     token = getToken();
     console.log(token);
   }, []);
 
   useEffect(() => {
-    sendFeedData(param);
-    console.log('폼데이터',formDataList);
+    console.log('이펙트', formDataList);
   }, [formDataList]);
 
   return (
     <>
       <ShopDetailReviewFormContainer>
-      <form encType='multipart/form-data'>
         <Title3>새로운 기록</Title3>
         <div>
           <FeedFormTitle>
@@ -171,14 +160,14 @@ function FeedForm() {
             />
           </div>
         </div>
-    
+
         <div>
           <FeedFormTitle>
             <Title4>사진</Title4>
             <Body4>필수</Body4>
           </FeedFormTitle>
-          <input 
-            type="file" 
+          <input
+            type="file"
             name="feedPic"
             onChange={previewImg}
           />
@@ -201,7 +190,7 @@ function FeedForm() {
             <label>{count}/{maxLength}</label>
           </div>
         </div>
-    
+
         <div>
           <FeedFormTitle>
             <Title4>태그</Title4>
@@ -232,13 +221,11 @@ function FeedForm() {
         </div>
 
         <button
-          type='submit'
           className='sticky-btn'
-          onClick={(e) => onClickSendFeedData(param, e)}
+          onClick={() => onClickSendFeedData(param)}
         >
           완료
         </button>
-      </form>
       </ShopDetailReviewFormContainer>
     </>
   )

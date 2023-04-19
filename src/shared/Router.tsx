@@ -30,27 +30,27 @@ const Router = () => {
       <VFlex>
         <PageContainer id='page-container'>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/list" element={<List />} />
-            <Route path="/login" element={<Login />} />
+            <Route path={path.home} element={<Home />} />
+            <Route path={path.list} element={<List />} />
+            <Route path={path.login} element={<Login />} />
             <Route path={path.search} element={<Search />} />
             <Route path={path.feedFormSearch} element={<Search />} />
             <Route path={path.shopDetail} element={<ShopDetail />} />
             <Route path={path.feedForm} element={<FeedForm />} />
             <Route path={path.feedList} element={<FeedList />} />
 
-            <Route path="/admin/shoplist" element={<Admin />} />
-            <Route path="/admin/register" element={<AdminRegister />} />
-            <Route path="/admin/:id" element={<AdminUpdate />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/redirect/naver" element={<RedirectNaver />} />
-            <Route path="/redirect/kakao" element={<RedirectKakao />} />
+            <Route path={path.adminShoplist} element={<Admin />} />
+            <Route path={path.adminRegister} element={<AdminRegister />} />
+            <Route path={path.adminUpdate} element={<AdminUpdate />} />
+            <Route path={path.adminLogin} element={<AdminLogin />} />
+            <Route path={path.redirectNaver} element={<RedirectNaver />} />
+            <Route path={path.redirectKakao} element={<RedirectKakao />} />
 
-            <Route path="/bookmark" element={<Bookmark />} />
+            <Route path={path.bookmark} element={<Bookmark />} />
 
-            <Route path="/mypage" element={<Mypage />} />
-            <Route path="/mypage/feeds/:userId" element={<AllFeeds />} />
-            <Route path="/feed/detail/:feedId" element={<FeedDetail />} />
+            <Route path={path.mypage} element={<Mypage />} />
+            <Route path={path.allFeeds} element={<AllFeeds />} />
+            <Route path={path.feedDetail} element={<FeedDetail />} />
 
           </Routes>
         </PageContainer>

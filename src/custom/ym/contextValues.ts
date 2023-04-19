@@ -8,6 +8,7 @@ export interface States {
     userCoord: Coordinate,
     shopCoord: (Coordinate | null)[],
     center: Coordinate,
+    isMoving: boolean,
 }
 
 export const states: States = {
@@ -17,6 +18,7 @@ export const states: States = {
     userCoord: { lat: 37.5108407, lng: 127.0468975 },
     shopCoord: [],
     center: { lat: 37.5108407, lng: 127.0468975 },
+    isMoving: false,
 }
 
 export interface Dispatches {
@@ -26,6 +28,7 @@ export interface Dispatches {
     setUserCoord: React.Dispatch<React.SetStateAction<Coordinate>> | null,
     setShopCoord: React.Dispatch<React.SetStateAction<Coordinate[]>> | null,
     setCenter: React.Dispatch<React.SetStateAction<Coordinate>> | null,
+    setIsMoving: React.Dispatch<React.SetStateAction<boolean>> | null,
 }
 export const dispatches: Dispatches = {
     setRange: null,
@@ -33,5 +36,6 @@ export const dispatches: Dispatches = {
     setList: null,
     setUserCoord: null,
     setShopCoord: null,
-    setCenter: null
+    setCenter: null,
+    setIsMoving: null,
 }
