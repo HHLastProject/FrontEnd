@@ -48,9 +48,8 @@ function FeedForm() {
 
   const {count, textCountAndSetHandler} = useTextHandler(maxLength, setComment);
   const { shopDetailData, shopDetailIsError } = useGetShopDetail(param);
-  const [inputValue, setInputValue] = useState(shopDetailData?.shopName ? shopDetailData?.shopName : '');
+  const [inputValue, setInputValue] = useState('');
 
-  if(!shopDetailData.shopName) {setInputValue('')};
   if(shopDetailIsError) {alert('에러')};
 
   //이미지 미리보기
@@ -132,6 +131,7 @@ function FeedForm() {
   };
 
   useEffect(() => {
+    if(shopDetailData?.shopName) {setInputValue(shopDetailData?.shopName)};
     token = getToken();
     console.log(token);
   }, []);
