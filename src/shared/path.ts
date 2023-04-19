@@ -1,3 +1,11 @@
+function setServerUrl(link: string) {
+  return `${process.env.REACT_APP_SERVER_URL + link}`;
+};
+
+function setPublicUrl(link: string) {
+  return `${process.env.PUBLIC_URL + link}`;
+};
+
 interface IPath {
   readonly [path: string]: string;
 };
@@ -6,14 +14,6 @@ interface IPathObject {
   readonly [key: string]: {
     readonly [path: string]: string;
   }
-};
-
-function setServerUrl(link: string) {
-  return `${process.env.REACT_APP_SERVER_URL + link}`;
-};
-
-function setPublicUrl(link: string) {
-  return `${process.env.PUBLIC_URL + link}`;
 };
 
 export const path: IPath = {
