@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { apiPath } from "../../shared/path";
+import { apiPath, imgPath } from "../../shared/path";
+import { colorSet } from "../ui/styles/color";
+import { fontType } from "../ui/styles/typo";
 
 interface IShopDetailMenu {
   menuName: string;
@@ -8,16 +10,20 @@ interface IShopDetailMenu {
 }
 
 function ShopDetailMenu({menuName, price, picture}: IShopDetailMenu) {
+  // if(price >= 1000) {
+
+  // }
+  const menuImgUrl = `${imgPath.shopMenuImg + picture}`;
   return (
     <ShopDetailMenuContainer>
       <div className="shop-detail-menu-content">
-        <label>{menuName}</label>
-        <label>{price}</label>
+        <MenuNameFont>{menuName}</MenuNameFont>
+        <MenuPriceFont>{price}원</MenuPriceFont>
       </div>
       { picture && (
-        <div className="shop-detail-menu-picture">
-          <img src={`${apiPath.imgUrl}${picture}`} alt={menuName}/>
-        </div>
+        <ShopDetailMenuImg>
+          <img src={menuImgUrl} alt={menuName}/>
+        </ShopDetailMenuImg>
       )}
     </ShopDetailMenuContainer>
   )
@@ -26,26 +32,38 @@ function ShopDetailMenu({menuName, price, picture}: IShopDetailMenu) {
 export default ShopDetailMenu
 
 const ShopDetailMenuContainer = styled.div`
-  height: 80px;
   display: flex;
   justify-content: space-between;
+  border-top: 1px solid ${colorSet.lineLight};
+  padding: 16px 0;
 
   .shop-detail-menu-content {
     display: flex;
-    align-items: center;
-    gap: 20px;
+    flex-direction: column;
   }
-  .shop-detail-menu-picture {
+`;
+
+const MenuNameFont = styled.div`
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 23px;
+`;
+
+const MenuPriceFont = styled.div`
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+`;
+
+const ShopDetailMenuImg = styled.div`
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  overflow: hidden;
+  img {
     width: 80px;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    overflow: hidden;
-    img {
-      width: ${(80)} 80px;
-      
-    }
   }
 `;

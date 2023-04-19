@@ -38,7 +38,7 @@ const ShopDetailMap = ({ width, height, lng, lat }: IShopDetailMap) => {
           zoomControl={true}
         >
           <Marker
-            icon={`${process.env.PUBLIC_URL}/markers/me.png`}
+            icon={`${process.env.PUBLIC_URL}/markers/icon_mappin_36.png`}
             position={new navermaps.LatLng(lat, lng)}
           />
         </NaverMap>

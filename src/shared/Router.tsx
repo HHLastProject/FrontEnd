@@ -11,8 +11,6 @@ import AdminUpdate from '../components/admin/AdminUpdate'
 import RedirectNaver from '../pages/RedirectNaver'
 import RedirectKakao from '../pages/RedirectKakao'
 
-import ShopDetailReviewForm from '../pages/ShopDetailReviewForm'
-
 import AdminLogin from '../pages/AdminLogin'
 import BottomNav from '../components/BottomNav'
 import styled from 'styled-components'
@@ -22,7 +20,9 @@ import AllFeeds from '../pages/AllFeeds'
 import FeedDetail from '../pages/FeedDetail'
 import List from '../pages/List'
 import Home from '../pages/Home'
+import FeedForm from '../pages/FeedForm'
 import Bookmark from '../pages/Bookmark'
+import FeedList from '../pages/FeedList'
 
 const Router = () => {
   return (
@@ -34,8 +34,10 @@ const Router = () => {
             <Route path="/list" element={<List />} />
             <Route path="/login" element={<Login />} />
             <Route path={path.search} element={<Search />} />
+            <Route path={path.feedFormSearch} element={<Search />} />
             <Route path={path.shopDetail} element={<ShopDetail />} />
-            <Route path={path.shopDetailReviewForm} element={<ShopDetailReviewForm />} />
+            <Route path={path.feedForm} element={<FeedForm />} />
+            <Route path={path.feedList} element={<FeedList />} />
 
             <Route path="/admin/shoplist" element={<Admin />} />
             <Route path="/admin/register" element={<AdminRegister />} />

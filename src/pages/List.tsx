@@ -1,22 +1,41 @@
-import React, { useEffect, useState } from 'react'
+import React, { PropsWithChildren, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { apiPath, path } from '../shared/path';
+import { path } from '../shared/path';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 import NoShop from '../components/home/NoShop';
 import HomeShopPostCard from '../components/home/HomePostCard';
 import ListCount from '../components/ListCount';
+import { HomeTabMenuStyle, TabMenuLi, TabMenuUl } from '../components/TabMenu';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SelectBox from '../components/SelectBox';
+import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
+import useNavigateHandler from '../custom/jh/useNavigateHandler';
+import { useNavigate } from 'react-router';
+import { RangeContext } from '../apis/context';
+import ListHeader from '../components/home/ListHeader';
+import { LoginCheck } from '../components/Authentication';
+import CategoryButtonBar from '../components/map/CategoryButtonBar';
+import ListCategoryButtonBar from '../components/home/ListCategoryButtonBar';
+import { Link } from 'react-router-dom';
+import { fontType } from '../components/ui/styles/typo';
+import { colorSet } from '../components/ui/styles/color';
+import { Body3, Title5 } from '../components/FontStyle';
+import { Buttons } from '../components/ui/element/buttons/Buttons';
+import { IconSmallDownArrow } from '../components/ui/element/icons/IconsStyle';
 
 const List = () => {
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
+  const [lng, setLng] = useState(0);
+  const [lat, setLat] = useState(0);
+  const [orderBy, setOrderBy] = useState<string>('거리순');
+  // const {range, setRange} = useContext(RangeContext);
   const [range, setRange] = useState(500);
 
   const navi = useNavigate();
-  const navigate = (path: string) => {
-    return navi(path);
-  };
+  const {loginClickHandler, mapClickHandler, searchClickHandler} = useNavigateHandler();
+
+  //선택창 보이기
+  const {isSelectHidden, onClickHiddenHandler} = useOnClickHiddenHandler(true);
 
   //토큰 가져오기
   const naverAccessToken = () => {
@@ -28,88 +47,98 @@ const List = () => {
     localStorage.setItem('access_token', token);
   };
 
+  //리스트 데이터
   const {
     shopList,
     getshopList,
     getshopListIsLoading,
     getshopListIsError,
-  } = useGetHomeShopList({ x, y, range });
+  } = useGetHomeShopList({ lng, lat, range });
 
   //useEffect
   useEffect(() => {
     naverAccessToken();
-    localStorage.getItem('admin_token') && navi('/admin/shoplist');
+    localStorage.getItem('admin_token') && navi(path.adminShoplist);
   }, []);
 
   useEffect(() => {
-    const errorMsg = getUserLocation(setX, setY);
+    const errorMsg = getUserLocation(setLng, setLat);
     if (errorMsg) {
       console.log(errorMsg);
     };
-    console.log('x', x, 'y', y);
-    if (x !== 0 && y !== 0) { getshopList(); };
-  }, [x, y]);
-
-  const loginClickHandler = () => {
-    navi(path.login);
-  }
-  const mapClickHandler = () => {
-    navi(path.map);
-  }
+    if (lng !== 0 && lat !== 0) { getshopList(); };
+  }, [lng, lat]);
 
   //로딩 화면
   if (getshopListIsLoading) { return <div>로딩중...</div>; }
 
   return (
     <>
+      <SelectBox
+        arr={['거리순', '인기순']}
+        hidden={isSelectHidden}
+        onClickHiddenHandler={onClickHiddenHandler}
+      />
+      <ListHeader
+        range={500}
+      />
       <HomeWrap>
         <HomeContainer>
-          {/* <NoShop/> */}
-          <button className='floating-btn' onClick={mapClickHandler}>지도에서 보기</button>
           <header>
-            <div className='space-between'>
-              <span className=''>
-                <label>내 주변</label>
-                <ListCount>{shopList?.length}</ListCount>
-              </span>
-              <button onClick={loginClickHandler}>로그인 하기</button>
-              <button onClick={() => navi('/search')}>검색 페이지</button>
-            </div>
+            <HomeTabMenuStyle>
+              <TabMenuUl>
+                <TabMenuLi id={1} isChecked={true}>
+                  <div>
+                    내 주변
+                    <ListCount>{shopList?.length}</ListCount>
+                  </div>
+                </TabMenuLi>
+                <TabMenuLi id={2}>
+                  추천식당
+                </TabMenuLi>
+              </TabMenuUl>
+            </HomeTabMenuStyle>
           </header>
-
+  
           <div className='space-between'>
-            <h3>식당</h3>
             <input type="checkbox" id="by-range" name="by-range" hidden />
-            <span>
-              <button>
-                <label htmlFor="by-range">
-                  거리순
-                </label>
-              </button>
-            </span>
+            <div>
+              <FilterBtn
+                onClick={onClickHiddenHandler}
+              >
+                <label>거리순</label><IconSmallDownArrow/>
+              </FilterBtn>
+              <ListCategoryButtonBar/>
+            </div>
           </div>
-
-          <HomeShopListContainer>
-            {
-              (shopList?.length === 0) && <NoShop />
-            }
-            {
-              shopList?.map((item: any) => (
-                <HomeShopPostCard
-                  key={item.shopId}
-                  id={item.shopId}
-                  address={item.address}
-                  shopName={item.shopName}
-                  thumbnail={`${apiPath.imgUrl + item.thumbnail}`}
-                  menuName={item.menuName}
-                  maxPrice={item.maxPrice}
-                  minPrice={item.minPrice}
-                  category={item.category}
-                />
-              ))
-            }
-            <button>더 보기</button>
-          </HomeShopListContainer>
+  
+          {/* <Swiper
+            
+          >
+            <SwiperSlide> */}
+              <HomeShopListContainer>
+                {
+                  (shopList?.length === 0) && <NoShop />
+                }
+                {
+                  shopList?.map((item: any) => (
+                    <HomeShopPostCard
+                      key={item.shopId}
+                      id={item.shopId}
+                      address={item.address}
+                      shopName={item.shopName}
+                      thumbnail={item.thumbnail}
+                      category={item.category}
+                      distance={item.distance}
+                      feedCount={item.feedCount}
+                    />
+                  ))
+                }
+                <button>더 보기</button>
+              </HomeShopListContainer>
+            {/* </SwiperSlide>
+          </Swiper> */}
+          
         </HomeContainer>
       </HomeWrap>
     </>
@@ -120,6 +149,7 @@ export default List;
 
 export const HomeWrap = styled.div`
   width: 100%;
+  position: relative;
   display: flex;
   justify-content: center;
   background-color: #fff;
@@ -127,8 +157,7 @@ export const HomeWrap = styled.div`
 
 const HomeContainer = styled.div`
   width: (100%-20)px;
-  position: relative;
-  margin: 20px;
+  margin: 0 20px 120px 20px;
 
   .floating-btn {
     position: fixed;
@@ -145,8 +174,28 @@ const HomeContainer = styled.div`
 
 const HomeShopListContainer = styled.div`
   width: 100%;
+  margin: 20px 0 120px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 12px;
+`;
+
+const FilterBtn = ({children, onClick}: {children: React.ReactNode, onClick: React.MouseEventHandler<HTMLButtonElement>}) => {
+  return(
+    <FilterBtnStyle
+      onClick={onClick}
+    >
+      <Body3>
+        {children}
+      </Body3>
+    </FilterBtnStyle>
+  )
+}
+
+const FilterBtnStyle = styled.button`
+  background-color: ${colorSet.bgMedium};
+  border: none;
+  padding: 8px 12px;
+  border-radius: 100px;
 `;

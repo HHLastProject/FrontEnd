@@ -24,49 +24,26 @@ export const useGetShopDetail = (param: number | undefined) => {
   };
 };
 
-export const useGetShopDetailReview = (param: number | undefined) => {
+export const useGetShopDetailFeed = (param: number | undefined) => {
   const { data, mutate, isLoading, isError } = useMutation({
-    mutationKey: queryKeys.GET_SHOP_DETAIL_REVIEW,
+    mutationKey: queryKeys.GET_SHOP_DETAIL_FEED,
     mutationFn: async () => {
-      const {data} = await api.get(`${apiPath.toShopDetail}/${param}/review`);
-      console.log('리뷰 데이터', data);
+      const {data} = await api.get(`${apiPath.toShopDetail}/${param}/feed`);
+      console.log('피드 데이터', data);
       return data;
     },
     onSuccess: () => {
-      console.log('리뷰 데이터', data);
+      console.log('피드 데이터', data);
 
     },
     onError: () => {
-      console.log('리뷰 에러');
+      console.log('피드 에러');
     },
   });
   return {
-    shopDetailReviewList : data,
-    getShopDetailReviewList : mutate,
-    shopDetailReviewIsLoading: isLoading,
-    shopDetailReviewIsError: isError,
+    shopDetailFeedList : data,
+    getShopDetailFeedList : mutate,
+    shopDetailFeedIsLoading: isLoading,
+    shopDetailFeedIsError: isError,
   };
-}
-
-export const useAddShopDetailReview = (param: number | undefined) => {
-  const { data, mutate, isLoading, isError } = useMutation({
-    mutationKey: queryKeys.ADD_SHOP_DETAIL_REVIEW,
-    mutationFn: async () => {
-      const {data} = await api.post(`${apiPath.toShopDetail}/${param}/review`);
-      return data;
-    },
-    onSuccess: () => {
-      console.log('리뷰 작성한 데이터', data);
-
-    },
-    onError: () => {
-      console.log('리뷰 작성 에러');
-    },
-  });
-  return {
-    shopDetailReviewList : data,
-    getShopDetailReviewList : mutate,
-    shopDetailReviewIsLoading: isLoading,
-    shopDetailReviewIsError: isError,
-  };
-}
+};

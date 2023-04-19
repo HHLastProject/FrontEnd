@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import { SpanImg } from '../ImgStyle';
 
 interface IShopDetailContentInfo {
-  icon: string;
+  iconImg: string;
   content: string;
 };
 
-function ShopDetailContentInfo({icon, content}: IShopDetailContentInfo) {
+function ShopDetailContentInfo({iconImg, content}: IShopDetailContentInfo) {
   return (
     <ShopDetailContentInfoStyle>
       <SpanImg
         height={15}
-        imgUrl={icon}
+        imgUrl={iconImg}
       />
       <label>{content}</label>
     </ShopDetailContentInfoStyle>

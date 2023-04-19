@@ -14,8 +14,10 @@ export const path: IPath = {
   mealFilter: '/mealfilter',
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
-  shopDetailFeedForm: '/shop/:shopId/feedform',
+  feedList: '/shop/feed',
+  feedForm: '/shop/:shopId/feedform',
   search: '/search',
+  feedFormSearch: '/search/:isfeed',
   mypage: '/mypage',
   map: '/map',
   adminShoplist: '/admin/shoplist',
@@ -28,6 +30,7 @@ export const apiPath: IPath = {
   shopDetailReview: '/api/shop/:shopId/review',
   editShopDetailReview: '/api/shop/:shopId/review/:reviewId',
   search: '/api/search',
+  feedList: '/api/feed',
 };
 
 export const imgPath: IPath = {
@@ -55,5 +58,8 @@ export const iconImgPath: IPathObject = {
   },
   write: {
     pencil: `${process.env.PUBLIC_URL}/images/feed/write_24.png`,
+  },
+  arrow: {
+    chevrondown16: `${process.env.PUBLIC_URL}/chevrondown_16.png`,
   }
 };

@@ -1,30 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
-import { useGetShopDetail, useGetShopDetailReview } from '../custom/jh/useGetShopDetail';
+import { useGetShopDetail, useGetShopDetailFeed } from '../custom/jh/useGetShopDetail';
+import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
-import ShopDetailReview from '../components/shopDetail/ShopDetailReview';
-import { apiPath } from '../shared/path';
 import ShopDetailMap from '../components/map/ShopDetailMap';
 import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
+import ShopDetailFeed from '../components/shopDetail/ShopDetailFeed';
+import { iconImgPath, imgPath } from '../shared/path';
 import { colorSet } from '../components/ui/styles/color';
+import { fontType } from '../components/ui/styles/typo';
+import { Buttons } from '../components/ui/element/buttons/Buttons';
+import { IconPencil } from '../components/ui/element/icons/IconsStyle';
 
 function ShopDetail() {
-  const icon = {
-    detailInfo: {
-      mapPin: `${process.env.PUBLIC_URL}/images/detail/map_pin_20.png`,
-      clock: `${process.env.PUBLIC_URL}/images/detail/clock_20.png`,
-      phone: `${process.env.PUBLIC_URL}/images/detail/phone_20.png`,
-    }
-  };
   const navi = useNavigate();
   const param = Number(useParams().shopId);
   const tabInfoRef = useRef();
   const tabMenuRef = useRef();
   const tabReviewRef = useRef();
-
-  const toShopDetailReviewForm = `/shop/${param}/reviewForm`;
+  const {feedFormClickHandler} = useNavigateHandler();
 
   const scrollToTabInfo = () => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -36,11 +32,11 @@ function ShopDetail() {
     shopDetailIsError
   } = useGetShopDetail(param);
   const {
-    getShopDetailReviewList,
-    shopDetailReviewList,
-    shopDetailReviewIsLoading,
-    shopDetailReviewIsError
-  } = useGetShopDetailReview(param);
+    shopDetailFeedList,
+    getShopDetailFeedList,
+    shopDetailFeedIsLoading,
+    shopDetailFeedIsError,
+  } = useGetShopDetailFeed(param);
 
   if (shopDetailIsError) {
     alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
@@ -53,10 +49,9 @@ function ShopDetail() {
 
   useEffect(() => {
     console.log(shopDetailData);
-
   }, [shopDetailData])
   useEffect(() => {
-    getShopDetailReviewList();
+    getShopDetailFeedList();
   }, []);
 
   return (
@@ -69,7 +64,7 @@ function ShopDetail() {
         <ShopDetailThumbnail>
           <div className='thumbnail-img'>
             <img
-              src={`${apiPath.imgUrl + shopDetailData?.thumbnail}`}
+              src={`${imgPath.shopThumbnailImg + shopDetailData?.thumbnail}`}
               alt={shopDetailData?.shopName}
             />
           </div>
@@ -79,25 +74,24 @@ function ShopDetail() {
           />
         </ShopDetailThumbnail>
         <ShopDetailContainer>
-
           <ShopDetailTab>
             <ul id='detail-tab'>
               <li id="">
-                <input type="radio" id='detail-tab-info' name='detail-tab' hidden />
+                <input type="radio" id='detail-tab-info' name='detail-tab' defaultChecked hidden/>
                 <div className='detail-tab-div'>
-                  <label htmlFor="detail-tab-info">정보</label>
+                  <label htmlFor="detail-tab-info">정보</label> 
                 </div>
               </li>
               <li id="">
-                <input type="radio" id='detail-tab-menu' name='detail-tab' hidden />
+                <input type="radio" id='detail-tab-menu' name='detail-tab' hidden/>
                 <div className='detail-tab-div'>
                   <label htmlFor="detail-tab-menu">메뉴</label>
                 </div>
               </li>
               <li id="">
-                <input type="radio" id='detail-tab-review' name='detail-tab' hidden />
+                <input type="radio" id='detail-tab-review' name='detail-tab' hidden/>
                 <div className='detail-tab-div'>
-                  <label htmlFor="detail-tab-review">리뷰</label>
+                  <label htmlFor="detail-tab-review">피드</label>
                 </div>
               </li>
             </ul>
@@ -106,15 +100,15 @@ function ShopDetail() {
             <h2>정보</h2>
             <div>
               <ShopDetailContentInfo
-                icon={icon.detailInfo.mapPin}
+                iconImg={iconImgPath.detailInfo.mapPin}
                 content={shopDetailData?.address}
               />
               <ShopDetailContentInfo
-                icon={icon.detailInfo.clock}
+                iconImg={iconImgPath.detailInfo.clock}
                 content={shopDetailData?.operatingTime}
               />
               <ShopDetailContentInfo
-                icon={icon.detailInfo.phone}
+                iconImg={iconImgPath.detailInfo.phone}
                 content={shopDetailData?.phoneNumber}
               />
             </div>
@@ -127,11 +121,12 @@ function ShopDetail() {
               />
             </XFlexCenter>
           </ShopDetailContentContainer>
+        </ShopDetailContainer>
+        <ShopDetailContainer>
           <ShopDetailContentContainer>
             <div className='shop-detail-menu'>
-              <hr />
               <h2>메뉴</h2>
-              {shopDetailData?.Menus?.map((item: any) => {
+              { shopDetailData?.Menus?.map((item:any) => {
                 return (
                   <ShopDetailMenu
                     menuName={item.menuName}
@@ -142,30 +137,34 @@ function ShopDetail() {
               })}
             </div>
           </ShopDetailContentContainer>
+        </ShopDetailContainer>
+        <ShopDetailContainer>
           <ShopDetailContentContainer>
             <div className='shop-detail-review'>
-              <hr />
               <div className='shop-detail-review-sub'>
                 <h2>피드</h2>
-                <button
-                  onClick={() => navi(toShopDetailReviewForm)}
-                >댓글 쓰기</button>
+                <div
+                  onClick={() => feedFormClickHandler(param)}
+                >
+                  <Buttons.Small.Default>
+                    <><IconPencil/>피드 쓰기</>
+                  </Buttons.Small.Default>
+                </div>
               </div>
               <div>
-                {shopDetailReviewList?.map((item: any) => {
+                {shopDetailFeedList?.map((item:any) => {
                   return (
-                    <>리뷰111</>
+                    <>피드들</>
                   )
                 })}
-                {(shopDetailReviewList?.length === 0) && (<div>피드가 없습니다.</div>)}
-                {shopDetailReviewIsError && (<div>댓글 에러</div>)}
+                {(shopDetailFeedList?.length === 0) && (<div>피드가 없습니다.</div>)}
+                {shopDetailFeedIsError && (<div>피드 에러</div>)}
               </div>
-              <ShopDetailReview />
+              {/* <ShopDetailFeed/> */}
             </div>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
       </div>
-
     </>
   )
 }
@@ -217,12 +216,18 @@ const ShopDetailTab = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+      border-bottom: 3px solid #fff;
+      label {
+        ${fontType.body_1}
+        color: ${colorSet.textMedium};
+      }
     }
 
-    input[type="radio"]:checked f+ div {
-      border-bottom: 3px solid #2e975a;
+    input[type="radio"]:checked + div {
+      border-bottom: 3px solid ${colorSet.primary_01};
       label {
-        color: ${colorSet.primary_01};
+        ${fontType.title_4}
+        color: ${colorSet.textStrong};
       }
     }
   }
@@ -232,9 +237,6 @@ const ShopDetailContainer = styled.div`
   width: 100%;
   border-top: 12px solid #EDEDED;
   background-color: #fff;
-  hr {
-    border: 1px 0 0 0 solid #bbb;
-  }
 `;
 
 const ShopDetailThumbnail = styled.div`
@@ -259,7 +261,8 @@ const ShopDetailThumbnail = styled.div`
 `;
 
 const ShopDetailContentContainer = styled.div`
-  width: 100%;
+  /* width: 100%; */
+  padding: 40px 20px 40px 20px;
   display: flex;
   flex-direction: column;
   position: relative;

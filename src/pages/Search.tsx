@@ -1,33 +1,37 @@
 import React, { useState } from 'react'
 import SearchResultList, { ISearchResult } from '../components/search/SearchResultList';
 import styled from 'styled-components';
-import SearchInput from '../components/search/SearchInput';
-
-const loupeIcon = `${process.env.PUBLIC_URL}/loupe.png`;
-
-export type ISearchInput = {
-  inputValue: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
-};
+import SearchStore from '../components/search/SearchInput';
+import { useParams } from 'react-router';
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
+  const [dataList, setDataList] = useState([
+    {
+      shopId : 0,
+      shopName : '',
+      shopAddress : '',
+    },
+  ]);
+
+  let link = '';
+  let param = Number(useParams().isfeed); //피드페이지에서 넘어올때만 있는 파라미터
+  if(!param) {
+    param = 0;
+  };
 
   return (
     <SearchWrap>
       <SearchWrapContainer>
-        <div id='search-input-div'>
-          <div id='search-input'>
-            <img src={loupeIcon} alt="검색하기" />
-            <SearchInput
-              inputValue={inputValue}
-              setInputValue={setInputValue}
-            />
-          </div>
-        </div>
+        <SearchStore
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          setDataList={setDataList}
+        />
+
         <div className='search-result-list'>
           {
-          result.map((item) => {
+          (dataList?.length !== 0) && dataList?.map((item) => {
             return(
               <SearchResultList
                 key={item.shopId}
@@ -36,8 +40,7 @@ function Search() {
                 shopAddress={item.shopAddress}
               />
             )
-          })
-        }
+          })}
         </div>
       </SearchWrapContainer>
     </SearchWrap>
@@ -48,7 +51,7 @@ export default Search
 
 const SearchWrap = styled.div`
   width: 390px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #fff;
   display: inline-block;
 `;

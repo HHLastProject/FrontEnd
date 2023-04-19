@@ -12,7 +12,6 @@ import useMapDataCall from '../hooks/useMapDataCall';
 import { dispatches, states } from '../custom/ym/contextValues';
 import CategoryButtonBar from '../components/map/CategoryButtonBar';
 
-
 export interface EachData {
     shopId: number,
     category: string,
