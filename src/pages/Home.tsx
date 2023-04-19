@@ -68,8 +68,7 @@ const Home = () => {
         })
         return result;
     }
-
-    /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch를 진행 */
+    /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
     useEffect(() => {
         console.log('실행되는중');
         console.log(center.lng, center.lat);
