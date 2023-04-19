@@ -142,7 +142,17 @@ export interface ShopData {
     isScrap: boolean,
 }
 
+export interface MapCoordPayload {
+    lng: number,
+    lat: number,
+    range: number
+}
+
 export type ZoomValues = 15 | 16 | 17 | 18 | 19;
+export type NavermapPointType = {
+    x: number,
+    y: number,
+}
 
 export const SAMPLE_DATA: EachData[] = [
     {
