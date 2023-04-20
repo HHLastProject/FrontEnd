@@ -34,10 +34,8 @@ function FeedForm() {
   });
 
   const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
-  const { shopDetailData, shopDetailIsError } = useGetShopDetail(param);
+  const { shopDetailData } = useGetShopDetail(param);
   const [inputValue, setInputValue] = useState('');
-
-  if (shopDetailIsError) { alert('에러') };
 
   //토큰 가져오기
   const getToken = () => {
@@ -79,12 +77,6 @@ function FeedForm() {
     console.log('해시set', hashTags);
     console.log('imgFile.feedPic: ', imgFile.feedPic);
 
-    if (!token) {
-      alert('로그인 해야 이용 가능합니다.');
-      navi('/login');
-      return;
-    };
-
     if (imgFile.feedPic && (param !== 0) && token) {
       console.log('코멘트', comment, '해시태그', hashTags);
       const tagsList = tagRef.current.map((item: string) => {return {tag: item}});
@@ -124,7 +116,12 @@ function FeedForm() {
   useEffect(() => {
     if (shopDetailData?.shopName) { setInputValue(shopDetailData?.shopName) };
     setToken(getToken());
-    console.log(token);
+    
+    if (!getToken()) {
+      alert('로그인 해야 이용 가능합니다.');
+      navi('/login');
+      return;
+    };
   }, []);
 
   return (
