@@ -12,11 +12,10 @@ const useMapDataCall = () => {
     const { data, isSuccess, isError, mutate, isLoading, mutateAsync } = useMutation({
         mutationKey: mapQueryKeys.POST_SHOPS_IN_RANGE,
         mutationFn: async (payload: MapCoordPayload) => {
-            const res = await api.post(apiPath.shopList, payload);
+            const res = await api_token.post(apiPath.shopList, payload);
             return res.data.shops;
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: mapQueryKeys.POST_SHOPS_IN_RANGE });
         },
         onError: (err) => {
             console.log(err);

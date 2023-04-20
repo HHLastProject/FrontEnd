@@ -67,8 +67,18 @@ export interface EachData {
     lng: number
 }
 
+export interface ScrapDataSet {
+    shopId: number,
+    shopName: string,
+    feedCount: number,
+    address: string,
+    thumbnail: string,
+    isScrap: boolean,
+    category: string,
+}
+
 export interface BookmarkChildren extends ComponentPropsWithoutRef<'div'> {
-    data: EachData;
+    data: ScrapDataSet;
 }
 
 export interface CategoryProp {

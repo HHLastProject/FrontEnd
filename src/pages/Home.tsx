@@ -36,6 +36,7 @@ const Home = () => {
     const [list, setList] = useState<(ShopData | null)[]>([]);
     const [center, setCenter] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
     const [isMoving, setIsMoving] = useState<boolean>(false);
+    const [isChanged, setIsChanged] = useState<boolean>(false);
 
     // 실시간 유저 위치
     const [userCoord, setUserCoord] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
@@ -43,8 +44,8 @@ const Home = () => {
     // 샵 위치
     const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
 
-    const stateList = { userCoord, shopCoord, category, range, list, center, isMoving };
-    const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving };
+    const stateList = { userCoord, shopCoord, category, range, list, center, isMoving, isChanged };
+    const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged };
 
     const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
 
@@ -56,7 +57,6 @@ const Home = () => {
             }
         })
         return result;
-        return result;
     }
 
     /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
@@ -67,8 +67,9 @@ const Home = () => {
                 setList(data);
                 setShopCoord(shopCoordList(data));
                 setIsMoving(false);
+                // console.log(list);
             });
-    }, [range, center]);
+    }, [range, center, isChanged]);
 
     /* 카테고리 버튼에 대한 데이터 리렌더링 */
     useEffect(() => {
@@ -83,10 +84,6 @@ const Home = () => {
         }
     }, [category]);
 
-    const aimClickListner = () => {
-        setCenter(userCoord);
-    }
-
     return (
         <VFlex etc='position: relative;'>
             <StateContext.Provider value={{ ...stateList }}>
@@ -96,9 +93,7 @@ const Home = () => {
                         <MapModule />
                     </VFlexCenter>
                     <CategoryButtonBar />
-                    <CarouselModule>
-                        <CarouselBox />
-                    </CarouselModule>
+                    <CarouselBox />
                 </DispatchContext.Provider>
             </StateContext.Provider>
         </VFlex>
@@ -106,13 +101,3 @@ const Home = () => {
 }
 
 export default Home;
-
-const CarouselModule = styled.div`
-    position: absolute;
-    bottom: 0;
-    width: 332px;
-    height: 214px;
-    /* padding : 20px; */
-    padding-right: 0px;
-    background-color: transparent;
-`;

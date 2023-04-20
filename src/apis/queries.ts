@@ -11,17 +11,22 @@ export const queryKeys: IQueryKey = {
 };
 
 export const keys: IQueryKey = {
-  GET_ShopList: ['GetShopList'],
-  POST_ShopList: ['PostShopList'],
-  GET_ShopList_Detail: ['GetDetail']
+  GET_ShopList: ['GET_SHOPLIST'],
+  POST_ShopList: ['POST_SHOPLIST'],
+  GET_ShopList_Detail: ['GET_SHOPLIST_DETAIL'],
+  PUT_TOGGLE_BOOKMARK: ["PUT_TOGGLE_BOOKMARK"],
 };
 
 export const loginKeys: IQueryKey = {
-  POST_NAVER_TOKEN: ["postNaverToken"],
-  POST_KAKAO_TOKEN: ["postKakaoToken"],
-  POST_ADMIN_LOGIN: ["postAdminLogin"]
+  POST_NAVER_TOKEN: ["POST_NAVER_TOKEN"],
+  POST_KAKAO_TOKEN: ["POST_KAKAO_TOKEN"],
+  POST_ADMIN_LOGIN: ["POST_ADMIN_LOGIN"]
 }
 
 export const mapQueryKeys: IQueryKey = {
   POST_SHOPS_IN_RANGE: ["POST_SHOPS_IN_RANGE"],
+}
+
+export const scrapKeys: IQueryKey = {
+  GET_SCRAP: ["GET_SCRAP"],
 }
