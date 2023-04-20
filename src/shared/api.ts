@@ -12,7 +12,12 @@ const api = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_URL}`,
 })
 
-export const api_token = axios.create(axiosConfig)
+export const api_token = axios.create({
+  baseURL: `${process.env.REACT_APP_SERVER_URL}`,
+  headers: {
+    "Authorization": localStorage.getItem("access_token"),
+  }
+})
 
 api.interceptors.request.use(
   // 요청을 보내기 전 수행되는 함수
@@ -40,4 +45,4 @@ api.interceptors.response.use(
   }
 )
 
-export default api
+export default api;

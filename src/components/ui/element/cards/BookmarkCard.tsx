@@ -5,6 +5,7 @@ import { BODY_3, TITLE_3 } from '../../../../custom/ym/variables';
 import { colorSet } from '../../styles/color';
 import { BookmarkChildren } from '../../../../custom/ym/types';
 import { useNavigate } from 'react-router-dom';
+import { imgPath } from '../../../../shared/path';
 
 const BookmarkCard = ({ data }: BookmarkChildren) => {
 
@@ -14,15 +15,20 @@ const BookmarkCard = ({ data }: BookmarkChildren) => {
         navi(`/shop/${data.shopId}`)
     }
 
+    const convertAddress = (text: string) => {
+        const stringData = text.replace("경기도 ", "").replace("특별", "").split(" ");
+        return stringData[0].replace("시", "") + " " + stringData[1];
+    }
+
     return (
         <HFlex gap='8px' height={'fit-content'} onClick={divClickHandler}>
             <ThumbnailFrame>
-                <Thumbnail src={data.thumbnail} alt={data.shopName} />
+                <Thumbnail src={imgPath.feedImg + data.thumbnail} alt={data.shopName} />
             </ThumbnailFrame>
             <VFlex height='100px' etc='align-items:base-line;'>
                 <ShopName>{data.shopName}</ShopName>
-                <ShopSummary>{data.region}</ShopSummary>
-                <ShopSummary>피드 {data.reviews}</ShopSummary>
+                <ShopSummary>{convertAddress(data.address)}</ShopSummary>
+                <ShopSummary>피드 {data.feedCount}</ShopSummary>
             </VFlex>
         </HFlex>
     )

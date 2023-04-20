@@ -42,6 +42,8 @@ export const apiPath: IPath = {
   editShopDetailReview: '/api/shop/:shopId/review/:reviewId',
   search: '/api/search',
   feedList: '/api/feed',
+  toggleScrap: '/api/:shopId/scrap',
+  scrapList: '/api/favorite',
 };
 
 export const imgPath: IPath = {
