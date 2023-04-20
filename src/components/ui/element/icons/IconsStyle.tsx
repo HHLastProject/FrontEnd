@@ -24,3 +24,11 @@ export const IconSmallDownArrow = () => {
     </IconSize12>
   )
 }
+
+export const IconPlusWhite24 = () => {
+  return(
+    <IconSize24>
+      <img src={iconImgPath.write.plus} alt="추가하기" />
+    </IconSize24>
+  )
+}

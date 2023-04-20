@@ -82,6 +82,7 @@ export const iconImgPath: IPathObject = {
   },
   write: {
     pencil: setPublicUrl(`/images/feed/write_24.png`),
+    plus: setPublicUrl(`/plus_white_24.png`),
   },
   arrow: {
     chevrondown16: setPublicUrl(`/chevrondown_16.png`),

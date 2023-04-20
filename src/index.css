@@ -39,3 +39,11 @@ code {
 #page-container::-webkit-scrollbar {
   display: none;
 }
+
+button label{
+  cursor: pointer;
+}
+
+a label{
+  cursor: pointer;
+}

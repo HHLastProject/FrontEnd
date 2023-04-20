@@ -13,6 +13,7 @@ import TagList from '../components/feed/TagList';
 import PlaceCard from '../components/feed/PlaceCard';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
 
 function FeedList() {
   const [expand, setExpand] = useState<boolean>(false);
@@ -71,11 +72,33 @@ function FeedList() {
           </div>
         )
       })}
+      <Link to={`/shop/${0}/feedform`}>
+        <FeedPageWriteBtn>
+          <AlignItemCenter>
+            <IconPlusWhite24/>
+            <label>피드 작성</label>
+          </AlignItemCenter>
+        </FeedPageWriteBtn>
+      </Link>
     </FeedContainer>
   )
 };
 
 export default FeedList
+
+interface IFeedList {
+  nickname: string;
+  profilePic : string;
+  createdAt : string | Date;
+  feedPic : string;
+  comment : string | null;
+  tags : string[] | null;
+  shopId: number;
+  shopName : string;
+  shopAddress : string;
+  shopThumbnail : string;
+  isScrap : boolean;
+};
 
 const Heading2 = styled.div`
   ${fontType.heading_2}
@@ -84,6 +107,7 @@ const Heading2 = styled.div`
 
 const FeedContainer = styled.div`
   margin: 40px 0 120px 0;
+  position: relative;
 `;
 
 const MarginBothSides20 = styled.div`
@@ -105,19 +129,24 @@ const ExpandText = styled.span`
     color: ${`#${PRIMARY_01}`};
 `;
 
-interface IFeedList {
-  nickname: string;
-  profilePic : string;
-  createdAt : string | Date;
-  feedPic : string;
-  comment : string | null;
-  tags : string[] | null;
-  shopId: number;
-  shopName : string;
-  shopAddress : string;
-  shopThumbnail : string;
-  isScrap : boolean;
-};
+const AlignItemCenter = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const FeedPageWriteBtn = styled.button`
+  position: sticky;
+  bottom: 20px;
+  left: 20px;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 100px;
+  color: white;
+  background-color: #B81B1B;
+  ${fontType.title_4}
+
+`;
 
 const FeedPageHr = styled.hr`
   width: 350px;
