@@ -44,6 +44,7 @@ export const apiPath: IPath = {
   feedList: '/api/feed',
   toggleScrap: '/api/:shopId/scrap',
   scrapList: '/api/favorite',
+  mypage: '/api/mypage',
 };
 
 export const imgPath: IPath = {

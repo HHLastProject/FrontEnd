@@ -6,16 +6,20 @@ import { TITLE_3 } from '../../custom/ym/variables';
 import FeedCount from './FeedCount';
 import FeedPictures from './FeedPictures';
 import FeedSet from './FeedSet';
+import NoMyFeeds from './NoMyFeeds';
 
 const MyFeeds = () => {
     const contextData = useContext(context);
-    const feedCount = contextData?.props?.feedCount;
+    const feedCount = contextData?.props?.feedCount as number;
     const feeds = contextData?.props?.feeds;
 
     return (
         <VFlex gap='12px'>
             <FeedSet>{feedCount}</FeedSet>
-            <FeedPictures isAll={false}>{feeds}</FeedPictures>
+            {feedCount > 0
+                ? <FeedPictures isAll={false}>{feeds}</FeedPictures>
+                : <NoMyFeeds />
+            }
         </VFlex>
     )
 }
