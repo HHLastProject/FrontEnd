@@ -39,6 +39,7 @@ export const path: IPath = {
   bookmark: "/bookmark",
   mypage: '/mypage',
   allFeeds: "/mypage/feeds/:userId",
+  toFeedDetail: "/feed/detail/",
   feedDetail: "/feed/detail/:feedId"
 }
 

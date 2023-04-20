@@ -45,7 +45,7 @@ function FeedList() {
                   profilePic={defaultImgPath.shopList}
                 />
               }
-              <Link to={``}>
+              <Link to={`${item.feedId}`}>
                 <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
                 <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
               </Link>
@@ -53,7 +53,7 @@ function FeedList() {
                 <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
               </ExpandButton>
               <TagList>{item.tags}</TagList>
-              <Link to={'/'}>
+              <Link to={`${item.shopId}`}>
                 <PlaceCard />
               </Link>
             </VFlex>
