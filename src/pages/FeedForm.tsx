@@ -95,7 +95,6 @@ function FeedForm() {
       formData.append('comment', comment ? comment : '');
       formData.append('tags', JSON.stringify(tagsList));
       console.log("append 직후 formData('tag') :", formData.get('tags'));
-
       sendFeedData(param, formData);
     } else {
       alert("가게명 또는 사진을 등록해주세요.");

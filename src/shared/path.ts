@@ -23,7 +23,7 @@ export const path: IPath = {
   mealFilter: '/mealfilter',
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
-  feedList: '/shop/feed',
+  feedList: '/feed',
   feedForm: '/shop/:shopId/feedform',
   search: '/search',
   feedFormSearch: '/search/:isfeed',
@@ -59,7 +59,7 @@ export const imgPath: IPath = {
 };
 
 export const defaultImgPath: IPath = {
-  shopList: `${process.env.PUBLIC_URL}/shop-default-img.jpg`,
+  shopList: setPublicUrl(`/shop-default-img.jpg`),
 };
 
 export const iconImgPath: IPathObject = {

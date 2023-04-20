@@ -5,7 +5,7 @@ import { LoginCheck } from '../Authentication';
 import { Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
 
-const ListHeader = ({range}: {range: number}) => {
+const ListHeader = ({range}: {range?: number}) => {
   const {loginClickHandler, mapClickHandler, searchClickHandler} = useNavigateHandler();
 
   return (
@@ -24,11 +24,11 @@ const ListHeader = ({range}: {range: number}) => {
           </HFlex>
         </VFlex>
         <RightContainer>
-          {/* <LoginCheck> */}
+          <LoginCheck>
             <Title5>
               <Link to={'/login'}>로그인 하기</Link>
             </Title5>
-          {/* </LoginCheck> */}
+          </LoginCheck>
           <div
             onClick={searchClickHandler}
           >
