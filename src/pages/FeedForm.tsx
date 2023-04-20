@@ -35,10 +35,12 @@ function FeedForm() {
   const { searchClickHandler } = useNavigateHandler();
   const [comment, setComment] = useState<string | null>(null);
   const [hashTags, setHashTags] = useState<Ttags>(null);
+
   const [imgFile, setImgFile] = useState<imgFile>({
     feedPic: '',
     previewPic: `${defaultImgPath.shopList}`,
   });
+
   const [formDataList, setFormDataList] = useState<IFeedResister>({
     shopId: param,
     // feedPic: new FormData(),
@@ -59,8 +61,6 @@ function FeedForm() {
       e.preventDefault();
       if (e.target.files[0]) {
         fileReader.readAsDataURL(e.target.files[0]);
-        console.log('이미지 파일', e.target.files[0]);
-
         fileReader.onload = () => {
           setImgFile({
             feedPic: e.target.files[0],
@@ -109,14 +109,9 @@ function FeedForm() {
   };
 
   const sendFeedData = async (param: number, b: FormData) => {
-    // console.log('send');
-    // console.log('send formDataList:', formDataList);
-    // console.log('type formDataList.feedPic:', typeof formDataList.feedPic);
-    // console.log("feedpic :", formDataList.feedPic.get('feedPic'));
-    // console.log("feedpic All :", formDataList.feedPic.getAll('feedPic'));
-    // formDataList.feedPic
-    console.log('state에 안넣고 보낼때 b:', b);
-    console.log('객체에 넣기 전 b.get(feedPic):', b.get('feedPic'));
+
+    // console.log('state에 안넣고 보낼때 b:', b);
+    // console.log('객체에 넣기 전 b.get(feedPic):', b.get('feedPic'));
 
     const newOb = { feedPic: b, ...formDataList };
 

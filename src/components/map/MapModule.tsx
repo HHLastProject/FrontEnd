@@ -99,19 +99,17 @@ const MapModule = () => {
     }
 
     const aimClickListner = () => {
+
         const tempData: NavermapPointType = {
             x: userCoord.lng,
             y: userCoord.lat,
         }
+
         const tempSetCenter = setCenter as React.Dispatch<React.SetStateAction<Coordinate>>;
         const tempSetIsMoving = setIsMoving as React.Dispatch<React.SetStateAction<boolean>>;
+
         tempSetIsMoving(true);
         tempSetCenter(userCoord);
-
-        // centerChangeHandler(
-        //     setCenter as React.Dispatch<React.SetStateAction<Coordinate>>,
-        //     tempData
-        // );
     }
 
 
