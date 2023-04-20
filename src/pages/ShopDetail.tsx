@@ -51,7 +51,6 @@ function ShopDetail() {
     console.log(shopDetailData);
   }, [shopDetailData])
   useEffect(() => {
-    getShopDetailFeedList();
   }, []);
 
   return (
@@ -147,7 +146,9 @@ function ShopDetail() {
                   onClick={() => feedFormClickHandler(param)}
                 >
                   <Buttons.Small.Default>
-                    <><IconPencil />피드 쓰기</>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                      <IconPencil />피드 쓰기
+                    </div>
                   </Buttons.Small.Default>
                 </div>
               </div>

@@ -10,14 +10,8 @@ import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
 import useTextHandler from '../custom/jh/useTextCountHandler';
 
-type Ttag = { tag: string };
+type Ttag = { tag: string } | string;
 type Ttags = Ttag[] | [] | null | any;
-
-interface IFeedResister {
-  shopId: number;
-  comment: string | null;
-  tags: Ttags;
-};
 
 interface IImgFile {
   feedPic: File | null;
@@ -27,20 +21,16 @@ interface IImgFile {
 function FeedForm() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
-  const tags: Ttags = useRef([]);
-  let token: string | null = null;
+  const tags: string[] = [];
+  const tagRef: Ttags = useRef([]);
+  const [token, setToken] = useState<string | null>(null);
   const maxLength = 500;
   const { searchClickHandler } = useNavigateHandler();
   const [comment, setComment] = useState<string | null>(null);
-  const [hashTags, setHashTags] = useState<Ttags>(null);
+  const [hashTags, setHashTags] = useState<Ttags>([]);
   const [imgFile, setImgFile] = useState<IImgFile>({
     feedPic: null,
     previewPic: `${defaultImgPath.shopList}`,
-  });
-  const [formDataList, setFormDataList] = useState<IFeedResister>({
-    shopId: param,
-    comment: null,
-    tags: null,
   });
 
   const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
@@ -48,6 +38,21 @@ function FeedForm() {
   const [inputValue, setInputValue] = useState('');
 
   if (shopDetailIsError) { alert('에러') };
+
+  //토큰 가져오기
+  const getToken = () => {
+    const token = localStorage.getItem('access_token');
+    return token;
+  };
+
+  //태그 추가
+  const addTag = (value: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (value) {
+      tags.push(value);
+      tagRef.current = tags;
+    };
+  };
 
   //이미지 미리보기
   const previewImg = (e: React.ChangeEvent<HTMLInputElement> | any) => {
@@ -69,10 +74,9 @@ function FeedForm() {
 
   //전송 버튼 눌렀을때
   const onClickSendFeedData = (param: number) => {
-    token = getToken();
-    console.log('버튼 누름', tags.current);
-    setHashTags(tags.current);
-    console.log('해시set', hashTags, tags.current);
+    const tagsList = [...tagRef.current];
+    setHashTags(tagsList);
+    console.log('해시set', hashTags);
     console.log('imgFile.feedPic: ', imgFile.feedPic);
 
     if (!token) {
@@ -83,14 +87,15 @@ function FeedForm() {
 
     if (imgFile.feedPic && (param !== 0) && token) {
       console.log('코멘트', comment, '해시태그', hashTags);
+      const tagsList = tagRef.current.map((item: string) => {return {tag: item}});
+
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
-      console.log("처음 formData 셋팅할때 formData('feedPic') :", formData.get('feedPic'));
-      setFormDataList({
-        shopId: param,
-        comment: comment,
-        tags: [...tags.current],
-      });
+      formData.append('shopId', param.toString());
+      formData.append('comment', comment ? comment : '');
+      formData.append('tags', JSON.stringify(tagsList));
+      console.log("append 직후 formData('tag') :", formData.get('tags'));
+
       sendFeedData(param, formData);
     } else {
       alert("가게명 또는 사진을 등록해주세요.");
@@ -99,16 +104,17 @@ function FeedForm() {
 
   const sendFeedData = async (param: number, formData: FormData) => {
     console.log('state에 안넣고 보낼때 formData:', formData.get('feedPic'));
-    const newData = { feedPic: formData, ...formDataList };
-    console.log('객체 합쳤을때 newData.get(feedPic):', newData.feedPic.get('feedPic'));
 
-    await api.post(`/api/shop/${param}/feed22`, newData, {
-      headers: { authorization: `${token}` },
+    await api.post(`/api/shop/${param}/feed`, formData, {
+      headers: { 
+        "Content-Type": "multipart/form-data",
+        authorization: `${token}`,
+      },
       })
       .then((resolve) => {
         console.log("피드 등록 성공");
         alert("등록이 완료되었습니다!");
-        console.log('성공',formDataList);
+        console.log('성공',formData);
         // navi(-1);
       })
       .catch((error) => {
@@ -116,29 +122,11 @@ function FeedForm() {
       });
   };
 
-  //토큰 가져오기
-  const getToken = () => {
-    const token = localStorage.getItem('access_token');
-    return token;
-  };
-
-  //태그 추가
-  const addTag = (value: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    if (value) {
-      tags.current.push({ tag: value });
-    };
-  };
-
   useEffect(() => {
     if (shopDetailData?.shopName) { setInputValue(shopDetailData?.shopName) };
-    token = getToken();
+    setToken(getToken());
     console.log(token);
   }, []);
-
-  useEffect(() => {
-    console.log('이펙트', formDataList);
-  }, [formDataList]);
 
   return (
     <>

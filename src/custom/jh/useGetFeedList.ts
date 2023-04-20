@@ -3,16 +3,16 @@ import { queryKeys } from "../../apis/queries";
 import api from "../../shared/api";
 import { apiPath } from "../../shared/path";
 
-export const useGetFeedList = (param: number | undefined) => {
+export const useGetFeedList = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.GET_FEEDS,
     queryFn: async () => {
       const {data} = await api.get(`${apiPath.feedList}`);
-      console.log(data);
+      console.log('data', data);
       return data;
     },
-    onSuccess: (data) => {
-      return data;
+    onSuccess: (o) => {
+      console.log(o, '성공');
     },
     onError: (error) => {
       console.log(error);
@@ -20,9 +20,9 @@ export const useGetFeedList = (param: number | undefined) => {
     },
   });
   return {
-    shopDetailData : data,
-    shopDetailIsLoading: isLoading,
-    shopDetailIsError: isError,
+    feedList : data,
+    feedListIsLoading: isLoading,
+    feedListIsError: isError,
   };
 };
 
