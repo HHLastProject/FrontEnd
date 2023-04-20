@@ -115,18 +115,17 @@ const MarginBothSides20 = styled.div`
 `;
 
 const ExpandButton = styled.button`
-    width: fit-content;
-    padding: 0px;
-    margin: 0px;
-    border: none;
-    background-color: transparent;
+  width: fit-content;
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background-color: transparent;
 `;
 const ExpandText = styled.span`
-    font-family: "Pretendard";
-    font-size: ${TITLE_5.fontSize};
-    font-weight: ${TITLE_5.fontWeight};
-    line-height: ${TITLE_5.lineHeight};
-    color: ${`#${PRIMARY_01}`};
+  font-size: ${TITLE_5.fontSize};
+  font-weight: ${TITLE_5.fontWeight};
+  line-height: ${TITLE_5.lineHeight};
+  color: ${`#${PRIMARY_01}`};
 `;
 
 const AlignItemCenter = styled.div`
@@ -137,15 +136,16 @@ const AlignItemCenter = styled.div`
 
 const FeedPageWriteBtn = styled.button`
   position: sticky;
+  float: right;
   bottom: 20px;
-  left: 20px;
+  right: 20px;
+
   border: none;
   padding: 14px 24px;
   border-radius: 100px;
   color: white;
   background-color: #B81B1B;
   ${fontType.title_4}
-
 `;
 
 const FeedPageHr = styled.hr`
