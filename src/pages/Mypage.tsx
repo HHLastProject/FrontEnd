@@ -5,10 +5,16 @@ import UserProfile from '../components/mypage/UserProfile';
 import MyFeeds from '../components/mypage/MyFeeds';
 import CustomerCenter from '../components/mypage/CustomerCenter';
 import { mypageData } from '../custom/ym/dummydata';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { mypageKeys } from '../apis/queries';
+import { api_token } from '../shared/api';
+import { apiPath } from '../shared/path';
+import NoLoginStatus from '../components/mypage/NoLoginStatus';
 
 export type StateContextType = {
     props: Feed | null,
-    propsFunc: React.Dispatch<React.SetStateAction<Feed | null>>
+    propsFunc: React.Dispatch<React.SetStateAction<Feed | null>>,
+    isLogin: boolean,
 }
 export interface EachFeed {
     feedId: number,
@@ -33,17 +39,40 @@ export const context = createContext<StateContextType | null>(null);
 const Mypage = () => {
 
     const [feedData, setFeedData] = useState<Feed | null>(null);
+    const [isLogin, setIsLogin] = useState<boolean>(false);
+
+    const { refetch } = useQuery({
+        queryKey: mypageKeys.GET_MYPAGE,
+        queryFn: async () => {
+            const res = await api_token.get(apiPath.mypage);
+            return res.data.mypages[0];
+        },
+        onSuccess(data) {
+            setFeedData(data);
+        },
+        onError(err) {
+            throw err;
+        }
+    })
 
     useEffect(() => {
-        setFeedData(mypageData);
-    }, []);
+        localStorage.getItem("access_token")
+            ? setIsLogin(true)
+            : setIsLogin(false);
+        refetch();
+    }, [isLogin]);
+
 
     return (
-        <context.Provider value={{ props: feedData, propsFunc: setFeedData }}>
+        <context.Provider value={{ props: feedData, propsFunc: setFeedData, isLogin: isLogin }}>
             <MypageContainer>
                 <VFlex gap='40px' height='fit-content'>
-                    <UserProfile />
-                    <MyFeeds />
+                    {isLogin
+                        ? <>
+                            <UserProfile />
+                            <MyFeeds />
+                        </>
+                        : <NoLoginStatus />}
                     <CustomerCenter />
                 </VFlex>
             </MypageContainer>

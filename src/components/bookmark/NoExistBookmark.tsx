@@ -5,13 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BODY_4 } from '../../custom/ym/variables';
 import { colorSet } from '../ui/styles/color';
+import { path } from '../../shared/path';
 
 const NoExistBookmark = () => {
 
     const navi = useNavigate();
 
     const loginClickHandler = () => {
-        navi('/');
+        navi(path.feedList);
     }
 
     return (

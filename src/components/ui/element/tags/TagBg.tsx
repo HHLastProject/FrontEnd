@@ -16,14 +16,12 @@ const Primary01 = ({ children }: ChildrenForJSX) => {
     )
 }
 const BgMedium = ({ children }: ChildrenForJSX) => {
-    console.log(colorSet.bgMedium);
     return (
         <Paint bc={`${colorSet.bgMedium}`}>{children}</Paint>
     )
 }
 
 const White = ({ children }: ChildrenForJSX) => {
-    console.log(colorSet.bgMedium);
     return (
         <Paint bc={`white`}>{children}</Paint>
     )

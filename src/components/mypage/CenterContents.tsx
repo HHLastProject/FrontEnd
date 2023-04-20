@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { HFlex, VFlex } from '../../custom/ym/styleStore';
 import styled from 'styled-components';
 import { BODY_1 } from '../../custom/ym/variables';
+import { context } from '../../pages/Mypage';
 
 const CenterContents = () => {
+
+    const contextData = useContext(context);
+
     const logoutButtonHandler = () => {
         localStorage.removeItem("access_token");
     }
@@ -14,16 +18,19 @@ const CenterContents = () => {
                     <ButtonContainer><Text>이용약관</Text></ButtonContainer>
                 </HFlex>
             </EachItem>
-            <EachItem>
-                <HFlex>
-                    <ButtonContainer onClick={logoutButtonHandler}><Text>로그아웃</Text></ButtonContainer>
-                </HFlex>
-            </EachItem>
-            <EachItem>
-                <HFlex>
-                    <ButtonContainer><Text>탈퇴하기</Text></ButtonContainer>
-                </HFlex>
-            </EachItem>
+            {contextData?.isLogin
+                ? <>
+                    <EachItem>
+                        <HFlex>
+                            <ButtonContainer onClick={logoutButtonHandler}><Text>로그아웃</Text></ButtonContainer>
+                        </HFlex>
+                    </EachItem>
+                    <EachItem>
+                        <HFlex>
+                            <ButtonContainer><Text>탈퇴하기</Text></ButtonContainer>
+                        </HFlex>
+                    </EachItem></>
+                : null}
         </VFlex>
     )
 }

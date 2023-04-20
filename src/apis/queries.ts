@@ -30,3 +30,8 @@ export const mapQueryKeys: IQueryKey = {
 export const scrapKeys: IQueryKey = {
   GET_SCRAP: ["GET_SCRAP"],
 }
+
+export const mypageKeys: IQueryKey = {
+  GET_MYPAGE: ["GET_MYPAGE"],
+  GET_FEED: ["GET_FEED"],
+}

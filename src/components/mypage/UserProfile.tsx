@@ -7,10 +7,13 @@ import { StateContextType, context } from '../../pages/Mypage';
 const UserProfile = () => {
 
     const contextObjects = useContext(context);
+
     return (
         <ProfileContainer>
             <HFlex gap='12px'>
-                <ImageFrame />
+                <ImageFrame>
+                    <ProfileImage src={contextObjects?.props?.profilePic} alt="프로필 사진" />
+                </ImageFrame>
                 <Nickname>{contextObjects?.props?.nickname}의 피드</Nickname>
             </HFlex>
         </ProfileContainer>
@@ -35,10 +38,7 @@ const ImageFrame = styled.div`
     height: 60px;
     border: none;
     border-radius: 20px;
-    background-image: ${`url('${process.env.PUBLIC_URL}/userpictures/basic-profile.png')`};
-    background-repeat : no-repeat;
-    background-position : center;
-    background-size : cover;
+    overflow: hidden;
 `
 const ProfileImage = styled.img`
     width: 100%;
