@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { mypageData } from '../custom/ym/dummydata';
 import styled from 'styled-components';
 import { HFlex } from '../custom/ym/styleStore';
 import SmallProfileCard from './SmallProfileCard';
 import FeedNameCard from './FeedNameCard';
+import { defaultImgPath } from '../shared/path';
 
-const FeedProfile = () => {
-    const { profilePic } = mypageData;
-
+const FeedProfile = ({profilePic}: {profilePic?: string}) => {
+    if (!profilePic) {profilePic = defaultImgPath.shopList};
     return (
         <ProfileCard>
             <HFlex gap='4px'>

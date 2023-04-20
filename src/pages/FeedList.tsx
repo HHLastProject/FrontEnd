@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useGetFeedList from '../custom/jh/useGetFeedList'
-import { defaultImgPath } from '../shared/path';
+import { defaultImgPath, imgPath } from '../shared/path';
 import styled from 'styled-components';
 import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
@@ -16,13 +16,14 @@ import { Link } from 'react-router-dom';
 function FeedList() {
   const [expand, setExpand] = useState<boolean>(false);
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();
+
   const expandButtonHandler = () => {
     setExpand(prev => !prev);
   }
 
   useEffect(() => {
     console.log('피드리스트',feedList);
-  }, []);
+  }, [feedList]);
 
   if(feedListIsLoading) { return <div>로딩중</div> };
 
@@ -34,18 +35,28 @@ function FeedList() {
       { feedList?.map((item: any) => {
         return (
           <div key={item.shopId}>
-            <Link to={'/'}>
-              <VFlex gap='12px' etc='padding:20px;'>
-                <FeedProfile />
-                <FeedPicture>{item.profilePic}</FeedPicture>
+            <VFlex gap='12px' etc='padding:20px;'>
+              {item.profilePic ? 
+                <FeedProfile 
+                  profilePic={item.profilePic}
+                />
+                :
+                <FeedProfile 
+                  profilePic={defaultImgPath.shopList}
+                />
+              }
+              <Link to={``}>
+                <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
                 <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
-                <ExpandButton onClick={expandButtonHandler}>
-                  <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
-                </ExpandButton>
-                <TagList>{item.tags}</TagList>
+              </Link>
+              <ExpandButton onClick={expandButtonHandler}>
+                <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
+              </ExpandButton>
+              <TagList>{item.tags}</TagList>
+              <Link to={'/'}>
                 <PlaceCard />
-              </VFlex>
-            </Link>
+              </Link>
+            </VFlex>
           </div>
         )
       })}

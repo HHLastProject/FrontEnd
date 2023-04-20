@@ -8,11 +8,10 @@ export const useGetFeedList = () => {
     queryKey: queryKeys.GET_FEEDS,
     queryFn: async () => {
       const {data} = await api.get(`${apiPath.feedList}`);
-      console.log('data', data);
       return data;
     },
-    onSuccess: (o) => {
-      console.log(o, '성공');
+    onSuccess: (data) => {
+      console.log(data, '성공');
     },
     onError: (error) => {
       console.log(error);
