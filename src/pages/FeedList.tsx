@@ -33,10 +33,10 @@ function FeedList() {
       <MarginBothSides20>
         <Heading2>Feed</Heading2>
       </MarginBothSides20>
-      { feedList?.map((item: any) => {
+      { feedList?.map((item: any, index: number) => {
         console.log('타입', moment(item.createAt).format("YYYY.MM.DD"));
         return (
-          <div key={item.shopId}>
+          <div key={`Feed${item.shopId + index}`}>
             <VFlex gap='12px' etc='padding:20px;'>
               {item.profilePic ? 
                 <FeedProfile 
@@ -67,6 +67,7 @@ function FeedList() {
                 />
               </Link>
             </VFlex>
+            {(index >=0 && index < feedList.length-1) && <FeedPageHr/>}
           </div>
         )
       })}
@@ -118,44 +119,9 @@ interface IFeedList {
   isScrap : boolean;
 };
 
-const dumiData: IFeedList[] = [
-  {
-    shopId: 12,
-    nickname: "닉네임",
-    profilePic : defaultImgPath.shopList,
-    createdAt : "2023.04.01",
-    feedPic : defaultImgPath.shopList,
-    comment : "코멘트길게아무렇게나 적어보기 어쩌구코멘트길게아무렇게나 적어보기 어쩌구코멘트길게아무렇게나 적어보기 어쩌구코멘트길게아무렇게나 적어보기 어쩌구코멘트길게아무렇게나 적어보기 어쩌구코멘트길게아무렇게나 적어보기 어쩌구코멘트길게아무렇게나 적어보기 어쩌구코멘트길게아무렇게나 적어보기 어쩌구코멘트길게아무렇게나 적어보기 어쩌구코멘트길게아무렇게나 적어보기 어쩌구",
-    tags : ['테그1','테그2'],
-    shopName : '가게명가게명가게명가게명가게명가게명가게명가게명가게명가게명가게명가게명가게명가게명가게명가게명',
-    shopAddress : '가게주소',
-    shopThumbnail : defaultImgPath.shopList,
-    isScrap : true,
-  },
-  {
-    shopId: 20,
-    nickname: "닉네임2",
-    profilePic : defaultImgPath.shopList,
-    createdAt : "2023.04.02",
-    feedPic : defaultImgPath.shopList,
-    comment : "코멘트",
-    tags : ['태그1', '태그2', '태그3'],
-    shopName : '가게명2',
-    shopAddress : '가게주소2',
-    shopThumbnail : defaultImgPath.shopList,
-    isScrap : false,
-  },
-  {
-    shopId: 31,
-    nickname: "닉네임3",
-    profilePic : defaultImgPath.shopList,
-    createdAt : "2023.04.03",
-    feedPic : defaultImgPath.shopList,
-    comment : "코멘트",
-    tags : ['태그1', '태그2', '태그3', '태그4'],
-    shopName : '가게명3',
-    shopAddress : '가게주소3',
-    shopThumbnail : defaultImgPath.shopList,
-    isScrap : true,
-  },
-];
+const FeedPageHr = styled.hr`
+  width: 350px;
+  height: 1px;
+  background-color: ${colorSet.lineLight};
+  border: 0;
+`;
