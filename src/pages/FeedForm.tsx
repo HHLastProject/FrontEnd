@@ -34,7 +34,7 @@ function FeedForm() {
   });
 
   const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
-  
+
   const { shopDetailData } = useGetShopDetail(param);
   const [inputValue, setInputValue] = useState('');
 

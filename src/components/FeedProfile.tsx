@@ -6,13 +6,21 @@ import SmallProfileCard from './SmallProfileCard';
 import FeedNameCard from './FeedNameCard';
 import { defaultImgPath } from '../shared/path';
 
-const FeedProfile = ({profilePic}: {profilePic?: string}) => {
-    if (!profilePic) {profilePic = defaultImgPath.shopList};
+interface IFeedProfile {
+    profilePic: string;
+    nickname: string;
+    createdAt: string;
+}
+
+const FeedProfile = ({profilePic, nickname, createdAt}: IFeedProfile) => {
     return (
         <ProfileCard>
             <HFlex gap='4px'>
                 <SmallProfileCard>{profilePic}</SmallProfileCard>
-                <FeedNameCard />
+                <FeedNameCard
+                    createdAt={createdAt}
+                    nickname={nickname}
+                />
             </HFlex>
         </ProfileCard>
     )

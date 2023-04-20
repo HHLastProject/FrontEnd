@@ -5,12 +5,23 @@ import PlacePicture from './PlacePicture';
 import PlaceNameCard from './PlaceNameCard';
 import PlaceBookMark from './PlaceBookMark';
 
-const PlaceCard = () => {
+interface IFeedShopCard {
+    shopThumbnail?: string;
+    shopName?: string;
+    shopAddress?: string;
+}
+
+const PlaceCard = ({shopThumbnail, shopName, shopAddress}: IFeedShopCard) => {
     return (
         <PlaceCardRound>
             <HFlexSpaceBetween>
-                <PlacePicture />
-                <PlaceNameCard />
+                <PlacePicture
+                    shopThumbnail={shopThumbnail}
+                />
+                <PlaceNameCard
+                    shopName={shopName}
+                    shopAddress={shopAddress}
+                />
                 <PlaceBookMark />
             </HFlexSpaceBetween>
         </PlaceCardRound>

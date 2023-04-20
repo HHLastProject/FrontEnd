@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useGetFeedList from '../custom/jh/useGetFeedList'
-import { defaultImgPath, imgPath } from '../shared/path';
+import { defaultImgPath, imgPath, path } from '../shared/path';
 import styled from 'styled-components';
 import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
@@ -12,6 +12,7 @@ import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
 import TagList from '../components/feed/TagList';
 import PlaceCard from '../components/feed/PlaceCard';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 function FeedList() {
   const [expand, setExpand] = useState<boolean>(false);
@@ -33,19 +34,24 @@ function FeedList() {
         <Heading2>Feed</Heading2>
       </MarginBothSides20>
       { feedList?.map((item: any) => {
+        console.log('타입', moment(item.createAt).format("YYYY.MM.DD"));
         return (
           <div key={item.shopId}>
             <VFlex gap='12px' etc='padding:20px;'>
               {item.profilePic ? 
                 <FeedProfile 
                   profilePic={item.profilePic}
+                  nickname={item.nickname}
+                  createdAt={moment(item.createAt).format("YYYY.MM.DD")}
                 />
                 :
                 <FeedProfile 
                   profilePic={defaultImgPath.shopList}
+                  nickname={item.nickname}
+                  createdAt={moment(item.createAt).format("YYYY.MM.DD")}
                 />
               }
-              <Link to={`${item.feedId}`}>
+              <Link to={`${path.toFeedDetail + '/' + item.feedId}`}>
                 <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
                 <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
               </Link>
@@ -53,8 +59,12 @@ function FeedList() {
                 <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
               </ExpandButton>
               <TagList>{item.tags}</TagList>
-              <Link to={`${item.shopId}`}>
-                <PlaceCard />
+              <Link to={`${path.toShopDetail + '/' + item.shopId}`}>
+                <PlaceCard
+                  shopThumbnail={imgPath.shopThumbnailImg + item.shopThumbnail}
+                  shopName={item.shopName}
+                  shopAddress={item.shopAddress}
+                />
               </Link>
             </VFlex>
           </div>

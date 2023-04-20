@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import { mypageData } from '../../custom/ym/dummydata';
 import { EachFeed } from '../../pages/Mypage';
 
-const PlacePicture = () => {
-    const { shopThumbnail } = mypageData.feeds[2] as EachFeed;
+const PlacePicture = ({shopThumbnail} : {shopThumbnail?: string}) => {
+    if(!shopThumbnail) {
+        let dumi = mypageData.feeds[2] as EachFeed;
+        shopThumbnail = dumi.shopThumbnail;
+    }
     return (
         <PictureSize>
             <Picture src={shopThumbnail} alt="" />

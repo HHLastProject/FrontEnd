@@ -5,15 +5,11 @@ import { mypageData } from '../custom/ym/dummydata';
 import moment from 'moment';
 import { VFlex } from '../custom/ym/styleStore';
 
-const FeedNameCard = () => {
-    const { nickname } = mypageData;
-    const createAt = new Date(2023, 4, 13);
-    const date = moment(createAt).format("YYYY.MM.DD");
-
+const FeedNameCard = ({nickname, createdAt}: {nickname: string, createdAt: string}) => {
     return (
         <VFlex gap='2px'>
             <Name>{nickname}</Name>
-            <CreatedDate>{date}</CreatedDate>
+            <CreatedDate>{createdAt}</CreatedDate>
         </VFlex>
     )
 }
