@@ -9,7 +9,6 @@ const FeedDetail = () => {
     const { feedId } = useParams();
     const id = parseInt(feedId as string);
 
-
     return (
         <FeedDetailContainer>
             <HeaderBack />

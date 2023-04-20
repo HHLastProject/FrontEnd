@@ -84,3 +84,5 @@ export interface BookmarkChildren extends ComponentPropsWithoutRef<'div'> {
 export interface CategoryProp {
     categoryState: categoryTypes | null;
 }
+
+export type FeedApiPathType = "shop" | "mypage";
