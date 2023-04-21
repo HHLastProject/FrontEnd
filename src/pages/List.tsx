@@ -99,14 +99,15 @@ const List = () => {
               </TabMenuUl>
             </HomeTabMenuStyle>
           </header>
-  
-          <div className='space-between'>
+      
+          <div>
             <input type="checkbox" id="by-range" name="by-range" hidden />
             <div>
               <FilterBtn
+                icon={<IconSmallDownArrow/>}
                 onClick={onClickHiddenHandler}
               >
-                <label>거리순</label><IconSmallDownArrow/>
+                <label>거리순</label>
               </FilterBtn>
               <ListCategoryButtonBar/>
             </div>
@@ -157,18 +158,13 @@ export const HomeWrap = styled.div`
 const HomeContainer = styled.div`
   width: (100%-20)px;
   margin: 0 20px 120px 20px;
-
+/* 
   .floating-btn {
     position: fixed;
     bottom: 30px;
     left: 50%;
     transform: transxeX( -50% );
-  }
-
-  .space-between {
-    display: flex;
-    justify-content: space-between;
-  }
+  } */
 `;
 
 const HomeShopListContainer = styled.div`
@@ -180,14 +176,15 @@ const HomeShopListContainer = styled.div`
   gap: 12px;
 `;
 
-const FilterBtn = ({children, onClick}: {children: React.ReactNode, onClick: React.MouseEventHandler<HTMLButtonElement>}) => {
+const FilterBtn = ({children, icon, onClick}: {children: React.ReactNode, icon?: JSX.Element, onClick: React.MouseEventHandler<HTMLButtonElement>}) => {
   return(
     <FilterBtnStyle
       onClick={onClick}
     >
-      <Body3>
-        {children}
-      </Body3>
+      <div>
+        <Body3>{children}</Body3>
+        {icon}
+      </div>
     </FilterBtnStyle>
   )
 }
@@ -197,4 +194,9 @@ const FilterBtnStyle = styled.button`
   border: none;
   padding: 8px 12px;
   border-radius: 100px;
+  div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 `;
