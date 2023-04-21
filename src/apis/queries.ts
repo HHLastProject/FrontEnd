@@ -33,5 +33,5 @@ export const scrapKeys: IQueryKey = {
 
 export const mypageKeys: IQueryKey = {
   GET_MYPAGE: ["GET_MYPAGE"],
-  GET_FEED: ["GET_FEED"],
+  GET_FEED_DETAIL_IN_MYPAGE: ["GET_FEED_DETAIL_IN_MYPAGE"],
 }

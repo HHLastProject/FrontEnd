@@ -28,22 +28,27 @@ const MapModule = () => {
 
     let timeCheck: NodeJS.Timeout | null = null;
 
-
     const {
+        activeShop,
         center,
         list,
         userCoord,
         isMoving } = useContext(StateContext);
 
     const {
-        setShopCoord,
+        setActiveShop,
         setRange,
         setCenter,
         setIsMoving } = useContext(DispatchContext);
 
 
     const icon = {
-        url: `${process.env.PUBLIC_URL}/markers/icon_mappin_36.png`,
+        url: `${process.env.PUBLIC_URL}/markers/non_selected_shop.png`,
+        anchor: new navermaps.Point(0, 0),
+    }
+
+    const activeIcon = {
+        url: `${process.env.PUBLIC_URL}/markers/selected_shop.png`,
         anchor: new navermaps.Point(0, 0),
     }
 
@@ -112,6 +117,18 @@ const MapModule = () => {
         tempSetCenter(userCoord);
     }
 
+    const markerClickHandler = (e: naver.maps.PointerEvent, shop: number) => {
+        const dispatch = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
+
+        dispatch(shop);
+
+        // const tempSetCenter = setCenter as React.Dispatch<React.SetStateAction<Coordinate>>;
+        // const tempSetIsMoving = setIsMoving as React.Dispatch<React.SetStateAction<boolean>>;
+
+        // tempSetIsMoving(true);
+        // tempSetCenter({ lng: e.point.x, lat: e.point.y });
+    }
+
 
     /* 메모리누수 방지 */
     useEffect(() => {
@@ -120,7 +137,12 @@ const MapModule = () => {
                 clearTimeout(timeCheck);
             }
         }
-    }, [timeCheck])
+    }, [timeCheck]);
+
+    useEffect(() => {
+        const dispatch = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
+        typeof list === 'object' && dispatch(list[0]?.shopId as number);
+    }, [list]);
 
     return (
         <MapDiv style={{ width: '100%', height: '100%' }} id="react-naver-map">
@@ -150,7 +172,10 @@ const MapModule = () => {
                     if (element) {
                         return <Marker
                             key={uuid()}
-                            icon={icon}
+                            onClick={(e) => markerClickHandler(e, element.shopId)}
+                            icon={element?.shopId === activeShop
+                                ? activeIcon
+                                : icon}
                             defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />;
                     } else {
                         return null;

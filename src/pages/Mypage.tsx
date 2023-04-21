@@ -10,6 +10,7 @@ import { mypageKeys } from '../apis/queries';
 import { api_token } from '../shared/api';
 import { apiPath } from '../shared/path';
 import NoLoginStatus from '../components/mypage/NoLoginStatus';
+import { ReceivedFeed } from '../custom/ym/types';
 
 export type StateContextType = {
     props: Feed | null,
@@ -30,7 +31,7 @@ export interface EachFeed {
 export interface Feed {
     nickname: string,
     profilePic: string,
-    feeds: (EachFeed | null)[],
+    feeds: (ReceivedFeed | null)[],
     feedCount: number,
 }
 
@@ -48,6 +49,7 @@ const Mypage = () => {
             return res.data.mypages[0];
         },
         onSuccess(data) {
+            console.log(data);
             setFeedData(data);
         },
         onError(err) {

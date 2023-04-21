@@ -4,11 +4,12 @@ type Prop = {
     children: string,
 }
 const FeedComment = ({ isExpanded, children }: Prop) => {
-    console.log(children.length);
-    const subString = children.slice(0, 90) + '...';
+    const subString = children?.length > 86
+        ? children.slice(0, 86) + '...'
+        : children;
 
-    console.log('slice:', subString, subString.length);
-    console.log('children:', children, children.length);
+    // console.log('slice:', subString, subString.length);
+    // console.log('children:', children, children.length);
     // console.log(a, a.length);
     return (
         <div>{isExpanded ? children : subString}</div>

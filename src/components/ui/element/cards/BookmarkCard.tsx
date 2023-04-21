@@ -23,7 +23,7 @@ const BookmarkCard = ({ data }: BookmarkChildren) => {
     return (
         <HFlex gap='8px' height={'fit-content'} onClick={divClickHandler}>
             <ThumbnailFrame>
-                <Thumbnail src={imgPath.feedImg + data.thumbnail} alt={data.shopName} />
+                <Thumbnail src={imgPath.shopThumbnailImg + data.thumbnail} alt={data.shopName} />
             </ThumbnailFrame>
             <VFlex height='100px' etc='align-items:base-line;'>
                 <ShopName>{data.shopName}</ShopName>

@@ -59,7 +59,7 @@ export const apiPath: IPath = {
 export const imgPath: IPath = {
   shopMenuImg: setServerUrl(`/uploads/shopMenu/`),
   shopThumbnailImg: setServerUrl(`/uploads/shopThumbnail/`),
-  feedImg: setServerUrl(`/uploads/feedPic/`),
+  feedImg: setServerUrl(`/uploads/`),
 };
 
 export const defaultImgPath: IPath = {

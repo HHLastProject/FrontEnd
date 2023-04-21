@@ -6,8 +6,10 @@ import SmallProfileCard from './SmallProfileCard';
 import FeedNameCard from './FeedNameCard';
 import { defaultImgPath } from '../shared/path';
 
-const FeedProfile = ({profilePic}: {profilePic?: string}) => {
-    if (!profilePic) {profilePic = defaultImgPath.shopList};
+const FeedProfile = ({ profilePic }: { profilePic?: string }) => {
+
+    // console.log('feedProfile', profilePic);
+    if (!profilePic) { profilePic = defaultImgPath.shopList };
     return (
         <ProfileCard>
             <HFlex gap='4px'>

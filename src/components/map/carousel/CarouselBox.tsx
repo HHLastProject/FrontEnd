@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { HFlex, HFlexSpaceBetween, VFlex, VFlexCenter } from '../../../custom/ym/styleStore';
 import { DispatchContext, EachData, StateContext } from '../../../pages/Home';
@@ -6,12 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import uuid from 'react-uuid';
 import { ShopData } from '../../../custom/ym/variables';
-import { states } from '../../../custom/ym/contextValues';
+import { dispatches, states } from '../../../custom/ym/contextValues';
 import { apiPath, imgPath } from '../../../shared/path';
 import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
 import { keys, mapQueryKeys } from '../../../apis/queries';
 import { api_token } from '../../../shared/api';
-import { createCallSignature } from 'typescript';
+import SwiperCore from 'swiper';
 
 type CarouselProps = {
     children: (ShopData | null)[]
@@ -24,17 +24,20 @@ const CarouselBox = () => {
         e.stopPropagation();
         navi(`/shop/${shopId}`);
     }
-    const swiper = useSwiper();
+    const [now, setNow] = useState<number>(0);
+    const [swiper, setSwiper] = useState<SwiperCore>();
+    // const swiper = useSwiper();
+    // console.log('인덱스', swiper.realIndex);
+    // console.log(swiper);
 
-    const { list } = useContext(StateContext);
-    const { setIsChanged } = useContext(DispatchContext);
+    const { list, activeShop } = useContext(StateContext);
+    const { setIsChanged, setActiveShop } = useContext(DispatchContext);
     const { mutate } = useMutation({
         mutationKey: keys.PUT_TOGGLE_BOOKMARK,
         mutationFn: async (payload: number) => {
             console.log("payload:", payload);
             console.log('경로:', `/api/${payload}/scrap`);
             const res = await api_token.put(`/api/${payload}/scrap`);
-            // console.log(res.data);
             return res.data;
         },
         onSuccess: () => {
@@ -59,11 +62,27 @@ const CarouselBox = () => {
         return stringData[0].replace("시", "") + " " + stringData[1];
     }
 
+    useEffect(() => {
+        const activeChange = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
+        activeChange(list[0]?.shopId as number);
+    }, []);
+    useEffect(() => {
+        const activeChange = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
+        activeChange(list[now]?.shopId as number);
+    }, [now]);
+
+    useEffect(() => {
+        const index = list?.findIndex((element) => element?.shopId === activeShop);
+        swiper?.slideTo(index);
+    }, [activeShop])
+
     return (
         <CarouselModule>
             <Swiper
+                onSwiper={setSwiper}
                 spaceBetween={8}
                 slidesPerView={1}
+                onRealIndexChange={swiper => setNow(swiper.realIndex)}
                 parallax
             >
                 {list?.map((item, index) => {
@@ -185,5 +204,4 @@ const Bookmark = styled.button`
     background-color: transparent;
     border:none;
     color: white;
-    filter: contrast(0) brightness(100);
 `;

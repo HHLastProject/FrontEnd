@@ -37,6 +37,7 @@ const Home = () => {
     const [center, setCenter] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
     const [isMoving, setIsMoving] = useState<boolean>(false);
     const [isChanged, setIsChanged] = useState<boolean>(false);
+    const [activeShop, setActiveShop] = useState<number>(0);
 
     // 실시간 유저 위치
     const [userCoord, setUserCoord] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
@@ -44,8 +45,8 @@ const Home = () => {
     // 샵 위치
     const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
 
-    const stateList = { userCoord, shopCoord, category, range, list, center, isMoving, isChanged };
-    const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged };
+    const stateList = { userCoord, shopCoord, category, range, list, center, isMoving, isChanged, activeShop };
+    const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged, setActiveShop };
 
     const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
 
@@ -83,6 +84,8 @@ const Home = () => {
             setList(data);
         }
     }, [category]);
+
+
 
     return (
         <VFlex etc='position: relative;'>

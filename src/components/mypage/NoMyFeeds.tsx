@@ -10,7 +10,6 @@ import { path } from '../../shared/path';
 
 const NoMyFeeds = () => {
 
-    // const contextData = useContext(context);
     const navi = useNavigate();
 
     const writeClickHandler = () => {
