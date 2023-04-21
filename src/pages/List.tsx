@@ -112,7 +112,7 @@ const List = () => {
               <ListCategoryButtonBar/>
             </div>
           </div>
-  
+      
           {/* <Swiper
             
           >

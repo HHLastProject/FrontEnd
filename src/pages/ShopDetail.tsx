@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailFeed } from '../custom/jh/useGetShopDetail';
@@ -8,11 +8,19 @@ import ShopDetailMap from '../components/map/ShopDetailMap';
 import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
 import ShopDetailFeed from '../components/shopDetail/ShopDetailFeed';
-import { iconImgPath, imgPath } from '../shared/path';
+import { iconImgPath, imgPath, path } from '../shared/path';
 import { colorSet } from '../components/ui/styles/color';
 import { fontType } from '../components/ui/styles/typo';
 import { Buttons } from '../components/ui/element/buttons/Buttons';
 import { IconPencil } from '../components/ui/element/icons/IconsStyle';
+import { VFlex } from '../custom/ym/styleStore';
+import moment from 'moment';
+import FeedProfile from '../components/FeedProfile';
+import FeedPicture from '../components/feed/FeedPicture';
+import FeedComment from '../components/feed/FeedComment';
+import PlaceCard from '../components/feed/PlaceCard';
+import TagList from '../components/feed/TagList';
+import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -21,6 +29,11 @@ function ShopDetail() {
   const tabMenuRef = useRef();
   const tabReviewRef = useRef();
   const { feedFormClickHandler } = useNavigateHandler();
+
+  const [expand, setExpand] = useState<boolean>(false);
+  const expandButtonHandler = () => {
+    setExpand(prev => !prev);
+  }
 
   const scrollToTabInfo = () => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -49,10 +62,11 @@ function ShopDetail() {
 
   useEffect(() => {
     console.log(shopDetailData);
-  }, [shopDetailData])
-  
+  }, [])
+
   useEffect(() => {
     getShopDetailFeedList();
+    console.log(shopDetailFeedList);
   }, []);
 
   return (
@@ -155,9 +169,41 @@ function ShopDetail() {
                 </div>
               </div>
               <div>
-                {shopDetailFeedList?.map((item: any) => {
-                  return (
-                    <>피드들</>
+                { dumiFeedData?.map((item: any, index: number) => {
+                  return(
+                    <div key={`${item.shopId + index}`}>
+                      <VFlex gap='12px' etc='padding:20px;'>
+                        {item.profilePic ? 
+                          <FeedProfile 
+                            profilePic={item.profilePic}
+                            nickname={item.nickname}
+                            createdAt={moment(item.createAt).format("YYYY.MM.DD")}
+                          />
+                          :
+                          <FeedProfile 
+                            profilePic={item.defaultImgPath.shopList}
+                            nickname={item.nickname}
+                            createdAt={moment(item.createAt).format("YYYY.MM.DD")}
+                          />
+                        }
+                        <Link to={`${path.toFeedDetail + '/' + item.feedId}`}>
+                          <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
+                          <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
+                        </Link>
+                        <ExpandButton onClick={expandButtonHandler}>
+                          <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
+                        </ExpandButton>
+                        <TagList>{item.tags}</TagList>
+                        <Link to={`${path.toShopDetail + '/' + item.shopId}`}>
+                          <PlaceCard
+                            shopThumbnail={imgPath.shopThumbnailImg + item.shopThumbnail}
+                            shopName={item.shopName}
+                            shopAddress={item.shopAddress}
+                          />
+                        </Link>
+                      </VFlex>
+                      {(index >=0 && index < dumiFeedData.length-1) && <FeedPageHr/>}
+                    </div>
                   )
                 })}
                 {(shopDetailFeedList?.length === 0 || !shopDetailFeedList) && (<div>피드가 없습니다.</div>)}
@@ -280,3 +326,60 @@ const ShopDetailContentContainer = styled.div`
     justify-content: space-between;
   }
 `;
+
+const ExpandButton = styled.button`
+  width: fit-content;
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background-color: transparent;
+`;
+
+const ExpandText = styled.span`
+  font-size: ${TITLE_5.fontSize};
+  font-weight: ${TITLE_5.fontWeight};
+  line-height: ${TITLE_5.lineHeight};
+  color: ${`#${PRIMARY_01}`};
+`;
+
+const FeedPageHr = styled.hr`
+  width: 350px;
+  height: 1px;
+  background-color: ${colorSet.lineLight};
+  border: 0;
+`;
+
+const dumiFeedData = [
+  {
+    comment:"어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스\r\n어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스어몽어스123 어몽어스 12",
+    createdAt: "2023-04-21T06:28:07.000Z",
+    feedId: 61,
+    feedPic: "1682058487739.png",
+    isScrap: true,
+    nickname: "김용민",
+    profilePic: "http://k.kakaocdn.net/dn/bYqF7P/btrrKx4Et4E/CnhDpRN7tj9OGKRV5rhgp0/img_640x640.jpg",
+    shopAddress: "서울특별시 강남구 봉은사로 438",
+    shopId: 31475,
+    shopName: "매머드익스프레스봉은사로",
+    shopThumbnail: "cafe17.jpg",
+    tag: 
+    [
+      {tag: '분위기 맛집'},
+      {tag: '커피 맛집'},
+    ]
+  },
+  {
+    comment:"어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스\r\n어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스어몽어스123 어몽어스 12",
+    createdAt: "2023-04-21T06:28:07.000Z",
+    feedId: 61,
+    feedPic: "1682058487739.png",
+    isScrap: true,
+    nickname: "김용민",
+    profilePic: "http://k.kakaocdn.net/dn/bYqF7P/btrrKx4Et4E/CnhDpRN7tj9OGKRV5rhgp0/img_640x640.jpg",
+    shopAddress: "서울특별시 강남구 봉은사로 438",
+    shopId: 31475,
+    shopName: "매머드익스프레스봉은사로",
+    shopThumbnail: "cafe17.jpg",
+    tag: []
+  },
+];

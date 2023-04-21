@@ -86,20 +86,6 @@ function FeedList() {
 
 export default FeedList
 
-interface IFeedList {
-  nickname: string;
-  profilePic : string;
-  createdAt : string | Date;
-  feedPic : string;
-  comment : string | null;
-  tags : string[] | null;
-  shopId: number;
-  shopName : string;
-  shopAddress : string;
-  shopThumbnail : string;
-  isScrap : boolean;
-};
-
 const Heading2 = styled.div`
   ${fontType.heading_2}
   color: ${colorSet.textStrong};

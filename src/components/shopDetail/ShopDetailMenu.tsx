@@ -11,7 +11,7 @@ interface IShopDetailMenu {
 
 function ShopDetailMenu({menuName, price, picture}: IShopDetailMenu) {
   // if(price >= 1000) {
-
+    
   // }
   const menuImgUrl = `${imgPath.shopMenuImg + picture}`;
   return (
