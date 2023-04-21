@@ -3,8 +3,9 @@ import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps } from 're
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
 import uuid from 'react-uuid';
 import { DispatchContext, EachData, StateContext } from '../../pages/Home';
-import { NavermapPointType } from '../../custom/ym/variables';
+import { NavermapPointType, ShopData } from '../../custom/ym/variables';
 import styled from 'styled-components';
+import MarkerMemo from './MarkerMemo';
 
 export type Coordinate = {
     lng: number,
@@ -42,15 +43,15 @@ const MapModule = () => {
         setIsMoving } = useContext(DispatchContext);
 
 
-    const icon = {
-        url: `${process.env.PUBLIC_URL}/markers/non_selected_shop.png`,
-        anchor: new navermaps.Point(0, 0),
-    }
+    // const icon = {
+    //     url: `${process.env.PUBLIC_URL}/markers/non_selected_shop.png`,
+    //     anchor: new navermaps.Point(0, 0),
+    // }
 
-    const activeIcon = {
-        url: `${process.env.PUBLIC_URL}/markers/selected_shop.png`,
-        anchor: new navermaps.Point(0, 0),
-    }
+    // const activeIcon = {
+    //     url: `${process.env.PUBLIC_URL}/markers/selected_shop.png`,
+    //     anchor: new navermaps.Point(0, 0),
+    // }
 
     const centerChangeHandler = (
         setState: React.Dispatch<React.SetStateAction<Coordinate>>,
@@ -170,13 +171,16 @@ const MapModule = () => {
                 />
                 {list?.map((element) => {
                     if (element) {
-                        return <Marker
-                            key={uuid()}
-                            onClick={(e) => markerClickHandler(e, element.shopId)}
-                            icon={element?.shopId === activeShop
-                                ? activeIcon
-                                : icon}
-                            defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />;
+                        return <MarkerMemo
+                            onClick={markerClickHandler}
+                            element={element as ShopData} />
+                        // return <Marker
+                        //     key={uuid()}
+                        //     onClick={(e) => markerClickHandler(e, element.shopId)}
+                        //     icon={element?.shopId === activeShop
+                        //         ? activeIcon
+                        //         : icon}
+                        //     defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />;
                     } else {
                         return null;
                     }
