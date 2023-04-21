@@ -30,57 +30,58 @@ function FeedList() {
   if(feedListIsLoading) { return <div>로딩중</div> };
 
   return (
-    <FeedContainer>
-      <MarginBothSides20>
-        <Heading2>Feed</Heading2>
-      </MarginBothSides20>
-      { feedList?.map((item: any, index: number) => {
-        console.log('타입', moment(item.createAt).format("YYYY.MM.DD"));
-        return (
-          <div key={`Feed${item.shopId + index}`}>
-            <VFlex gap='12px' etc='padding:20px;'>
-              {item.profilePic ? 
-                <FeedProfile 
-                  profilePic={item.profilePic}
-                  nickname={item.nickname}
-                  createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-                />
-                :
-                <FeedProfile 
-                  profilePic={defaultImgPath.shopList}
-                  nickname={item.nickname}
-                  createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-                />
-              }
-              <Link to={`${path.toFeedDetail + '/' + item.feedId}`}>
-                <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
-                <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
-              </Link>
-              <ExpandButton onClick={expandButtonHandler}>
-                <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
-              </ExpandButton>
-              <TagList>{item.tags}</TagList>
-              <Link to={`${path.toShopDetail + '/' + item.shopId}`}>
-                <PlaceCard
-                  shopThumbnail={imgPath.shopThumbnailImg + item.shopThumbnail}
-                  shopName={item.shopName}
-                  shopAddress={item.shopAddress}
-                />
-              </Link>
-            </VFlex>
-            {(index >=0 && index < feedList.length-1) && <FeedPageHr/>}
-          </div>
-        )
-      })}
-      <Link to={`/shop/${0}/feedform`}>
-        <FeedPageWriteBtn>
-          <AlignItemCenter>
-            <IconPlusWhite24/>
-            <label>피드 작성</label>
-          </AlignItemCenter>
-        </FeedPageWriteBtn>
-      </Link>
-    </FeedContainer>
+    <></>
+    // <FeedContainer>
+    //   <MarginBothSides20>
+    //     <Heading2>Feed</Heading2>
+    //   </MarginBothSides20>
+    //   { feedList?.map((item: any, index: number) => {
+    //     console.log('타입', moment(item.createAt).format("YYYY.MM.DD"));
+    //     return (
+    //       <div key={`Feed${item.shopId + index}`}>
+    //         <VFlex gap='12px' etc='padding:20px;'>
+    //           {item.profilePic ? 
+    //             <FeedProfile 
+    //               profilePic={item.profilePic}
+    //               nickname={item.nickname}
+    //               createdAt={moment(item.createAt).format("YYYY.MM.DD")}
+    //             />
+    //             :
+    //             <FeedProfile 
+    //               profilePic={defaultImgPath.shopList}
+    //               nickname={item.nickname}
+    //               createdAt={moment(item.createAt).format("YYYY.MM.DD")}
+    //             />
+    //           }
+    //           <Link to={`${path.toFeedDetail + '/' + item.feedId}`}>
+    //             <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
+    //             <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
+    //           </Link>
+    //           <ExpandButton onClick={expandButtonHandler}>
+    //             <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
+    //           </ExpandButton>
+    //           <TagList>{item.tags}</TagList>
+    //           <Link to={`${path.toShopDetail + '/' + item.shopId}`}>
+    //             <PlaceCard
+    //               shopThumbnail={imgPath.shopThumbnailImg + item.shopThumbnail}
+    //               shopName={item.shopName}
+    //               shopAddress={item.shopAddress}
+    //             />
+    //           </Link>
+    //         </VFlex>
+    //         {(index >=0 && index < feedList.length-1) && <FeedPageHr/>}
+    //       </div>
+    //     )
+    //   })}
+    //   <Link to={`/shop/${0}/feedform`}>
+    //     <FeedPageWriteBtn>
+    //       <AlignItemCenter>
+    //         <IconPlusWhite24/>
+    //         <label>피드 작성</label>
+    //       </AlignItemCenter>
+    //     </FeedPageWriteBtn>
+    //   </Link>
+    // </FeedContainer>
   )
 };
 
