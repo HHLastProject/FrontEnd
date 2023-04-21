@@ -6,7 +6,7 @@ import { fontType } from "../ui/styles/typo";
 interface IShopDetailMenu {
   menuName: string;
   price: string;
-  picture: string | null;
+  picture?: string | null | undefined;
 }
 
 function ShopDetailMenu({menuName, price, picture}: IShopDetailMenu) {

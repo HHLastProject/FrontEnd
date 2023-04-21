@@ -1,9 +1,10 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../apis/queries';
 import api from '../../shared/api';
 import { apiPath } from '../../shared/path';
 
 export const useGetShopDetail = (param: number | undefined) => {
+  const queryClinet = useQueryClient();
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.GET_SHOP_DETAIL,
     queryFn: async () => {
@@ -11,7 +12,7 @@ export const useGetShopDetail = (param: number | undefined) => {
       return data.shop;
     },
     onSuccess: () => {
-      
+      queryClinet.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL });
     },
     onError: () => {
       console.log('상세정보 에러');
@@ -25,6 +26,7 @@ export const useGetShopDetail = (param: number | undefined) => {
 };
 
 export const useGetShopDetailFeed = (param: number | undefined) => {
+  const queryClinet = useQueryClient();
   const { data, mutate, isLoading, isError } = useMutation({
     mutationKey: queryKeys.GET_SHOP_DETAIL_FEED,
     mutationFn: async () => {
@@ -34,7 +36,7 @@ export const useGetShopDetailFeed = (param: number | undefined) => {
     },
     onSuccess: () => {
       console.log('피드 데이터', data);
-
+      queryClinet.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL_FEED });
     },
     onError: () => {
       console.log('피드 에러');

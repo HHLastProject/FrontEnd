@@ -50,7 +50,9 @@ function ShopDetail() {
   useEffect(() => {
     console.log(shopDetailData);
   }, [shopDetailData])
+  
   useEffect(() => {
+    getShopDetailFeedList();
   }, []);
 
   return (
@@ -158,7 +160,7 @@ function ShopDetail() {
                     <>피드들</>
                   )
                 })}
-                {(shopDetailFeedList?.length === 0) && (<div>피드가 없습니다.</div>)}
+                {(shopDetailFeedList?.length === 0 || !shopDetailFeedList) && (<div>피드가 없습니다.</div>)}
                 {shopDetailFeedIsError && (<div>피드 에러</div>)}
               </div>
               {/* <ShopDetailFeed/> */}
