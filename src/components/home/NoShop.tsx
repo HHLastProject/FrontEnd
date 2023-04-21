@@ -1,13 +1,16 @@
 import React from 'react'
 import styled from 'styled-components';
+import { Buttons } from '../ui/element/buttons/Buttons';
 
 function NoShop() {
-  const noResultImg = `${process.env.PUBLIC_URL}/images/home/no_result.png`;
+  const noResultImg = `${process.env.PUBLIC_URL}/images/search/no_result.png`;
   return (
     <NoShopContainer>
       <img src={noResultImg} alt="카페가 없습니다." />
       <label>주변엔 카페가 없어요.<br/>반경을 더 넓혀보세요.</label>
-      <button>반경 설정하기</button>
+      <Buttons.Medium.Default>
+        반경 설정하기
+      </Buttons.Medium.Default>
     </NoShopContainer>
   )
 };

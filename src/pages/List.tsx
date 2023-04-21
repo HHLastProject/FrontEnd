@@ -134,7 +134,6 @@ const List = () => {
                     />
                   ))
                 }
-                <button>더 보기</button>
               </HomeShopListContainer>
             {/* </SwiperSlide>
           </Swiper> */}
