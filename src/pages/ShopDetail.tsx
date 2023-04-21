@@ -75,6 +75,7 @@ function ShopDetail() {
         <span><Link to={'/'}>뒤로가기</Link></span>
         <span>책갈피</span>
       </Header>
+      
       <div>
         <ShopDetailThumbnail>
           <div className='thumbnail-img'>
