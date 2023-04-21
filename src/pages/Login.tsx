@@ -12,15 +12,18 @@ const Login = () => {
     }
     return (
         <PublicContainer>
-            <VFlexCenter width='100%' height='100vh' gap='20px'>
-                <div style={{ width: '268px', height: '268px' }}>
-                    <VFlexCenter etc='border: 1px solid black'>
-                        <Logo>로고</Logo>
+            <VFlexCenter height="100vh" gap='132px'>
+                <div style={{ width: '100%', height: 'fit-content' }}>
+                    <VFlexCenter gap='12px'>
+                        <LogoText>순간을 기록하는 여정</LogoText>
+                        <LogoImage src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="로고" />
                     </VFlexCenter>
                 </div>
-                <KakaoLogin />
-                <NaverLogin />
-                <AdminButton onClick={adminLoginHandler}>관리자로 로그인하기</AdminButton>
+                <div>
+                    <KakaoLogin />
+                    <NaverLogin />
+                    <AdminButton onClick={adminLoginHandler}>관리자로 로그인하기</AdminButton>
+                </div>
             </VFlexCenter>
         </PublicContainer>
     )
@@ -28,13 +31,22 @@ const Login = () => {
 
 export default Login;
 
+const LogoImage = styled.img`
+    width: fit-content;
+    height: fit-content;
+`
 
-const Logo = styled.span`
-    font-size : 24px;
-    background-color : black;
-    color : white;
-    font-weight : bold;
-    padding : 15px 20px;
+const LogoFrame = styled.div`
+    width: fit-content;
+    height: fit-content;
+`
+
+const LogoText = styled.span`
+    font-family: "Pretendard";
+    font-size : 16px;
+    line-height: 19px;
+    color : black;
+    font-weight : 400;
 `
 
 const AdminButton = styled.button`
