@@ -41,6 +41,8 @@ const NaverLogin = () => {
     return (
         <div>
             <div id='naverIdLogin' />
+            {/* <img src={`${process.env.PUBLIC_URL}/loginbuttons/naver_login_btn.png`} alt="" /> */}
+            {/* </div> */}
         </div>
     )
 }
