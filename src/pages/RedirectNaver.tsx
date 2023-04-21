@@ -17,7 +17,7 @@ const RedirectNaver = () => {
         mutationFn: async (payload: Payload) => {
             const response = await axios.post(`${url}/api/login/naver`, payload);
             localStorage.removeItem("naverAuth")
-            // localStorage.setItem("access_token", response.data.access_token);
+            localStorage.setItem("access_token", response.data.access_token);
             console.log(response);
             navi('/');
         }

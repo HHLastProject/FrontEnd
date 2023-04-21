@@ -11,7 +11,7 @@ export const colorSet = {
     textMedium: setColor('717176'),
     textLight: setColor('A1A1Ac'),
     primary_01: setColor('767676'),
-    primary_02: setColor('ADADAD'),
+    primary_02: setColor('B81B1B'),
     bgMedium: setColor('F1F1F5'),
     bgLight: setColor('F8F8FA'),
     lineStrong: setColor('909096'),

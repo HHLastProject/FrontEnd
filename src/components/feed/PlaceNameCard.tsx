@@ -5,14 +5,14 @@ import { EachFeed } from '../../pages/Mypage'
 import styled from 'styled-components'
 import { B14, BODY_3, MEDIUM, TITLE_5 } from '../../custom/ym/variables'
 
-const PlaceNameCard = ({shopName, shopAddress}: {shopName?: string, shopAddress?: string}) => {
-    if(!shopName || !shopAddress){
-        const dumi = mypageData.feeds[2] as EachFeed;
-        shopName = dumi.shopName;
-        shopAddress = dumi.shopAddress;
+const PlaceNameCard = ({ shopName, shopAddress }: { shopName?: string, shopAddress?: string }) => {
+    const split = shopAddress?.split(" ");
+    let modifiedAddress: string = "";
+
+    if (split !== undefined) {
+        modifiedAddress = split[0].split("시")[0] + " " + split[1];
     }
-    const split = shopAddress.split(" ");
-    const modifiedAddress = (split[0]==='서울특별시' ? split[0].split("특별시")[0] : split[0].split("시")[0]) + " " + split[1];
+
     return (
         <VFlex etc='flex:1;font-family : "Pretendard"; padding-left: 16px;'>
             <ShopName>{shopName}</ShopName>

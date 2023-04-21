@@ -169,7 +169,7 @@ function ShopDetail() {
                 </div>
               </div>
               <div>
-                { dumiFeedData?.map((item: any, index: number) => {
+                {/* { dumiFeedData?.map((item: any, index: number) => {
                   return(
                     <div key={`${item.shopId + index}`}>
                       <VFlex gap='12px' etc='padding:20px;'>
@@ -207,7 +207,7 @@ function ShopDetail() {
                   )
                 })}
                 {(shopDetailFeedList?.length === 0 || !shopDetailFeedList) && (<div>피드가 없습니다.</div>)}
-                {shopDetailFeedIsError && (<div>피드 에러</div>)}
+                {shopDetailFeedIsError && (<div>피드 에러</div>)} */}
               </div>
               {/* <ShopDetailFeed/> */}
             </div>

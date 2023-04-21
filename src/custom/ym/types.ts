@@ -86,3 +86,34 @@ export interface CategoryProp {
 }
 
 export type FeedApiPathType = "shop" | "mypage";
+
+export interface ReceivedFeed {
+    feadId: number,
+    feedPic: string,
+}
+
+export interface FeedDetails {
+    comment: string,
+    createdAt: string,
+    feedPic: string,
+    isScrap: boolean,
+    nickname: string,
+    profilePic: string,
+    shopAddress: string,
+    shopName: string,
+    shopThumbnail: string,
+    tags: string[],
+}
+
+export type TossedFeedData = {
+    comment: string,
+    createdAt: string,
+    feedPic: string,
+    isScrap: boolean,
+    nickname: string,
+    profilePic: string,
+    shopAddress: string,
+    shopName: string,
+    shopThumbnail: string,
+    tags: string[],
+}

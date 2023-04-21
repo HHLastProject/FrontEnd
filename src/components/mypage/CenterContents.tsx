@@ -10,6 +10,7 @@ const CenterContents = () => {
 
     const logoutButtonHandler = () => {
         localStorage.removeItem("access_token");
+        window.location.reload();
     }
     return (
         <VFlex height='fit-content'>

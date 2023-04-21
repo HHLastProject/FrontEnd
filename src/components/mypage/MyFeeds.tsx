@@ -13,6 +13,8 @@ const MyFeeds = () => {
     const feedCount = contextData?.props?.feedCount as number;
     const feeds = contextData?.props?.feeds;
 
+    console.log('props:', contextData?.props);
+
     return (
         <VFlex gap='12px'>
             <FeedSet>{feedCount}</FeedSet>

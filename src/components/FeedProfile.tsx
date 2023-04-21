@@ -6,21 +6,16 @@ import SmallProfileCard from './SmallProfileCard';
 import FeedNameCard from './FeedNameCard';
 import { defaultImgPath } from '../shared/path';
 
-interface IFeedProfile {
-    profilePic: string;
-    nickname: string;
-    createdAt: string;
-}
+const FeedProfile = ({ profilePic }: { profilePic?: string }) => {
 
-const FeedProfile = ({profilePic, nickname, createdAt}: IFeedProfile) => {
+    // console.log('feedProfile', profilePic);
+    if (!profilePic) { profilePic = defaultImgPath.shopList };
     return (
         <ProfileCard>
             <HFlex gap='4px'>
                 <SmallProfileCard>{profilePic}</SmallProfileCard>
-                <FeedNameCard
-                    createdAt={createdAt}
-                    nickname={nickname}
-                />
+                {/* <FeedNameCard a={true}/> 프롭스로 구분(주희님껀지, 용민껀지*/}
+                <FeedNameCard />
             </HFlex>
         </ProfileCard>
     )

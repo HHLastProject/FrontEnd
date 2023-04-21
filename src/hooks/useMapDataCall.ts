@@ -16,6 +16,7 @@ const useMapDataCall = () => {
             return res.data.shops;
         },
         onSuccess: (data) => {
+            queryClient.invalidateQueries(mapQueryKeys.POST_SHOPS_IN_RANGE);
         },
         onError: (err) => {
             console.log(err);

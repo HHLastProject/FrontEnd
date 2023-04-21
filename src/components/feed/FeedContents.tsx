@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { mypageData } from '../../custom/ym/dummydata';
 import moment from 'moment';
 import { VFlex } from '../../custom/ym/styleStore';
@@ -8,12 +8,15 @@ import FeedComment from './FeedComment';
 import styled from 'styled-components';
 import { PRIMARY_01, TITLE_5 } from '../../custom/ym/variables';
 import TagList from './TagList';
-import PlaceCard from './PlaceCard';
+import PlaceCard, { FeedCardData } from './PlaceCard';
 import { useQuery } from '@tanstack/react-query';
 import { mypageKeys } from '../../apis/queries';
-import { FeedApiPathType } from '../../custom/ym/types';
+import { FeedApiPathType, FeedDetails } from '../../custom/ym/types';
 import { api_token } from '../../shared/api';
-import { apiPath } from '../../shared/path';
+import { apiPath, imgPath } from '../../shared/path';
+import useFeedDetails from '../../hooks/callFeedDetail';
+import tryFeedDetailByAxios from '../../hooks/tryFeedDetailByAxios';
+import useFeedDataCall from '../../hooks/useFeedDataCall';
 
 type Prop = {
     // feedType: FeedApiPathType,
@@ -22,22 +25,20 @@ type Prop = {
 const FeedContents = ({ children }: Prop) => {
 
     const [expand, setExpand] = useState<boolean>(false);
-    const { nickname, profilePic, feeds } = mypageData;
-    const createAt = new Date(2023, 4, 13);
 
+    const { data } = useFeedDataCall(children);
 
-    const date = moment(createAt).format('YYYY.MM.DD');
-    const pic = feeds[children]?.feedPic as string;
-    const comment = feeds[children]?.comment as string;
-    const tags = feeds[children]?.tags;
+    const pic = imgPath.feedImg + data?.feedPic;
+    const comment: string = data?.comment;
+    const tags = data?.tags;
 
-    const { refetch } = useQuery({
-        queryKey: mypageKeys.GET_FEED,
-        queryFn: async () => {
-            const res = await api_token.get(`/api/mypage/30`);
-            console.log(res);
-        }
-    })
+    const props: FeedCardData = {
+        shopThumbnail: data?.shopThumbnail,
+        shopName: data?.shopName,
+        shopAddress: data?.shopAddress,
+        isScrap: data?.isScrap,
+        shopId: data?.shopId,
+    }
 
     const expandButtonHandler = () => {
         setExpand(prev => !prev);
@@ -45,20 +46,16 @@ const FeedContents = ({ children }: Prop) => {
 
     return (
         <VFlex gap='12px' etc='padding:20px;'>
-            <FeedProfile
-                profilePic={profilePic}
-                nickname={nickname}
-                createdAt={""}
-            />
+            <FeedProfile profilePic={data?.profilePic} />
             <FeedPicture>{pic as string}</FeedPicture>
             <FeedComment isExpanded={expand}>{comment as string}</FeedComment>
-            {comment.length > 90
+            {comment?.length > 86
                 ? <ExpandButton onClick={expandButtonHandler}>
                     <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
                 </ExpandButton>
                 : null}
-            <TagList>{tags}</TagList>
-            <PlaceCard />
+            <TagList>{tags as string[]}</TagList>
+            <PlaceCard dataset={props} />
         </VFlex>
     )
 }
