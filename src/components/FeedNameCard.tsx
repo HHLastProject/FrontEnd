@@ -12,7 +12,16 @@ import tryFeedDetailByAxios from '../hooks/tryFeedDetailByAxios';
 import useFeedDataCall from '../hooks/useFeedDataCall';
 import { queryClient } from '..';
 
+// 주희님껀지 내껀지 구분하는 프롭스 타입
+// type AA = {
+// a? : true,
+// }
 const FeedNameCard = () => {
+
+    // 주희님 API 열리게 되면 이렇게 진행하면 됨.
+    // const data = a
+    // ? 주희님코드 
+    // : queryClient.getQueriesData(["GET_USER_FEED"])[0][1] as TossedFeedData;
 
     const data = queryClient.getQueriesData(["GET_USER_FEED"])[0][1] as TossedFeedData;
     const date = moment(data?.createdAt).format("YYYY.MM.DD");
