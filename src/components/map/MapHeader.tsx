@@ -49,7 +49,7 @@ const RangeSpan = styled.span`
     font-size: ${TITLE_3.fontSize};
     line-height: ${TITLE_3.lineHeight};
     font-weight: ${TITLE_3.fontWeight};
-    color: ${colorSet.primary_01};
+    color: ${colorSet.primary_02};
     margin: 0px;
     padding: 0px;
 `

@@ -5,7 +5,7 @@ type Prop = {
 }
 const ImageBox = ({ children }: Prop) => {
     return (
-        <Image src={children} alt="" />
+        <Image src={children} alt="내 사진" />
     )
 }
 

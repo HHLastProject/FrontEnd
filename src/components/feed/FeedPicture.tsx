@@ -2,6 +2,7 @@ import React from 'react'
 import BiasedRound from '../BiasedRound';
 import BigSizingBox from '../BigSizingBox';
 import styled from 'styled-components';
+import { imgPath } from '../../shared/path';
 type Prop = {
     children: string
 }

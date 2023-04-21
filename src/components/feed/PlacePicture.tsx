@@ -1,13 +1,13 @@
-import React from 'react'
 import styled from 'styled-components';
-import { mypageData } from '../../custom/ym/dummydata';
-import { EachFeed } from '../../pages/Mypage';
+import { imgPath } from '../../shared/path';
 
-const PlacePicture = () => {
-    const { shopThumbnail } = mypageData.feeds[2] as EachFeed;
+const PlacePicture = ({ imgUrl }: { imgUrl?: string }) => {
+    // const { shopThumbnail } = mypageData.feeds[2] as EachFeed;
+    const url: string = imgPath.shopThumbnailImg + imgUrl;
+    console.log(url);
     return (
         <PictureSize>
-            <Picture src={shopThumbnail} alt="" />
+            <Picture src={url} alt="" />
         </PictureSize>
     )
 }
