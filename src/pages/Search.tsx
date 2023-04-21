@@ -3,6 +3,7 @@ import SearchResultList, { ISearchResult } from '../components/search/SearchResu
 import styled from 'styled-components';
 import SearchStore from '../components/search/SearchInput';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
@@ -33,12 +34,14 @@ function Search() {
           {
           (dataList?.length !== 0) && dataList?.map((item) => {
             return(
-              <SearchResultList
-                key={item.shopId}
-                shopId={item.shopId}
-                shopName={item.shopName}
-                shopAddress={item.shopAddress}
-              />
+              <Link to={`/shop/${item.shopId}/feedform`}>
+                <SearchResultList
+                  key={item.shopId}
+                  shopId={item.shopId}
+                  shopName={item.shopName}
+                  shopAddress={item.shopAddress}
+                />
+              </Link>
             )
           })}
         </div>

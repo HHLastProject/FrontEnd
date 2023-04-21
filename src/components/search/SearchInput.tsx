@@ -20,8 +20,8 @@ export interface ISearchResult {
 };
 
 function SearchStore({
-  inputValue, 
-  setInputValue, 
+  inputValue,
+  setInputValue,
   placeholder,
   setDataList,
   children,

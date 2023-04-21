@@ -21,6 +21,7 @@ import FeedComment from '../components/feed/FeedComment';
 import PlaceCard from '../components/feed/PlaceCard';
 import TagList from '../components/feed/TagList';
 import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
+import ListHeader from '../components/home/ListHeader';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -71,11 +72,9 @@ function ShopDetail() {
 
   return (
     <>
-      <Header>
-        <span><Link to={'/'}>뒤로가기</Link></span>
-        <span>책갈피</span>
-      </Header>
-      
+      <ListHeader
+        range={500}
+      />
       <div>
         <ShopDetailThumbnail>
           <div className='thumbnail-img'>

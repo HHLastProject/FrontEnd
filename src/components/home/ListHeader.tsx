@@ -29,6 +29,7 @@ const ListHeader = ({range}: {range?: number}) => {
               <Link to={'/login'}>로그인 하기</Link>
             </Title5>
           </LoginCheck>
+          
           <div
             onClick={searchClickHandler}
           >
