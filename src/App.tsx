@@ -1,15 +1,20 @@
-import React from 'react';
-import './App.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React, { useState } from 'react';
 import Router from './shared/Router';
+import './shared/reset.css';
+import { NavermapsProvider } from 'react-naver-maps';
+import { NAVER_MAPS_CLIENT } from './custom/ym/variables';
+import { RangeContext } from './apis/context';
 
-const queryClient = new QueryClient();
 
 function App() {
+  const [range, setRange] = useState<number>(500);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router />
-    </QueryClientProvider>
+    <RangeContext.Provider value={{ range, setRange }}>
+      <NavermapsProvider ncpClientId={NAVER_MAPS_CLIENT}>
+        <Router />
+      </NavermapsProvider>
+    </RangeContext.Provider>
   );
 }
 
