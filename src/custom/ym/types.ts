@@ -117,3 +117,20 @@ export type TossedFeedData = {
     shopThumbnail: string,
     tags: string[],
 }
+
+
+export interface ListTossedData {
+    address: string,
+    category: string,
+    distance: number,
+    feedCount: number,
+    isScrap: boolean,
+    lat: number,
+    lng: number,
+    maxPrice: number,
+    menuName: string,
+    minPrice: number,
+    shopId: number,
+    shopName: string,
+    thumbnail: string,
+}

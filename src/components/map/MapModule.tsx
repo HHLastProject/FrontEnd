@@ -3,8 +3,9 @@ import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps } from 're
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
 import uuid from 'react-uuid';
 import { DispatchContext, EachData, StateContext } from '../../pages/Home';
-import { NavermapPointType } from '../../custom/ym/variables';
+import { NavermapPointType, ShopData } from '../../custom/ym/variables';
 import styled from 'styled-components';
+import MarkerMemo from './MarkerMemo';
 
 export type Coordinate = {
     lng: number,
@@ -168,8 +169,18 @@ const MapModule = () => {
                     icon={`${process.env.PUBLIC_URL}/markers/icon_mylocation_36.png`}
                     position={userCoord}
                 />
+                {/* {(center === userCoord) && !isMoving
+                    ? null
+                    : <Marker
+                        icon={`${process.env.PUBLIC_URL}/markers/centerlocation.png`}
+                        position={center}
+                    />} */}
+
                 {list?.map((element) => {
                     if (element) {
+                        // return <MarkerMemo
+                        //     onClick={markerClickHandler}
+                        //     element={element as ShopData} />
                         return <Marker
                             key={uuid()}
                             onClick={(e) => markerClickHandler(e, element.shopId)}

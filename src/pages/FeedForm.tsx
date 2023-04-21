@@ -80,7 +80,7 @@ function FeedForm() {
 
     if (imgFile.feedPic && (param !== 0) && token) {
       console.log('코멘트', comment, '해시태그', hashTags);
-      const tagsList = tagRef.current.map((item: string) => {return {tag: item}});
+      const tagsList = tagRef.current.map((item: string) => { return { tag: item } });
 
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
@@ -98,16 +98,16 @@ function FeedForm() {
     console.log('state에 안넣고 보낼때 formData:', formData.get('feedPic'));
 
     await api.post(`/api/shop/${param}/feed`, formData, {
-      headers: { 
+      headers: {
         "Content-Type": "multipart/form-data",
         authorization: `${token}`,
       },
-      })
+    })
       .then((resolve) => {
         console.log("피드 등록 성공");
         alert("등록이 완료되었습니다!");
-        console.log('성공',formData);
-        // navi(-1);
+        console.log('성공', formData);
+        navi(-1);
       })
       .catch((error) => {
         console.log(error);
@@ -117,7 +117,7 @@ function FeedForm() {
   useEffect(() => {
     if (shopDetailData?.shopName) { setInputValue(shopDetailData?.shopName) };
     setToken(getToken());
-    
+
     if (!getToken()) {
       alert('로그인 해야 이용 가능합니다.');
       navi('/login');

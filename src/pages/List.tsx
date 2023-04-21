@@ -23,19 +23,21 @@ import { colorSet } from '../components/ui/styles/color';
 import { Body3, Title5 } from '../components/FontStyle';
 import { Buttons } from '../components/ui/element/buttons/Buttons';
 import { IconSmallDownArrow } from '../components/ui/element/icons/IconsStyle';
+import { ListTossedData } from '../custom/ym/types';
+import { HFlex } from '../custom/ym/styleStore';
 
 const List = () => {
-  const [lng, setLng] = useState(0);
-  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(127.0468975);
+  const [lat, setLat] = useState(37.5108407);
   const [orderBy, setOrderBy] = useState<string>('거리순');
   // const {range, setRange} = useContext(RangeContext);
   const [range, setRange] = useState(500);
 
   const navi = useNavigate();
-  const {loginClickHandler, mapClickHandler, searchClickHandler} = useNavigateHandler();
+  const { loginClickHandler, mapClickHandler, searchClickHandler } = useNavigateHandler();
 
   //선택창 보이기
-  const {isSelectHidden, onClickHiddenHandler} = useOnClickHiddenHandler(true);
+  const { isSelectHidden, onClickHiddenHandler } = useOnClickHiddenHandler(true);
 
   //토큰 가져오기
   const naverAccessToken = () => {
@@ -51,26 +53,33 @@ const List = () => {
   const {
     shopList,
     getshopList,
+    getshopListIsSuccess,
     getshopListIsLoading,
     getshopListIsError,
   } = useGetHomeShopList({ lng, lat, range });
 
+  const a = shopList as ListTossedData[];
   //useEffect
-  useEffect(() => {
-    naverAccessToken();
-    localStorage.getItem('admin_token') && navi(path.adminShoplist);
-  }, []);
+  // useEffect(() => {
+  //   naverAccessToken();
+  //   localStorage.getItem('admin_token') && navi(path.adminShoplist);
+  // }, []);
 
   useEffect(() => {
     const errorMsg = getUserLocation(setLng, setLat);
     if (errorMsg) {
       console.log(errorMsg);
     };
-    if (lng !== 0 && lat !== 0) { getshopList(); };
+    if (lng !== 0 && lat !== 0) {
+      getshopList();
+    };
   }, [lng, lat]);
 
   //로딩 화면
-  if (getshopListIsLoading) { return <div>로딩중...</div>; }
+
+  // if (getshopListIsLoading) { return <div>로딩중...</div>; }
+  // if (getshopListIsSuccess) return <div>값은가져옴</div>;
+  // if (getshopListIsError) return <div>에러</div>;
 
   return (
     <>
@@ -88,10 +97,8 @@ const List = () => {
             <HomeTabMenuStyle>
               <TabMenuUl>
                 <TabMenuLi id={1} isChecked={true}>
-                  <div>
-                    내 주변
-                    <ListCount>{shopList?.length}</ListCount>
-                  </div>
+                  내 주변
+                  <ListCount>{shopList?.length as number}</ListCount>
                 </TabMenuLi>
                 <TabMenuLi id={2}>
                   추천식당
@@ -99,46 +106,46 @@ const List = () => {
               </TabMenuUl>
             </HomeTabMenuStyle>
           </header>
-      
-          <div>
+          {/* <button onClick={() => { console.log(lng, lat) }}>dddd</button> */}
+          <div style={{ overflow: 'hidden', }}>
             <input type="checkbox" id="by-range" name="by-range" hidden />
-            <div>
+            <HFlex gap='4px'>
               <FilterBtn
-                icon={<IconSmallDownArrow/>}
+                icon={<IconSmallDownArrow />}
                 onClick={onClickHiddenHandler}
               >
                 <label>거리순</label>
               </FilterBtn>
-              <ListCategoryButtonBar/>
-            </div>
+              <ListCategoryButtonBar />
+            </HFlex>
           </div>
-      
+
           {/* <Swiper
-            
-          >
-            <SwiperSlide> */}
-              <HomeShopListContainer>
-                {
-                  (shopList?.length === 0) && <NoShop />
-                }
-                {
-                  shopList?.map((item: any) => (
-                    <HomeShopPostCard
-                      key={item.shopId}
-                      id={item.shopId}
-                      address={item.address}
-                      shopName={item.shopName}
-                      thumbnail={item.thumbnail}
-                      category={item.category}
-                      distance={item.distance}
-                      feedCount={item.feedCount}
-                    />
-                  ))
-                }
-              </HomeShopListContainer>
-            {/* </SwiperSlide>
-          </Swiper> */}
-          
+        
+      >
+        <SwiperSlide> */}
+          <HomeShopListContainer>
+            {
+              (a?.length === 0) && <NoShop />
+            }
+            {
+              a?.map((item) => (
+                <HomeShopPostCard
+                  key={item?.shopId}
+                  id={item?.shopId}
+                  address={item?.address}
+                  shopName={item?.shopName}
+                  thumbnail={item?.thumbnail}
+                  category={item?.category}
+                  distance={item?.distance}
+                  feedCount={item?.feedCount}
+                />
+              ))
+            }
+          </HomeShopListContainer>
+          {/* </SwiperSlide>
+      </Swiper> */}
+
         </HomeContainer>
       </HomeWrap>
     </>
@@ -156,8 +163,9 @@ export const HomeWrap = styled.div`
 `;
 
 const HomeContainer = styled.div`
-  width: (100%-20)px;
-  margin: 0 20px 120px 20px;
+  width: 350px;
+  padding: 0px 20px;
+  /* margin: 0 20px 120px 20px; */
 /* 
   .floating-btn {
     position: fixed;
@@ -176,8 +184,8 @@ const HomeShopListContainer = styled.div`
   gap: 12px;
 `;
 
-const FilterBtn = ({children, icon, onClick}: {children: React.ReactNode, icon?: JSX.Element, onClick: React.MouseEventHandler<HTMLButtonElement>}) => {
-  return(
+const FilterBtn = ({ children, icon, onClick }: { children: React.ReactNode, icon?: JSX.Element, onClick: React.MouseEventHandler<HTMLButtonElement> }) => {
+  return (
     <FilterBtnStyle
       onClick={onClick}
     >
@@ -194,8 +202,10 @@ const FilterBtnStyle = styled.button`
   border: none;
   padding: 8px 12px;
   border-radius: 100px;
+  flex: none;
   div {
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
     gap: 4px;
   }
