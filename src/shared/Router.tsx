@@ -66,6 +66,7 @@ const PageContainer = styled.div`
   flex: 1;
   height: fit-content;
   overflow-y : scroll;
+  overflow-x: hidden;
   background-color: white;
 
   /* 스크롤바 안 보이게 */
