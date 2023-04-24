@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState } from 'react'
 import PlaceCardRound from '../PlaceCardRound';
 import { HFlex, HFlexSpaceBetween } from '../../custom/ym/styleStore';
 import PlacePicture from './PlacePicture';
@@ -19,7 +19,7 @@ export interface FeedCardData {
 }
 
 const PlaceCard = ({ dataset }: childrenForPlaceCard) => {
-    console.log(dataset);
+
     return (
         <PlaceCardRound>
             <HFlexSpaceBetween>
