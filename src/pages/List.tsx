@@ -32,10 +32,7 @@ const List = () => {
   const [orderBy, setOrderBy] = useState<string>('거리순');
   // const {range, setRange} = useContext(RangeContext);
   const [range, setRange] = useState(500);
-
-  const navi = useNavigate();
-  const { loginClickHandler, mapClickHandler, searchClickHandler } = useNavigateHandler();
-
+  
   //선택창 보이기
   const { isSelectHidden, onClickHiddenHandler } = useOnClickHiddenHandler(true);
 

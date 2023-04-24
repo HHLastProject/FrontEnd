@@ -111,7 +111,7 @@ export type TossedFeedData = {
     feedPic: string,
     isScrap: boolean,
     nickname: string,
-    profilePic: string,
+    profilePic: string | undefined | null,
     shopAddress: string,
     shopName: string,
     shopThumbnail: string,

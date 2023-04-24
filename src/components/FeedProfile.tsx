@@ -14,7 +14,7 @@ const FeedProfile = ({ profilePic }: { profilePic?: string }) => {
         <ProfileCard>
             <HFlex gap='4px'>
                 <SmallProfileCard>{profilePic}</SmallProfileCard>
-                {/* <FeedNameCard a={true}/> 프롭스로 구분(주희님껀지, 용민껀지*/}
+                <FeedNameCard a={true}/>
                 <FeedNameCard />
             </HFlex>
         </ProfileCard>
