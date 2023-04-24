@@ -22,13 +22,13 @@ const ListHeader = ({range, close}: {range?: number, close?: boolean}) => {
         </div>
         {range && 
           <>
-            <VFlex etc="flex:1; height:fit-content">
+            <VFlex etc="height:fit-content">
               <div>
                 <HeaderTextSmall>내 위치에서</HeaderTextSmall>
               </div>
-              <HFlex gap="10px">
-                <HeaderTextMedium>{range} m</HeaderTextMedium>
-                <Image2 src={`${process.env.PUBLIC_URL}/down.png`} alt="" />
+              <HFlex gap="5px">
+                <HeaderTextMedium>{range}m</HeaderTextMedium>
+                <Image2 src={`${process.env.PUBLIC_URL}/icon/chevron_down_16.png`} alt="" />
               </HFlex>
             </VFlex>
           </>
@@ -61,6 +61,7 @@ const ListHeader = ({range, close}: {range?: number, close?: boolean}) => {
 export default ListHeader;
 
 const HeaderTextSmall = styled.span`
+  white-space: nowrap;
   font-size: 12px;
   padding : 2px 0px;
   color : gray;
@@ -92,8 +93,8 @@ const Image = styled.img`
 `
 
 const Image2 = styled.img`
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   object-fit: contain;
   background-color: none;
 `;

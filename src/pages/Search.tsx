@@ -60,7 +60,7 @@ function Search() {
 export default Search
 
 const SearchWrap = styled.div`
-  width: 390px;
+  width: 100%;
   min-height: 100vh;
   background-color: #fff;
   display: inline-block;
