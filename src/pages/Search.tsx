@@ -1,25 +1,17 @@
-import React, { useState } from 'react'
-import SearchResultList, { ISearchResult } from '../components/search/SearchResultList';
 import styled from 'styled-components';
-import SearchStore from '../components/search/SearchInput';
-import { useParams, useLocation } from 'react-router';
+import { useState } from 'react'
+import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
-import ListHeader from '../components/home/ListHeader';
 import { path } from '../shared/path';
+import SearchStore from '../components/search/SearchInput';
+import ListHeader from '../components/home/ListHeader';
+import SearchResultList from '../components/search/SearchResultList';
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
   const [dataList, setDataList] = useState([]);
   let link = '';
   const location = useLocation();
-  //location.state.toShopDetail
-  //location.state.toFeedForm
-  
-
-  let param = Number(useParams().isfeed); //피드페이지에서 넘어올때만 있는 파라미터
-  if(!param) {
-    param = 0;
-  };
 
   interface IDataList {
     shopId: number,
@@ -38,6 +30,7 @@ function Search() {
             inputValue={inputValue}
             setInputValue={setInputValue}
             setDataList={setDataList}
+            placeholder={'카페 이름 검색하기'}
           />
 
           <div className='search-result-list'>
@@ -102,26 +95,3 @@ const SearchWrapContainer = styled.div`
     
   }
 `;
-
-const result : ISearchResult[] = [
-  {
-    shopId : 1,
-    shopName : '가게이름1',
-    shopAddress : '주소1',
-  },
-  {
-    shopId : 2,
-    shopName : '가게이름2',
-    shopAddress : '주소2',
-  },
-  {
-    shopId : 3,
-    shopName : '가게이름3',
-    shopAddress : '주소3',
-  },
-  {
-    shopId : 4,
-    shopName : '가게이름4',
-    shopAddress : '주소4',
-  },
-];
