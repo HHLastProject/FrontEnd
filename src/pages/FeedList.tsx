@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import useGetFeedList from '../custom/jh/useGetFeedList'
-import { defaultImgPath, imgPath, path } from '../shared/path';
 import styled from 'styled-components';
 import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
-import { VFlex } from '../custom/ym/styleStore';
-import FeedProfile from '../components/FeedProfile';
-import FeedPicture from '../components/feed/FeedPicture';
-import FeedComment from '../components/feed/FeedComment';
-import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
-import TagList from '../components/feed/TagList';
-import PlaceCard, { FeedCardData } from '../components/feed/PlaceCard';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 
@@ -34,34 +25,6 @@ function FeedList() {
         console.log('item',item);
         return (
           <div key={`Feed${item.shopId + index}`}>
-            {/* <VFlex gap='12px' etc='padding:20px;'>
-              {item.profilePic ? 
-                <FeedProfile 
-                  profilePic={item.profilePic}
-                  nickname={item.nickname}
-                  createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-                />
-                :
-                <FeedProfile
-                  profilePic={defaultImgPath.shopList}
-                  nickname={item.nickname}
-                  createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-                />
-              }
-              <Link to={`${path.toFeedDetail + '/' + item.feedId}`}>
-                <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
-                <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
-              </Link>
-              <ExpandButton onClick={expandButtonHandler}>
-                <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
-              </ExpandButton>
-              <TagList>{item.tags}</TagList>
-              <Link to={`${path.toShopDetail + '/' + item.shopId}`}>
-                <PlaceCard
-                  dataset={placeCardData}
-                />
-              </Link>
-            </VFlex> */}
             <FeedContentsTest
               feedData={item}
             />
@@ -96,20 +59,6 @@ const FeedContainer = styled.div`
 const MarginBothSides20 = styled.div`
   margin: 0 20px;
 `;
-
-// const ExpandButton = styled.button`
-//   width: fit-content;
-//   padding: 0px;
-//   margin: 0px;
-//   border: none;
-//   background-color: transparent;
-// `;
-// const ExpandText = styled.span`
-//   font-size: ${TITLE_5.fontSize};
-//   font-weight: ${TITLE_5.fontWeight};
-//   line-height: ${TITLE_5.lineHeight};
-//   color: ${`#${PRIMARY_01}`};
-// `;
 
 const AlignItemCenter = styled.div`
   display: flex;
