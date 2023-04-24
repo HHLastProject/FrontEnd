@@ -11,22 +11,6 @@ import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
 import TagList from './feed/TagList';
 import PlaceCard from './feed/PlaceCard';
 
-export interface IFeedList {
-  nickname: string;
-  profilePic : string | undefined | null;
-  createdAt : string | Date;
-  feedPic : string;
-  comment : string | null;
-  tags : Array<Ttag> | [];
-  shopId : number;
-  shopName : string;
-  shopAddress : string;
-  shopThumbnail : string;
-  isScrap : boolean;
-};
-
-type Ttag = {tag: string};
-
 // function FeedContents2({shopId, profilePic, createAt, nickname, feedId, comment, shopName, shopAddress, shopThumbnail}) {
 //   const [expand, setExpand] = useState<boolean>(false);
 //   const expandButtonHandler = () => {

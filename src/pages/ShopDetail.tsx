@@ -144,6 +144,7 @@ function ShopDetail() {
               {shopDetailData?.Menus?.map((item: any) => {
                 return (
                   <ShopDetailMenu
+                    key={`${item.menuName + item.price}`}
                     menuName={item.menuName}
                     price={item.price}
                     picture={item.picture}
@@ -169,6 +170,9 @@ function ShopDetail() {
                 </div>
               </div>
               <div>
+                {
+                  
+                }
                 {/* { dumiFeedData?.map((item: any, index: number) => {
                   return(
                     <div key={`${item.shopId + index}`}>
