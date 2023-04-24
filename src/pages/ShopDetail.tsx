@@ -2,24 +2,16 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailFeed } from '../custom/jh/useGetShopDetail';
-import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
 import ShopDetailMap from '../components/map/ShopDetailMap';
 import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
-import ShopDetailFeed from '../components/shopDetail/ShopDetailFeed';
 import { iconImgPath, imgPath, path } from '../shared/path';
 import { colorSet } from '../components/ui/styles/color';
 import { fontType } from '../components/ui/styles/typo';
 import { Buttons } from '../components/ui/element/buttons/Buttons';
 import { IconPencil } from '../components/ui/element/icons/IconsStyle';
 import { VFlex } from '../custom/ym/styleStore';
-import moment from 'moment';
-import FeedProfile from '../components/FeedProfile';
-import FeedPicture from '../components/feed/FeedPicture';
-import FeedComment from '../components/feed/FeedComment';
-import PlaceCard, { FeedCardData } from '../components/feed/PlaceCard';
-import TagList from '../components/feed/TagList';
 import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
 import ListHeader from '../components/home/ListHeader';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
@@ -30,7 +22,6 @@ function ShopDetail() {
   const tabInfoRef = useRef();
   const tabMenuRef = useRef();
   const tabReviewRef = useRef();
-  const { feedFormClickHandler } = useNavigateHandler();
 
   const [expand, setExpand] = useState<boolean>(false);
   const expandButtonHandler = () => {
@@ -68,6 +59,7 @@ function ShopDetail() {
 
   useEffect(() => {
     getShopDetailFeedList();
+    console.log('피드데이터:',shopDetailFeedList)
   }, []);
 
   return (
@@ -159,19 +151,29 @@ function ShopDetail() {
             <div className='shop-detail-review'>
               <div className='shop-detail-review-sub'>
                 <h2>피드</h2>
-                <div
-                  onClick={() => feedFormClickHandler(param)}
+                <Link 
+                  to={`${path.feedForm}`}
+                  state={{shopId : param}}
                 >
                   <Buttons.Small.Default>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                       <IconPencil />피드 쓰기
                     </div>
                   </Buttons.Small.Default>
-                </div>
+                </Link>
               </div>
             </div>
             {
               shopDetailFeedList?.map((item: any, index: number) => {
+                //tag: [{tag: 내용}]
+                if(item?.tag) {
+                  let tags = [];
+                  for(let i of item.tag){
+                    const {tag} = i;
+                    tags.push(tag);
+                  }
+                  item.tag = [...tags];
+                }
                 return(
                   <div key={`Feed${item.shopId + index}`}>
                     <VFlex gap='12px'>
@@ -199,21 +201,6 @@ const XFlexCenter = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-`;
-
-const Header = styled.header`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  left: 0;
-  background-color: #ffffff;
-  border-bottom: 1px solid;
-  z-index: 9999;
-  span {
-    margin: 20px;
-  }
 `;
 
 const ShopDetailTab = styled.div`
@@ -323,38 +310,3 @@ const FeedPageHr = styled.hr`
   background-color: ${colorSet.lineLight};
   border: 0;
 `;
-
-const dumiFeedData = [
-  {
-    comment:"어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스\r\n어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스어몽어스123 어몽어스 12",
-    createdAt: "2023-04-21T06:28:07.000Z",
-    feedId: 61,
-    feedPic: "1682058487739.png",
-    isScrap: true,
-    nickname: "김용민",
-    profilePic: "http://k.kakaocdn.net/dn/bYqF7P/btrrKx4Et4E/CnhDpRN7tj9OGKRV5rhgp0/img_640x640.jpg",
-    shopAddress: "서울특별시 강남구 봉은사로 438",
-    shopId: 31475,
-    shopName: "매머드익스프레스봉은사로",
-    shopThumbnail: "cafe17.jpg",
-    tag: 
-    [
-      {tag: '분위기 맛집'},
-      {tag: '커피 맛집'},
-    ]
-  },
-  {
-    comment:"어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스\r\n어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스어몽어스123 어몽어스 12",
-    createdAt: "2023-04-21T06:28:07.000Z",
-    feedId: 61,
-    feedPic: "1682058487739.png",
-    isScrap: true,
-    nickname: "김용민",
-    profilePic: "http://k.kakaocdn.net/dn/bYqF7P/btrrKx4Et4E/CnhDpRN7tj9OGKRV5rhgp0/img_640x640.jpg",
-    shopAddress: "서울특별시 강남구 봉은사로 438",
-    shopId: 31475,
-    shopName: "매머드익스프레스봉은사로",
-    shopThumbnail: "cafe17.jpg",
-    tag: []
-  },
-];

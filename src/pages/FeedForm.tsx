@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import useNavigateHandler from '../custom/jh/useNavigateHandler';
-import SearchStore from '../components/search/SearchInput';
+import { useNavigate, useLocation } from 'react-router';
 import api from '../shared/api';
 import { useGetShopDetail } from '../custom/jh/useGetShopDetail';
 import { defaultImgPath } from '../shared/path';
 import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
+import useNavigateHandler from '../custom/jh/useNavigateHandler';
+import SearchStore from '../components/search/SearchInput';
 import useTextHandler from '../custom/jh/useTextCountHandler';
 
 type Ttag = { tag: string } | string;
@@ -20,7 +20,9 @@ interface IImgFile {
 
 function FeedForm() {
   const navi = useNavigate();
-  const param = Number(useParams().shopId);
+  const location = useLocation();
+  const shopId = Number(location.state.shopId);
+  console.log('샵아이디', shopId);
   const tags: string[] = [];
   const tagRef: Ttags = useRef([]);
   const [token, setToken] = useState<string | null>(null);
@@ -33,10 +35,9 @@ function FeedForm() {
     previewPic: `${defaultImgPath.shopList}`,
   });
 
-  const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
-
-  const { shopDetailData } = useGetShopDetail(param);
   const [inputValue, setInputValue] = useState('');
+  const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
+  const { shopDetailData } = useGetShopDetail(shopId);
 
   //토큰 가져오기
   const getToken = () => {
@@ -72,32 +73,32 @@ function FeedForm() {
   };
 
   //전송 버튼 눌렀을때
-  const onClickSendFeedData = (param: number) => {
+  const onClickSendFeedData = (shopId: number) => {
     const tagsList = [...tagRef.current];
     setHashTags(tagsList);
     console.log('해시set', hashTags);
     console.log('imgFile.feedPic: ', imgFile.feedPic);
 
-    if (imgFile.feedPic && (param !== 0) && token) {
+    if (imgFile.feedPic && (shopId !== 0) && token) {
       console.log('코멘트', comment, '해시태그', hashTags);
       const tagsList = tagRef.current.map((item: string) => { return { tag: item } });
 
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
-      formData.append('shopId', param.toString());
+      formData.append('shopId', shopId.toString());
       formData.append('comment', comment ? comment : '');
       formData.append('tags', JSON.stringify(tagsList));
       console.log("append 직후 formData('tag') :", formData.get('tags'));
-      sendFeedData(param, formData);
+      sendFeedData(shopId, formData);
     } else {
       alert("가게명 또는 사진을 등록해주세요.");
     };
   };
 
-  const sendFeedData = async (param: number, formData: FormData) => {
+  const sendFeedData = async (shopId: number, formData: FormData) => {
     console.log('state에 안넣고 보낼때 formData:', formData.get('feedPic'));
 
-    await api.post(`/api/shop/${param}/feed`, formData, {
+    await api.post(`/api/shop/${shopId}/feed`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         authorization: `${token}`,
@@ -207,7 +208,7 @@ function FeedForm() {
 
         <button
           className='sticky-btn'
-          onClick={() => onClickSendFeedData(param)}
+          onClick={() => onClickSendFeedData(shopId)}
         >
           완료
         </button>

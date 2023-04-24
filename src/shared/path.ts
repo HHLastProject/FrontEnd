@@ -24,7 +24,7 @@ export const path: IPath = {
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
   feedList: '/feed',
-  feedForm: '/shop/:shopId/feedform',
+  feedForm: '/feedform',
   search: '/search',
   feedFormSearch: '/search/:isfeed',
 
