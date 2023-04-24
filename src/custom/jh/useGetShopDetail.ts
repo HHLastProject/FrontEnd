@@ -46,7 +46,6 @@ export const useGetShopDetailFeed = (param: number | undefined) => {
   const { data, mutate, isLoading, isError } = useMutation({
     mutationKey: queryKeys.GET_SHOP_DETAIL_FEED,
     mutationFn: async () => {
-      console.log('실행됐나?');
       const {data} = await api.get(`${apiPath.toShopDetail}/${param}/feed2`, {
         headers: {
           authorization: `${token}`,

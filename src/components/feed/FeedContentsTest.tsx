@@ -46,7 +46,6 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
 
   return (
     <>
-      <VFlex gap='12px' etc='padding:20px;'>
         {feedData?.profilePic 
           ? 
           <FeedProfile 
@@ -78,7 +77,6 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
             dataset={placeCardData}
           />
         </Link>
-      </VFlex>
     </>
   )
 }

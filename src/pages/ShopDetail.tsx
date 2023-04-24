@@ -18,10 +18,11 @@ import moment from 'moment';
 import FeedProfile from '../components/FeedProfile';
 import FeedPicture from '../components/feed/FeedPicture';
 import FeedComment from '../components/feed/FeedComment';
-import PlaceCard from '../components/feed/PlaceCard';
+import PlaceCard, { FeedCardData } from '../components/feed/PlaceCard';
 import TagList from '../components/feed/TagList';
 import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
 import ListHeader from '../components/home/ListHeader';
+import FeedContentsTest from '../components/feed/FeedContentsTest';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -67,7 +68,7 @@ function ShopDetail() {
 
   useEffect(() => {
     getShopDetailFeedList();
-    console.log(shopDetailFeedList);
+    console.log('뷰',shopDetailFeedList);
   }, []);
 
   return (
@@ -169,52 +170,23 @@ function ShopDetail() {
                   </Buttons.Small.Default>
                 </div>
               </div>
-              <div>
-                {
-                  
-                }
-                {/* { dumiFeedData?.map((item: any, index: number) => {
-                  return(
-                    <div key={`${item.shopId + index}`}>
-                      <VFlex gap='12px' etc='padding:20px;'>
-                        {item.profilePic ? 
-                          <FeedProfile 
-                            profilePic={item.profilePic}
-                            nickname={item.nickname}
-                            createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-                          />
-                          :
-                          <FeedProfile 
-                            profilePic={item.defaultImgPath.shopList}
-                            nickname={item.nickname}
-                            createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-                          />
-                        }
-                        <Link to={`${path.toFeedDetail + '/' + item.feedId}`}>
-                          <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
-                          <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
-                        </Link>
-                        <ExpandButton onClick={expandButtonHandler}>
-                          <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
-                        </ExpandButton>
-                        <TagList>{item.tags}</TagList>
-                        <Link to={`${path.toShopDetail + '/' + item.shopId}`}>
-                          <PlaceCard
-                            shopThumbnail={imgPath.shopThumbnailImg + item.shopThumbnail}
-                            shopName={item.shopName}
-                            shopAddress={item.shopAddress}
-                          />
-                        </Link>
-                      </VFlex>
-                      {(index >=0 && index < dumiFeedData.length-1) && <FeedPageHr/>}
-                    </div>
-                  )
-                })}
-                {(shopDetailFeedList?.length === 0 || !shopDetailFeedList) && (<div>피드가 없습니다.</div>)}
-                {shopDetailFeedIsError && (<div>피드 에러</div>)} */}
-              </div>
-              {/* <ShopDetailFeed/> */}
             </div>
+            {
+              shopDetailFeedList?.map((item: any, index: number) => {
+                return(
+                  <div key={`Feed${item.shopId + index}`}>
+                    <VFlex gap='12px'>
+                      <FeedContentsTest
+                        feedData={item}
+                      />
+                    </VFlex>
+                    {(index >=0 && index < shopDetailFeedList.length-1) && <FeedPageHr/>}
+                  </div>
+                )
+              })
+            }
+            {(shopDetailFeedList?.length === 0 || !shopDetailFeedList) && (<div>피드가 없습니다.</div>)}
+            {shopDetailFeedIsError && (<div>피드 에러</div>)}
           </ShopDetailContentContainer>
         </ShopDetailContainer>
       </div>

@@ -6,6 +6,7 @@ import { colorSet } from '../components/ui/styles/color';
 import { Link } from 'react-router-dom';
 import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
+import { VFlex } from '../custom/ym/styleStore';
 
 function FeedList() {
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();
@@ -25,9 +26,11 @@ function FeedList() {
         console.log('item',item);
         return (
           <div key={`Feed${item.shopId + index}`}>
-            <FeedContentsTest
-              feedData={item}
-            />
+            <VFlex gap='12px' etc='padding:20px;'>
+              <FeedContentsTest
+                feedData={item}
+              />
+            </VFlex>
             {(index >=0 && index < feedList.length-1) && <FeedPageHr/>}
           </div>
         )
