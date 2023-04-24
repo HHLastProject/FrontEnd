@@ -18,12 +18,16 @@ function useNavigateHandler() {
   const feedFormClickHandler = (param: number | string) => {
     navi(`/shop/${param}/feedform`);
   }
+  const backClickHandler = () => {
+    navi(-1);
+  }
   return {
     loginClickHandler, 
     mapClickHandler, 
     searchClickHandler, 
     adminClickHandler,
     feedFormClickHandler,
+    backClickHandler,
   };
 }
 

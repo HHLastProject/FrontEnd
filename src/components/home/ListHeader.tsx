@@ -5,38 +5,53 @@ import { LoginCheck } from '../Authentication';
 import { Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
 
-const ListHeader = ({range}: {range?: number}) => {
-  const {loginClickHandler, mapClickHandler, searchClickHandler} = useNavigateHandler();
+//close === true : 뒤로가기 버튼이 x로 바뀜
+const ListHeader = ({range, close}: {range?: number, close?: boolean}) => {
+  const {backClickHandler, searchClickHandler} = useNavigateHandler();
+  const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
 
   return (
     <HeaderContainer>
       <HFlex etc="padding: 0px 5px;" width='100%'>
-        <ButtonContainer>
-          <Image src={`${process.env.PUBLIC_URL}/icon/back_24.png`} alt="" />
-        </ButtonContainer>
-        <VFlex etc="flex:1; height:fit-content">
-          <div>
-            <HeaderTextSmall>내 위치에서</HeaderTextSmall>
-          </div>
-          <HFlex gap="10px">
-            <HeaderTextMedium>{range} m</HeaderTextMedium>
-            <Image2 src={`${process.env.PUBLIC_URL}/down.png`} alt="" />
-          </HFlex>
-        </VFlex>
+        <div
+          onClick={backClickHandler}
+        >
+          <ButtonContainer>
+            <Image src={backIconSrc} alt="" />
+          </ButtonContainer>
+        </div>
+        {range && 
+          <>
+            <VFlex etc="flex:1; height:fit-content">
+              <div>
+                <HeaderTextSmall>내 위치에서</HeaderTextSmall>
+              </div>
+              <HFlex gap="10px">
+                <HeaderTextMedium>{range} m</HeaderTextMedium>
+                <Image2 src={`${process.env.PUBLIC_URL}/down.png`} alt="" />
+              </HFlex>
+            </VFlex>
+          </>
+        }
         <RightContainer>
-          <LoginCheck>
-            <Title5>
-              <Link to={'/login'}>로그인 하기</Link>
-            </Title5>
-          </LoginCheck>
+          {range &&
+            <>
+              <LoginCheck>
+                <Title5>
+                  <Link to={'/login'}>로그인 하기</Link>
+                </Title5>
+              </LoginCheck>
+
+              <div
+                onClick={searchClickHandler}
+              >
+                <ButtonContainer>
+                  <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
+                </ButtonContainer>
+              </div>
+            </>
+          }
           
-          <div
-            onClick={searchClickHandler}
-          >
-            <ButtonContainer>
-              <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
-            </ButtonContainer>
-          </div>
         </RightContainer>
       </HFlex>
     </HeaderContainer>
@@ -84,6 +99,8 @@ const Image2 = styled.img`
 `;
 
 const RightContainer = styled.div`
+  width: 100%;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
 `;

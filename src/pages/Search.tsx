@@ -4,16 +4,11 @@ import styled from 'styled-components';
 import SearchStore from '../components/search/SearchInput';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
+import ListHeader from '../components/home/ListHeader';
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
-  const [dataList, setDataList] = useState([
-    {
-      shopId : 0,
-      shopName : '',
-      shopAddress : '',
-    },
-  ]);
+  const [dataList, setDataList] = useState([]);
 
   let link = '';
   let param = Number(useParams().isfeed); //피드페이지에서 넘어올때만 있는 파라미터
@@ -21,32 +16,44 @@ function Search() {
     param = 0;
   };
 
-  return (
-    <SearchWrap>
-      <SearchWrapContainer>
-        <SearchStore
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          setDataList={setDataList}
-        />
+  interface IDataList {
+    shopId: number,
+    shopName: string,
+    shopAddress: string,
+  }
 
-        <div className='search-result-list'>
-          {
-          (dataList?.length !== 0) && dataList?.map((item) => {
-            return(
-              <Link to={`/shop/${item.shopId}/feedform`}>
-                <SearchResultList
-                  key={item.shopId}
-                  shopId={item.shopId}
-                  shopName={item.shopName}
-                  shopAddress={item.shopAddress}
-                />
-              </Link>
-            )
-          })}
-        </div>
-      </SearchWrapContainer>
-    </SearchWrap>
+  return (
+    <>
+      <ListHeader
+        close={true}
+      />
+      <SearchWrap>
+        <SearchWrapContainer>
+          <SearchStore
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            setDataList={setDataList}
+          />
+
+          <div className='search-result-list'>
+            {
+            (dataList?.length !== 0) && dataList?.map((item: IDataList) => {
+              return(
+                <div key={item.shopId}>
+                  <Link to={`/shop/${item.shopId}/feedform`}>
+                    <SearchResultList
+                      shopId={item.shopId}
+                      shopName={item.shopName}
+                      shopAddress={item.shopAddress}
+                    />
+                  </Link>
+                </div>
+              )
+            })}
+          </div>
+        </SearchWrapContainer>
+      </SearchWrap>
+    </>
   )
 };
 
