@@ -1,21 +1,28 @@
-import React, { PropsWithChildren } from 'react'
-import { mypageData } from '../custom/ym/dummydata';
 import styled from 'styled-components';
 import { HFlex } from '../custom/ym/styleStore';
 import SmallProfileCard from './SmallProfileCard';
 import FeedNameCard from './FeedNameCard';
 import { defaultImgPath } from '../shared/path';
 
-const FeedProfile = ({ profilePic }: { profilePic?: string }) => {
+type TFeedProfile = {
+    profilePic?: string | null;
+    nickname?: string;
+    createdAt?: string;
+}
 
-    // console.log('feedProfile', profilePic);
+const FeedProfile = ({ profilePic, nickname, createdAt }: TFeedProfile) => {
+
     if (!profilePic) { profilePic = defaultImgPath.shopList };
     return (
         <ProfileCard>
             <HFlex gap='4px'>
                 <SmallProfileCard>{profilePic}</SmallProfileCard>
-                <FeedNameCard a={true}/>
-                <FeedNameCard />
+                { (nickname && createdAt) &&
+                    <FeedNameCard 
+                        nickname={nickname}
+                        createdAt={createdAt}
+                    />
+                }
             </HFlex>
         </ProfileCard>
     )

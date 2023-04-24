@@ -2,12 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "../../apis/queries";
 import api from "../../shared/api";
 import { apiPath } from "../../shared/path";
+import { getToken } from "../../apis/getToken";
 
 export const useGetFeedList = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.GET_FEEDS,
     queryFn: async () => {
-      const {data} = await api.get(`${apiPath.feedList}`);
+      console.log('요청 보냄');
+      const token = getToken();
+      const {data} = await api.get(`${apiPath.feedList}`, {
+        headers: {
+          authorization: `${token}`,
+        },
+      });
       return data;
     },
     onSuccess: (data) => {

@@ -10,18 +10,14 @@ import FeedPicture from '../components/feed/FeedPicture';
 import FeedComment from '../components/feed/FeedComment';
 import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
 import TagList from '../components/feed/TagList';
-import PlaceCard from '../components/feed/PlaceCard';
+import PlaceCard, { FeedCardData } from '../components/feed/PlaceCard';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
+import FeedContentsTest from '../components/feed/FeedContentsTest';
 
 function FeedList() {
-  const [expand, setExpand] = useState<boolean>(false);
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();
-
-  const expandButtonHandler = () => {
-    setExpand(prev => !prev);
-  }
 
   useEffect(() => {
     console.log('피드리스트',feedList);
@@ -30,58 +26,58 @@ function FeedList() {
   if(feedListIsLoading) { return <div>로딩중</div> };
 
   return (
-    <></>
-    // <FeedContainer>
-    //   <MarginBothSides20>
-    //     <Heading2>Feed</Heading2>
-    //   </MarginBothSides20>
-    //   { feedList?.map((item: any, index: number) => {
-    //     console.log('타입', moment(item.createAt).format("YYYY.MM.DD"));
-    //     return (
-    //       <div key={`Feed${item.shopId + index}`}>
-    //         <VFlex gap='12px' etc='padding:20px;'>
-    //           {item.profilePic ? 
-    //             <FeedProfile 
-    //               profilePic={item.profilePic}
-    //               nickname={item.nickname}
-    //               createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-    //             />
-    //             :
-    //             <FeedProfile 
-    //               profilePic={defaultImgPath.shopList}
-    //               nickname={item.nickname}
-    //               createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-    //             />
-    //           }
-    //           <Link to={`${path.toFeedDetail + '/' + item.feedId}`}>
-    //             <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
-    //             <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
-    //           </Link>
-    //           <ExpandButton onClick={expandButtonHandler}>
-    //             <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
-    //           </ExpandButton>
-    //           <TagList>{item.tags}</TagList>
-    //           <Link to={`${path.toShopDetail + '/' + item.shopId}`}>
-    //             <PlaceCard
-    //               shopThumbnail={imgPath.shopThumbnailImg + item.shopThumbnail}
-    //               shopName={item.shopName}
-    //               shopAddress={item.shopAddress}
-    //             />
-    //           </Link>
-    //         </VFlex>
-    //         {(index >=0 && index < feedList.length-1) && <FeedPageHr/>}
-    //       </div>
-    //     )
-    //   })}
-    //   <Link to={`/shop/${0}/feedform`}>
-    //     <FeedPageWriteBtn>
-    //       <AlignItemCenter>
-    //         <IconPlusWhite24/>
-    //         <label>피드 작성</label>
-    //       </AlignItemCenter>
-    //     </FeedPageWriteBtn>
-    //   </Link>
-    // </FeedContainer>
+    <FeedContainer>
+      <MarginBothSides20>
+        <Heading2>Feed</Heading2>
+      </MarginBothSides20>
+      { feedList?.map((item: any, index: number) => {
+        console.log('item',item);
+        return (
+          <div key={`Feed${item.shopId + index}`}>
+            {/* <VFlex gap='12px' etc='padding:20px;'>
+              {item.profilePic ? 
+                <FeedProfile 
+                  profilePic={item.profilePic}
+                  nickname={item.nickname}
+                  createdAt={moment(item.createAt).format("YYYY.MM.DD")}
+                />
+                :
+                <FeedProfile
+                  profilePic={defaultImgPath.shopList}
+                  nickname={item.nickname}
+                  createdAt={moment(item.createAt).format("YYYY.MM.DD")}
+                />
+              }
+              <Link to={`${path.toFeedDetail + '/' + item.feedId}`}>
+                <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
+                <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
+              </Link>
+              <ExpandButton onClick={expandButtonHandler}>
+                <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
+              </ExpandButton>
+              <TagList>{item.tags}</TagList>
+              <Link to={`${path.toShopDetail + '/' + item.shopId}`}>
+                <PlaceCard
+                  dataset={placeCardData}
+                />
+              </Link>
+            </VFlex> */}
+            <FeedContentsTest
+              feedData={item}
+            />
+            {(index >=0 && index < feedList.length-1) && <FeedPageHr/>}
+          </div>
+        )
+      })}
+      <Link to={`/shop/${0}/feedform`}>
+        <FeedPageWriteBtn>
+          <AlignItemCenter>
+            <IconPlusWhite24/>
+            <label>피드 작성</label>
+          </AlignItemCenter>
+        </FeedPageWriteBtn>
+      </Link>
+    </FeedContainer>
   )
 };
 
@@ -101,19 +97,19 @@ const MarginBothSides20 = styled.div`
   margin: 0 20px;
 `;
 
-const ExpandButton = styled.button`
-  width: fit-content;
-  padding: 0px;
-  margin: 0px;
-  border: none;
-  background-color: transparent;
-`;
-const ExpandText = styled.span`
-  font-size: ${TITLE_5.fontSize};
-  font-weight: ${TITLE_5.fontWeight};
-  line-height: ${TITLE_5.lineHeight};
-  color: ${`#${PRIMARY_01}`};
-`;
+// const ExpandButton = styled.button`
+//   width: fit-content;
+//   padding: 0px;
+//   margin: 0px;
+//   border: none;
+//   background-color: transparent;
+// `;
+// const ExpandText = styled.span`
+//   font-size: ${TITLE_5.fontSize};
+//   font-weight: ${TITLE_5.fontWeight};
+//   line-height: ${TITLE_5.lineHeight};
+//   color: ${`#${PRIMARY_01}`};
+// `;
 
 const AlignItemCenter = styled.div`
   display: flex;

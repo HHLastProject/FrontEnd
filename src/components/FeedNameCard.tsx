@@ -1,19 +1,8 @@
 import styled from 'styled-components';
 import { BODY_5, TITLE_5 } from '../custom/ym/variables';
-import moment from 'moment';
 import { VFlex } from '../custom/ym/styleStore';
-import { queryKeys } from '../apis/queries';
-import { TossedFeedData } from '../custom/ym/types';
-import { queryClient } from '..';
 
-const FeedNameCard = ({nickname, createdAt}: {nickname?: string, createdAt?: string}) => {
-    let data: TossedFeedData;
-
-    if(!nickname && !createdAt) {
-        data = queryClient.getQueriesData(queryKeys.GET_USER_FEED)[0][1] as TossedFeedData;
-        nickname = data?.nickname;
-        createdAt = String(moment(data?.createdAt).format("YYYY.MM.DD"));
-    };
+const FeedNameCard = ({nickname, createdAt}: {nickname: string, createdAt: string}) => {
 
     return (
         <VFlex gap='2px'>
