@@ -153,7 +153,7 @@ function ShopDetail() {
                 <h2>피드</h2>
                 <Link 
                   to={`${path.feedForm}`}
-                  state={{shopId : param}}
+                  state={{shopId : param, shopName: shopDetailData?.shopName}}
                 >
                   <Buttons.Small.Default>
                     <div style={{display: 'flex', alignItems: 'center'}}>

@@ -36,11 +36,13 @@ function Search() {
           />
 
           <div className='search-result-list'>
-            {
-            (dataList?.length !== 0) && dataList?.map((item: IDataList) => {
+            {(dataList?.length !== 0) && dataList?.map((item: IDataList) => {
               return(
                 <div key={item.shopId}>
-                  <Link to={`/shop/${item.shopId}/feedform`}>
+                  <Link 
+                    to={`/feedform`}
+                    state={{shopId: item.shopId, shopName: item.shopName}}
+                  >
                     <SearchResultList
                       shopId={item.shopId}
                       shopName={item.shopName}

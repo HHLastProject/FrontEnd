@@ -1,14 +1,15 @@
 import styled from 'styled-components'
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-import api from '../shared/api';
-import { useGetShopDetail } from '../custom/jh/useGetShopDetail';
-import { defaultImgPath } from '../shared/path';
+import { defaultImgPath, path } from '../shared/path';
 import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
 import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import SearchStore from '../components/search/SearchInput';
 import useTextHandler from '../custom/jh/useTextCountHandler';
+import { getToken } from '../apis/getToken';
+import { sendFeedData } from '../custom/jh/sendFeedData';
+import { Link } from 'react-router-dom';
 
 type Ttag = { tag: string } | string;
 type Ttags = Ttag[] | [] | null | any;
@@ -22,12 +23,13 @@ function FeedForm() {
   const navi = useNavigate();
   const location = useLocation();
   const shopId = Number(location.state.shopId);
-  console.log('샵아이디', shopId);
+  console.log(shopId);
+  const shopName = location.state.shopName;
+  
   const tags: string[] = [];
   const tagRef: Ttags = useRef([]);
   const [token, setToken] = useState<string | null>(null);
   const maxLength = 500;
-  const { searchClickHandler } = useNavigateHandler();
   const [comment, setComment] = useState<string | null>(null);
   const [hashTags, setHashTags] = useState<Ttags>([]);
   const [imgFile, setImgFile] = useState<IImgFile>({
@@ -37,13 +39,6 @@ function FeedForm() {
 
   const [inputValue, setInputValue] = useState('');
   const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
-  const { shopDetailData } = useGetShopDetail(shopId);
-
-  //토큰 가져오기
-  const getToken = () => {
-    const token = localStorage.getItem('access_token');
-    return token;
-  };
 
   //태그 추가
   const addTag = (value: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -51,6 +46,7 @@ function FeedForm() {
     if (value) {
       tags.push(value);
       tagRef.current = tags;
+      setHashTags([...tagRef.current]);
     };
   };
 
@@ -74,49 +70,23 @@ function FeedForm() {
 
   //전송 버튼 눌렀을때
   const onClickSendFeedData = (shopId: number) => {
-    const tagsList = [...tagRef.current];
-    setHashTags(tagsList);
-    console.log('해시set', hashTags);
-    console.log('imgFile.feedPic: ', imgFile.feedPic);
-
-    if (imgFile.feedPic && (shopId !== 0) && token) {
-      console.log('코멘트', comment, '해시태그', hashTags);
+    const token = getToken();
+    if (imgFile.feedPic && token) {
       const tagsList = tagRef.current.map((item: string) => { return { tag: item } });
-
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
       formData.append('shopId', shopId.toString());
       formData.append('comment', comment ? comment : '');
       formData.append('tags', JSON.stringify(tagsList));
-      console.log("append 직후 formData('tag') :", formData.get('tags'));
-      sendFeedData(shopId, formData);
+
+      sendFeedData(shopId, formData).then(() => {navi(-1)});
     } else {
       alert("가게명 또는 사진을 등록해주세요.");
     };
   };
 
-  const sendFeedData = async (shopId: number, formData: FormData) => {
-    console.log('state에 안넣고 보낼때 formData:', formData.get('feedPic'));
-
-    await api.post(`/api/shop/${shopId}/feed`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        authorization: `${token}`,
-      },
-    })
-      .then((resolve) => {
-        console.log("피드 등록 성공");
-        alert("등록이 완료되었습니다!");
-        console.log('성공', formData);
-        navi(-1);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   useEffect(() => {
-    if (shopDetailData?.shopName) { setInputValue(shopDetailData?.shopName) };
+    if (shopName) { setInputValue(shopName) };
     setToken(getToken());
 
     if (!getToken()) {
@@ -135,8 +105,8 @@ function FeedForm() {
             <Title4>방문한 카페</Title4>
             <Body4>선택</Body4>
           </FeedFormTitle>
-          <div
-            onClick={searchClickHandler}
+          <Link
+            to={`${path.search}`}
           >
             <SearchStore
               inputValue={inputValue}
@@ -144,7 +114,7 @@ function FeedForm() {
               placeholder='카페 이름 입력하기'
               setDataList={setInputValue}
             />
-          </div>
+          </Link>
         </div>
 
         <div>
