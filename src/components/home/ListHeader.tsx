@@ -5,9 +5,11 @@ import { LoginCheck } from '../Authentication';
 import { Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
 import { path } from '../../shared/path';
+import { Title4 } from '../../pages/FeedForm';
+import { ReactNode } from 'react';
 
 //close === true : 뒤로가기 버튼이 x로 바뀜
-const ListHeader = ({range, close}: {range?: number, close?: boolean}) => {
+const ListHeader = ({range, close, feedForm, children}: {range?: number, close?: boolean, feedForm?: true, children?: ReactNode}) => {
   const {backClickHandler} = useNavigateHandler();
   const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
 
@@ -54,7 +56,11 @@ const ListHeader = ({range, close}: {range?: number, close?: boolean}) => {
               </Link>
             </>
           }
-          
+          {feedForm && 
+            <>
+              {children}
+            </>
+          }
         </RightContainer>
       </HFlex>
     </HeaderContainer>
@@ -75,7 +81,7 @@ const HeaderTextMedium = styled.span`
   font-weight: bold;
 `
 
-const HeaderContainer = styled.div`
+export const HeaderContainer = styled.div`
   height:60px;
   width: 100%;
   background-color: white;
@@ -107,4 +113,5 @@ const RightContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-right: 20px;
 `;
