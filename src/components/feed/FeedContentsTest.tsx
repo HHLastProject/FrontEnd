@@ -23,18 +23,15 @@ interface FeedCardData {
   profilePic: string | null,
   nickname: string,
   createdAt: string,
-  tags: [] | string[],
+  tag: [] | string[],
 }
 
-//tags => tag로 수정하기.
 const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
   const [expand, setExpand] = useState<boolean>(false);
 
   const expandButtonHandler = () => {
     setExpand(prev => !prev);
   };
-  console.log('tag', feedData?.tags);
-  console.log('피드데이터222', feedData);
 
   const placeCardData = {
     shopThumbnail: `${feedData?.shopThumbnail}`,
@@ -71,7 +68,7 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
           </ExpandButton>
           : null
         }
-        <TagList>{feedData?.tags}</TagList>
+        <TagList>{feedData?.tag}</TagList>
         <Link to={`${path.toShopDetail + '/' + feedData?.shopId}`}>
           <PlaceCard
             dataset={placeCardData}
