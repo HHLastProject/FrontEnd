@@ -15,9 +15,9 @@ const AdminLogin = () => {
         mutationKey: loginKeys.POST_ADMIN_LOGIN,
         mutationFn: async (payload: object) => {
             const response = await axios.post(`${url}/api/admin/login`, payload);
-            const token = response.headers.authorization.split(' ')[1];
+            const token = response.headers.authorization;
             localStorage.setItem('admin_token', token);
-            navi('/');
+            navi('/admin/shoplist');
         }
     });
 

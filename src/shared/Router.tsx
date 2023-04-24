@@ -24,6 +24,7 @@ import FeedForm from '../pages/FeedForm'
 import Bookmark from '../pages/Bookmark'
 import FeedList from '../pages/FeedList'
 
+
 const Router = () => {
   return (
     <BrowserRouter>
@@ -51,7 +52,6 @@ const Router = () => {
             <Route path={path.mypage} element={<Mypage />} />
             <Route path={path.allFeeds} element={<AllFeeds />} />
             <Route path={path.feedDetail} element={<FeedDetail />} />
-
           </Routes>
         </PageContainer>
         <BottomNav />
