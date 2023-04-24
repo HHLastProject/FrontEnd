@@ -23,7 +23,6 @@ function FeedForm() {
   const navi = useNavigate();
   const location = useLocation();
   const shopId = Number(location.state.shopId);
-  console.log(shopId);
   const shopName = location.state.shopName;
   
   const tags: string[] = [];
@@ -107,6 +106,7 @@ function FeedForm() {
           </FeedFormTitle>
           <Link
             to={`${path.search}`}
+            state={{toFeedForm: true}}
           >
             <SearchStore
               inputValue={inputValue}

@@ -2,15 +2,20 @@ import React, { useState } from 'react'
 import SearchResultList, { ISearchResult } from '../components/search/SearchResultList';
 import styled from 'styled-components';
 import SearchStore from '../components/search/SearchInput';
-import { useParams } from 'react-router';
+import { useParams, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import ListHeader from '../components/home/ListHeader';
+import { path } from '../shared/path';
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
   const [dataList, setDataList] = useState([]);
-
   let link = '';
+  const location = useLocation();
+  //location.state.toShopDetail
+  //location.state.toFeedForm
+  
+
   let param = Number(useParams().isfeed); //피드페이지에서 넘어올때만 있는 파라미터
   if(!param) {
     param = 0;
@@ -37,10 +42,16 @@ function Search() {
 
           <div className='search-result-list'>
             {(dataList?.length !== 0) && dataList?.map((item: IDataList) => {
+              if(location.state.toShopDetail) {
+                link = `${path.toShopDetail}/${item.shopId}`;
+              }
+              if(location.state.toFeedForm) {
+                link = `${path.feedForm}`;
+              }
               return(
                 <div key={item.shopId}>
                   <Link 
-                    to={`/feedform`}
+                    to={link}
                     state={{shopId: item.shopId, shopName: item.shopName}}
                   >
                     <SearchResultList

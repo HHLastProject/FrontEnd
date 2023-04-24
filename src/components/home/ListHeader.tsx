@@ -4,10 +4,11 @@ import useNavigateHandler from '../../custom/jh/useNavigateHandler';
 import { LoginCheck } from '../Authentication';
 import { Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
+import { path } from '../../shared/path';
 
 //close === true : 뒤로가기 버튼이 x로 바뀜
 const ListHeader = ({range, close}: {range?: number, close?: boolean}) => {
-  const {backClickHandler, searchClickHandler} = useNavigateHandler();
+  const {backClickHandler} = useNavigateHandler();
   const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
 
   return (
@@ -42,13 +43,15 @@ const ListHeader = ({range, close}: {range?: number, close?: boolean}) => {
                 </Title5>
               </LoginCheck>
 
-              <div
-                onClick={searchClickHandler}
+              {/* 검색하기 */}
+              <Link
+                to={`${path.search}`}
+                state={{toShopDetail: true}}
               >
                 <ButtonContainer>
                   <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
                 </ButtonContainer>
-              </div>
+              </Link>
             </>
           }
           
