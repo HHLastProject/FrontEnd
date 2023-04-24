@@ -68,7 +68,6 @@ function ShopDetail() {
 
   useEffect(() => {
     getShopDetailFeedList();
-    console.log('뷰',shopDetailFeedList);
   }, []);
 
   return (

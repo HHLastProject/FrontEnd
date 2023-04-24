@@ -1,27 +1,17 @@
-import React, { PropsWithChildren, useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { path } from '../shared/path';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 import NoShop from '../components/home/NoShop';
 import HomeShopPostCard from '../components/home/HomePostCard';
 import ListCount from '../components/ListCount';
 import { HomeTabMenuStyle, TabMenuLi, TabMenuUl } from '../components/TabMenu';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import SelectBox from '../components/SelectBox';
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
-import useNavigateHandler from '../custom/jh/useNavigateHandler';
-import { useNavigate } from 'react-router';
-import { RangeContext } from '../apis/context';
 import ListHeader from '../components/home/ListHeader';
-import { LoginCheck } from '../components/Authentication';
-import CategoryButtonBar from '../components/map/CategoryButtonBar';
 import ListCategoryButtonBar from '../components/home/ListCategoryButtonBar';
-import { Link } from 'react-router-dom';
-import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
-import { Body3, Title5 } from '../components/FontStyle';
-import { Buttons } from '../components/ui/element/buttons/Buttons';
+import { Body3 } from '../components/FontStyle';
 import { IconSmallDownArrow } from '../components/ui/element/icons/IconsStyle';
 import { ListTossedData } from '../custom/ym/types';
 import { HFlex } from '../custom/ym/styleStore';
@@ -30,21 +20,10 @@ const List = () => {
   const [lng, setLng] = useState(127.0468975);
   const [lat, setLat] = useState(37.5108407);
   const [orderBy, setOrderBy] = useState<string>('거리순');
-  // const {range, setRange} = useContext(RangeContext);
   const [range, setRange] = useState(500);
   
   //선택창 보이기
   const { isSelectHidden, onClickHiddenHandler } = useOnClickHiddenHandler(true);
-
-  //토큰 가져오기
-  const naverAccessToken = () => {
-    window.location.href.includes('access_token') && getNaverToken();
-  };
-  const getNaverToken = () => {
-    const token = window.location.href.split('=')[1].split('&')[0];
-    console.log(token);
-    localStorage.setItem('access_token', token);
-  };
 
   //리스트 데이터
   const {
@@ -54,13 +33,6 @@ const List = () => {
     getshopListIsLoading,
     getshopListIsError,
   } = useGetHomeShopList({ lng, lat, range });
-
-  const a = shopList as ListTossedData[];
-  //useEffect
-  // useEffect(() => {
-  //   naverAccessToken();
-  //   localStorage.getItem('admin_token') && navi(path.adminShoplist);
-  // }, []);
 
   useEffect(() => {
     const errorMsg = getUserLocation(setLng, setLat);
@@ -103,7 +75,6 @@ const List = () => {
               </TabMenuUl>
             </HomeTabMenuStyle>
           </header>
-          {/* <button onClick={() => { console.log(lng, lat) }}>dddd</button> */}
           <div style={{ overflow: 'hidden', }}>
             <input type="checkbox" id="by-range" name="by-range" hidden />
             <HFlex gap='4px'>
@@ -117,16 +88,12 @@ const List = () => {
             </HFlex>
           </div>
 
-          {/* <Swiper
-        
-      >
-        <SwiperSlide> */}
           <HomeShopListContainer>
             {
-              (a?.length === 0) && <NoShop />
+              (shopList?.length === 0) && <NoShop />
             }
             {
-              a?.map((item) => (
+              shopList?.map((item: ListTossedData) => (
                 <HomeShopPostCard
                   key={item?.shopId}
                   id={item?.shopId}
@@ -140,8 +107,6 @@ const List = () => {
               ))
             }
           </HomeShopListContainer>
-          {/* </SwiperSlide>
-      </Swiper> */}
 
         </HomeContainer>
       </HomeWrap>
