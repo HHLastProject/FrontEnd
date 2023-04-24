@@ -22,7 +22,7 @@ function AdminMain(): JSX.Element {
       // const data = await apis.get('/shopList', {
       const data = await apis.get(`/api/admin/shoplist`, {
         headers: {
-          authorization: `Bearer ${localStorage.getItem("admin_token")}`
+          authorization: `${localStorage.getItem("admin_token")}`
         },
       });
       return data.data.shops;
