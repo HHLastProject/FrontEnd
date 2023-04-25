@@ -24,12 +24,13 @@ interface IImgFile {
 function FeedForm() {
   const navi = useNavigate();
   const location = useLocation();
-  const shopId = Number(location.state.shopId);
-  const shopName = location.state.shopName;
-  
+  let shopId: number | null = null;
+  if(location.state?.shopId) shopId = Number(location.state.shopId);
+  let shopName: string | null = null;
+  if(location.state?.shopName) shopName = location.state.shopName;
+
   const tags: string[] = [];
   const tagRef: Ttags = useRef([]);
-  const formBtn = useRef();
   const [token, setToken] = useState<string | null>(null);
   const maxLength = 500;
   const [comment, setComment] = useState<string | null>(null);
@@ -38,8 +39,6 @@ function FeedForm() {
     feedPic: null,
     previewPic: null,
   });
-
-  // const addForm = useCallback(() => onClickSendFeedData(shopId), [shopId]);
 
   const [inputValue, setInputValue] = useState('');
   const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
@@ -73,9 +72,9 @@ function FeedForm() {
   };
 
   //전송 버튼 눌렀을때
-  const onClickSendFeedData = (shopId: number) => {
+  const onClickSendFeedData = (shopId: number | null) => {
     const token = getToken();
-    if (imgFile.feedPic && token) {
+    if (shopId && imgFile.feedPic && token) {
       const tagsList = tagRef.current.map((item: string) => { return { tag: item } });
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
@@ -122,7 +121,7 @@ function FeedForm() {
           </Margin>
           <FeedFormTitle>
             <Title4>방문한 카페</Title4>
-            <Body4 color={colorSet.textMedium}>선택</Body4>
+            <Body4 color={colorSet.textMedium}>필수</Body4>
           </FeedFormTitle>
           <Link
             to={`${path.search}`}
@@ -243,7 +242,6 @@ const PriviewDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
   color: white;
   ${fontType.body_5}
 `;

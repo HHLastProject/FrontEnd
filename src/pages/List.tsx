@@ -46,8 +46,7 @@ const List = () => {
 
   //로딩 화면
 
-  // if (getshopListIsLoading) { return <div>로딩중...</div>; }
-  // if (getshopListIsSuccess) return <div>값은가져옴</div>;
+  if (getshopListIsLoading) { return <div>로딩중...</div>; }
   // if (getshopListIsError) return <div>에러</div>;
 
   return (
@@ -58,7 +57,7 @@ const List = () => {
         onClickHiddenHandler={onClickHiddenHandler}
       />
       <ListHeader
-        range={500}
+        
       />
       <HomeWrap>
         <HomeContainer>
@@ -92,8 +91,8 @@ const List = () => {
             {
               (shopList?.length === 0) && <NoShop />
             }
-            {
-              shopList?.map((item: ListTossedData) => (
+            {shopList?.map((item: ListTossedData) => {
+              return(
                 <HomeShopPostCard
                   key={item?.shopId}
                   id={item?.shopId}
@@ -104,7 +103,7 @@ const List = () => {
                   distance={item?.distance}
                   feedCount={item?.feedCount}
                 />
-              ))
+              )})
             }
           </HomeShopListContainer>
 
@@ -127,14 +126,6 @@ export const HomeWrap = styled.div`
 const HomeContainer = styled.div`
   width: 350px;
   padding: 0px 20px;
-  /* margin: 0 20px 120px 20px; */
-/* 
-  .floating-btn {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: transxeX( -50% );
-  } */
 `;
 
 const HomeShopListContainer = styled.div`

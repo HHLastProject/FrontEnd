@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { VFlex } from '../custom/ym/styleStore';
+import { path } from '../shared/path';
 
 function FeedList() {
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();
@@ -35,7 +36,7 @@ function FeedList() {
           </div>
         )
       })}
-      <Link to={`/shop/${0}/feedform`}>
+      <Link to={`${path.feedForm}`}>
         <FeedPageWriteBtn>
           <AlignItemCenter>
             <IconPlusWhite24/>
