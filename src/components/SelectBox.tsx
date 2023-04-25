@@ -1,9 +1,12 @@
 import styled from 'styled-components'
 import { colorSet } from './ui/styles/color';
 import { fontType } from './ui/styles/typo';
+import { useContext } from 'react';
+import { ShopCategory } from '../apis/context';
 
 function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: boolean, onClickHiddenHandler: any}) {
-  
+  const {orderBy, setOrderBy} = useContext(ShopCategory);
+
   return (
     <div
       style={{
@@ -16,11 +19,12 @@ function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: 
     >
       <SelectBoxStyle>
         <SelectTop/>
-        {
+        { (setOrderBy !== null) &&
           arr?.map((item) => {
             return(
               <div 
                 className='order-value'
+                onClick={() => setOrderBy(item)}
                 key={item}
               >
                 {item}

@@ -79,13 +79,12 @@ const List = () => {
             </HomeTabMenuStyle>
           </header>
           <div style={{ overflow: 'hidden', }}>
-            <input type="checkbox" id="by-range" name="by-range" hidden />
             <HFlex gap='4px'>
               <FilterBtn
                 icon={<IconSmallDownArrow />}
                 onClick={onClickHiddenHandler}
               >
-                거리순
+                {orderBy}
               </FilterBtn>
               <ListCategoryButtonBar />
             </HFlex>
@@ -95,22 +94,25 @@ const List = () => {
             {
               (shopList?.length === 0) && <NoShop />
             }
-            {category === "" ? 
-              shopList?.map((item: ListTossedData) => {
-              return(
-                <HomeShopPostCard
-                  key={item?.shopId}
-                  id={item?.shopId}
-                  address={item?.address}
-                  shopName={item?.shopName}
-                  thumbnail={item?.thumbnail}
-                  category={item?.category}
-                  distance={item?.distance}
-                  feedCount={item?.feedCount}
-                />
-              )})
+            {category === "" 
+              ? 
+              shopList?.sort((a: any, b: any) => (orderBy === '인기순') ? (b.feedCount - a.feedCount) : (a.distance - b.distance))
+                .map((item: ListTossedData) => {
+                return(
+                  <HomeShopPostCard
+                    key={item?.shopId}
+                    id={item?.shopId}
+                    address={item?.address}
+                    shopName={item?.shopName}
+                    thumbnail={item?.thumbnail}
+                    category={item?.category}
+                    distance={item?.distance}
+                    feedCount={item?.feedCount}
+                  />
+                )})
               :
-              shopList?.filter((item: ListTossedData) => item?.category === category).map((item: ListTossedData) => {
+              shopList?.sort((a: any, b: any) => (orderBy === '인기순') ? (b.feedCount - a.feedCount) : (a.distance - b.distance))
+                .filter((item: ListTossedData) => item?.category === category).map((item: ListTossedData) => {
                 return(
                   <HomeShopPostCard
                     key={item?.shopId}
