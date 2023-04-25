@@ -3,10 +3,18 @@ import styled from 'styled-components';
 import { HFlex } from '../../custom/ym/styleStore';
 import { TITLE_2 } from '../../custom/ym/variables';
 import { StateContextType, context } from '../../pages/Mypage';
+import { Buttons } from '../ui/element/buttons/Buttons';
+import { useNavigate } from 'react-router-dom';
+import { path } from '../../shared/path';
 
 const UserProfile = () => {
 
     const contextObjects = useContext(context);
+    const navi = useNavigate();
+
+    const EditNicknameHandler = () => {
+        navi(path.editNickname);
+    }
 
     return (
         <ProfileContainer>
@@ -14,7 +22,13 @@ const UserProfile = () => {
                 <ImageFrame>
                     <ProfileImage src={contextObjects?.props?.profilePic} alt="프로필 사진" />
                 </ImageFrame>
-                <Nickname>{contextObjects?.props?.nickname}의 피드</Nickname>
+                <Nickname>{contextObjects?.props?.nickname}</Nickname>
+                <Buttons.Others.IconButton
+                    width={16}
+                    height={16}
+                    onClick={EditNicknameHandler}
+                    fileName='nickname_modify.png'
+                />
             </HFlex>
         </ProfileContainer>
     )

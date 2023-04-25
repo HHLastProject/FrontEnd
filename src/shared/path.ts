@@ -40,7 +40,8 @@ export const path: IPath = {
   mypage: '/mypage',
   allFeeds: "/mypage/feeds/:userId",
   toFeedDetail: "/feed/detail",
-  feedDetail: "/feed/detail/:feedId"
+  feedDetail: "/feed/detail/:feedId",
+  editNickname: "/mypage/edit",
 }
 
 export const apiPath: IPath = {
@@ -55,6 +56,7 @@ export const apiPath: IPath = {
   scrapList: '/api/favorite',
   mypage: '/api/mypage',
   feedDetail: '/api/mypage/:feedId',
+  deleteFeed: '/api/mypage/:feedId'
 };
 
 export const imgPath: IPath = {

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { BODY_5, TITLE_5 } from '../custom/ym/variables';
 import { mypageData } from '../custom/ym/dummydata';
 import moment from 'moment';
-import { VFlex } from '../custom/ym/styleStore';
+import { HFlex, VFlex } from '../custom/ym/styleStore';
 import { QueryCache, QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { mypageKeys } from '../apis/queries';
 import { FeedDetails, TossedFeedData } from '../custom/ym/types';
@@ -11,6 +11,8 @@ import { api_token } from '../shared/api';
 import tryFeedDetailByAxios from '../hooks/tryFeedDetailByAxios';
 import useFeedDataCall from '../hooks/useFeedDataCall';
 import { queryClient } from '..';
+import { Buttons } from './ui/element/buttons/Buttons';
+import { useNavigate } from 'react-router-dom';
 
 // 주희님껀지 내껀지 구분하는 프롭스 타입
 // type AA = {
@@ -27,7 +29,7 @@ const FeedNameCard = () => {
     const date = moment(data?.createdAt).format("YYYY.MM.DD");
 
     return (
-        <VFlex gap='2px'>
+        <VFlex gap='2px' etc="flex:1">
             <Name>{data?.nickname}</Name>
             <CreatedDate>{date}</CreatedDate>
         </VFlex>

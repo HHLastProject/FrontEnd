@@ -17,4 +17,5 @@ export const colorSet = {
     lineStrong: setColor('909096'),
     lineMedium: setColor('DBDBDB'),
     lineLight: setColor('EDEDED'),
+    blue: setColor('427AF5'),
 }

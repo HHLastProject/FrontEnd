@@ -1,8 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import { HEADING_1 } from '../../../../custom/ym/variables'
-import { ChildrenForSpan } from '../../../../custom/ym/types'
-import { HFlex } from '../../../../custom/ym/styleStore'
+import { HEADING_1, TITLE_4 } from '../../../../custom/ym/variables'
+import { ChildrenForSpan, PropsForSpaceHeader } from '../../../../custom/ym/types'
+import { HFlex, HFlexSpaceBetween } from '../../../../custom/ym/styleStore'
+import { Buttons } from '../buttons/Buttons'
+import { colorSet } from '../../styles/color'
+import { BtnBorder } from '../buttons/BtnBorder'
+import { BtnRadius } from '../buttons/BtnRadius'
 
 
 const JustTitle = ({ children, ...props }: ChildrenForSpan) => {
@@ -15,8 +19,36 @@ const JustTitle = ({ children, ...props }: ChildrenForSpan) => {
     )
 }
 
-export const Headers = { JustTitle }
+const BackAndFinish = ({ children, BackOnClick, RightOnClick, ...props }: PropsForSpaceHeader) => {
+    return (
+        <HeaderContainer>
+            <HFlexSpaceBetween etc='padding:10px 20px;'>
+                <Buttons.Others.IconButton
+                    width={24}
+                    height={24}
+                    onClick={BackOnClick}
+                    fileName='back_24.png'
+                />
+                <BtnRadius.Default onClick={RightOnClick}>
+                    <FinishText>{children}</FinishText>
+                </BtnRadius.Default>
+            </HFlexSpaceBetween>
+        </HeaderContainer>
+    )
+}
 
+export const Headers = { JustTitle, BackAndFinish }
+
+
+const FinishText = styled.span`
+    font-size: ${TITLE_4.fontSize};
+    line-height: ${TITLE_4.lineHeight};
+    font-weight: ${TITLE_4.fontWeight};
+    color: ${colorSet.textLight};
+    &:active {
+        color: ${colorSet.blue};
+    }
+`
 
 const HeaderContainer = styled.header`
     width: 100%;

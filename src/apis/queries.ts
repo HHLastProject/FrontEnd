@@ -35,3 +35,7 @@ export const mypageKeys: IQueryKey = {
   GET_MYPAGE: ["GET_MYPAGE"],
   GET_FEED_DETAIL_IN_MYPAGE: ["GET_FEED_DETAIL_IN_MYPAGE"],
 }
+
+export const feedKeys: IQueryKey = {
+  DELETE_MYFEED: ["DELETE_MYFEED"],
+}
