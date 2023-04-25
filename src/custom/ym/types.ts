@@ -24,7 +24,7 @@ export type Coordinate = {
 export type NavButtonInputLimit = "home" | "list" | "feed" | "bookmark" | "mypage";
 export const NavButtonList: NavButtonInputLimit[] = ["home", "list", "feed", "bookmark", "mypage"];
 
-export type categoryTypes = "카페" | "보드카페" | "사주카페" | "애견카페" | "전통찻집";
+export type categoryTypes = "카페" | "보드카페" | "사주카페" | "애견카페" | "전통찻집" | "";
 
 export interface ChildrenForBtnContents extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode
