@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { defaultImgPath, path } from '../shared/path';
 import { fontType } from '../components/ui/styles/typo';
@@ -11,6 +11,7 @@ import { sendFeedData } from '../custom/jh/sendFeedData';
 import { Link } from 'react-router-dom';
 import { HFlex, VFlex } from '../custom/ym/styleStore';
 import ListHeader from '../components/home/ListHeader';
+import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
 
 type Ttag = { tag: string } | string;
 type Ttags = Ttag[] | [] | null | any;
@@ -35,7 +36,7 @@ function FeedForm() {
   const [hashTags, setHashTags] = useState<Ttags>([]);
   const [imgFile, setImgFile] = useState<IImgFile>({
     feedPic: null,
-    previewPic: `${defaultImgPath.shopList}`,
+    previewPic: null,
   });
 
   // const addForm = useCallback(() => onClickSendFeedData(shopId), [shopId]);
@@ -88,6 +89,10 @@ function FeedForm() {
     };
   };
 
+  const inputClickHandler = () => {
+    document.getElementById('input-preview-img')?.click();
+  };
+
   useEffect(() => {
     if (shopName) { setInputValue(shopName) };
     setToken(getToken());
@@ -138,12 +143,23 @@ function FeedForm() {
             <Body4 color={colorSet.textMedium}>필수</Body4>
           </FeedFormTitle>
           <input
+            id='input-preview-img'
             type="file"
             name="feedPic"
             onChange={previewImg}
+            style={{display: 'none'}}
           />
-          <ImgPreview>
-            {(typeof imgFile.previewPic === "string") && <img src={imgFile.previewPic} alt="이미지 미리보기" />}
+          <ImgPreview
+            onClick={inputClickHandler}
+          >
+            {(typeof imgFile.previewPic === "string") ? 
+              <img id='preview-img' src={imgFile.previewPic} alt="이미지 미리보기" />
+              :
+              <PriviewDiv>
+                <IconPlusWhite24/>
+                <label>0/1</label>
+              </PriviewDiv>
+            }
           </ImgPreview>
         </VFlex>
 
@@ -217,9 +233,19 @@ const ImgPreview = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  img {
+  background-color: ${colorSet.lineMedium};
+  #preview-img {
     height: 112px;
   }
+`;
+
+const PriviewDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: white;
+  ${fontType.body_5}
 `;
 
 const FeedFormTitle = styled.div`
