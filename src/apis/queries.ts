@@ -9,6 +9,7 @@ export const queryKeys: IQueryKey = {
   ADD_SHOP_DETAIL_FEED: ["ADD_SHOP_DETAIL_FEED"],
   GET_FEEDS: ["GET_FEEDS"],
   GET_USER_FEED: ["GET_USER_FEED"],
+  PUT_SCRAP: ["PUT_SCRAP"],
 };
 
 export const keys: IQueryKey = {

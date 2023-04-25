@@ -15,18 +15,46 @@ import { VFlex } from '../custom/ym/styleStore';
 import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
 import ListHeader from '../components/home/ListHeader';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
+import { getToken } from '../apis/getToken';
+import { api_token } from '../shared/api';
+import { IconSize28 } from '../components/ui/element/icons/IconSize';
+import { useMutation } from '@tanstack/react-query';
+import { queryKeys } from '../apis/queries';
+import { queryClient } from '..';
 
 function ShopDetail() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
-  const tabInfoRef = useRef();
-  const tabMenuRef = useRef();
-  const tabReviewRef = useRef();
-
+  const [scrap, setScrap] = useState(false);
   const [expand, setExpand] = useState<boolean>(false);
   const expandButtonHandler = () => {
     setExpand(prev => !prev);
   }
+  const scrapHandler = () => {
+    const token = getToken();
+    if(token) {
+      changeScrap(param);
+    } else {
+      const result = window.confirm('로그인이 필요한 기능입니다. 로그인 하시겠습니까?');
+      if(result) navi(`${path.login}`);
+    }
+  }
+
+  const changeScrap = async (shopId: number) => {
+    const token = getToken();
+    let result : boolean= false;
+    if(token) {
+      await api_token.put(`/api/${shopId}/scrap`)
+      .then((response) => {
+        result = response.data.isScrap;
+        setScrap(result);
+        }
+      ).catch((error) => {
+        throw error;
+      });
+    }
+    return result;
+  };
 
   const scrollToTabInfo = () => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -48,25 +76,38 @@ function ShopDetail() {
     alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
     navi(-1);
   };
-  // const [isCheckedTabInfo, setIsCheckedTabInfo] = useState(true);     //정보
-  // const [isCheckedTabMenu, setIsCheckedTabMenu] = useState(false);    //메뉴
-  // const [isCheckedTabReview, setIsCheckedTabReview] = useState(false);//리뷰
-  // const tabInfo = document.getElementById('detail-tab-info');
-
-  useEffect(() => {
-    console.log(shopDetailData);
-  }, [])
 
   useEffect(() => {
     getShopDetailFeedList();
-    console.log('피드데이터:',shopDetailFeedList)
+    console.log('최초',shopDetailData?.isScrap);
+    setScrap(shopDetailData?.isScrap);
   }, []);
+
+  useEffect(() => {
+    console.log('테스트',scrap);
+  }, [scrap]);
+
+  if (shopDetailIsLoading) {
+    return(<div>로딩중</div>)
+  }
 
   return (
     <>
       <ListHeader
-        range={500}
-      />
+        scrap={true}
+      >
+        <div
+          onClick={scrapHandler}
+        >
+          <IconSize28>
+            {shopDetailData?.isScrap && <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="" />}
+            {scrap
+              ? <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="" />
+              : <img src={`${process.env.PUBLIC_URL}/icon/book mark line_28.png`} alt="" />
+            }
+          </IconSize28>
+        </div>
+      </ListHeader>
       <div>
         <ShopDetailThumbnail>
           <div className='thumbnail-img'>
@@ -255,9 +296,6 @@ const ShopDetailThumbnail = styled.div`
   position: relative;
   padding-bottom: 72px;
   background-color: #fff;
-  h1 {
-    font-size: 1.5rem;
-  }
   .thumbnail-img {
     width: 100%;
     height: 252px;

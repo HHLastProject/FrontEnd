@@ -57,7 +57,7 @@ const List = () => {
         onClickHiddenHandler={onClickHiddenHandler}
       />
       <ListHeader
-        
+        range={range}
       />
       <HomeWrap>
         <HomeContainer>

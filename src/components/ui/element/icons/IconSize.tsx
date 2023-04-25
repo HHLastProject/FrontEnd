@@ -38,3 +38,10 @@ export const IconSize24 = styled.span`
     height: 24px;
   }
 `;
+
+export const IconSize28 = styled.span`
+  img {
+    width: 28px;
+    height: 28px;
+  }
+`;
