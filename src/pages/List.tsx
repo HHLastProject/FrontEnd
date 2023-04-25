@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
@@ -15,21 +15,7 @@ import { Body3 } from '../components/FontStyle';
 import { IconSmallDownArrow } from '../components/ui/element/icons/IconsStyle';
 import { ListTossedData, categoryTypes } from '../custom/ym/types';
 import { HFlex } from '../custom/ym/styleStore';
-import { FILTER_LIST } from '../custom/ym/variables';
-
-export interface IShopCategory {
-  range: number,
-  setRange: React.Dispatch<React.SetStateAction<number>> | null,
-  category: string,
-  setCategory: React.Dispatch<React.SetStateAction<categoryTypes>> | null,
-}
-
-export const ShopCategory = createContext<IShopCategory>({
-  range: 500,
-  setRange: null,
-  category: "",
-  setCategory: null,
-});
+import { ShopCategory } from '../apis/context';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
@@ -37,12 +23,6 @@ const List = () => {
   const [orderBy, setOrderBy] = useState<string>('거리순');
   const [range, setRange] = useState(500);
   const [category, setCategory] = useState<categoryTypes>("");
-  const initShopCategory = {
-    range,
-    setRange,
-    category,
-    setCategory,
-  };
   
   //선택창 보이기
   const { isSelectHidden, onClickHiddenHandler } = useOnClickHiddenHandler(true);
@@ -72,7 +52,9 @@ const List = () => {
   // if (getshopListIsError) return <div>에러</div>;
 
   return (
-    <ShopCategory.Provider value={{range, setRange, category, setCategory}}>
+    <ShopCategory.Provider value={
+      {range, setRange, category, setCategory, orderBy, setOrderBy}
+    }>
       <SelectBox
         arr={['거리순', '인기순']}
         hidden={isSelectHidden}

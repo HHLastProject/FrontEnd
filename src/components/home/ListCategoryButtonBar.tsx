@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FILTER_LIST, LINE_MEDIUM, MEDIUM, STRONG_MEDIUM } from '../../custom/ym/variables';
 import { categoryTypes } from '../../custom/ym/types';
 import { fontType } from '../ui/styles/typo';
-import { ShopCategory } from '../../pages/List';
+import { ShopCategory } from '../../apis/context';
 
 const ListCategoryButtonBar = () => {
   const { category, setCategory} = useContext(ShopCategory);
@@ -46,6 +46,7 @@ const CategoryButtons = styled.div`
     display: none;
   };
   div {
+    display: flex;
     gap : 4px;
     flex-wrap: nowrap;
     white-space: nowrap;
