@@ -81,7 +81,6 @@ const List = () => {
           <div style={{ overflow: 'hidden', }}>
             <HFlex gap='4px'>
               <FilterBtn
-                icon={<IconSmallDownArrow />}
                 onClick={onClickHiddenHandler}
               >
                 {orderBy}
@@ -142,14 +141,14 @@ const HomeShopListContainer = styled.div`
   gap: 12px;
 `;
 
-const FilterBtn = ({ children, icon, onClick }: { children: React.ReactNode, icon?: JSX.Element, onClick: React.MouseEventHandler<HTMLButtonElement> }) => {
+const FilterBtn = ({ children, onClick }: { children: React.ReactNode, onClick: React.MouseEventHandler<HTMLButtonElement> }) => {
   return (
     <FilterBtnStyle
       onClick={onClick}
     >
       <div>
         <Body3>{children}</Body3>
-        {icon}
+        <IconSmallDownArrow />
       </div>
     </FilterBtnStyle>
   )

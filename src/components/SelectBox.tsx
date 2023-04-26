@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { ShopCategory } from '../apis/context';
 
 function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: boolean, onClickHiddenHandler: any}) {
-  const {orderBy, setOrderBy} = useContext(ShopCategory);
+  const {setOrderBy} = useContext(ShopCategory);
 
   return (
     <div
