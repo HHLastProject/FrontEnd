@@ -3,6 +3,7 @@ import { IconComment24, IconLikeActive24, IconLikeInactive24 } from "../ui/eleme
 import { Link } from "react-router-dom";
 import { path } from "../../shared/path";
 import { fontType } from "../ui/styles/typo";
+import { HFlex } from "../../custom/ym/styleStore";
 
 interface IFeedLikeComment {
   isLike: boolean,
@@ -14,7 +15,7 @@ interface IFeedLikeComment {
 function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLikeComment) {
   return (
     <FeedLikeCommentStyle>
-      <AlignCenter>
+      <AlignCenter gap={5}>
         {isLike 
           ?
           <IconLikeActive24/>
@@ -25,7 +26,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
       </AlignCenter>
 
       <Link to={`${path.toFeedComment}/${feedId}`}>
-        <AlignCenter>
+        <AlignCenter gap={5}>
           <IconComment24/>
           <label>{feedCommentCount}</label>
         </AlignCenter>
@@ -44,8 +45,8 @@ const FeedLikeCommentStyle = styled.div`
   ${fontType.body_3}
 `;
 
-const AlignCenter = styled.div`
+const AlignCenter = styled.div<{gap: number}>`
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: ${({gap}) => gap}px;
 `;
