@@ -4,8 +4,17 @@ import { fontType } from './ui/styles/typo';
 import { useContext } from 'react';
 import { ShopCategory } from '../apis/context';
 
-function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: boolean, onClickHiddenHandler: any}) {
+function SelectBox({arr}: {arr: string[]}) {
+  //선택창 보이기
+  const {isSelectHidden, setIsSelectHidden } = useContext(ShopCategory);
+
   const {setOrderBy} = useContext(ShopCategory);
+  const onClickHandler = (item: any) => {
+    if(setOrderBy && setIsSelectHidden) {
+      setOrderBy(item);
+      setIsSelectHidden(prev => !prev);
+    }
+  }
 
   return (
     <div
@@ -15,7 +24,7 @@ function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: 
         position: "absolute",
         zIndex: "9999",
       }}
-      hidden={hidden}
+      hidden={isSelectHidden}
     >
       <SelectBoxStyle>
         <SelectTop/>
@@ -23,8 +32,9 @@ function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: 
           arr?.map((item) => {
             return(
               <div 
-                className='order-value'
-                onClick={() => setOrderBy(item)}
+                className='selectBox-order-value'
+                style={{cursor: 'pointer'}}
+                onClick={() => onClickHandler(item)}
                 key={item}
               >
                 {item}
@@ -33,9 +43,12 @@ function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: 
           })
         }
       </SelectBoxStyle>
-      <BottomSheet
-        onClick={onClickHiddenHandler}
-      />
+      {setIsSelectHidden &&
+        <BottomSheet
+          hidden={isSelectHidden}
+          onClick={() => setIsSelectHidden(prev => !prev)}
+        />
+      }
     </div>
   )
 }
@@ -49,7 +62,7 @@ const SelectBoxStyle = styled.div`
   z-index: 10000;
   border-radius: 20px 20px 0 0;
   background-color: #fff;
-  .order-value {
+  .selectBox-order-value {
     padding: 20px;
     ${fontType.body_1}
   }

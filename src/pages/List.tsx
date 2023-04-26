@@ -16,6 +16,7 @@ import { IconSmallDownArrow } from '../components/ui/element/icons/IconsStyle';
 import { ListTossedData, categoryTypes } from '../custom/ym/types';
 import { HFlex } from '../custom/ym/styleStore';
 import { ShopCategory } from '../apis/context';
+import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
@@ -23,9 +24,7 @@ const List = () => {
   const [orderBy, setOrderBy] = useState<string>('거리순');
   const [range, setRange] = useState(500);
   const [category, setCategory] = useState<categoryTypes>("");
-  
-  //선택창 보이기
-  const { isSelectHidden, onClickHiddenHandler } = useOnClickHiddenHandler(true);
+  const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
 
   //리스트 데이터
   const {
@@ -53,12 +52,10 @@ const List = () => {
 
   return (
     <ShopCategory.Provider value={
-      {range, setRange, category, setCategory, orderBy, setOrderBy}
+      {range, setRange, category, setCategory, orderBy, setOrderBy, isSelectHidden, setIsSelectHidden}
     }>
       <SelectBox
         arr={['거리순', '인기순']}
-        hidden={isSelectHidden}
-        onClickHiddenHandler={onClickHiddenHandler}
       />
       <ListHeader
         range={range}
@@ -78,13 +75,12 @@ const List = () => {
               </TabMenuUl>
             </HomeTabMenuStyle>
           </header>
+          {/* 필터버튼 */}
           <div style={{ overflow: 'hidden', }}>
             <HFlex gap='4px'>
-              <FilterBtn
-                onClick={onClickHiddenHandler}
-              >
+              <OrderbyFilterBtn>
                 {orderBy}
-              </FilterBtn>
+              </OrderbyFilterBtn>
               <ListCategoryButtonBar />
             </HFlex>
           </div>
@@ -139,31 +135,4 @@ const HomeShopListContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 12px;
-`;
-
-const FilterBtn = ({ children, onClick }: { children: React.ReactNode, onClick: React.MouseEventHandler<HTMLButtonElement> }) => {
-  return (
-    <FilterBtnStyle
-      onClick={onClick}
-    >
-      <div>
-        <Body3>{children}</Body3>
-        <IconSmallDownArrow />
-      </div>
-    </FilterBtnStyle>
-  )
-}
-
-const FilterBtnStyle = styled.button`
-  background-color: ${colorSet.bgMedium};
-  border: none;
-  padding: 8px 12px;
-  border-radius: 100px;
-  flex: none;
-  div {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 4px;
-  }
 `;

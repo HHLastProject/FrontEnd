@@ -11,6 +11,9 @@ export interface IShopCategory {
   setCategory: React.Dispatch<React.SetStateAction<categoryTypes>> | null,
   orderBy: string,
   setOrderBy: React.Dispatch<React.SetStateAction<string>> | null,
+  isSelectHidden?: boolean,
+  setIsSelectHidden?: React.Dispatch<React.SetStateAction<boolean>> | null,
+  onClickHiddenHandler?: React.MouseEventHandler<HTMLDivElement> | null,
 }
 
 export const ShopCategory = createContext<IShopCategory>({
@@ -20,4 +23,7 @@ export const ShopCategory = createContext<IShopCategory>({
   setCategory: null,
   orderBy: '거리순',
   setOrderBy: null,
+  isSelectHidden: false,
+  setIsSelectHidden: null,
+  onClickHiddenHandler: null,
 });
