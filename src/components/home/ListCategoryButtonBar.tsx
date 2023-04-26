@@ -7,6 +7,7 @@ import { ShopCategory } from '../../apis/context';
 
 const ListCategoryButtonBar = () => {
   const { category, setCategory} = useContext(ShopCategory);
+  //category = 선택한 카테고리 이름;
 
   const filterClickHandler = (buttonName: categoryTypes) => {
     if(setCategory) {
