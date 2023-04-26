@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ElementType } from "react";
+import React, { ComponentPropsWithoutRef, ElementType } from "react";
 import { StringLiteralType } from "typescript";
 
 export type Font = {
@@ -133,4 +133,23 @@ export interface ListTossedData {
     shopId: number,
     shopName: string,
     thumbnail: string,
+}
+
+export interface IconButtonProps extends ComponentPropsWithoutRef<'button'> {
+    fileName: string,
+    width: number,
+    height: number,
+    onClick: React.MouseEventHandler<HTMLButtonElement>,
+}
+export interface EditNicknameProps extends IconButtonProps {
+    state?: boolean,
+    dispatch?: React.SetStateAction<boolean>
+}
+
+export interface PropsForSpaceHeader extends ComponentPropsWithoutRef<'button'> {
+    BackOnClick: React.MouseEventHandler<HTMLButtonElement>,
+    RightOnClick: React.MouseEventHandler<HTMLButtonElement>,
+    children: React.ReactNode,
+    state?: boolean,
+    dispatch?: React.SetStateAction<boolean>
 }

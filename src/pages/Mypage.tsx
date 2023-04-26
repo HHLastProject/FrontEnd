@@ -42,7 +42,7 @@ const Mypage = () => {
     const [feedData, setFeedData] = useState<Feed | null>(null);
     const [isLogin, setIsLogin] = useState<boolean>(false);
 
-    const { refetch } = useQuery({
+    const { refetch, data } = useQuery({
         queryKey: mypageKeys.GET_MYPAGE,
         queryFn: async () => {
             const res = await api_token.get(apiPath.mypage);
@@ -62,6 +62,7 @@ const Mypage = () => {
             ? setIsLogin(true)
             : setIsLogin(false);
         refetch();
+        localStorage.setItem("nickname", data?.nickname);
     }, [isLogin]);
 
 

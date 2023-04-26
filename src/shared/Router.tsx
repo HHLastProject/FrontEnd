@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { VFlex } from '../custom/ym/styleStore'
+import { VFlex, VFlexCenter } from '../custom/ym/styleStore'
 import { path } from './path'
 import Login from '../pages/Login'
 import ShopDetail from '../pages/ShopDetail'
@@ -23,12 +23,13 @@ import Home from '../pages/Home'
 import FeedForm from '../pages/FeedForm'
 import Bookmark from '../pages/Bookmark'
 import FeedList from '../pages/FeedList'
+import EditNickname from '../pages/EditNickname'
 
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <VFlex>
+      <VFlexCenter>
         <PageContainer id='page-container'>
           <Routes>
             <Route path={path.home} element={<Home />} />
@@ -52,10 +53,11 @@ const Router = () => {
             <Route path={path.mypage} element={<Mypage />} />
             <Route path={path.allFeeds} element={<AllFeeds />} />
             <Route path={path.feedDetail} element={<FeedDetail />} />
+            <Route path={path.editNickname} element={<EditNickname />} />
           </Routes>
         </PageContainer>
         <BottomNav />
-      </VFlex>
+      </VFlexCenter>
     </BrowserRouter>
   )
 }
@@ -68,7 +70,7 @@ const PageContainer = styled.div`
   overflow-y : scroll;
   overflow-x: hidden;
   background-color: white;
-
+  width:100%;
   /* 스크롤바 안 보이게 */
   -ms-overflow-style: none;
   scrollbar-width: none;

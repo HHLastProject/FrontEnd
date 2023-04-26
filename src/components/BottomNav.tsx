@@ -16,10 +16,15 @@ const BottomNav = () => {
         return checker === active ? true : false;
     }
 
+
     useEffect(() => {
         const pageUrl = window.location.href.split('/')[3];
         pageUrl && setActive(pageUrl);
     }, []);
+
+    if (localStorage.getItem("admin_token") !== null) {
+        return <></>;
+    }
 
     return (
         <NavContainer>
