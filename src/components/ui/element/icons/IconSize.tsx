@@ -33,6 +33,7 @@ export const IconSize20 = styled.span`
 `;
 
 export const IconSize24 = styled.span`
+  ${centered()}
   img {
     width: 24px;
     height: 24px;

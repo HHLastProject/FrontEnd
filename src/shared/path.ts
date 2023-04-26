@@ -24,6 +24,8 @@ export const path: IPath = {
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
   feedList: '/feed',
+  toFeedComment: '/feed/comment',
+  feedComment: '/feed/comment/:feedId',
   feedForm: '/feedform',
   search: '/search',
   feedFormSearch: '/search/:isfeed',
@@ -85,6 +87,13 @@ export const iconImgPath: IPathObject = {
     plus: setPublicUrl(`/plus_white_24.png`),
   },
   arrow: {
-    chevrondown16: setPublicUrl(`/chevrondown_16.png`),
-  }
+    chevrondown16: setPublicUrl(`/icon/chevrondown_16.png`),
+  },
+  like: {
+    likeInactive24: setPublicUrl(`/icon/like_inactive_24.png`),
+    likeActive24: setPublicUrl(`/icon/like_active_24.png`),
+  },
+  comment: {
+    comment24: setPublicUrl(`/icon/comment_24.png`),
+  },
 };

@@ -10,6 +10,7 @@ import PlaceCard from './PlaceCard';
 import { defaultImgPath, path } from '../../shared/path';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import FeedLikeComment from './FeedLikeComment';
 
 interface FeedCardData {
   shopThumbnail: string,
@@ -43,37 +44,52 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
 
   return (
     <>
-        {feedData?.profilePic 
-          ? 
-          <FeedProfile 
-            profilePic={feedData?.profilePic}
-            nickname={feedData?.nickname}
-            createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
-          />
-          :
-          <FeedProfile
-            profilePic={defaultImgPath.shopList}
-            nickname={feedData?.nickname}
-            createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
-          />
-        }
-        <Link to={`${path.toFeedDetail + '/' + feedData?.feedId}`}>
-          <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + feedData?.feedPic}</FeedPicture>
-          <FeedComment isExpanded={expand}>{feedData?.comment as string}</FeedComment>
-        </Link>
-        {feedData?.comment && (feedData?.comment?.length > 86)
-          ? 
-          <ExpandButton onClick={expandButtonHandler}>
-            <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
-          </ExpandButton>
-          : null
-        }
-        <TagList>{feedData?.tag}</TagList>
-        <Link to={`${path.toShopDetail + '/' + feedData?.shopId}`}>
-          <PlaceCard
-            dataset={placeCardData}
-          />
-        </Link>
+      {/* 피드 프로필 */}
+      {feedData?.profilePic 
+        ? 
+        <FeedProfile 
+          profilePic={feedData?.profilePic}
+          nickname={feedData?.nickname}
+          createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
+        />
+        :
+        <FeedProfile
+          profilePic={defaultImgPath.shopList}
+          nickname={feedData?.nickname}
+          createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
+        />
+      }
+      {/* 피드 사진 */}
+      <Link to={`${path.toFeedDetail + '/' + feedData?.feedId}`}>
+        <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + feedData?.feedPic}</FeedPicture>
+      </Link>
+
+      {/* 좋아요 댓글 */}
+      <FeedLikeComment
+        isLike={true}
+        likeCount={11}
+        feedCommentCount={12}
+        feedId={feedData?.feedId}
+      />
+
+      {/* 피드 코멘트 */}
+      <FeedComment isExpanded={expand}>{feedData?.comment as string}</FeedComment>
+      {feedData?.comment && (feedData?.comment?.length > 86)
+        ? 
+        <ExpandButton onClick={expandButtonHandler}>
+          <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
+        </ExpandButton>
+        : null
+      }
+      {/* 태그 */}
+      <TagList>{feedData?.tag}</TagList>
+
+      {/* 해당 매장 정보 */}
+      <Link to={`${path.toShopDetail + '/' + feedData?.shopId}`}>
+        <PlaceCard
+          dataset={placeCardData}
+        />
+      </Link>
     </>
   )
 }

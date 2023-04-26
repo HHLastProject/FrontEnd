@@ -32,3 +32,28 @@ export const IconPlusWhite24 = () => {
     </IconSize24>
   )
 }
+
+//하트
+export const IconLikeInactive24 = () => {
+  return(
+    <IconSize24>
+      <img src={iconImgPath.like.likeInactive24} alt="좋아요" />
+    </IconSize24>
+  )
+}
+export const IconLikeActive24 = () => {
+  return(
+    <IconSize24>
+      <img src={iconImgPath.like.likeActive24} alt="좋아요" />
+    </IconSize24>
+  )
+}
+
+//코멘트
+export const IconComment24 = () => {
+  return(
+    <IconSize24>
+      <img src={iconImgPath.comment.comment24} alt="댓글" />
+    </IconSize24>
+  )
+}
