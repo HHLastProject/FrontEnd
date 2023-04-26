@@ -11,9 +11,10 @@ import { path } from '../shared/path';
 import ListCategoryButtonBar from '../components/home/ListCategoryButtonBar';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import SelectBox from '../components/SelectBox';
-import { categoryTypes } from '../custom/ym/types';
+import { TossedFeedData, categoryTypes } from '../custom/ym/types';
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
 import { ShopCategory } from '../apis/context';
+import NoResult from '../components/home/NoShop';
 
 function FeedList() {
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();
@@ -49,19 +50,23 @@ function FeedList() {
             <ListCategoryButtonBar />
           </HFlex>
         </div>
-        { feedList?.map((item: any, index: number) => {
-          console.log('item',item);
-          return (
-            <div key={`Feed${item.shopId + index}`}>
-              <VFlex gap='12px' etc='padding:20px;'>
-                <FeedContentsTest
-                  feedData={item}
-                />
-              </VFlex>
-              {(index >=0 && index < feedList.length-1) && <FeedPageHr/>}
-            </div>
-          )
-        })}
+        { feedList?.filter((item: TossedFeedData) => orderBy !== "태그" ? item?.tag.includes(orderBy) : item)
+          .filter((item: TossedFeedData) => category !== "" ? item?.shopCategory === category : item)
+          .map((item: any, index: number) => {
+            console.log('item',item);
+            return (
+              <div key={`Feed${item.shopId + index}`}>
+                <VFlex gap='12px' etc='padding:20px;'>
+                  <FeedContentsTest
+                    feedData={item}
+                  />
+                </VFlex>
+                {(index >=0 && index < feedList.length-1) && <FeedPageHr/>}
+              </div>
+            )
+          })
+        }
+        {/* 피드 작성 버튼 */}
         <Link to={`${path.feedForm}`}>
           <FeedPageWriteBtn>
             <AlignItemCenter>

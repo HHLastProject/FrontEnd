@@ -115,7 +115,8 @@ export type TossedFeedData = {
     shopAddress: string,
     shopName: string,
     shopThumbnail: string,
-    tags: string[],
+    shopCategory?: string,
+    tag: string[],
 }
 
 

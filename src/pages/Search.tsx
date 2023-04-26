@@ -6,6 +6,7 @@ import { path } from '../shared/path';
 import SearchStore from '../components/search/SearchInput';
 import ListHeader from '../components/home/ListHeader';
 import SearchResultList from '../components/search/SearchResultList';
+import NoResult from '../components/home/NoShop';
 
 function Search() {
   const [inputValue, setInputValue] = useState('');
@@ -55,7 +56,8 @@ function Search() {
                   </Link>
                 </div>
               )
-            })}
+            }).length === 0 && <NoResult search={true} />
+            }
           </div>
         </SearchWrapContainer>
       </SearchWrap>

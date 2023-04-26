@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
-import NoShop from '../components/home/NoShop';
 import HomeShopPostCard from '../components/home/HomePostCard';
 import ListCount from '../components/ListCount';
 import { HomeTabMenuStyle, TabMenuLi, TabMenuUl } from '../components/TabMenu';
@@ -10,13 +9,11 @@ import SelectBox from '../components/SelectBox';
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
 import ListHeader from '../components/home/ListHeader';
 import ListCategoryButtonBar from '../components/home/ListCategoryButtonBar';
-import { colorSet } from '../components/ui/styles/color';
-import { Body3 } from '../components/FontStyle';
-import { IconSmallDownArrow } from '../components/ui/element/icons/IconsStyle';
 import { ListTossedData, categoryTypes } from '../custom/ym/types';
 import { HFlex } from '../custom/ym/styleStore';
 import { ShopCategory } from '../apis/context';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
+import NoResult from '../components/home/NoShop';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
@@ -86,12 +83,15 @@ const List = () => {
           </div>
 
           <HomeShopListContainer>
-            {
-              (shopList?.length === 0) && <NoShop />
-            }
-            {
+            {shopList?.sort((a: any, b: any) => (orderBy === '인기순') ? (b.feedCount - a.feedCount) : (a.distance - b.distance))
+              .filter((item: ListTossedData) => category !== "" ? item?.category === category : item)
+              .length === 0 
+              ? 
+              <NoResult shopList={true} />
+              :
               shopList?.sort((a: any, b: any) => (orderBy === '인기순') ? (b.feedCount - a.feedCount) : (a.distance - b.distance))
-              .filter((item: ListTossedData) => category !== "" ? item?.category === category : item).map((item: ListTossedData) => {
+              .filter((item: ListTossedData) => category !== "" ? item?.category === category : item)
+              .map((item: ListTossedData) => {
                 return(
                   <HomeShopPostCard
                     key={item?.shopId}
