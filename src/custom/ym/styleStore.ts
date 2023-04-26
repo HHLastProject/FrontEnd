@@ -30,7 +30,7 @@ export const HFlexSpaceBetween = styled.div<{
     box-sizing: border-box;
     justify-content: space-between;
     width : ${({ width }) => width ? width : '100%'};
-    height : ${({ height }) => height ? height : 'fit'};
+    height : ${({ height }) => height ? height : 'fit-content'};
     gap : ${({ gap }) => gap ? gap : null};
     ${({ etc }) => etc};
 `;

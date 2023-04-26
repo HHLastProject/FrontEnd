@@ -141,9 +141,15 @@ export interface IconButtonProps extends ComponentPropsWithoutRef<'button'> {
     height: number,
     onClick: React.MouseEventHandler<HTMLButtonElement>,
 }
+export interface EditNicknameProps extends IconButtonProps {
+    state?: boolean,
+    dispatch?: React.SetStateAction<boolean>
+}
 
-export interface PropsForSpaceHeader extends ComponentPropsWithoutRef<'span'> {
+export interface PropsForSpaceHeader extends ComponentPropsWithoutRef<'button'> {
     BackOnClick: React.MouseEventHandler<HTMLButtonElement>,
     RightOnClick: React.MouseEventHandler<HTMLButtonElement>,
-    children: React.ReactNode
+    children: React.ReactNode,
+    state?: boolean,
+    dispatch?: React.SetStateAction<boolean>
 }

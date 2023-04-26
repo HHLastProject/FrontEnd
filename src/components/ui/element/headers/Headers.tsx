@@ -19,7 +19,12 @@ const JustTitle = ({ children, ...props }: ChildrenForSpan) => {
     )
 }
 
-const BackAndFinish = ({ children, BackOnClick, RightOnClick, ...props }: PropsForSpaceHeader) => {
+const BackAndFinish = ({ children, BackOnClick, RightOnClick, state, ...props }: PropsForSpaceHeader) => {
+    // console.log("disabled", disabled);
+
+    const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+        RightOnClick(e)
+    }
     return (
         <HeaderContainer>
             <HFlexSpaceBetween etc='padding:10px 20px;'>
@@ -29,9 +34,12 @@ const BackAndFinish = ({ children, BackOnClick, RightOnClick, ...props }: PropsF
                     onClick={BackOnClick}
                     fileName='back_24.png'
                 />
-                <BtnRadius.Default onClick={RightOnClick}>
-                    <FinishText>{children}</FinishText>
+                <BtnRadius.Default onClick={RightOnClick} disabled={state as boolean}>
+                    <FinishText able={state as boolean}>{children}</FinishText>
                 </BtnRadius.Default>
+                {/* <Button onClick={clickHandler} disabled>
+                    <span>{children}</span>
+                </Button> */}
             </HFlexSpaceBetween>
         </HeaderContainer>
     )
@@ -39,15 +47,18 @@ const BackAndFinish = ({ children, BackOnClick, RightOnClick, ...props }: PropsF
 
 export const Headers = { JustTitle, BackAndFinish }
 
+const Button = styled.button`
+    border: none;
+    background-color: none;
+    padding: 0;
+    margin: 0;
+`
 
-const FinishText = styled.span`
+const FinishText = styled.span<{ able: boolean }>`
     font-size: ${TITLE_4.fontSize};
     line-height: ${TITLE_4.lineHeight};
     font-weight: ${TITLE_4.fontWeight};
-    color: ${colorSet.textLight};
-    &:active {
-        color: ${colorSet.blue};
-    }
+    color : ${({ able }) => able ? colorSet.textLight : colorSet.blue}
 `
 
 const HeaderContainer = styled.header`
