@@ -18,7 +18,24 @@ const Feed = ({ stateDispatch, params }: { stateDispatch: React.Dispatch<React.S
     )
 }
 
-export const Modals = { Feed };
+const CreateFolder = ({
+    dispatch,
+    listDispatch
+}: {
+    dispatch: React.Dispatch<React.SetStateAction<boolean>>,
+    listDispatch: React.Dispatch<React.SetStateAction<string[]>>,
+}) => {
+    return (
+        <ModalContainer>
+            <VFlexCenter>
+                <GrayBackground onClick={() => dispatch(prev => false)} />
+                <ModalContents.CreateFolderModalContents dispatch={dispatch} listDispatch={listDispatch} />
+            </VFlexCenter>
+        </ModalContainer>
+    )
+}
+
+export const Modals = { Feed, CreateFolder };
 
 const ModalContainer = styled.div`
     position: fixed;

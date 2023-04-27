@@ -3,23 +3,41 @@ import styled from 'styled-components';
 import { Headers } from '../components/ui/element/headers/Headers';
 import NoExistFolders from '../components/bookmark/NoExistFolders';
 import ListedFolders from '../components/bookmark/ListedFolders';
+import { Modals } from '../components/ui/modal/Modals';
+import { queryClient } from '..';
+import { scrapKeys } from '../apis/queries';
+import { ReceivedBookmarks } from '../custom/ym/types';
 
 const FolderList = () => {
 
-    const [list, setList] = useState<string[]>(['']);
+    const [folderList, setFolderList] = useState<string[]>(['']);
+    const [modal, setModal] = useState<boolean>(false);
 
     useEffect(() => {
-        const listFromLocal = localStorage.getItem("FolderList")
-            ? localStorage.getItem("FolderList")?.split(" ")
-            : null;
-        listFromLocal && listFromLocal?.pop();
-        setList(prev => listFromLocal as string[]);
+        !queryClient.getQueryData(scrapKeys.GET_SCRAP) && queryClient.refetchQueries({
+            queryKey: scrapKeys.GET_SCRAP,
+            type: 'inactive',
+            exact: true
+        });
+        const data = queryClient.getQueryData(scrapKeys.GET_SCRAP) as ReceivedBookmarks;
+        const folderList = data.folderList;
+        setFolderList(folderList);
+        // const listFromLocal = localStorage.getItem("FolderList")
+        //     ? localStorage.getItem("FolderList")?.split(",")
+        //     : null;
+        // setList(prev => listFromLocal as string[]);
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem("FolderList", `${folderList}`);
+        // console.log('완료후:', folderList);
+    }, [folderList]);
 
     return (
         <FolderListContainer>
-            <Headers.FolderListHeader />
-            {list?.length === 0 ? <NoExistFolders /> : <ListedFolders list={list} dispatch={setList} />}
+            {modal ? <Modals.CreateFolder dispatch={setModal} listDispatch={setFolderList} /> : null}
+            <Headers.FolderListHeader dispatch={setModal} />
+            {folderList === null ? <NoExistFolders /> : <ListedFolders list={folderList} dispatch={setFolderList} />}
         </FolderListContainer>
     )
 }

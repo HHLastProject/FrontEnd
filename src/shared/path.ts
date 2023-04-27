@@ -61,6 +61,7 @@ export const apiPath: IPath = {
   feedDetail: '/api/mypage/:feedId',
   deleteFeed: '/api/mypage/:feedId',
   editNickname: '/api/mypage/change/nickname',
+  createScrapFolder: '/api/favorite/folder',
 };
 
 export const imgPath: IPath = {

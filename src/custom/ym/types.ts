@@ -85,6 +85,10 @@ export interface CategoryProp {
     categoryState: categoryTypes | string | null;
 }
 
+export interface FolderProp {
+    folderState: string | null;
+}
+
 export type FeedApiPathType = "shop" | "mypage";
 
 export interface ReceivedFeed {
@@ -192,4 +196,9 @@ export interface EachFolderProps extends ComponentPropsWithRef<'div'> {
     name: string,
     dispatch: React.Dispatch<React.SetStateAction<string[]>>,
     index: number
+}
+
+export interface ReceivedBookmarks {
+    folderList: string[],
+    scrapList: ScrapListEachData[],
 }

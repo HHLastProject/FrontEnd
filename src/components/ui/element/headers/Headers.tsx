@@ -48,7 +48,7 @@ const BackAndFinish = ({ children, BackOnClick, RightOnClick, state, ...props }:
     )
 }
 
-const FolderListHeader = () => {
+const FolderListHeader = ({ dispatch }: { dispatch: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     const navi = useNavigate();
 
@@ -58,6 +58,7 @@ const FolderListHeader = () => {
     }
 
     const addFolderClickHandler = () => {
+        dispatch(prev => true);
     }
 
     return (
@@ -72,9 +73,6 @@ const FolderListHeader = () => {
                 <BtnRadius.Default onClick={addFolderClickHandler}>
                     <RightButtonText>폴더추가</RightButtonText>
                 </BtnRadius.Default>
-                {/* <Button onClick={clickHandler} disabled>
-                    <span>{children}</span>
-                </Button> */}
             </HFlexSpaceBetween>
         </HeaderContainer>
     )

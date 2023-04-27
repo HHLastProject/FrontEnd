@@ -1,6 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components';
 import EachFolder from './EachFolder';
+import { useMutation } from '@tanstack/react-query';
+import { scrapKeys } from '../../apis/queries';
+import { api_token } from '../../shared/api';
+import { apiPath } from '../../shared/path';
+import { queryClient } from '../..';
 
 const ListedFolders = ({ list, dispatch }: { list: string[], dispatch: React.Dispatch<React.SetStateAction<string[]>> }) => {
 
@@ -24,9 +29,26 @@ const ListedFolders = ({ list, dispatch }: { list: string[], dispatch: React.Dis
     //     console.log(e.clientX);
 
     // }
+    const { mutate } = useMutation({
+        mutationKey: scrapKeys.POST_FOLDER,
+        mutationFn: async (payload: object) => {
+            const res = await api_token.post(apiPath.createScrapFolder, payload);
+            console.log('생성 결과', res);
+            return res.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(scrapKeys.GET_SCRAP);
+        }
+    })
+
+    useEffect(() => {
+        console.log('등록 후 list :', list);
+        const payload = { folderList: list };
+        mutate(payload);
+    }, [list]);
 
     return (
-        <ContentsContanier onClick={(e) => console.log('좌표:', e.clientY)}>
+        <ContentsContanier>
             {list.map((element, index) => {
                 return <EachFolder
                     // ref={dragComponentRef}

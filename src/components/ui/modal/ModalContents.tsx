@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { VFlex } from '../../../custom/ym/styleStore';
 import ModalContentsCover from './ModalContentsCover';
@@ -9,6 +9,8 @@ import { feedKeys } from '../../../apis/queries';
 import { api_token } from '../../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { BtnRadius } from '../element/buttons/BtnRadius';
+import { Inputs } from '../element/input/Inputs';
+import { Buttons } from '../element/buttons/Buttons';
 
 const FeedModalContents = ({ target }: { target: number }) => {
 
@@ -46,7 +48,50 @@ const FeedModalContents = ({ target }: { target: number }) => {
     )
 }
 
-export const ModalContents = { FeedModalContents };
+const CreateFolderModalContents = ({
+    dispatch,
+    listDispatch
+}: {
+    dispatch: React.Dispatch<React.SetStateAction<boolean>>,
+    listDispatch: React.Dispatch<React.SetStateAction<string[]>>
+}) => {
+    const [newFolder, setNewFolder] = useState<string>("");
+    const [validate, setValidate] = useState<boolean>(false);
+
+    const addListHandler = () => {
+        listDispatch(prev => {
+            const result = [...prev]
+            result.push(newFolder);
+            return result;
+        });
+        dispatch(prev => false);
+    }
+
+    return (
+        <ModalContentsContainer>
+            <VFlex>
+                <ModalContentsCover />
+                <FolderEditArea>
+                    <VFlex gap='12px' etc="align-items: center; margin-top : 20px;">
+                        <Inputs.CreateFolder value={newFolder} dispatch={setNewFolder} disableDispatch={setValidate} />
+                        {validate
+                            ? <Buttons.Large.Default onClick={addListHandler}>완료</Buttons.Large.Default>
+                            : <Buttons.Large.Inactive disabled>완료</Buttons.Large.Inactive>}
+                    </VFlex>
+                </FolderEditArea>
+            </VFlex>
+        </ModalContentsContainer>
+    )
+}
+
+export const ModalContents = { FeedModalContents, CreateFolderModalContents };
+
+const FolderEditArea = styled.div`
+    height: fit-content;
+    min-height: 772px;
+    width: 100%;
+    background-color:white;
+`
 
 const FeedSelectorLabel = styled.span`
     font-size: ${BODY_1.fontSize};

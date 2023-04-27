@@ -7,7 +7,7 @@ import { Buttons } from '../buttons/Buttons';
 import { TossedFeedData } from '../../../../custom/ym/types';
 import { queryClient } from '../../../..';
 
-type InputTextRenameProps = {
+interface InputTextRenameProps extends React.ComponentPropsWithRef<'input'> {
     value: string,
     dispatch: React.Dispatch<React.SetStateAction<string>>,
     disableDispatch: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,7 +20,7 @@ interface MypageQueryData {
     profilePic: string
 }
 
-const InputTextRename = ({ value, dispatch, disableDispatch }: InputTextRenameProps) => {
+const TextRename = ({ value, dispatch, disableDispatch }: InputTextRenameProps) => {
 
     const nickname = localStorage.getItem("nickname");
     const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +55,41 @@ const InputTextRename = ({ value, dispatch, disableDispatch }: InputTextRenamePr
     )
 }
 
-export default InputTextRename;
+const CreateFolder = ({ value, dispatch, disableDispatch }: InputTextRenameProps) => {
+
+    const folderList = localStorage.getItem("FolderList")?.split(",");
+    const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(prev => e.target.value);
+        const check = folderList?.find((element) => element === e.target.value);
+
+        if (!check && e.target.value !== "") {
+            disableDispatch(prev => true);
+        } else {
+            disableDispatch(prev => false);
+        }
+    }
+
+    const deleteClickHandler = () => {
+        dispatch(prev => "");
+        disableDispatch(prev => false);
+    }
+
+    return (
+        <InputBox>
+            <HFlexSpaceBetween gap='20px' height={"100%"}>
+                <Input value={value} onChange={inputChangeHandler} placeholder='폴더명을 입력하세요' maxLength={15} minLength={1} />
+                <Buttons.Others.IconButton
+                    width={16}
+                    height={16}
+                    onClick={deleteClickHandler}
+                    fileName='x gray_16.png'
+                />
+            </HFlexSpaceBetween>
+        </InputBox>
+    )
+}
+
+export const Inputs = { TextRename, CreateFolder };
 
 const Input = styled.input`
     width: 300px;
