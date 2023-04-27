@@ -19,7 +19,7 @@ export interface FeedCardData {
 }
 
 const PlaceCard = ({ dataset }: childrenForPlaceCard) => {
-    console.log(dataset);
+    // console.log(dataset);
     return (
         <PlaceCardRound>
             <HFlexSpaceBetween>

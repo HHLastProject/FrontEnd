@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { VFlex } from '../../custom/ym/styleStore';
 import FeedProfile from '../FeedProfile';
 import FeedPicture from './FeedPicture';
@@ -25,6 +25,9 @@ interface FeedCardData {
   nickname: string,
   createdAt: string,
   tag: [] | string[],
+  isLike: boolean, //좋아요
+  likeCount: number, //좋아요 개수
+  feedCommentCount: number, //댓글 개수
 }
 
 const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
@@ -41,6 +44,10 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
     isScrap: feedData?.isScrap,
     shopId: feedData?.shopId,
   };
+
+  useEffect(() => {
+    
+  }, [feedData?.isLike]);
 
   return (
     <>
@@ -59,6 +66,7 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
           createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
         />
       }
+
       {/* 피드 사진 */}
       <Link to={`${path.toFeedDetail + '/' + feedData?.feedId}`}>
         <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + feedData?.feedPic}</FeedPicture>
@@ -66,9 +74,9 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
 
       {/* 좋아요 댓글 */}
       <FeedLikeComment
-        isLike={true}
-        likeCount={11}
-        feedCommentCount={12}
+        isLike={feedData?.isLike}
+        likeCount={feedData?.likeCount}
+        feedCommentCount={feedData?.feedCommentCount}
         feedId={feedData?.feedId}
       />
 
@@ -81,6 +89,7 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
         </ExpandButton>
         : null
       }
+
       {/* 태그 */}
       <TagList>{feedData?.tag}</TagList>
 

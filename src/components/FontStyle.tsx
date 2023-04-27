@@ -2,6 +2,16 @@ import styled from "styled-components";
 import { fontType } from "./ui/styles/typo";
 import { colorSet } from "./ui/styles/color";
 
+//Heading
+export const Heading1 = styled.div<{color?: string}>`
+  ${fontType.heading_1}
+  color: ${({color}) => color};
+`;
+export const Heading2 = styled.div<{color?: string}>`
+  ${fontType.heading_2}
+  color: ${({color}) => color};
+`;
+
 //Title
 export const Title1 = styled.label<{color?: string}>`
   ${fontType.title_1}

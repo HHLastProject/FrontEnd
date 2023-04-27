@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import { path } from "../../shared/path";
 import { fontType } from "../ui/styles/typo";
 import { HFlex } from "../../custom/ym/styleStore";
+import usePutLike from "../../custom/jh/usePutLike";
+import { useState } from "react";
+import { getToken } from "../../apis/getToken";
 
 interface IFeedLikeComment {
   isLike: boolean,
@@ -13,17 +16,36 @@ interface IFeedLikeComment {
 };
 
 function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLikeComment) {
+  const {changeLike} = usePutLike(feedId);
+  const [like, setLike] = useState(isLike);
+  const token = getToken();
+
+  const onClickLike = () => {
+    if(token) {
+      changeLike();
+      setLike(prev => !prev);
+      console.log('하트누름', like);
+
+    } else {
+      alert('로그인 후 이용 가능합니다.');
+    }
+  }
+
   return (
     <FeedLikeCommentStyle>
-      <AlignCenter gap={5}>
-        {isLike 
-          ?
-          <IconLikeActive24/>
-          :
-          <IconLikeInactive24/>
-        }
-        <label>{likeCount}</label>
-      </AlignCenter>
+      <div
+        onClick={onClickLike}
+      >
+        <AlignCenter gap={5}>
+          {isLike
+            ?
+            <IconLikeActive24/>
+            :
+            <IconLikeInactive24/>
+          }
+          <label>{likeCount}</label>
+        </AlignCenter>
+      </div>
 
       <Link to={`${path.toFeedComment}/${feedId}`}>
         <AlignCenter gap={5}>

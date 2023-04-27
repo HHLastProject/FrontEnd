@@ -14,7 +14,7 @@ import SelectBox from '../components/SelectBox';
 import { TossedFeedData, categoryTypes } from '../custom/ym/types';
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
 import { ShopCategory } from '../apis/context';
-import NoResult from '../components/home/NoShop';
+import { Heading2, Title4 } from '../components/FontStyle';
 
 function FeedList() {
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();
@@ -37,12 +37,14 @@ function FeedList() {
         arr={['분위기 맛집', '디저트 맛집', '커피 맛집', '뷰 맛집']}
       />
       <FeedContainer>
-        <MarginBothSides20>
+        {/* 제목 */}
+        <div style={{margin: '0 20px'}}>
           <Heading2>Feed</Heading2>
-        </MarginBothSides20>
+        </div>
+
         {/* 필터버튼 */}
         <div style={{ overflow: 'hidden', marginLeft: `20px`}}>
-          <HFlex gap='4px'>
+          <HFlex gap='4px' etc={'margin-top: 15px'}>
             <OrderbyFilterBtn
             >
               {orderBy}
@@ -50,12 +52,14 @@ function FeedList() {
             <ListCategoryButtonBar />
           </HFlex>
         </div>
+
+        {/* FEED 리스트 */}
+        <div style={{marginBottom: '120px'}}>
         { feedList?.filter((item: TossedFeedData) => orderBy !== "태그" ? item?.tag.includes(orderBy) : item)
           .filter((item: TossedFeedData) => category !== "" ? item?.shopCategory === category : item)
           .map((item: any, index: number) => {
-            console.log('item',item);
             return (
-              <div key={`Feed${item.shopId + index}`}>
+              <div key={item.feedId}>
                 <VFlex gap='12px' etc='padding:20px;'>
                   <FeedContentsTest
                     feedData={item}
@@ -66,34 +70,28 @@ function FeedList() {
             )
           })
         }
+        </div>
+
         {/* 피드 작성 버튼 */}
-        <Link to={`${path.feedForm}`}>
-          <FeedPageWriteBtn>
-            <AlignItemCenter>
-              <IconPlusWhite24/>
-              <label>피드 작성</label>
-            </AlignItemCenter>
-          </FeedPageWriteBtn>
-        </Link>
       </FeedContainer>
+      <Link to={`${path.feedForm}`}>
+        <FeedPageWriteBtn>
+          <AlignItemCenter>
+            <IconPlusWhite24/>
+            <Title4 color='white'>피드 작성</Title4>
+          </AlignItemCenter>
+        </FeedPageWriteBtn>
+      </Link>
     </ShopCategory.Provider>
   )
 };
 
 export default FeedList
 
-const Heading2 = styled.div`
-  ${fontType.heading_2}
-  color: ${colorSet.textStrong};
-`;
-
 const FeedContainer = styled.div`
+  min-height: 100vh;
   margin: 40px 0 120px 0;
   position: relative;
-`;
-
-const MarginBothSides20 = styled.div`
-  margin: 0 20px;
 `;
 
 const AlignItemCenter = styled.div`
@@ -111,9 +109,7 @@ const FeedPageWriteBtn = styled.button`
   border: none;
   padding: 14px 24px;
   border-radius: 100px;
-  color: white;
   background-color: #B81B1B;
-  ${fontType.title_4}
 `;
 
 const FeedPageHr = styled.hr`

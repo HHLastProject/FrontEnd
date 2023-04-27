@@ -10,6 +10,7 @@ export const queryKeys: IQueryKey = {
   GET_FEEDS: ["GET_FEEDS"],
   GET_USER_FEED: ["GET_USER_FEED"],
   PUT_SCRAP: ["PUT_SCRAP"],
+  PUT_LIKE: ["PUT_LIKE"],
 };
 
 export const keys: IQueryKey = {
