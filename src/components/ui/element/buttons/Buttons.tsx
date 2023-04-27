@@ -8,7 +8,7 @@ import { BtnSize } from './BtnSize'
 import { BtnLargeLength, BtnMediumLength, BtnSmallLength } from './BtnLength'
 import { BtnText } from './BtnText'
 import BtnNavContents from './BtnNavContents'
-import { BtnNavProps, CategoryStateProp, ChildrenForJSX, DivProp, IconButtonProps, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
+import { BtnNavProps, CategoryStateProp, ChildrenForJSX, DivProp, EditNicknameProps, IconButtonProps, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 
@@ -269,7 +269,7 @@ const NavButton = ({ isActive = true, onClick, name, ...props }: NavStateProp) =
     )
 }
 
-const IconButton = ({ width, height, onClick, fileName, ...props }: IconButtonProps) => {
+const IconButton = ({ width, height, onClick, fileName, ...props }: EditNicknameProps) => {
     return (
         <BtnRadius.Default onClick={onClick} {...props}>
             <IconContainer width={width} height={height}>

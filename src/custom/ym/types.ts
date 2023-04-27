@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithoutRef, ElementType } from "react";
+import React, { ComponentPropsWithRef, ComponentPropsWithoutRef, ElementType } from "react";
 import { StringLiteralType } from "typescript";
 
 export type Font = {
@@ -36,7 +36,7 @@ export interface BtnNavProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 export interface NavStateProp extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     isActive?: boolean;
-    name?: NavButtonInputLimit | categoryTypes;
+    name?: NavButtonInputLimit | categoryTypes | string;
     id?: categoryTypes;
     children?: React.ReactNode;
 }
@@ -82,7 +82,7 @@ export interface BookmarkChildren extends ComponentPropsWithoutRef<'div'> {
 }
 
 export interface CategoryProp {
-    categoryState: categoryTypes | null;
+    categoryState: categoryTypes | string | null;
 }
 
 export type FeedApiPathType = "shop" | "mypage";
@@ -135,11 +135,11 @@ export interface ListTossedData {
     thumbnail: string,
 }
 
-export interface IconButtonProps extends ComponentPropsWithoutRef<'button'> {
+export interface IconButtonProps extends ComponentPropsWithRef<'button'> {
     fileName: string,
     width: number,
     height: number,
-    onClick: React.MouseEventHandler<HTMLButtonElement>,
+    onClick?: React.MouseEventHandler<HTMLButtonElement>,
 }
 export interface EditNicknameProps extends IconButtonProps {
     state?: boolean,
@@ -152,4 +152,44 @@ export interface PropsForSpaceHeader extends ComponentPropsWithoutRef<'button'> 
     children: React.ReactNode,
     state?: boolean,
     dispatch?: React.SetStateAction<boolean>
+}
+
+export type StateContextType = {
+    props: Feed | null,
+    propsFunc: React.Dispatch<React.SetStateAction<Feed | null>>,
+    isLogin: boolean,
+}
+export interface EachFeed {
+    feedId: number,
+    feedPic: string,
+    comment: string,
+    tags: string[] | null,
+    shopId: number,
+    shopName: string,
+    shopAddress: string,
+    shopThumbnail: string,
+    isScrap: boolean,
+}
+export interface Feed {
+    nickname: string,
+    profilePic: string,
+    feeds: (ReceivedFeed | null)[],
+    feedCount: number,
+}
+
+export interface ScrapListEachData {
+    shopId: number,
+    address: string,
+    shopName: string,
+    thumbnail: string,
+    feedCount: number,
+    isScrap: boolean,
+    category: string,
+    folderName: string,
+}
+
+export interface EachFolderProps extends ComponentPropsWithRef<'div'> {
+    name: string,
+    dispatch: React.Dispatch<React.SetStateAction<string[]>>,
+    index: number
 }

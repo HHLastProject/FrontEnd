@@ -24,6 +24,7 @@ import FeedForm from '../pages/FeedForm'
 import Bookmark from '../pages/Bookmark'
 import FeedList from '../pages/FeedList'
 import EditNickname from '../pages/EditNickname'
+import FolderList from '../pages/FolderList'
 
 
 const Router = () => {
@@ -49,6 +50,7 @@ const Router = () => {
             <Route path={path.redirectKakao} element={<RedirectKakao />} />
 
             <Route path={path.bookmark} element={<Bookmark />} />
+            <Route path={path.folderList} element={<FolderList />} />
 
             <Route path={path.mypage} element={<Mypage />} />
             <Route path={path.allFeeds} element={<AllFeeds />} />

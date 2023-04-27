@@ -27,7 +27,7 @@ const BookmarkCard = ({ data }: BookmarkChildren) => {
             </ThumbnailFrame>
             <VFlex height='100px' etc='align-items:base-line;'>
                 <ShopName>{data.shopName}</ShopName>
-                <ShopSummary>{convertAddress(data.address)}</ShopSummary>
+                <ShopSummary>{`${convertAddress(data.address)} | ${data.category}`}</ShopSummary>
                 <ShopSummary>피드 {data.feedCount}</ShopSummary>
             </VFlex>
         </HFlex>

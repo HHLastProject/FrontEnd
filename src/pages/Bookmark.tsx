@@ -8,7 +8,7 @@ const Bookmark = () => {
     return (
         <BookmarkContainer>
             <VFlex>
-                <Headers.JustTitle>Favorite</Headers.JustTitle>
+                <Headers.BookmarkHeader>Favorite</Headers.BookmarkHeader>
                 <BookmarkList />
             </VFlex>
         </BookmarkContainer>

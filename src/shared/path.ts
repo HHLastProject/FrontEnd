@@ -36,7 +36,10 @@ export const path: IPath = {
   adminLogin: "/admin/login",
   redirectNaver: "/redirect/naver",
   redirectKakao: "/redirect/kakao",
+
   bookmark: "/bookmark",
+  folderList: "/folder",
+
   mypage: '/mypage',
   allFeeds: "/mypage/feeds/:userId",
   toFeedDetail: "/feed/detail",
@@ -89,5 +92,8 @@ export const iconImgPath: IPathObject = {
   },
   arrow: {
     chevrondown16: setPublicUrl(`/chevrondown_16.png`),
+  },
+  bookmark: {
+    noFolder: setPublicUrl(`/images/bookmark/no_folder.png`),
   }
 };

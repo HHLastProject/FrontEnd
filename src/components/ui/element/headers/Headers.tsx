@@ -7,14 +7,17 @@ import { Buttons } from '../buttons/Buttons'
 import { colorSet } from '../../styles/color'
 import { BtnBorder } from '../buttons/BtnBorder'
 import { BtnRadius } from '../buttons/BtnRadius'
+import BookmarkHeaderButtons from './BookmarkHeaderButtons'
+import { useNavigate } from 'react-router-dom'
 
 
-const JustTitle = ({ children, ...props }: ChildrenForSpan) => {
+const BookmarkHeader = ({ children, ...props }: ChildrenForSpan) => {
     return (
         <HeaderContainer>
-            <HFlex etc='padding:10px 20px;'>
+            <HFlexSpaceBetween etc='padding:10px 20px;'>
                 <TitleSpan>{children}</TitleSpan>
-            </HFlex>
+                <BookmarkHeaderButtons />
+            </HFlexSpaceBetween>
         </HeaderContainer>
     )
 }
@@ -35,7 +38,7 @@ const BackAndFinish = ({ children, BackOnClick, RightOnClick, state, ...props }:
                     fileName='back_24.png'
                 />
                 <BtnRadius.Default onClick={RightOnClick} disabled={state as boolean}>
-                    <FinishText able={state as boolean}>{children}</FinishText>
+                    <RightButtonText able={state as boolean}>{children}</RightButtonText>
                 </BtnRadius.Default>
                 {/* <Button onClick={clickHandler} disabled>
                     <span>{children}</span>
@@ -45,7 +48,39 @@ const BackAndFinish = ({ children, BackOnClick, RightOnClick, state, ...props }:
     )
 }
 
-export const Headers = { JustTitle, BackAndFinish }
+const FolderListHeader = () => {
+
+    const navi = useNavigate();
+
+    const backClickHandler = () => {
+        localStorage.removeItem("FolderList");
+        navi(-1);
+    }
+
+    const addFolderClickHandler = () => {
+    }
+
+    return (
+        <HeaderContainer>
+            <HFlexSpaceBetween height='100%' etc='padding:0px 20px;'>
+                <Buttons.Others.IconButton
+                    width={24}
+                    height={24}
+                    onClick={backClickHandler}
+                    fileName='back_24.png'
+                />
+                <BtnRadius.Default onClick={addFolderClickHandler}>
+                    <RightButtonText>폴더추가</RightButtonText>
+                </BtnRadius.Default>
+                {/* <Button onClick={clickHandler} disabled>
+                    <span>{children}</span>
+                </Button> */}
+            </HFlexSpaceBetween>
+        </HeaderContainer>
+    )
+}
+
+export const Headers = { BookmarkHeader, BackAndFinish, FolderListHeader }
 
 const Button = styled.button`
     border: none;
@@ -54,7 +89,7 @@ const Button = styled.button`
     margin: 0;
 `
 
-const FinishText = styled.span<{ able: boolean }>`
+const RightButtonText = styled.span<{ able?: boolean }>`
     font-size: ${TITLE_4.fontSize};
     line-height: ${TITLE_4.lineHeight};
     font-weight: ${TITLE_4.fontWeight};
