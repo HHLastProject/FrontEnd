@@ -7,6 +7,9 @@ export const Title5 = styled.label`
   color: ${colorSet.textStrong};
 `;
 
+export const Body1 = styled.label`
+  ${fontType.body_1}
+`;
 export const Body3 = styled.label`
   ${fontType.body_3}
   color: ${colorSet.textStrongMedium};

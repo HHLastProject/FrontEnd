@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import { HFlex, VFlex } from '../../custom/ym/styleStore';
 import useNavigateHandler from '../../custom/jh/useNavigateHandler';
 import { LoginCheck } from '../Authentication';
-import { Title5 } from '../FontStyle';
+import { Body1, Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
 import { path } from '../../shared/path';
 import { ReactNode } from 'react';
 
 //close == true : 뒤로가기 버튼이 x로 바뀜
 //scrap == true : 스크랩 버튼
-const ListHeader = ({range, close, feedForm, children, scrap}: {range?: number, close?: boolean, feedForm?: true, children?: ReactNode, scrap?: boolean}) => {
+const ListHeader = ({name, range, close, feedForm, children, scrap}: {name?: string, range?: number, close?: boolean, feedForm?: true, children?: ReactNode, scrap?: boolean}) => {
   const {backClickHandler} = useNavigateHandler();
   const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
 
@@ -23,6 +23,7 @@ const ListHeader = ({range, close, feedForm, children, scrap}: {range?: number, 
             <Image src={backIconSrc} alt="" />
           </ButtonContainer>
         </div>
+        {name && <div style={{width: '100%'}}><Body1>{name}</Body1></div>}
         {range && 
           <>
             <VFlex etc="height:fit-content">
