@@ -49,7 +49,7 @@ const ListHeader = ({name, range, close, feedForm, children, scrap}: {name?: str
               {/* 검색하기 */}
               <Link
                 to={`${path.search}`}
-                state={{toShopDetail: true}}
+                state={{link: null}}
               >
                 <ButtonContainer>
                   <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />

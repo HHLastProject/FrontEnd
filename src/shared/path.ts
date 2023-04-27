@@ -63,6 +63,7 @@ export const imgPath: IPath = {
   shopMenuImg: setServerUrl(`/uploads/shopMenu/`),
   shopThumbnailImg: setServerUrl(`/uploads/shopThumbnail/`),
   feedImg: setServerUrl(`/uploads/`),
+  userProfileImg: setServerUrl(`/uploads/`),
 };
 
 export const defaultImgPath: IPath = {

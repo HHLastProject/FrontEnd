@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-import { defaultImgPath, path } from '../shared/path';
+import { path } from '../shared/path';
 import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
 import SearchStore from '../components/search/SearchInput';
@@ -125,7 +125,7 @@ function FeedForm() {
           </FeedFormTitle>
           <Link
             to={`${path.search}`}
-            state={{toFeedForm: true}}
+            state={{link: `${path.feedForm}`}}
           >
             <SearchStore
               inputValue={inputValue}

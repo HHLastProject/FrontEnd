@@ -23,7 +23,7 @@ import Home from '../pages/Home'
 import FeedForm from '../pages/FeedForm'
 import Bookmark from '../pages/Bookmark'
 import FeedList from '../pages/FeedList'
-import FeedDetailComment from '../pages/FeedComment'
+import FeedDetailComment from '../pages/FeedDetailComment'
 
 const Router = () => {
   return (

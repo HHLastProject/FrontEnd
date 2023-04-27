@@ -8,17 +8,20 @@ import ListHeader from '../components/home/ListHeader';
 import SearchResultList from '../components/search/SearchResultList';
 import NoResult from '../components/home/NoShop';
 
+interface IDataList {
+  shopId: number,
+  shopName: string,
+  shopAddress: string,
+  lat : number,
+  lng : number,
+}
+
+//Link state로 돌아갈 link 값을 받고, 클릭하면 location.state.link로 다시 돌아가는 로직
 function Search() {
   const [inputValue, setInputValue] = useState('');
-  const [dataList, setDataList] = useState([]);
-  let link = '';
+  const [dataList, setDataList] = useState<undefined | IDataList[] | []>(undefined);
   const location = useLocation();
-
-  interface IDataList {
-    shopId: number,
-    shopName: string,
-    shopAddress: string,
-  }
+  let link = '';
 
   return (
     <>
@@ -27,6 +30,7 @@ function Search() {
       />
       <SearchWrap>
         <SearchWrapContainer>
+          {/* 디바운스 적용된 검색 로직 들어있는 input */}
           <SearchStore
             inputValue={inputValue}
             setInputValue={setInputValue}
@@ -34,19 +38,23 @@ function Search() {
             placeholder={'카페 이름 검색하기'}
           />
 
+          {/* 검색 결과 */}
           <div className='search-result-list'>
-            {(dataList?.length !== 0) && dataList?.map((item: IDataList) => {
-              if(location.state.toShopDetail) {
-                link = `${path.toShopDetail}/${item.shopId}`;
-              }
-              if(location.state.toFeedForm) {
-                link = `${path.feedForm}`;
-              }
+            {(dataList !== undefined) ? ((dataList?.length !== 0) && dataList?.map((item: IDataList) => {
+              // state로 받는 값에 따라 링크가 달라짐
+              link = `${path.toShopDetail}/${item.shopId}`;
+              if(location.state.link) {link = location.state.link;}
+
               return(
                 <div key={item.shopId}>
                   <Link 
                     to={link}
-                    state={{shopId: item.shopId, shopName: item.shopName}}
+                    state={{
+                      shopId: item.shopId, 
+                      shopName: item.shopName, 
+                      lat: item.lat, 
+                      lng: item.lng,
+                    }}
                   >
                     <SearchResultList
                       shopId={item.shopId}
@@ -56,8 +64,13 @@ function Search() {
                   </Link>
                 </div>
               )
-            }).length === 0 && <NoResult search={true} />
+            }))
+            :
+            <></>
             }
+
+            {/* undefined일 때 아무것도 없고, []일때 결과없음 띄움 */}
+            {(dataList !== undefined) && (dataList?.length === 0 && <NoResult search={true} />)}
           </div>
         </SearchWrapContainer>
       </SearchWrap>
@@ -94,6 +107,5 @@ const SearchWrapContainer = styled.div`
     img {
       width: 20px;
     }
-    
   }
 `;
