@@ -97,4 +97,7 @@ export const iconImgPath: IPathObject = {
   comment: {
     comment24: setPublicUrl(`/icon/comment_24.png`),
   },
+  etc: {
+    etc1: setPublicUrl(`/icon/etc_btn_24.png`),
+  }
 };

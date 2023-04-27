@@ -10,3 +10,8 @@ function useOnClickHiddenHandler(defaultValue: boolean) {
 }
 
 export default useOnClickHiddenHandler
+
+export const displayHandler = (id: string) => {
+  const el = document.getElementById(id);
+  if(el) el.style.display = 'none';
+}

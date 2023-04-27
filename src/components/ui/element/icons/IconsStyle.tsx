@@ -57,3 +57,12 @@ export const IconComment24 = () => {
     </IconSize24>
   )
 }
+
+//...버튼
+export const IconEtc24 = () => {
+  return(
+    <IconSize24>
+      <img src={iconImgPath.etc.etc1} alt="그 외" />
+    </IconSize24>
+  )
+}
