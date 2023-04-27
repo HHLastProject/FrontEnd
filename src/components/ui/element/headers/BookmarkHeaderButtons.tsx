@@ -6,12 +6,13 @@ import { BtnRadius } from '../buttons/BtnRadius';
 import { Buttons } from '../buttons/Buttons';
 import { HFlex } from '../../../../custom/ym/styleStore';
 import { useNavigate } from 'react-router-dom';
+import { path } from '../../../../shared/path';
 
 const BookmarkHeaderButtons = () => {
     const navi = useNavigate();
 
     const folderListHandler = () => {
-        navi('/folder');
+        navi(path.folderList);
     }
 
     return (

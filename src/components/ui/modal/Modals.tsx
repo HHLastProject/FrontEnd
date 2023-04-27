@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import FeedContents from '../../feed/FeedContents';
 import { ModalContents } from './ModalContents';
 import { VFlexCenter } from '../../../custom/ym/styleStore';
+import { FolderData } from '../../../custom/ym/types';
 
 const Feed = ({ stateDispatch, params }: { stateDispatch: React.Dispatch<React.SetStateAction<boolean>>, params: number }) => {
     const backgroundClickHandler = () => {
@@ -23,7 +24,7 @@ const CreateFolder = ({
     listDispatch
 }: {
     dispatch: React.Dispatch<React.SetStateAction<boolean>>,
-    listDispatch: React.Dispatch<React.SetStateAction<string[]>>,
+    listDispatch: React.Dispatch<React.SetStateAction<FolderData[]>>,
 }) => {
     return (
         <ModalContainer>

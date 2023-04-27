@@ -1,13 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { HFlexSpaceBetween } from '../../../../custom/ym/styleStore';
 import { BODY_3 } from '../../../../custom/ym/variables';
 import { colorSet } from '../../styles/color';
 import { Buttons } from '../buttons/Buttons';
-import { TossedFeedData } from '../../../../custom/ym/types';
+import { FolderData, TossedFeedData } from '../../../../custom/ym/types';
 import { queryClient } from '../../../..';
 
 interface InputTextRenameProps extends React.ComponentPropsWithRef<'input'> {
+    value: string,
+    dispatch: React.Dispatch<React.SetStateAction<string>>,
+    disableDispatch: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface InputCreateFolderProps {
     value: string,
     dispatch: React.Dispatch<React.SetStateAction<string>>,
     disableDispatch: React.Dispatch<React.SetStateAction<boolean>>
@@ -55,29 +61,29 @@ const TextRename = ({ value, dispatch, disableDispatch }: InputTextRenameProps) 
     )
 }
 
-const CreateFolder = ({ value, dispatch, disableDispatch }: InputTextRenameProps) => {
+const CreateFolder = ({ value, dispatch, disableDispatch }: InputCreateFolderProps) => {
 
-    const folderList = localStorage.getItem("FolderList")?.split(",");
-    const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(prev => e.target.value);
-        const check = folderList?.find((element) => element === e.target.value);
+    // const folderList = localStorage.getItem("FolderList")?.split(",");
+    // const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // dispatch(prev => e.target.value);
+    // const check = folderList?.find((element) => element. === e.target.value);
 
-        if (!check && e.target.value !== "") {
-            disableDispatch(prev => true);
-        } else {
-            disableDispatch(prev => false);
-        }
-    }
+    // if (!check && e.target.value !== "") {
+    //     disableDispatch(prev => true);
+    // } else {
+    //     disableDispatch(prev => false);
+    // }
+    // }
 
     const deleteClickHandler = () => {
-        dispatch(prev => "");
+        // dispatch(prev => "");
         disableDispatch(prev => false);
     }
 
     return (
         <InputBox>
             <HFlexSpaceBetween gap='20px' height={"100%"}>
-                <Input value={value} onChange={inputChangeHandler} placeholder='폴더명을 입력하세요' maxLength={15} minLength={1} />
+                <Input value={value} onChange={(e) => dispatch(e.target.value)} placeholder='폴더명을 입력하세요' maxLength={15} minLength={1} />
                 <Buttons.Others.IconButton
                     width={16}
                     height={16}

@@ -3,7 +3,7 @@ import { HFlex } from '../../custom/ym/styleStore'
 import { FILTER_LIST } from '../../custom/ym/variables'
 import { Categories } from '../ui/element/tags/Categories'
 import uuid from 'react-uuid'
-import { ReceivedBookmarks, ScrapListEachData, categoryTypes } from '../../custom/ym/types'
+import { FolderData, ReceivedBookmarks, ScrapListEachData, categoryTypes } from '../../custom/ym/types'
 import BookmarkLoginComp from './BookmarkLoginComp'
 import BookmarkLogoutComp from './BookmarkLogoutComp'
 import { bookmarkData } from '../../custom/ym/dummydata'
@@ -14,8 +14,8 @@ import { scrapKeys } from '../../apis/queries'
 
 const BookmarkList = () => {
     // const [category, setCategory] = useState<categoryTypes | null>(null);
-    const [folder, setFolder] = useState<string | null>("");
-    const [folderList, setFolderList] = useState<string[]>([]);
+    const [folder, setFolder] = useState<FolderData | null>();
+    const [folderList, setFolderList] = useState<FolderData[]>([]);
     const [scrapList, setScrapList] = useState<ScrapListEachData[]>([]);
     const [isLogin, setIsLogin] = useState<boolean>(false);
 
@@ -23,12 +23,13 @@ const BookmarkList = () => {
         queryKey: scrapKeys.GET_SCRAP,
         queryFn: async () => {
             const res = await api_token.get(apiPath.scrapList);
+            console.log('데이터', res.data);
             return res.data as ReceivedBookmarks;
         },
-        cacheTime: 60000,
         onSuccess(data) {
             setScrapList(data.scrapList);
             setFolderList(data.folderList);
+            setFolder(data.folderList[0]);
             return data;
         },
         onError(err) {
@@ -38,58 +39,43 @@ const BookmarkList = () => {
 
     const folderClickHandler = (
         e: React.MouseEvent<HTMLButtonElement>,
-        element: string
+        element: FolderData
     ) => {
-
         if (isLogin) {
-            element === folder
+            element.folderName === folder?.folderName
                 ? setFolder(null)
                 : setFolder(element)
-        } else;
-
-        console.log(folder);
+        }
     }
 
     useEffect(() => {
         refetch();
         localStorage.getItem("access_token") && setIsLogin(prev => !prev);
-        setFolder("즐겨찾기");
-        data?.folderList && setFolderList(prev => [...data?.folderList as string[]]);
-        localStorage.setItem("FolderList", `${folderList}`);
-        // console.log('폴더리스트:', folderList);
+        data?.folderList && setFolderList(data?.folderList);
+        // const folderListForMap = data?.folderList as FolderData[];
+        // localStorage.setItem("FolderList", `${data?.folderList}`);
     }, [])
 
     return (
         <>
             <HFlex gap='2px' height='fit-content' etc="padding:8px 20px;">
-                {folder
-                    ? <Categories.Active
-                        name={"즐겨찾기"}
-                        onClick={(e) => folderClickHandler(e, "즐겨찾기")}
-                    >즐겨찾기</Categories.Active>
-                    : <Categories.Inactive
-                        name={"즐겨찾기"}
-                        onClick={(e) => folderClickHandler(e, "즐겨찾기")}
-                    >즐겨찾기</Categories.Inactive>
-                }
-
                 {
                     folderList.length > 0 && folderList.map((element) => {
                         if (folder === element) {
                             return (
                                 <Categories.Active
                                     key={uuid()}
-                                    name={element}
+                                    name={element.folderName}
                                     onClick={(e) => folderClickHandler(e, element)}
-                                >{element}</Categories.Active>
+                                >{element.folderName}</Categories.Active>
                             );
                         } else {
                             return (
                                 <Categories.Inactive
                                     key={uuid()}
-                                    name={element}
+                                    name={element.folderName}
                                     onClick={(e) => folderClickHandler(e, element)}
-                                >{element}</Categories.Inactive>
+                                >{element.folderName}</Categories.Inactive>
                             )
                         }
                     })
@@ -97,7 +83,7 @@ const BookmarkList = () => {
             </HFlex>
             {
                 isLogin
-                    ? <BookmarkLoginComp folderState={folder} />
+                    ? <BookmarkLoginComp folderState={folder as FolderData} />
                     : <BookmarkLogoutComp />
             }
         </>

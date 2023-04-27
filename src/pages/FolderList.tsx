@@ -6,12 +6,13 @@ import ListedFolders from '../components/bookmark/ListedFolders';
 import { Modals } from '../components/ui/modal/Modals';
 import { queryClient } from '..';
 import { scrapKeys } from '../apis/queries';
-import { ReceivedBookmarks } from '../custom/ym/types';
+import { FolderData, ReceivedBookmarks } from '../custom/ym/types';
 
 const FolderList = () => {
 
-    const [folderList, setFolderList] = useState<string[]>(['']);
+    const [folderList, setFolderList] = useState<FolderData[]>();
     const [modal, setModal] = useState<boolean>(false);
+
 
     useEffect(() => {
         !queryClient.getQueryData(scrapKeys.GET_SCRAP) && queryClient.refetchQueries({
@@ -22,22 +23,30 @@ const FolderList = () => {
         const data = queryClient.getQueryData(scrapKeys.GET_SCRAP) as ReceivedBookmarks;
         const folderList = data.folderList;
         setFolderList(folderList);
-        // const listFromLocal = localStorage.getItem("FolderList")
-        //     ? localStorage.getItem("FolderList")?.split(",")
-        //     : null;
-        // setList(prev => listFromLocal as string[]);
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("FolderList", `${folderList}`);
-        // console.log('완료후:', folderList);
-    }, [folderList]);
+    // useEffect(() => {
+    //     localStorage.setItem("FolderList", `${folderList}`);
+    //     // console.log('완료후:', folderList);
+    // }, [folderList]);
 
     return (
         <FolderListContainer>
-            {modal ? <Modals.CreateFolder dispatch={setModal} listDispatch={setFolderList} /> : null}
+            {
+                modal
+                    ? <Modals.CreateFolder
+                        dispatch={setModal}
+                        listDispatch={setFolderList as React.Dispatch<React.SetStateAction<FolderData[]>>}
+                    /> : null
+            }
             <Headers.FolderListHeader dispatch={setModal} />
-            {folderList === null ? <NoExistFolders /> : <ListedFolders list={folderList} dispatch={setFolderList} />}
+            {
+                !folderList
+                    ? <NoExistFolders />
+                    : <ListedFolders
+                        list={folderList}
+                        dispatch={setFolderList as React.Dispatch<React.SetStateAction<FolderData[]>>} />
+            }
         </FolderListContainer>
     )
 }

@@ -5,6 +5,11 @@ import { BODY_1 } from '../../custom/ym/variables';
 import { Buttons } from '../ui/element/buttons/Buttons';
 import { colorSet } from '../ui/styles/color';
 import { EachFolderProps } from '../../custom/ym/types';
+import { useMutation } from '@tanstack/react-query';
+import { scrapKeys } from '../../apis/queries';
+import { api_token } from '../../shared/api';
+import { apiPath } from '../../shared/path';
+import { queryClient } from '../..';
 
 const EachFolder = ({
     name,
@@ -12,10 +17,21 @@ const EachFolder = ({
     index,
     ...props }: EachFolderProps) => {
 
+    const { mutate } = useMutation({
+        mutationKey: scrapKeys.DELETE_FOLDER,
+        mutationFn: async (folderNumber: number) => {
+            const res = await api_token.delete(apiPath.deleteScrapFolder + `/${folderNumber}`);
+            console.log(res);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(scrapKeys.GET_SCRAP);
+        }
+    })
+
     const deleteClickHandler = () => {
         dispatch(prev => [...prev].filter((element) => element !== name));
+        mutate(name.folderId);
     };
-
 
     const moveClickHandler = (direction: string, index: number) => {
         console.log(index);
@@ -50,7 +66,7 @@ const EachFolder = ({
         <Container draggable>
             <VFlexCenter>
                 <HFlexSpaceBetween height='56px' etc='flex:1;'>
-                    <FolderName>{name}</FolderName>
+                    <FolderName>{name.folderName}</FolderName>
                     <HFlex gap="16px" width='fit-content'>
                         <Buttons.Others.IconButton
                             width={24}

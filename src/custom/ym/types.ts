@@ -86,7 +86,7 @@ export interface CategoryProp {
 }
 
 export interface FolderProp {
-    folderState: string | null;
+    folderState: FolderData | null;
 }
 
 export type FeedApiPathType = "shop" | "mypage";
@@ -193,12 +193,17 @@ export interface ScrapListEachData {
 }
 
 export interface EachFolderProps extends ComponentPropsWithRef<'div'> {
-    name: string,
-    dispatch: React.Dispatch<React.SetStateAction<string[]>>,
+    name: FolderData,
+    dispatch: React.Dispatch<React.SetStateAction<FolderData[]>>,
     index: number
 }
 
+export interface FolderData {
+    folderId: number,
+    folderName: string,
+}
+
 export interface ReceivedBookmarks {
-    folderList: string[],
+    folderList: FolderData[],
     scrapList: ScrapListEachData[],
 }

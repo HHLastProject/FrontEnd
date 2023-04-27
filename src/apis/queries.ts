@@ -30,6 +30,7 @@ export const mapQueryKeys: IQueryKey = {
 export const scrapKeys: IQueryKey = {
   GET_SCRAP: ["GET_SCRAP"],
   POST_FOLDER: ["POST_FOLDER"],
+  DELETE_FOLDER: ["DELETE_FOLDER"],
 }
 
 export const mypageKeys: IQueryKey = {
