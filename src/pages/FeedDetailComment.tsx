@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ListHeader from '../components/home/ListHeader'
 import DefaultWrap from '../components/ui/container/Wrap'
 import { HiddenContext } from '../apis/context'
@@ -8,24 +8,44 @@ import FeeaDetailCommentEl from '../components/feed/FeeaDetailCommentComp'
 import SelectBox from '../components/SelectBox'
 import { TextareaStyle } from '../components/search/SearchInput'
 import { colorSet } from '../components/ui/styles/color'
-import { useParams } from 'react-router-dom'
-
-export const usePostFeedDetailComment = (feedId: number) => {
-
-}
+import { useNavigate, useParams } from 'react-router-dom'
+import { SelectData } from '../shared/select'
+import postFeedDetailComment from '../custom/jh/postFeedDetailComment'
+import { getToken } from '../apis/getToken'
+import { path } from '../shared/path'
 
 function FeedDetailComment() {
+  const feedId = Number(useParams().feedId);
+  const [inputValue, setInputValue] = useState<string>('');
   const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
-  const feedId = Number(useParams());
+  const navi = useNavigate();
 
-  const postFeedDetailComment = (feedId: number) => {
-    
-  }
+  const addFeedDetailComment = (feedId: number) => {
+    console.log(inputValue.length);
+    console.log(feedId);
+
+    if(!getToken()) {
+      const result = window.confirm('로그인 하시겠습니까?');
+      if(result) {navi(path.login)};
+    }
+
+    if(inputValue !== ''){
+      //댓글 데이터 전송
+      postFeedDetailComment({feedId: feedId, feedComment: inputValue})
+      .then((res) => alert('댓글이 추가되었습니다.'));
+    } else {
+      alert('댓글을 입력해주세요.');
+    }
+
+    if(inputValue.length > 600) {
+      alert('600자 이하로 입력해주세요.');
+    }
+  };
 
   return (
     <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
       <SelectBox
-        arr={['수정하기', '삭제하기']}
+        arr={SelectData.MODIFY_DELETE_SELECT}
       />
 
       {/* 헤더 */}
@@ -43,19 +63,22 @@ function FeedDetailComment() {
           <textarea
             maxLength={600}
             rows={2}
+            onChange={(e) => setInputValue(e.target.value)}
             required
           />
           <button
-            onClick={() => postFeedDetailComment(feedId)}
+            onClick={() => addFeedDetailComment(feedId)}
           >
             추가
           </button>
         </TextareaStyle>
 
         {/* 댓글 */}
-        <FeeaDetailCommentEl
-          commentList={feeaCommentList}
-        />
+        <div style={{margin: '12px 0'}}>
+          <FeeaDetailCommentEl
+            commentList={feeaCommentList}
+          />
+        </div>
       </DefaultWrap>
     </HiddenContext.Provider>
   )

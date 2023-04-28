@@ -14,6 +14,7 @@ import { TossedFeedData, categoryTypes } from '../custom/ym/types';
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
 import { HiddenContext, ShopCategory } from '../apis/context';
 import { Heading2, Title4 } from '../components/FontStyle';
+import { SelectData } from '../shared/select';
 
 function FeedList() {
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();
@@ -30,7 +31,7 @@ function FeedList() {
     }>
     <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
       <SelectBox
-        arr={['분위기 맛집', '디저트 맛집', '커피 맛집', '뷰 맛집']}
+        arr={SelectData.TAG_SELECT}
       />
       <FeedContainer>
         {/* 제목 */}

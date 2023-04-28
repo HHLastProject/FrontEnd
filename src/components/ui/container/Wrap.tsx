@@ -11,5 +11,5 @@ export default DefaultWrap
 
 const DefaultWrapStyle = styled.div`
   min-height: 100vh;
-  margin: 0 20px;
+  padding: 0 20px;
 `;

@@ -14,6 +14,7 @@ import { HFlex } from '../custom/ym/styleStore';
 import { HiddenContext, ShopCategory } from '../apis/context';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import NoResult from '../components/home/NoShop';
+import { SelectData } from '../shared/select';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
@@ -53,7 +54,7 @@ const List = () => {
     }>
     <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
       <SelectBox
-        arr={['거리순', '인기순']}
+        arr={SelectData.SHOP_LIST}
       />
       <ListHeader
         range={range}

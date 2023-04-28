@@ -111,7 +111,6 @@ export const InputStyle = styled.input<{margin?: string}>`
 `;
 
 export const TextareaStyle = styled.div<{margin?: string, padding?: string, border?: string, radius?: string}>`
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
