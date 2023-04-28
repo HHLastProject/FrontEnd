@@ -99,5 +99,9 @@ export const iconImgPath: IPathObject = {
   },
   etc: {
     etc1: setPublicUrl(`/icon/etc_btn_24.png`),
+  },
+  upload: {
+    commentActive40: setPublicUrl(`/images/button/btn_send_active.png`),
+    commentInactive40: setPublicUrl(`/images/button/btn_send_inactive.png`),
   }
 };

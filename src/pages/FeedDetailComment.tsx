@@ -14,6 +14,8 @@ import postFeedDetailComment from '../custom/jh/postFeedDetailComment'
 import { getToken } from '../apis/getToken'
 import { path } from '../shared/path'
 import useGetFeedDetailComment from '../custom/jh/useGetFeedDetailComment'
+import styled from 'styled-components'
+import { IconUploadActive, IconUploadInactive } from '../components/ui/element/icons/IconsStyle'
 
 function FeedDetailComment() {
   const navi = useNavigate();
@@ -72,11 +74,18 @@ function FeedDetailComment() {
             placeholder='댓글 입력하기'
             required
           />
-          <button
+          {/* 댓글 추가 버튼 */}
+          <div
+            style={{width: '40px', height: '40px', cursor: 'pointer'}}
             onClick={() => addFeedDetailComment(feedId)}
           >
-            추가
-          </button>
+            {(inputValue.length === 0)
+            ?
+            <IconUploadActive/>
+            :
+            <IconUploadInactive/>
+            }
+          </div>
         </TextareaStyle>
 
         {/* 댓글 */}
@@ -94,3 +103,10 @@ function FeedDetailComment() {
 }
 
 export default FeedDetailComment
+
+const CommentPostBtn = styled.button<{width?: string, height?: string}>`
+  width: ${({width}) => width};
+  height: ${({height}) => height};
+  border: none;
+  border-radius: 100px;
+`;

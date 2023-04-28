@@ -41,8 +41,17 @@ export const IconSize24 = styled.span`
 `;
 
 export const IconSize28 = styled.span`
+  ${centered()}
   img {
     width: 28px;
     height: 28px;
+  }
+`;
+
+export const IconSize40 = styled.span`
+  ${centered()}
+  img {
+    width: 40px;
+    height: 40px;
   }
 `;

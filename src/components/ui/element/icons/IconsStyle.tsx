@@ -1,5 +1,5 @@
 import { iconImgPath } from "../../../../shared/path"
-import { IconSize12, IconSize16, IconSize24 } from "./IconSize"
+import { IconSize12, IconSize16, IconSize24, IconSize40 } from "./IconSize"
 
 export const IconPencil = () => {
   return (
@@ -49,7 +49,7 @@ export const IconLikeActive24 = () => {
   )
 }
 
-//코멘트
+//댓글 페이지 이동 버튼
 export const IconComment24 = () => {
   return(
     <IconSize24>
@@ -64,5 +64,21 @@ export const IconEtc24 = () => {
     <IconSize24>
       <img src={iconImgPath.etc.etc1} alt="그 외" />
     </IconSize24>
+  )
+}
+
+//댓글 추가하기 버튼
+export const IconUploadActive = () => {
+  return(
+    <IconSize40>
+      <img src={iconImgPath.upload.commentActive40}/>
+    </IconSize40>
+  )
+}
+export const IconUploadInactive = () => {
+  return(
+    <IconSize40>
+      <img src={iconImgPath.upload.commentInactive40}/>
+    </IconSize40>
   )
 }
