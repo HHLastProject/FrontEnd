@@ -13,17 +13,22 @@ import { SelectData } from '../shared/select'
 import postFeedDetailComment from '../custom/jh/postFeedDetailComment'
 import { getToken } from '../apis/getToken'
 import { path } from '../shared/path'
+import useGetFeedDetailComment from '../custom/jh/useGetFeedDetailComment'
 
 function FeedDetailComment() {
+  const navi = useNavigate();
   const feedId = Number(useParams().feedId);
   const [inputValue, setInputValue] = useState<string>('');
   const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
-  const navi = useNavigate();
+
+  //data
+  const {
+    feedDetailCommentData,
+    feedDetailCommentIsLoading,
+    feedDetailCommentIsError,
+  } = useGetFeedDetailComment(feedId);
 
   const addFeedDetailComment = (feedId: number) => {
-    console.log(inputValue.length);
-    console.log(feedId);
-
     if(!getToken()) {
       const result = window.confirm('로그인 하시겠습니까?');
       if(result) {navi(path.login)};
@@ -64,6 +69,7 @@ function FeedDetailComment() {
             maxLength={600}
             rows={2}
             onChange={(e) => setInputValue(e.target.value)}
+            placeholder='댓글 입력하기'
             required
           />
           <button
@@ -76,7 +82,7 @@ function FeedDetailComment() {
         {/* 댓글 */}
         <div style={{margin: '12px 0'}}>
           <FeeaDetailCommentEl
-            commentList={feeaCommentList}
+            commentList={feedDetailCommentData}
           />
         </div>
       </DefaultWrap>
@@ -85,22 +91,3 @@ function FeedDetailComment() {
 }
 
 export default FeedDetailComment
-
-const feeaCommentList: IFeeaCommentList[] = [
-  {
-    nickname: "닉네임",
-    profilePic : "http://k.kakaocdn.net/dn/OXdMT/btrOQtAfax7/rCBxWIIUF6cd5y9IphkJtk/img_640x640.jpg",
-    feedCommentId: 1,
-    feedComment : "댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글",
-    createdAt : new Date(),
-    isMine : true,
-  },
-  {
-    nickname: "닉네임",
-    profilePic : "http://k.kakaocdn.net/dn/OXdMT/btrOQtAfax7/rCBxWIIUF6cd5y9IphkJtk/img_640x640.jpg",
-    feedCommentId: 2,
-    feedComment : "댓글",
-    createdAt : new Date(2023, 3, 27, 16),
-    isMine : false,
-  },
-]
