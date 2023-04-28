@@ -55,9 +55,9 @@ const Home = () => {
     const location = useLocation();
     let shopLng = 0;
     let shopLat = 0;
-    if(location.state.lng && location.state.lat) {
-        shopLng = location.state.lng;
-        shopLat = location.state.lat;
+    if(location.state) {
+        shopLng = Number(location.state.lng);
+        shopLat = Number(location.state.lat);
     }
 
     const shopCoordList = (arr: ShopData[]) => {
