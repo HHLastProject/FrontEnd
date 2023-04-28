@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { VFlex } from '../../../custom/ym/styleStore';
 import ModalContentsCover from './ModalContentsCover';
@@ -11,8 +11,10 @@ import { useNavigate } from 'react-router-dom';
 import { BtnRadius } from '../element/buttons/BtnRadius';
 import { Inputs } from '../element/input/Inputs';
 import { Buttons } from '../element/buttons/Buttons';
-import { FolderData, ReceivedBookmarks } from '../../../custom/ym/types';
+import { FolderData, ReceivedBookmarks, ScrapListEachData } from '../../../custom/ym/types';
 import { apiPath } from '../../../shared/path';
+import useScrapData from '../../../hooks/useScrapData';
+import { ScrapContext, ScrapDispatchesContext } from '../../../pages/Bookmark';
 
 const FeedModalContents = ({ target }: { target: number }) => {
 
@@ -83,6 +85,7 @@ const CreateFolderModalContents = ({
         const payload = {
             folderList: [...beforeList, newFolder]
         }
+
         mutate(payload);
         dispatch(prev => false);
     }
@@ -125,7 +128,61 @@ const CreateFolderModalContents = ({
     )
 }
 
-export const ModalContents = { FeedModalContents, CreateFolderModalContents };
+const MoveToOtherFolder = ({ dispatch }: { dispatch: React.Dispatch<React.SetStateAction<boolean>> }) => {
+    const { queryData, selected, scrapList } = useContext(ScrapContext);
+    const { setTargetFolder, setScrapList, setSelected } = useContext(ScrapDispatchesContext);
+    const [folderList, setFolderList] = useState<FolderData[] | undefined>(undefined);
+
+    const isIncluded = (arr: number[], element: ScrapListEachData) => {
+        // return element.shopId === shopId ? true : false;
+        return arr.find((value) => value == element.shopId) ? true : false;
+    }
+
+    const selectorClickHandler = (name: string) => {
+        const tempSetScrapList = setScrapList as React.Dispatch<React.SetStateAction<ScrapListEachData[] | undefined>>;
+        tempSetScrapList(prev => {
+            const modifiedList = prev?.map((element) => {
+                return isIncluded(selected, element)
+                    ? { ...element, folderName: name }
+                    : element;
+            });
+            return modifiedList;
+        });
+        console.log('수정후', scrapList);
+        const tempSetSelected = setSelected as React.Dispatch<React.SetStateAction<number[]>>;
+        tempSetSelected(prev => []);
+
+        dispatch(prev => false);
+    }
+
+    useEffect(() => {
+        setFolderList(queryData?.folderList as FolderData[]);
+    }, []);
+
+
+    return (
+        <ModalContentsContainer>
+            <VFlex>
+                <ModalContentsCover />
+                {folderList
+                    ? folderList.map((element) => {
+                        return (
+                            <FeedSelector
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => selectorClickHandler(element.folderName)}
+                            >
+                                <FeedSelectorLabel>{element.folderName}</FeedSelectorLabel>
+                            </FeedSelector>
+                        )
+                    })
+                    : null}
+            </VFlex>
+        </ModalContentsContainer>
+    )
+}
+
+
+export const ModalContents = { FeedModalContents, CreateFolderModalContents, MoveToOtherFolder };
 
 const FolderEditArea = styled.div`
     height: fit-content;

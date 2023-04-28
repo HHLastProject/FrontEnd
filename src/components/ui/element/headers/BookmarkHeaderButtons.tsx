@@ -8,27 +8,28 @@ import { HFlex } from '../../../../custom/ym/styleStore';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../../../shared/path';
 
-const BookmarkHeaderButtons = () => {
-    const navi = useNavigate();
+const BookmarkHeaderButtons =
+    ({ editClickHandler }: { editClickHandler: () => void }) => {
+        const navi = useNavigate();
 
-    const folderListHandler = () => {
-        navi(path.folderList);
+        const folderListHandler = () => {
+            navi(path.folderList);
+        }
+
+        return (
+            <HFlex width={'fit-content'} gap={'16px'}>
+                <Buttons.Others.IconButton
+                    width={24}
+                    height={24}
+                    onClick={folderListHandler}
+                    fileName='edit_folder.png'
+                />
+                <BtnRadius.Default onClick={editClickHandler}>
+                    <EditText>편집</EditText>
+                </BtnRadius.Default>
+            </HFlex>
+        )
     }
-
-    return (
-        <HFlex width={'fit-content'} gap={'16px'}>
-            <Buttons.Others.IconButton
-                width={24}
-                height={24}
-                onClick={folderListHandler}
-                fileName='edit_folder.png'
-            />
-            <BtnRadius.Default>
-                <EditText>편집</EditText>
-            </BtnRadius.Default>
-        </HFlex>
-    )
-}
 
 export default BookmarkHeaderButtons;
 

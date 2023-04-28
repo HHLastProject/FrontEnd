@@ -7,28 +7,19 @@ import { Modals } from '../components/ui/modal/Modals';
 import { queryClient } from '..';
 import { scrapKeys } from '../apis/queries';
 import { FolderData, ReceivedBookmarks } from '../custom/ym/types';
+import useScrapData from '../hooks/useScrapData';
 
 const FolderList = () => {
 
     const [folderList, setFolderList] = useState<FolderData[]>();
     const [modal, setModal] = useState<boolean>(false);
+    const { scrapData } = useScrapData()
 
 
     useEffect(() => {
-        !queryClient.getQueryData(scrapKeys.GET_SCRAP) && queryClient.refetchQueries({
-            queryKey: scrapKeys.GET_SCRAP,
-            type: 'inactive',
-            exact: true
-        });
-        const data = queryClient.getQueryData(scrapKeys.GET_SCRAP) as ReceivedBookmarks;
-        const folderList = data.folderList;
-        setFolderList(folderList);
-    }, []);
-
-    // useEffect(() => {
-    //     localStorage.setItem("FolderList", `${folderList}`);
-    //     // console.log('완료후:', folderList);
-    // }, [folderList]);
+        const queriedData = scrapData?.folderList;
+        setFolderList(queriedData);
+    }, [folderList]);
 
     return (
         <FolderListContainer>

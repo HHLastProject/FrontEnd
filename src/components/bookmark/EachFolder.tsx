@@ -37,7 +37,7 @@ const EachFolder = ({
         console.log(index);
         if (direction === "down") {
             dispatch(prev => {
-                if (prev.length === index + 1) {
+                if (prev.length - 1 === index + 1) {
                     return prev;
                 } else {
                     const temp = [...prev];

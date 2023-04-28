@@ -9,7 +9,8 @@ export type Font = {
 };
 
 export interface ChildrenForSpan extends ComponentPropsWithoutRef<'span'> {
-    children: React.ReactNode
+    children: React.ReactNode,
+    editClickHandler: () => void
 };
 
 export interface ChildrenForJSX extends ComponentPropsWithoutRef<'button'> {
@@ -205,5 +206,9 @@ export interface FolderData {
 
 export interface ReceivedBookmarks {
     folderList: FolderData[],
-    scrapList: ScrapListEachData[],
+    scrapList: ScrapListEachData[] | undefined,
+}
+export interface PayloadFolderList {
+    folderName: string,
+    shopList: number[],
 }

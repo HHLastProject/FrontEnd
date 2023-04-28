@@ -11,6 +11,7 @@ import { api_token } from '../shared/api';
 import { apiPath } from '../shared/path';
 import NoLoginStatus from '../components/mypage/NoLoginStatus';
 import { ReceivedFeed } from '../custom/ym/types';
+import useMypage from '../hooks/useMypage';
 
 export type StateContextType = {
     props: Feed | null,
@@ -42,27 +43,18 @@ const Mypage = () => {
     const [feedData, setFeedData] = useState<Feed | null>(null);
     const [isLogin, setIsLogin] = useState<boolean>(false);
 
-    const { refetch, data } = useQuery({
-        queryKey: mypageKeys.GET_MYPAGE,
-        queryFn: async () => {
-            const res = await api_token.get(apiPath.mypage);
-            return res.data.mypages[0];
-        },
-        onSuccess(data) {
-            console.log(data);
-            setFeedData(data);
-        },
-        onError(err) {
-            throw err;
-        }
-    })
+    const { refetch, data } = useMypage();
+
+
 
     useEffect(() => {
+        if (data) {
+            setFeedData(data);
+        }
         localStorage.getItem("access_token")
             ? setIsLogin(true)
             : setIsLogin(false);
-        refetch();
-        localStorage.setItem("nickname", data?.nickname);
+        localStorage.setItem("nickname", feedData?.nickname as string);
     }, [isLogin]);
 
 

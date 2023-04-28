@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { HFlex } from '../../custom/ym/styleStore'
 import { FILTER_LIST } from '../../custom/ym/variables'
 import { Categories } from '../ui/element/tags/Categories'
@@ -11,31 +11,19 @@ import { useQuery } from '@tanstack/react-query'
 import { api_token } from '../../shared/api'
 import { apiPath } from '../../shared/path'
 import { scrapKeys } from '../../apis/queries'
+import { queryClient } from '../..'
+import useScrapData from '../../hooks/useScrapData'
+import { ScrapContext } from '../../pages/Bookmark'
 
 const BookmarkList = () => {
-    // const [category, setCategory] = useState<categoryTypes | null>(null);
+
     const [folder, setFolder] = useState<FolderData | null>();
     const [folderList, setFolderList] = useState<FolderData[]>([]);
-    const [scrapList, setScrapList] = useState<ScrapListEachData[]>([]);
+    // const [scrapList, setScrapList] = useState<ScrapListEachData[]>([]);
     const [isLogin, setIsLogin] = useState<boolean>(false);
 
-    const { data, refetch, isSuccess, isError } = useQuery({
-        queryKey: scrapKeys.GET_SCRAP,
-        queryFn: async () => {
-            const res = await api_token.get(apiPath.scrapList);
-            console.log('데이터', res.data);
-            return res.data as ReceivedBookmarks;
-        },
-        onSuccess(data) {
-            setScrapList(data.scrapList);
-            setFolderList(data.folderList);
-            setFolder(data.folderList[0]);
-            return data;
-        },
-        onError(err) {
-            throw err;
-        },
-    });
+    const { queryData } = useContext(ScrapContext);
+    const { scrapData, refetchScrapQuery, isSuccess, isError } = useScrapData();
 
     const folderClickHandler = (
         e: React.MouseEvent<HTMLButtonElement>,
@@ -49,11 +37,11 @@ const BookmarkList = () => {
     }
 
     useEffect(() => {
-        refetch();
+        const data = scrapData as ReceivedBookmarks;
+        console.log('폴더리스트:', data);
+        setFolder(data?.folderList[0]);
         localStorage.getItem("access_token") && setIsLogin(prev => !prev);
         data?.folderList && setFolderList(data?.folderList);
-        // const folderListForMap = data?.folderList as FolderData[];
-        // localStorage.setItem("FolderList", `${data?.folderList}`);
     }, [])
 
     return (

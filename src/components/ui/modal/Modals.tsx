@@ -36,13 +36,28 @@ const CreateFolder = ({
     )
 }
 
-export const Modals = { Feed, CreateFolder };
+const MoveScrapToOtherFolder = ({
+    dispatch,
+}: {
+    dispatch: React.Dispatch<React.SetStateAction<boolean>>,
+}) => {
+    return (
+        <ModalContainer>
+            <VFlexCenter>
+                <GrayBackground onClick={() => dispatch(prev => false)} />
+                <ModalContents.MoveToOtherFolder dispatch={dispatch} />
+            </VFlexCenter>
+        </ModalContainer>
+    )
+}
+
+export const Modals = { Feed, CreateFolder, MoveScrapToOtherFolder };
 
 const ModalContainer = styled.div`
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: 500;
+    z-index: 1000;
     top: 0;
     left: 0;
     /* left: 50%-(width/2); */

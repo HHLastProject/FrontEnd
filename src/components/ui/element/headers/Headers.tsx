@@ -9,25 +9,22 @@ import { BtnBorder } from '../buttons/BtnBorder'
 import { BtnRadius } from '../buttons/BtnRadius'
 import BookmarkHeaderButtons from './BookmarkHeaderButtons'
 import { useNavigate } from 'react-router-dom'
+import { path } from '../../../../shared/path'
 
 
-const BookmarkHeader = ({ children, ...props }: ChildrenForSpan) => {
+const BookmarkHeader = ({ children, editClickHandler, ...props }: ChildrenForSpan) => {
     return (
         <HeaderContainer>
             <HFlexSpaceBetween etc='padding:10px 20px;'>
                 <TitleSpan>{children}</TitleSpan>
-                <BookmarkHeaderButtons />
+                <BookmarkHeaderButtons editClickHandler={editClickHandler} />
             </HFlexSpaceBetween>
         </HeaderContainer>
     )
 }
 
 const BackAndFinish = ({ children, BackOnClick, RightOnClick, state, ...props }: PropsForSpaceHeader) => {
-    // console.log("disabled", disabled);
 
-    const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-        RightOnClick(e)
-    }
     return (
         <HeaderContainer>
             <HFlexSpaceBetween etc='padding:10px 20px;'>
@@ -53,8 +50,8 @@ const FolderListHeader = ({ dispatch }: { dispatch: React.Dispatch<React.SetStat
     const navi = useNavigate();
 
     const backClickHandler = () => {
-        localStorage.removeItem("FolderList");
-        navi(-1);
+        // localStorage.removeItem("FolderList");
+        navi(path.bookmark);
     }
 
     const addFolderClickHandler = () => {
@@ -78,7 +75,30 @@ const FolderListHeader = ({ dispatch }: { dispatch: React.Dispatch<React.SetStat
     )
 }
 
-export const Headers = { BookmarkHeader, BackAndFinish, FolderListHeader }
+const EditBookmarkHeader = ({ children, BackOnClick, RightOnClick, state, ...props }: PropsForSpaceHeader) => {
+    return (
+        <HeaderContainer>
+            <HFlexSpaceBetween etc='padding:10px 20px;'>
+                <Buttons.Others.IconButton
+                    width={24}
+                    height={24}
+                    onClick={BackOnClick}
+                    fileName='back_24.png'
+                />
+                <BtnRadius.Default onClick={RightOnClick}>
+                    <RightButtonText able={false}>{children}</RightButtonText>
+                </BtnRadius.Default>
+            </HFlexSpaceBetween>
+        </HeaderContainer>
+    )
+}
+
+export const Headers = {
+    BookmarkHeader,
+    BackAndFinish,
+    FolderListHeader,
+    EditBookmarkHeader
+}
 
 const Button = styled.button`
     border: none;

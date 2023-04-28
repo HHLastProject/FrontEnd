@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { HFlex, VFlex } from '../../custom/ym/styleStore';
 import styled from 'styled-components';
 import { BODY_1 } from '../../custom/ym/variables';
@@ -6,12 +6,17 @@ import { context } from '../../pages/Mypage';
 
 const CenterContents = () => {
 
-    const contextData = useContext(context);
-
+    const [isLogin, setIsLogin] = useState(false);
     const logoutButtonHandler = () => {
         localStorage.removeItem("access_token");
         window.location.reload();
     }
+    useEffect(() => {
+        localStorage.getItem("access_token")
+            ? setIsLogin(true)
+            : setIsLogin(false);
+    }, [isLogin]);
+
     return (
         <VFlex height='fit-content'>
             <EachItem>
@@ -19,7 +24,7 @@ const CenterContents = () => {
                     <ButtonContainer><Text>이용약관</Text></ButtonContainer>
                 </HFlex>
             </EachItem>
-            {contextData?.isLogin
+            {isLogin
                 ? <>
                     <EachItem>
                         <HFlex>

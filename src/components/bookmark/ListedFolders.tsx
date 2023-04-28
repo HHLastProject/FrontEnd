@@ -37,6 +37,7 @@ const ListedFolders = ({
     return (
         <ContentsContanier>
             {list.map((element, index) => {
+                if (index === 0) return null;
                 return <EachFolder
                     name={element}
                     dispatch={dispatch}
