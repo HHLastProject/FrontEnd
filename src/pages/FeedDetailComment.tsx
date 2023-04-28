@@ -11,14 +11,15 @@ import { colorSet } from '../components/ui/styles/color'
 import { useParams } from 'react-router-dom'
 
 export const usePostFeedDetailComment = (feedId: number) => {
-  
+
 }
 
 function FeedDetailComment() {
   const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
   const feedId = Number(useParams());
-  const postFeedDetailComment = (feedId: number) => {
 
+  const postFeedDetailComment = (feedId: number) => {
+    
   }
 
   return (

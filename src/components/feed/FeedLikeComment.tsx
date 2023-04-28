@@ -5,7 +5,7 @@ import { path } from "../../shared/path";
 import { fontType } from "../ui/styles/typo";
 import { HFlex } from "../../custom/ym/styleStore";
 import usePutLike from "../../custom/jh/usePutLike";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getToken } from "../../apis/getToken";
 
 interface IFeedLikeComment {
@@ -13,10 +13,11 @@ interface IFeedLikeComment {
   likeCount: number,
   feedCommentCount: number,
   feedId: number,
+  page: string,
 };
 
-function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLikeComment) {
-  const {changeLike} = usePutLike(feedId);
+function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount, page}: IFeedLikeComment) {
+  const {changeLike} = usePutLike({feedId, page});
   const [like, setLike] = useState(isLike);
   const token = getToken();
 

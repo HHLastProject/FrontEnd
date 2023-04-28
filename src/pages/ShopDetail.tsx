@@ -27,9 +27,25 @@ function ShopDetail() {
   const param = Number(useParams().shopId);
   const [scrap, setScrap] = useState(false);
   const [expand, setExpand] = useState<boolean>(false);
+
+  //data
+  const {
+    shopDetailData,
+    shopDetailIsLoading,
+    shopDetailIsError
+  } = useGetShopDetail(param);
+  const {
+    shopDetailFeedList,
+    getShopDetailFeedList,
+    shopDetailFeedIsLoading,
+    shopDetailFeedIsError,
+  } = useGetShopDetailFeed(param);
+
+  //util
   const expandButtonHandler = () => {
     setExpand(prev => !prev);
   }
+
   const scrapHandler = () => {
     const token = getToken();
     if(token) {
@@ -60,18 +76,6 @@ function ShopDetail() {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const {
-    shopDetailData,
-    shopDetailIsLoading,
-    shopDetailIsError
-  } = useGetShopDetail(param);
-  const {
-    shopDetailFeedList,
-    getShopDetailFeedList,
-    shopDetailFeedIsLoading,
-    shopDetailFeedIsError,
-  } = useGetShopDetailFeed(param);
-
   if (shopDetailIsError) {
     alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
     navi(-1);
@@ -93,6 +97,7 @@ function ShopDetail() {
 
   return (
     <>
+      {/* 헤더 */}
       <ListHeader
         scrap={true}
       >
@@ -108,6 +113,8 @@ function ShopDetail() {
           </IconSize28>
         </div>
       </ListHeader>
+
+      {/* 내용 */}
       <div>
         <ShopDetailThumbnail>
           <div className='thumbnail-img'>
@@ -121,6 +128,8 @@ function ShopDetail() {
             category={shopDetailData?.category}
           />
         </ShopDetailThumbnail>
+
+        {/* 탭 */}
         <ShopDetailContainer>
           <ShopDetailTab>
             <ul id='detail-tab'>
@@ -144,6 +153,8 @@ function ShopDetail() {
               </li>
             </ul>
           </ShopDetailTab>
+
+          {/* 정보 */}
           <ShopDetailContentContainer>
             <h2>정보</h2>
             <div>
@@ -170,6 +181,8 @@ function ShopDetail() {
             </XFlexCenter>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
+
+        {/* 메뉴 */}
         <ShopDetailContainer>
           <ShopDetailContentContainer>
             <div className='shop-detail-menu'>
@@ -187,6 +200,8 @@ function ShopDetail() {
             </div>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
+        
+        {/* 피드 */}
         <ShopDetailContainer>
           <ShopDetailContentContainer>
             <div className='shop-detail-review'>
@@ -219,6 +234,7 @@ function ShopDetail() {
                   <div key={`Feed${item.shopId + index}`}>
                     <VFlex gap='12px'>
                       <FeedContentsTest
+                        page={'shopDetailFeed'}
                         feedData={item}
                       />
                     </VFlex>

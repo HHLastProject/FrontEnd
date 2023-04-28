@@ -30,7 +30,7 @@ interface FeedCardData {
   feedCommentCount: number, //댓글 개수
 }
 
-const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
+const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: string }) => {
   const [expand, setExpand] = useState<boolean>(false);
 
   const expandButtonHandler = () => {
@@ -44,10 +44,6 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
     isScrap: feedData?.isScrap,
     shopId: feedData?.shopId,
   };
-
-  useEffect(() => {
-    
-  }, [feedData?.isLike]);
 
   return (
     <>
@@ -74,6 +70,7 @@ const FeedContentsTest = ({ feedData }: { feedData: FeedCardData }) => {
 
       {/* 좋아요 댓글 */}
       <FeedLikeComment
+        page={page}
         isLike={feedData?.isLike}
         likeCount={feedData?.likeCount}
         feedCommentCount={feedData?.feedCommentCount}

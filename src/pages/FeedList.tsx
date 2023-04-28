@@ -22,10 +22,6 @@ function FeedList() {
   const [category, setCategory] = useState<categoryTypes>("");
   const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
 
-  useEffect(() => {
-    
-  }, [feedList]);
-
   if(feedListIsLoading) { return <div>로딩중</div> };
 
   return (
@@ -62,6 +58,7 @@ function FeedList() {
               <div key={item.feedId}>
                 <VFlex gap='12px' etc='padding:20px;'>
                   <FeedContentsTest
+                    page={'feedList'}
                     feedData={item}
                   />
                 </VFlex>

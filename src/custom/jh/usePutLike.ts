@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryKeys } from '../../apis/queries';
-import api, { api_token } from '../../shared/api';
+import { api_token } from '../../shared/api';
 import { queryClient } from '../..';
 import { getToken } from '../../apis/getToken';
 
-export const usePutLike = (feedId: number) => {
+export const usePutLike = ({feedId, page}: {feedId: number, page: string}) => {
   const token = getToken();
-  console.log('피드아이디', feedId);
+  const KEY = queryKeys.PUT_LIKE.concat(['feedId']);
   const { mutate } = useMutation({
-    mutationKey: queryKeys.PUT_LIKE,
+    mutationKey: KEY,
     mutationFn: async () => {
       const res = await api_token.put(`/api/feed/${feedId}/like`, {
         headers: {
@@ -19,8 +19,11 @@ export const usePutLike = (feedId: number) => {
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(queryKeys.GET_FEEDS);
-      console.log("하트");
+      if(page === 'feedList') {
+        queryClient.invalidateQueries(queryKeys.GET_FEEDS);
+      } else if (page === 'shopDetailFeed') {
+        queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
+      }
     },
     onError: (error) => {
       throw error;

@@ -3,6 +3,7 @@ import { queryKeys } from '../../apis/queries';
 import api from '../../shared/api';
 import { apiPath } from '../../shared/path';
 import { getToken } from '../../apis/getToken';
+import { queryClient } from '../..';
 
 export interface IFeedList {
   nickname: string;
@@ -56,7 +57,7 @@ export const useGetShopDetailFeed = (param: number | undefined) => {
     },
     onSuccess: (o) => {
       console.log('성공 피드 데이터', o);
-      // queryClinet.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL_FEED });
+      queryClient.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL_FEED });
     },
     onError: () => {
       console.log('피드 에러');
