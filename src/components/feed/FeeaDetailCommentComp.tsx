@@ -8,7 +8,7 @@ import { CheckMine } from '../Authentication'
 import { IconEtc24 } from '../ui/element/icons/IconsStyle'
 import { fontType } from '../ui/styles/typo'
 import { displayHandler } from '../../custom/jh/useOnClickHiddenHandler'
-import { HiddenContext } from '../../apis/context'
+import { CommentIdContext, HiddenContext } from '../../apis/context'
 
 export interface IFeeaCommentList {
   nickname: string,
@@ -21,12 +21,22 @@ export interface IFeeaCommentList {
 
 function FeeaDetailCommentEl({commentList}: {commentList: IFeeaCommentList[]}) {
   const { setIsSelectHidden } = useContext(HiddenContext);
+  const {commentId, setCommentId} = useContext(CommentIdContext);
+  
+  const onClickHandler = (commentId: number) => {
+    if(setCommentId) {
+      setCommentId(commentId);
+    }
+    if(setIsSelectHidden) {
+      setIsSelectHidden(prev => !prev);
+    }
+  }
 
   return (
     <VFlex gap={'20px'} etc={'margin-bottom: 120px'}>
       {commentList?.map((item: any) => {
         return(
-          <Column>
+          <Column key={item.feedCommentId}>
             {/* 프로필, 작성 타이밍, 버튼 */}
             <SpaceBetween>
               <Row gap={4} alignCenter={true}>
@@ -35,10 +45,10 @@ function FeeaDetailCommentEl({commentList}: {commentList: IFeeaCommentList[]}) {
                   height={40}
                 >
                   <img
-                    id={`${item.feedCommentId}`}
+                    id={`feed-img-${item.feedCommentId}`}
                     src={`${item.profilePic}`}
                     alt="프로필 이미지"
-                    onError={(e) => displayHandler(`${item.feedCommentId}`)}
+                    onError={(e) => displayHandler(`feed-img-${item.feedCommentId}`)}
                   />
                 </ProfileImg>
                 <Column>
@@ -46,10 +56,11 @@ function FeeaDetailCommentEl({commentList}: {commentList: IFeeaCommentList[]}) {
                   <Body5 color={colorSet.textMedium}>{timeForNow(item.createdAt)}</Body5>
                 </Column>
               </Row>
+              {/* 수정, 삭제 버튼 */}
               <CheckMine isMine={item.isMine}>
                 {setIsSelectHidden 
                   &&
-                  <div onClick={() => setIsSelectHidden(prev => !prev)}>
+                  <div onClick={(e) => onClickHandler(item.feedCommentId)}>
                     <IconEtc24/>
                   </div>
                 }

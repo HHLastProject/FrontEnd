@@ -110,14 +110,30 @@ export const InputStyle = styled.input<{margin?: string}>`
   }
 `;
 
+const centerd = () => {
+  return(`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `)
+}
+
 export const TextareaStyle = styled.div<{margin?: string, padding?: string, border?: string, radius?: string}>`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   border: ${({border}) => border};
   border-radius: ${({radius}) => radius};
   padding: ${({padding}) => padding};
   margin: ${({margin}) => margin};
+
+  input::-webkit-input-placeholder,
+  input::-moz-placeholder,
+  input:-ms-input-placeholder,
+  input:-moz-placeholder,
+  input::placeholder {
+    text-align: center;
+  }
+
   textarea {
     flex: 1;
     border-style: none;

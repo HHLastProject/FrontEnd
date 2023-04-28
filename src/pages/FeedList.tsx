@@ -12,7 +12,7 @@ import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import SelectBox from '../components/SelectBox';
 import { TossedFeedData, categoryTypes } from '../custom/ym/types';
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
-import { HiddenContext, ShopCategory } from '../apis/context';
+import { HiddenContext, OrderByContext, ShopCategory } from '../apis/context';
 import { Heading2, Title4 } from '../components/FontStyle';
 import { SelectData } from '../shared/select';
 
@@ -27,8 +27,9 @@ function FeedList() {
 
   return (
     <ShopCategory.Provider value={
-      {range, setRange, category, setCategory, orderBy, setOrderBy}
+      {range, setRange, category, setCategory}
     }>
+    <OrderByContext.Provider value={{orderBy, setOrderBy}}>
     <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
       <SelectBox
         arr={SelectData.TAG_SELECT}
@@ -81,6 +82,7 @@ function FeedList() {
         </FeedPageWriteBtn>
       </Link>
     </HiddenContext.Provider>
+    </OrderByContext.Provider>
     </ShopCategory.Provider>
   )
 };

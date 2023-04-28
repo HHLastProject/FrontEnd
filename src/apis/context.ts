@@ -9,16 +9,21 @@ export type THidden = {
   setIsSelectHidden?: React.Dispatch<React.SetStateAction<boolean>> | null,
   onClickHiddenHandler?: React.MouseEventHandler<HTMLDivElement> | null,
 }
+export type TSetNumber = {
+  commentId: number,
+  setCommentId: React.Dispatch<React.SetStateAction<number>> | null,
+}
+export type TOrderBy = {
+  orderBy: string,
+  setOrderBy: React.Dispatch<React.SetStateAction<string>> | null,
+}
 
 export interface IShopCategory {
   range?: number,
   setRange?: React.Dispatch<React.SetStateAction<number>> | null,
   category: string,
   setCategory: React.Dispatch<React.SetStateAction<categoryTypes>> | null,
-  orderBy: string,
-  setOrderBy: React.Dispatch<React.SetStateAction<string>> | null,
 }
-
 export const HiddenContext = createContext<THidden>({
   isSelectHidden: false,
   setIsSelectHidden: null,
@@ -29,6 +34,14 @@ export const ShopCategory = createContext<IShopCategory>({
   setRange: null,
   category: "",
   setCategory: null,
-  orderBy: '거리순',
+});
+
+export const CommentIdContext = createContext<TSetNumber>({
+  commentId: 0,
+  setCommentId: null,
+});
+
+export const OrderByContext = createContext<TOrderBy>({
+  orderBy: '',
   setOrderBy: null,
 });

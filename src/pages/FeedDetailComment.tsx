@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import ListHeader from '../components/home/ListHeader'
 import DefaultWrap from '../components/ui/container/Wrap'
-import { HiddenContext } from '../apis/context'
+import { CommentIdContext, HiddenContext, OrderByContext } from '../apis/context'
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler'
-import { IFeeaCommentList } from '../components/feed/FeeaDetailCommentComp'
 import FeeaDetailCommentEl from '../components/feed/FeeaDetailCommentComp'
 import SelectBox from '../components/SelectBox'
 import { TextareaStyle } from '../components/search/SearchInput'
@@ -16,11 +15,14 @@ import { path } from '../shared/path'
 import useGetFeedDetailComment from '../custom/jh/useGetFeedDetailComment'
 import styled from 'styled-components'
 import { IconUploadActive, IconUploadInactive } from '../components/ui/element/icons/IconsStyle'
+import Loading from '../components/Loading'
 
 function FeedDetailComment() {
   const navi = useNavigate();
   const feedId = Number(useParams().feedId);
   const [inputValue, setInputValue] = useState<string>('');
+  const [commentId, setCommentId] = useState<number>(0);
+  const [orderBy, setOrderBy] = useState<string>('');
   const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
 
   //data
@@ -29,6 +31,15 @@ function FeedDetailComment() {
     feedDetailCommentIsLoading,
     feedDetailCommentIsError,
   } = useGetFeedDetailComment(feedId);
+
+  const onChangeTextareaHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue(e.target.value);
+    if(e.target.scrollHeight > 20){
+      e.target.rows = 2;
+    } else {
+      e.target.rows = 1;
+    }
+  }
 
   const addFeedDetailComment = (feedId: number) => {
     if(!getToken()) {
@@ -49,9 +60,16 @@ function FeedDetailComment() {
     }
   };
 
+  if(feedDetailCommentIsLoading) return <Loading/>;
+
   return (
     <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
+    <CommentIdContext.Provider value={{commentId, setCommentId}}>
+    <OrderByContext.Provider value={{orderBy, setOrderBy}}>
+      {/* 선택창 */}
       <SelectBox
+        isDeleteComment={true}
+        param={feedId}
         arr={SelectData.MODIFY_DELETE_SELECT}
       />
 
@@ -63,14 +81,14 @@ function FeedDetailComment() {
       <DefaultWrap>
         {/* 입력창 */}
         <TextareaStyle
-          padding='8px'
+          padding='8px 8px 8px 16px'
           border={`1px solid ${colorSet.lineMedium}`}
           radius='8px'
         >
           <textarea
             maxLength={600}
-            rows={2}
-            onChange={(e) => setInputValue(e.target.value)}
+            rows={1}
+            onChange={onChangeTextareaHandler}
             placeholder='댓글 입력하기'
             required
           />
@@ -81,9 +99,9 @@ function FeedDetailComment() {
           >
             {(inputValue.length === 0)
             ?
-            <IconUploadActive/>
-            :
             <IconUploadInactive/>
+            :
+            <IconUploadActive/>
             }
           </div>
         </TextareaStyle>
@@ -98,6 +116,8 @@ function FeedDetailComment() {
           }
         </div>
       </DefaultWrap>
+    </OrderByContext.Provider>
+    </CommentIdContext.Provider>
     </HiddenContext.Provider>
   )
 }

@@ -2,16 +2,30 @@ import styled from 'styled-components'
 import { colorSet } from './ui/styles/color';
 import { fontType } from './ui/styles/typo';
 import { useContext } from 'react';
-import { HiddenContext, ShopCategory } from '../apis/context';
+import { CommentIdContext, HiddenContext, OrderByContext } from '../apis/context';
+import deleteFeedComment from '../custom/jh/deleteFeedComment';
 
-function SelectBox({arr}: {arr: string[]}) {
+function SelectBox({arr, param, isDeleteComment}: {arr: string[], param?: number, isDeleteComment?:boolean}) {
   //선택창 보이기
   const {isSelectHidden, setIsSelectHidden } = useContext(HiddenContext);
-  const {setOrderBy} = useContext(ShopCategory);
+  const {commentId} = useContext(CommentIdContext);
+  const {orderBy, setOrderBy} = useContext(OrderByContext);
 
-  const onClickHandler = (item: any) => {
-    if(setIsSelectHidden) setIsSelectHidden(prev => !prev);
-    if(setOrderBy) setOrderBy(item);
+  const onClickHandler = (order: string) => {
+    if(setIsSelectHidden) {setIsSelectHidden(prev => !prev);}
+
+    if(setOrderBy) {setOrderBy(order);}
+
+    if((orderBy === '삭제하기') && isDeleteComment && (param !== undefined)){
+      const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
+      if(result){
+        deleteFeedComment({feedId: param, commentId: commentId})
+        .then(() => {
+          alert('삭제되었습니다.');
+        })
+      }
+    }
+    // if(orderBy === '수정하기'){}
   }
 
   return (
@@ -31,7 +45,7 @@ function SelectBox({arr}: {arr: string[]}) {
               <div 
                 className='selectBox-order-value'
                 style={{cursor: 'pointer'}}
-                onClick={() => onClickHandler(item)}
+                onClick={() => {onClickHandler(item);}}
                 key={item}
               >
                 {item}

@@ -11,7 +11,7 @@ import ListHeader from '../components/home/ListHeader';
 import ListCategoryButtonBar from '../components/home/ListCategoryButtonBar';
 import { ListTossedData, categoryTypes } from '../custom/ym/types';
 import { HFlex } from '../custom/ym/styleStore';
-import { HiddenContext, ShopCategory } from '../apis/context';
+import { HiddenContext, OrderByContext, ShopCategory } from '../apis/context';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import NoResult from '../components/home/NoShop';
 import { SelectData } from '../shared/select';
@@ -50,8 +50,9 @@ const List = () => {
 
   return (
     <ShopCategory.Provider value={
-      {range, setRange, category, setCategory, orderBy, setOrderBy}
+      {range, setRange, category, setCategory}
     }>
+    <OrderByContext.Provider value={{orderBy, setOrderBy}}>
     <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
       <SelectBox
         arr={SelectData.SHOP_LIST}
@@ -113,6 +114,7 @@ const List = () => {
         </HomeContainer>
       </HomeWrap>
     </HiddenContext.Provider>
+    </OrderByContext.Provider>
     </ShopCategory.Provider>
   );
 };

@@ -10,11 +10,7 @@ export const usePutLike = ({feedId, page}: {feedId: number, page: string}) => {
   const { mutate } = useMutation({
     mutationKey: KEY,
     mutationFn: async () => {
-      const res = await api_token.put(`/api/feed/${feedId}/like`, {
-        headers: {
-          "authorization": `${token}`,
-        }
-      });
+      const res = await api_token.put(`/api/feed/${feedId}/like`);
       console.log('성공!',res.data);
       return res.data;
     },
