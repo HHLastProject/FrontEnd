@@ -11,7 +11,7 @@ import ListHeader from '../components/home/ListHeader';
 import ListCategoryButtonBar from '../components/home/ListCategoryButtonBar';
 import { ListTossedData, categoryTypes } from '../custom/ym/types';
 import { HFlex } from '../custom/ym/styleStore';
-import { ShopCategory } from '../apis/context';
+import { HiddenContext, ShopCategory } from '../apis/context';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import NoResult from '../components/home/NoShop';
 
@@ -49,8 +49,9 @@ const List = () => {
 
   return (
     <ShopCategory.Provider value={
-      {range, setRange, category, setCategory, orderBy, setOrderBy, isSelectHidden, setIsSelectHidden}
+      {range, setRange, category, setCategory, orderBy, setOrderBy}
     }>
+    <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
       <SelectBox
         arr={['거리순', '인기순']}
       />
@@ -72,6 +73,7 @@ const List = () => {
               </TabMenuUl>
             </HomeTabMenuStyle>
           </header>
+
           {/* 필터버튼 */}
           <div style={{ overflow: 'hidden', }}>
             <HFlex gap='4px'>
@@ -109,6 +111,7 @@ const List = () => {
 
         </HomeContainer>
       </HomeWrap>
+    </HiddenContext.Provider>
     </ShopCategory.Provider>
   );
 };

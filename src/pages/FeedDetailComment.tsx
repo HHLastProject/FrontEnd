@@ -1,21 +1,62 @@
 import React from 'react'
 import ListHeader from '../components/home/ListHeader'
 import DefaultWrap from '../components/ui/container/Wrap'
-import FeeaDetailCommentContainer, { IFeeaCommentList } from '../components/feed/FeeaDetailCommentComp'
+import { HiddenContext } from '../apis/context'
+import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler'
+import { IFeeaCommentList } from '../components/feed/FeeaDetailCommentComp'
+import FeeaDetailCommentEl from '../components/feed/FeeaDetailCommentComp'
+import SelectBox from '../components/SelectBox'
+import { TextareaStyle } from '../components/search/SearchInput'
+import { colorSet } from '../components/ui/styles/color'
+import { useParams } from 'react-router-dom'
+
+export const usePostFeedDetailComment = (feedId: number) => {
+  
+}
 
 function FeedDetailComment() {
+  const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
+  const feedId = Number(useParams());
+  const postFeedDetailComment = (feedId: number) => {
+
+  }
+
   return (
-    <>
+    <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
+      <SelectBox
+        arr={['수정하기', '삭제하기']}
+      />
+
+      {/* 헤더 */}
       <ListHeader
         name={'댓글'}
       />
 
       <DefaultWrap>
-        <FeeaDetailCommentContainer
+        {/* 입력창 */}
+        <TextareaStyle
+          padding='8px'
+          border={`1px solid ${colorSet.lineMedium}`}
+          radius='8px'
+        >
+          <textarea
+            maxLength={600}
+            rows={2}
+            required
+          />
+          <button
+            onClick={() => postFeedDetailComment(feedId)}
+          >
+            추가
+          </button>
+        </TextareaStyle>
+
+        {/* 댓글 */}
+        <FeeaDetailCommentEl
           commentList={feeaCommentList}
         />
       </DefaultWrap>
-    </>
+    </HiddenContext.Provider>
   )
 }
 

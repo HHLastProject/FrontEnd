@@ -11,6 +11,7 @@ import { Coordinate, categoryTypes } from '../custom/ym/types';
 import useMapDataCall from '../hooks/useMapDataCall';
 import { dispatches, states } from '../custom/ym/contextValues';
 import CategoryButtonBar from '../components/map/CategoryButtonBar';
+import { useLocation } from 'react-router-dom';
 
 
 export interface EachData {
@@ -49,6 +50,15 @@ const Home = () => {
     const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged, setActiveShop };
 
     const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
+
+    //검색 페이지에서 받는 위도 경도
+    const location = useLocation();
+    let shopLng = 0;
+    let shopLat = 0;
+    if(location.state.lng && location.state.lat) {
+        shopLng = location.state.lng;
+        shopLat = location.state.lat;
+    }
 
     const shopCoordList = (arr: ShopData[]) => {
         const result: Coordinate[] = arr?.map((item) => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { HFlex, VFlex } from '../../custom/ym/styleStore'
 import styled from 'styled-components'
 import { colorSet } from '../ui/styles/color'
@@ -8,6 +8,7 @@ import { CheckMine } from '../Authentication'
 import { IconEtc24 } from '../ui/element/icons/IconsStyle'
 import { fontType } from '../ui/styles/typo'
 import { displayHandler } from '../../custom/jh/useOnClickHiddenHandler'
+import { HiddenContext } from '../../apis/context'
 
 export interface IFeeaCommentList {
   nickname: string,
@@ -18,7 +19,9 @@ export interface IFeeaCommentList {
   isMine : boolean,
 }
 
-function FeeaDetailCommentContainer({commentList}: {commentList: IFeeaCommentList[]}) {
+function FeeaDetailCommentEl({commentList}: {commentList: IFeeaCommentList[]}) {
+  const { setIsSelectHidden } = useContext(HiddenContext);
+
   return (
     <VFlex gap={'20px'} etc={'margin-bottom: 120px'}>
       {commentList?.map((item: any) => {
@@ -44,9 +47,12 @@ function FeeaDetailCommentContainer({commentList}: {commentList: IFeeaCommentLis
                 </Column>
               </Row>
               <CheckMine isMine={item.isMine}>
-                {/* <div onClick={}> */}
-                  <IconEtc24/>
-                {/* </div> */}
+                {setIsSelectHidden 
+                  &&
+                  <div onClick={() => setIsSelectHidden(prev => !prev)}>
+                    <IconEtc24/>
+                  </div>
+                }
               </CheckMine>
             </SpaceBetween>
 
@@ -63,7 +69,7 @@ function FeeaDetailCommentContainer({commentList}: {commentList: IFeeaCommentLis
   )
 }
 
-export default FeeaDetailCommentContainer
+export default FeeaDetailCommentEl
 
 const Row = styled.div<{gap?: number, alignCenter?: boolean}>`
   display: flex;

@@ -2,18 +2,16 @@ import styled from 'styled-components'
 import { colorSet } from './ui/styles/color';
 import { fontType } from './ui/styles/typo';
 import { useContext } from 'react';
-import { ShopCategory } from '../apis/context';
+import { HiddenContext, ShopCategory } from '../apis/context';
 
 function SelectBox({arr}: {arr: string[]}) {
   //선택창 보이기
-  const {isSelectHidden, setIsSelectHidden } = useContext(ShopCategory);
-
+  const {isSelectHidden, setIsSelectHidden } = useContext(HiddenContext);
   const {setOrderBy} = useContext(ShopCategory);
+
   const onClickHandler = (item: any) => {
-    if(setOrderBy && setIsSelectHidden) {
-      setOrderBy(item);
-      setIsSelectHidden(prev => !prev);
-    }
+    if(setIsSelectHidden) setIsSelectHidden(prev => !prev);
+    if(setOrderBy) setOrderBy(item);
   }
 
   return (
@@ -28,8 +26,7 @@ function SelectBox({arr}: {arr: string[]}) {
     >
       <SelectBoxStyle>
         <SelectTop/>
-        { (setOrderBy !== null) &&
-          arr?.map((item) => {
+        { arr?.map((item) => {
             return(
               <div 
                 className='selectBox-order-value'

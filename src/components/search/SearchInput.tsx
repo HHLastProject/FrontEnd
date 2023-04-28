@@ -45,23 +45,23 @@ function SearchStore({
 export default SearchStore
 
 const SearchStoreStyle = styled.div`
+  width: 100%;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #DBDBDB;
+  border-radius: 8px;
+  #search-input {
     width: 100%;
-    height: 56px;
+    margin: 19px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid #DBDBDB;
-    border-radius: 8px;
-    #search-input {
-      width: 100%;
-      margin: 19px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    img {
-      width: 20px;
-    }
+  }
+  img {
+    width: 20px;
+  }
 `;
 
 export function SearchInput({
@@ -89,22 +89,44 @@ export function SearchInput({
   }, [dataList]);
 
   return (
-    <SearchInputStyle
+    <InputStyle
       type='text'
       onChange={onChangeInputCallback}
       value={inputValue}
       placeholder={placeholder}
+      margin={`0 0 0 11px`}
     />
   )
 }
 
-const SearchInputStyle = styled.input`
+export const InputStyle = styled.input<{margin?: string}>`
   width: 100%;
   border-style: none;
-  margin-left: 11px;
+  margin: ${({margin}) => margin};
   font-weight: 400;
   font-size: 14px;
   &:focus {
     outline: none;
+  }
+`;
+
+export const TextareaStyle = styled.div<{margin?: string, padding?: string, border?: string, radius?: string}>`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: ${({border}) => border};
+  border-radius: ${({radius}) => radius};
+  padding: ${({padding}) => padding};
+  margin: ${({margin}) => margin};
+  textarea {
+    flex: 1;
+    border-style: none;
+    font-weight: 400;
+    font-size: 14px;
+    resize: none;
+    &:focus {
+      outline: none;
+    }
   }
 `;

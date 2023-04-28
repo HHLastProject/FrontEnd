@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Body3 } from "../../../FontStyle";
 import { colorSet } from "../../styles/color";
 import { IconSmallDownArrow } from "../icons/IconsStyle";
-import { ShopCategory } from "../../../../apis/context";
+import { HiddenContext } from "../../../../apis/context";
 import { useContext } from "react";
 
 export const RangeFilterBtn = () => {
@@ -11,7 +11,7 @@ export const RangeFilterBtn = () => {
 
 export const OrderbyFilterBtn = ({ children }: { children: React.ReactNode }) => {
   //선택창 보이기
-  const { setIsSelectHidden } = useContext(ShopCategory);
+  const { setIsSelectHidden } = useContext(HiddenContext);
 
   return (
     <>

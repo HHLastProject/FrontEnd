@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import useGetFeedList from '../custom/jh/useGetFeedList'
 import styled from 'styled-components';
-import { fontType } from '../components/ui/styles/typo';
 import { colorSet } from '../components/ui/styles/color';
 import { Link } from 'react-router-dom';
 import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
@@ -13,7 +12,7 @@ import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import SelectBox from '../components/SelectBox';
 import { TossedFeedData, categoryTypes } from '../custom/ym/types';
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
-import { ShopCategory } from '../apis/context';
+import { HiddenContext, ShopCategory } from '../apis/context';
 import { Heading2, Title4 } from '../components/FontStyle';
 
 function FeedList() {
@@ -24,15 +23,16 @@ function FeedList() {
   const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
 
   useEffect(() => {
-    console.log('피드리스트',feedList);
+    
   }, [feedList]);
 
   if(feedListIsLoading) { return <div>로딩중</div> };
 
   return (
     <ShopCategory.Provider value={
-      {range, setRange, category, setCategory, orderBy, setOrderBy, isSelectHidden, setIsSelectHidden}
+      {range, setRange, category, setCategory, orderBy, setOrderBy}
     }>
+    <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
       <SelectBox
         arr={['분위기 맛집', '디저트 맛집', '커피 맛집', '뷰 맛집']}
       />
@@ -82,6 +82,7 @@ function FeedList() {
           </AlignItemCenter>
         </FeedPageWriteBtn>
       </Link>
+    </HiddenContext.Provider>
     </ShopCategory.Provider>
   )
 };
