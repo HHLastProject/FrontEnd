@@ -81,9 +81,12 @@ function FeedDetailComment() {
 
         {/* 댓글 */}
         <div style={{margin: '12px 0'}}>
-          <FeeaDetailCommentEl
-            commentList={feedDetailCommentData}
-          />
+          {
+            feedDetailCommentData &&
+            <FeeaDetailCommentEl
+              commentList={feedDetailCommentData}
+            />
+          }
         </div>
       </DefaultWrap>
     </HiddenContext.Provider>
