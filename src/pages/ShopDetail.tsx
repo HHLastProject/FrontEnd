@@ -2,43 +2,30 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailFeed } from '../custom/jh/useGetShopDetail';
-import useNavigateHandler from '../custom/jh/useNavigateHandler';
 import ShopDetailMenu from '../components/shopDetail/ShopDetailMenu';
 import ShopDetailMap from '../components/map/ShopDetailMap';
 import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
-import ShopDetailFeed from '../components/shopDetail/ShopDetailFeed';
 import { iconImgPath, imgPath, path } from '../shared/path';
 import { colorSet } from '../components/ui/styles/color';
 import { fontType } from '../components/ui/styles/typo';
 import { Buttons } from '../components/ui/element/buttons/Buttons';
 import { IconPencil } from '../components/ui/element/icons/IconsStyle';
 import { VFlex } from '../custom/ym/styleStore';
-import moment from 'moment';
-import FeedProfile from '../components/FeedProfile';
-import FeedPicture from '../components/feed/FeedPicture';
-import FeedComment from '../components/feed/FeedComment';
-import PlaceCard from '../components/feed/PlaceCard';
-import TagList from '../components/feed/TagList';
 import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
+import ListHeader from '../components/home/ListHeader';
+import FeedContentsTest from '../components/feed/FeedContentsTest';
+import { getToken } from '../apis/getToken';
+import { api_token } from '../shared/api';
+import { IconSize28 } from '../components/ui/element/icons/IconSize';
 
 function ShopDetail() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
-  const tabInfoRef = useRef();
-  const tabMenuRef = useRef();
-  const tabReviewRef = useRef();
-  const { feedFormClickHandler } = useNavigateHandler();
-
+  const [scrap, setScrap] = useState(false);
   const [expand, setExpand] = useState<boolean>(false);
-  const expandButtonHandler = () => {
-    setExpand(prev => !prev);
-  }
 
-  const scrollToTabInfo = () => {
-    // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+  //data
   const {
     shopDetailData,
     shopDetailIsLoading,
@@ -51,30 +38,83 @@ function ShopDetail() {
     shopDetailFeedIsError,
   } = useGetShopDetailFeed(param);
 
+  //util
+  const expandButtonHandler = () => {
+    setExpand(prev => !prev);
+  }
+
+  const scrapHandler = () => {
+    const token = getToken();
+    if(token) {
+      changeScrap(param);
+    } else {
+      const result = window.confirm('로그인이 필요한 기능입니다. 로그인 하시겠습니까?');
+      if(result) navi(`${path.login}`);
+    }
+  }
+
+  const changeScrap = async (shopId: number) => {
+    const token = getToken();
+    let result : boolean= false;
+    if(token) {
+      await api_token.put(`/api/${shopId}/scrap`)
+      .then((response) => {
+        result = response.data.isScrap;
+        setScrap(result);
+        }
+      ).catch((error) => {
+        throw error;
+      });
+    } else {
+      alert('로그인이 필요합니다.');
+    }
+    return result;
+  };
+
+  const scrollToTabInfo = () => {
+    // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   if (shopDetailIsError) {
     alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
     navi(-1);
   };
-  // const [isCheckedTabInfo, setIsCheckedTabInfo] = useState(true);     //정보
-  // const [isCheckedTabMenu, setIsCheckedTabMenu] = useState(false);    //메뉴
-  // const [isCheckedTabReview, setIsCheckedTabReview] = useState(false);//리뷰
-  // const tabInfo = document.getElementById('detail-tab-info');
-
-  useEffect(() => {
-    console.log(shopDetailData);
-  }, [])
 
   useEffect(() => {
     getShopDetailFeedList();
-    console.log(shopDetailFeedList);
+    console.log('최초',shopDetailData?.isScrap);
+    setScrap(shopDetailData?.isScrap);
   }, []);
+
+  useEffect(() => {
+    console.log('테스트',scrap);
+  }, [scrap]);
+
+  if (shopDetailIsLoading) {
+    return(<div>로딩중</div>)
+  }
 
   return (
     <>
-      <Header>
-        <span><Link to={'/'}>뒤로가기</Link></span>
-        <span>책갈피</span>
-      </Header>
+      {/* 헤더 */}
+      <ListHeader
+        scrap={true}
+      >
+        <div
+          style={{cursor: 'pointer'}}
+          onClick={scrapHandler}
+        >
+          <IconSize28>
+            {shopDetailData?.isScrap && <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="" />}
+            {scrap
+              ? <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="" />
+              : <img src={`${process.env.PUBLIC_URL}/icon/book mark line_28.png`} alt="" />
+            }
+          </IconSize28>
+        </div>
+      </ListHeader>
+
+      {/* 내용 */}
       <div>
         <ShopDetailThumbnail>
           <div className='thumbnail-img'>
@@ -88,6 +128,8 @@ function ShopDetail() {
             category={shopDetailData?.category}
           />
         </ShopDetailThumbnail>
+
+        {/* 탭 */}
         <ShopDetailContainer>
           <ShopDetailTab>
             <ul id='detail-tab'>
@@ -111,6 +153,8 @@ function ShopDetail() {
               </li>
             </ul>
           </ShopDetailTab>
+
+          {/* 정보 */}
           <ShopDetailContentContainer>
             <h2>정보</h2>
             <div>
@@ -137,6 +181,8 @@ function ShopDetail() {
             </XFlexCenter>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
+
+        {/* 메뉴 */}
         <ShopDetailContainer>
           <ShopDetailContentContainer>
             <div className='shop-detail-menu'>
@@ -144,6 +190,7 @@ function ShopDetail() {
               {shopDetailData?.Menus?.map((item: any) => {
                 return (
                   <ShopDetailMenu
+                    key={`${item.menuName + item.price}`}
                     menuName={item.menuName}
                     price={item.price}
                     picture={item.picture}
@@ -153,64 +200,51 @@ function ShopDetail() {
             </div>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
+
+        {/* 피드 */}
         <ShopDetailContainer>
           <ShopDetailContentContainer>
             <div className='shop-detail-review'>
               <div className='shop-detail-review-sub'>
                 <h2>피드</h2>
-                <div
-                  onClick={() => feedFormClickHandler(param)}
+                <Link 
+                  to={`${path.feedForm}`}
+                  state={{shopId : param, shopName: shopDetailData?.shopName}}
                 >
                   <Buttons.Small.Default>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                       <IconPencil />피드 쓰기
                     </div>
                   </Buttons.Small.Default>
-                </div>
+                </Link>
               </div>
-              <div>
-                {/* { dumiFeedData?.map((item: any, index: number) => {
-                  return(
-                    <div key={`${item.shopId + index}`}>
-                      <VFlex gap='12px' etc='padding:20px;'>
-                        {item.profilePic ? 
-                          <FeedProfile 
-                            profilePic={item.profilePic}
-                            nickname={item.nickname}
-                            createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-                          />
-                          :
-                          <FeedProfile 
-                            profilePic={item.defaultImgPath.shopList}
-                            nickname={item.nickname}
-                            createdAt={moment(item.createAt).format("YYYY.MM.DD")}
-                          />
-                        }
-                        <Link to={`${path.toFeedDetail + '/' + item.feedId}`}>
-                          <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + item.feedPic}</FeedPicture>
-                          <FeedComment isExpanded={expand}>{item.comment}</FeedComment>
-                        </Link>
-                        <ExpandButton onClick={expandButtonHandler}>
-                          <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
-                        </ExpandButton>
-                        <TagList>{item.tags}</TagList>
-                        <Link to={`${path.toShopDetail + '/' + item.shopId}`}>
-                          <PlaceCard
-                            shopThumbnail={imgPath.shopThumbnailImg + item.shopThumbnail}
-                            shopName={item.shopName}
-                            shopAddress={item.shopAddress}
-                          />
-                        </Link>
-                      </VFlex>
-                      {(index >=0 && index < dumiFeedData.length-1) && <FeedPageHr/>}
-                    </div>
-                  )
-                })}
-                {(shopDetailFeedList?.length === 0 || !shopDetailFeedList) && (<div>피드가 없습니다.</div>)}
-                {shopDetailFeedIsError && (<div>피드 에러</div>)} */}
-              </div>
-              {/* <ShopDetailFeed/> */}
             </div>
+            {
+              shopDetailFeedList?.map((item: any, index: number) => {
+                //tag: [{tag: 내용}]
+                if(item?.tag) {
+                  let tags = [];
+                  for(let i of item.tag){
+                    const {tag} = i;
+                    tags.push(tag);
+                  }
+                  item.tag = [...tags];
+                }
+                return(
+                  <div key={`Feed${item.shopId + index}`}>
+                    <VFlex gap='12px'>
+                      <FeedContentsTest
+                        page={'shopDetailFeed'}
+                        feedData={item}
+                      />
+                    </VFlex>
+                    {(index >=0 && index < shopDetailFeedList.length-1) && <FeedPageHr/>}
+                  </div>
+                )
+              })
+            }
+            {(shopDetailFeedList?.length === 0 || !shopDetailFeedList) && (<div>피드가 없습니다.</div>)}
+            {shopDetailFeedIsError && (<div>피드 에러</div>)}
           </ShopDetailContentContainer>
         </ShopDetailContainer>
       </div>
@@ -224,21 +258,6 @@ const XFlexCenter = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-`;
-
-const Header = styled.header`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  left: 0;
-  background-color: #ffffff;
-  border-bottom: 1px solid;
-  z-index: 9999;
-  span {
-    margin: 20px;
-  }
 `;
 
 const ShopDetailTab = styled.div`
@@ -293,9 +312,6 @@ const ShopDetailThumbnail = styled.div`
   position: relative;
   padding-bottom: 72px;
   background-color: #fff;
-  h1 {
-    font-size: 1.5rem;
-  }
   .thumbnail-img {
     width: 100%;
     height: 252px;
@@ -348,38 +364,3 @@ const FeedPageHr = styled.hr`
   background-color: ${colorSet.lineLight};
   border: 0;
 `;
-
-const dumiFeedData = [
-  {
-    comment:"어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스\r\n어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스어몽어스123 어몽어스 12",
-    createdAt: "2023-04-21T06:28:07.000Z",
-    feedId: 61,
-    feedPic: "1682058487739.png",
-    isScrap: true,
-    nickname: "김용민",
-    profilePic: "http://k.kakaocdn.net/dn/bYqF7P/btrrKx4Et4E/CnhDpRN7tj9OGKRV5rhgp0/img_640x640.jpg",
-    shopAddress: "서울특별시 강남구 봉은사로 438",
-    shopId: 31475,
-    shopName: "매머드익스프레스봉은사로",
-    shopThumbnail: "cafe17.jpg",
-    tag: 
-    [
-      {tag: '분위기 맛집'},
-      {tag: '커피 맛집'},
-    ]
-  },
-  {
-    comment:"어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스\r\n어몽어스123 어몽어스 123 어몽어스 14314 어몽어스 어몽어스어몽어스123 어몽어스 12",
-    createdAt: "2023-04-21T06:28:07.000Z",
-    feedId: 61,
-    feedPic: "1682058487739.png",
-    isScrap: true,
-    nickname: "김용민",
-    profilePic: "http://k.kakaocdn.net/dn/bYqF7P/btrrKx4Et4E/CnhDpRN7tj9OGKRV5rhgp0/img_640x640.jpg",
-    shopAddress: "서울특별시 강남구 봉은사로 438",
-    shopId: 31475,
-    shopName: "매머드익스프레스봉은사로",
-    shopThumbnail: "cafe17.jpg",
-    tag: []
-  },
-];

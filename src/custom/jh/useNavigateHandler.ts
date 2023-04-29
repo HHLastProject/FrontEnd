@@ -15,15 +15,15 @@ function useNavigateHandler() {
   const adminClickHandler = () => {
     navi(path.adminShoplist);
   }
-  const feedFormClickHandler = (param: number | string) => {
-    navi(`/shop/${param}/feedform`);
+  const backClickHandler = () => {
+    navi(-1);
   }
   return {
     loginClickHandler, 
     mapClickHandler, 
     searchClickHandler, 
     adminClickHandler,
-    feedFormClickHandler,
+    backClickHandler,
   };
 }
 

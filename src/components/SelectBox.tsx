@@ -1,9 +1,33 @@
 import styled from 'styled-components'
 import { colorSet } from './ui/styles/color';
 import { fontType } from './ui/styles/typo';
+import { useContext } from 'react';
+import { CommentIdContext, HiddenContext, OrderByContext } from '../apis/context';
+import deleteFeedComment from '../custom/jh/deleteFeedComment';
 
-function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: boolean, onClickHiddenHandler: any}) {
-  
+function SelectBox({arr, param, isDeleteComment}: {arr: string[], param?: number, isDeleteComment?:boolean}) {
+  //선택창 보이기
+  const {isSelectHidden, setIsSelectHidden } = useContext(HiddenContext);
+  const {commentId} = useContext(CommentIdContext);
+  const {orderBy, setOrderBy} = useContext(OrderByContext);
+
+  const onClickHandler = (order: string) => {
+    if(setIsSelectHidden) {setIsSelectHidden(prev => !prev);}
+
+    if(setOrderBy) {setOrderBy(order);}
+
+    if((orderBy === '삭제하기') && isDeleteComment && (param !== undefined)){
+      const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
+      if(result){
+        deleteFeedComment({feedId: param, commentId: commentId})
+        .then(() => {
+          alert('삭제되었습니다.');
+        })
+      }
+    }
+    // if(orderBy === '수정하기'){}
+  }
+
   return (
     <div
       style={{
@@ -12,15 +36,16 @@ function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: 
         position: "absolute",
         zIndex: "9999",
       }}
-      hidden={hidden}
+      hidden={isSelectHidden}
     >
       <SelectBoxStyle>
         <SelectTop/>
-        {
-          arr?.map((item) => {
+        { arr?.map((item) => {
             return(
               <div 
-                className='order-value'
+                className='selectBox-order-value'
+                style={{cursor: 'pointer'}}
+                onClick={() => {onClickHandler(item);}}
                 key={item}
               >
                 {item}
@@ -29,9 +54,12 @@ function SelectBox({arr, hidden, onClickHiddenHandler}: {arr: string[], hidden: 
           })
         }
       </SelectBoxStyle>
-      <BottomSheet
-        onClick={onClickHiddenHandler}
-      />
+      {setIsSelectHidden &&
+        <BottomSheet
+          hidden={isSelectHidden}
+          onClick={() => setIsSelectHidden(prev => !prev)}
+        />
+      }
     </div>
   )
 }
@@ -45,7 +73,7 @@ const SelectBoxStyle = styled.div`
   z-index: 10000;
   border-radius: 20px 20px 0 0;
   background-color: #fff;
-  .order-value {
+  .selectBox-order-value {
     padding: 20px;
     ${fontType.body_1}
   }

@@ -1,56 +1,86 @@
-import React, { useState } from 'react'
-import SearchResultList, { ISearchResult } from '../components/search/SearchResultList';
 import styled from 'styled-components';
+import { useState } from 'react'
+import { useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
+import { path } from '../shared/path';
 import SearchStore from '../components/search/SearchInput';
-import { useParams } from 'react-router';
+import ListHeader from '../components/home/ListHeader';
+import SearchResultList from '../components/search/SearchResultList';
+import NoResult from '../components/home/NoShop';
 
+interface IDataList {
+  shopId: number,
+  shopName: string,
+  shopAddress: string,
+  lat : number,
+  lng : number,
+}
+
+//Link state로 돌아갈 link 값을 받고, 클릭하면 location.state.link로 다시 돌아가는 로직
 function Search() {
   const [inputValue, setInputValue] = useState('');
-  const [dataList, setDataList] = useState([
-    {
-      shopId : 0,
-      shopName : '',
-      shopAddress : '',
-    },
-  ]);
-
+  const [dataList, setDataList] = useState<undefined | IDataList[] | []>(undefined);
+  const location = useLocation();
   let link = '';
-  let param = Number(useParams().isfeed); //피드페이지에서 넘어올때만 있는 파라미터
-  if(!param) {
-    param = 0;
-  };
 
   return (
-    <SearchWrap>
-      <SearchWrapContainer>
-        <SearchStore
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          setDataList={setDataList}
-        />
+    <>
+      <ListHeader
+        close={true}
+      />
+      <SearchWrap>
+        <SearchWrapContainer>
+          {/* 디바운스 적용된 검색 로직 들어있는 input */}
+          <SearchStore
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            setDataList={setDataList}
+            placeholder={'카페 이름 검색하기'}
+          />
 
-        <div className='search-result-list'>
-          {
-          (dataList?.length !== 0) && dataList?.map((item) => {
-            return(
-              <SearchResultList
-                key={item.shopId}
-                shopId={item.shopId}
-                shopName={item.shopName}
-                shopAddress={item.shopAddress}
-              />
-            )
-          })}
-        </div>
-      </SearchWrapContainer>
-    </SearchWrap>
+          {/* 검색 결과 */}
+          <div className='search-result-list'>
+            {(dataList !== undefined) ? ((dataList?.length !== 0) && dataList?.map((item: IDataList) => {
+              // state로 받는 값에 따라 링크가 달라짐
+              link = `${path.toShopDetail}/${item.shopId}`;
+              if(location.state.link) {link = location.state.link;}
+
+              return(
+                <div key={item.shopId}>
+                  <Link 
+                    to={link}
+                    state={{
+                      shopId: item.shopId, 
+                      shopName: item.shopName, 
+                      lat: item.lat, 
+                      lng: item.lng,
+                    }}
+                  >
+                    <SearchResultList
+                      shopId={item.shopId}
+                      shopName={item.shopName}
+                      shopAddress={item.shopAddress}
+                    />
+                  </Link>
+                </div>
+              )}))
+              :
+              <></>
+            }
+
+            {/* undefined일 때 아무것도 없고, []일때 결과없음 띄움 */}
+            {(dataList !== undefined) && (dataList?.length === 0 && <NoResult search={true} />)}
+          </div>
+        </SearchWrapContainer>
+      </SearchWrap>
+    </>
   )
 };
 
 export default Search
 
 const SearchWrap = styled.div`
-  width: 390px;
+  width: 100%;
   min-height: 100vh;
   background-color: #fff;
   display: inline-block;
@@ -76,29 +106,5 @@ const SearchWrapContainer = styled.div`
     img {
       width: 20px;
     }
-    
   }
 `;
-
-const result : ISearchResult[] = [
-  {
-    shopId : 1,
-    shopName : '가게이름1',
-    shopAddress : '주소1',
-  },
-  {
-    shopId : 2,
-    shopName : '가게이름2',
-    shopAddress : '주소2',
-  },
-  {
-    shopId : 3,
-    shopName : '가게이름3',
-    shopAddress : '주소3',
-  },
-  {
-    shopId : 4,
-    shopName : '가게이름4',
-    shopAddress : '주소4',
-  },
-];

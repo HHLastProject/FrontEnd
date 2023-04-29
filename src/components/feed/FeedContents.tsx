@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { mypageData } from '../../custom/ym/dummydata';
-import moment from 'moment';
+import { useState } from 'react'
 import { VFlex } from '../../custom/ym/styleStore';
 import FeedProfile from '../FeedProfile';
 import FeedPicture from './FeedPicture';
@@ -9,13 +7,7 @@ import styled from 'styled-components';
 import { PRIMARY_01, TITLE_5 } from '../../custom/ym/variables';
 import TagList from './TagList';
 import PlaceCard, { FeedCardData } from './PlaceCard';
-import { useQuery } from '@tanstack/react-query';
-import { mypageKeys } from '../../apis/queries';
-import { FeedApiPathType, FeedDetails } from '../../custom/ym/types';
-import { api_token } from '../../shared/api';
-import { apiPath, imgPath } from '../../shared/path';
-import useFeedDetails from '../../hooks/callFeedDetail';
-import tryFeedDetailByAxios from '../../hooks/tryFeedDetailByAxios';
+import { imgPath } from '../../shared/path';
 import useFeedDataCall from '../../hooks/useFeedDataCall';
 
 type Prop = {
@@ -23,16 +15,14 @@ type Prop = {
     children: number
 }
 const FeedContents = ({ children }: Prop) => {
-
     const [expand, setExpand] = useState<boolean>(false);
-
     const { data } = useFeedDataCall(children);
 
     const pic = imgPath.feedImg + data?.feedPic;
     const comment: string = data?.comment;
     const tags = data?.tags;
 
-    const props: FeedCardData = {
+    const placeCardData: FeedCardData = {
         shopThumbnail: data?.shopThumbnail,
         shopName: data?.shopName,
         shopAddress: data?.shopAddress,
@@ -53,9 +43,10 @@ const FeedContents = ({ children }: Prop) => {
                 ? <ExpandButton onClick={expandButtonHandler}>
                     <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
                 </ExpandButton>
-                : null}
+                : null
+            }
             <TagList>{tags as string[]}</TagList>
-            <PlaceCard dataset={props} />
+            <PlaceCard dataset={placeCardData} />
         </VFlex>
     )
 }

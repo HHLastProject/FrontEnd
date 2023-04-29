@@ -1,5 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react'
-import { mypageData } from '../custom/ym/dummydata';
+import React, { useState } from 'react'
 import styled from 'styled-components';
 import { HFlex } from '../custom/ym/styleStore';
 import SmallProfileCard from './SmallProfileCard';
@@ -8,8 +7,14 @@ import { defaultImgPath } from '../shared/path';
 import { Buttons } from './ui/element/buttons/Buttons';
 import { Modals } from './ui/modal/Modals';
 
-const FeedProfile = ({ profilePic, params }: { profilePic?: string, params: number }) => {
+type TFeedProfile = {
+    profilePic?: string | null;
+    nickname?: string;
+    createdAt?: string;
+    params?: number
+}
 
+const FeedProfile = ({ profilePic, nickname, createdAt, params }: TFeedProfile) => {
     const [modifyModal, setModifyModal] = useState(false);
 
     if (!profilePic) { profilePic = defaultImgPath.shopList };
@@ -22,14 +27,21 @@ const FeedProfile = ({ profilePic, params }: { profilePic?: string, params: numb
         <ProfileCard>
             <HFlex gap='4px' etc='position:relative;'>
                 <SmallProfileCard>{profilePic}</SmallProfileCard>
-                <FeedNameCard />
+                { (nickname && createdAt) ?
+                    <FeedNameCard 
+                        nickname={nickname}
+                        createdAt={createdAt}
+                    />
+                    :
+                    <FeedNameCard />
+                }
                 <Buttons.Others.IconButton
                     width={24}
                     height={24}
                     onClick={modifyClickHandler}
                     fileName={"feed_modify.png"}
                 />
-                {modifyModal
+                {(modifyModal && (params !== undefined))
                     ? <Modals.Feed stateDispatch={setModifyModal} params={params} />
                     : null}
             </HFlex>

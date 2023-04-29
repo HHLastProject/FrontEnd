@@ -2,40 +2,66 @@ import styled from 'styled-components';
 import { HFlex, VFlex } from '../../custom/ym/styleStore';
 import useNavigateHandler from '../../custom/jh/useNavigateHandler';
 import { LoginCheck } from '../Authentication';
-import { Title5 } from '../FontStyle';
+import { Body1, Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
+import { path } from '../../shared/path';
+import { ReactNode } from 'react';
 
-const ListHeader = ({range}: {range?: number}) => {
-  const {loginClickHandler, mapClickHandler, searchClickHandler} = useNavigateHandler();
+//close == true : 뒤로가기 버튼이 x로 바뀜
+//scrap == true : 스크랩 버튼
+const ListHeader = ({name, range, close, feedForm, children, scrap}: {name?: string, range?: number, close?: boolean, feedForm?: true, children?: ReactNode, scrap?: boolean}) => {
+  const {backClickHandler} = useNavigateHandler();
+  const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
 
   return (
     <HeaderContainer>
-      <HFlex etc="padding: 0px 5px;" width='100%'>
-        <ButtonContainer>
-          <Image src={`${process.env.PUBLIC_URL}/icon/back_24.png`} alt="" />
-        </ButtonContainer>
-        <VFlex etc="flex:1; height:fit-content">
-          <div>
-            <HeaderTextSmall>내 위치에서</HeaderTextSmall>
-          </div>
-          <HFlex gap="10px">
-            <HeaderTextMedium>{range} m</HeaderTextMedium>
-            <Image2 src={`${process.env.PUBLIC_URL}/down.png`} alt="" />
-          </HFlex>
-        </VFlex>
+      <HFlex width='100%'>
+        <div
+          onClick={backClickHandler}
+        >
+          <ButtonContainer>
+            <Image src={backIconSrc} alt="" />
+          </ButtonContainer>
+        </div>
+        {name && <div style={{width: '100%'}}><Body1>{name}</Body1></div>}
+        {range && 
+          <>
+            <VFlex etc="height:fit-content">
+              <div>
+                <HeaderTextSmall>내 위치에서</HeaderTextSmall>
+              </div>
+              <HFlex gap="5px">
+                <HeaderTextMedium>{range}m</HeaderTextMedium>
+                <Image2 src={`${process.env.PUBLIC_URL}/icon/chevron_down_16.png`} alt="" />
+              </HFlex>
+            </VFlex>
+          </>
+        }
         <RightContainer>
-          <LoginCheck>
-            <Title5>
-              <Link to={'/login'}>로그인 하기</Link>
-            </Title5>
-          </LoginCheck>
-          <div
-            onClick={searchClickHandler}
-          >
-            <ButtonContainer>
-              <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
-            </ButtonContainer>
-          </div>
+          {range &&
+            <>
+              <LoginCheck>
+                <Title5>
+                  <Link to={'/login'}>로그인 하기</Link>
+                </Title5>
+              </LoginCheck>
+
+              {/* 검색하기 */}
+              <Link
+                to={`${path.search}`}
+                state={{link: null}}
+              >
+                <ButtonContainer>
+                  <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
+                </ButtonContainer>
+              </Link>
+            </>
+          }
+          {(feedForm || scrap) && 
+            <>
+              {children}
+            </>
+          }
         </RightContainer>
       </HFlex>
     </HeaderContainer>
@@ -44,21 +70,24 @@ const ListHeader = ({range}: {range?: number}) => {
 
 export default ListHeader;
 
+export const HeaderContainer = styled.div`
+  height: 60px;
+  width: 100%;
+  padding: 0 5px;
+  background-color: white;
+`
+
 const HeaderTextSmall = styled.span`
+  white-space: nowrap;
   font-size: 12px;
   padding : 2px 0px;
   color : gray;
 `
+
 const HeaderTextMedium = styled.span`
   font-size : 18px;
   padding : 3px 0px;
   font-weight: bold;
-`
-
-const HeaderContainer = styled.div`
-  height:60px;
-  width: 100%;
-  background-color: white;
 `
 
 const ButtonContainer = styled.button`
@@ -76,13 +105,16 @@ const Image = styled.img`
 `
 
 const Image2 = styled.img`
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   object-fit: contain;
   background-color: none;
 `;
 
 const RightContainer = styled.div`
+  width: 100%;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
+  margin-right: 20px;
 `;

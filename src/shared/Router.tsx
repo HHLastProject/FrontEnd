@@ -23,6 +23,7 @@ import Home from '../pages/Home'
 import FeedForm from '../pages/FeedForm'
 import Bookmark from '../pages/Bookmark'
 import FeedList from '../pages/FeedList'
+import FeedDetailComment from '../pages/FeedDetailComment'
 import EditNickname from '../pages/EditNickname'
 import FolderList from '../pages/FolderList'
 
@@ -41,6 +42,7 @@ const Router = () => {
             <Route path={path.shopDetail} element={<ShopDetail />} />
             <Route path={path.feedForm} element={<FeedForm />} />
             <Route path={path.feedList} element={<FeedList />} />
+            <Route path={path.feedComment} element={<FeedDetailComment />} />
 
             <Route path={path.adminShoplist} element={<Admin />} />
             <Route path={path.adminRegister} element={<AdminRegister />} />
