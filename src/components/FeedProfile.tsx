@@ -27,8 +27,8 @@ const FeedProfile = ({ profilePic, nickname, createdAt, params }: TFeedProfile) 
         <ProfileCard>
             <HFlex gap='4px' etc='position:relative;'>
                 <SmallProfileCard>{profilePic}</SmallProfileCard>
-                { (nickname && createdAt) ?
-                    <FeedNameCard 
+                {(nickname && createdAt) ?
+                    <FeedNameCard
                         nickname={nickname}
                         createdAt={createdAt}
                     />

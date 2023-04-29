@@ -5,29 +5,30 @@ import { VFlex } from '../custom/ym/styleStore';
 import { TossedFeedData } from '../custom/ym/types';
 import { queryClient } from '..';
 
-const FeedNameCard = ({nickname, createdAt}: {nickname?: string, createdAt?: string}) => {
+const FeedNameCard = ({ nickname, createdAt }: { nickname?: string, createdAt?: string }) => {
     let data = undefined;
     let date = '';
 
-    if((nickname === undefined) && (createdAt === undefined)){
+    if ((nickname === undefined) && (createdAt === undefined)) {
+        console.log(queryClient.getQueriesData(["GET_USER_FEED"]));
         data = queryClient.getQueriesData(["GET_USER_FEED"])[0][1] as TossedFeedData;
         date = moment(data?.createdAt).format("YYYY.MM.DD");
     }
 
     return (
         <>
-        {(nickname && createdAt) 
-            ?
-            <VFlex gap='2px'>
-                <Name>{nickname}</Name>
-                <CreatedDate>{createdAt}</CreatedDate>
-            </VFlex>
-            :
-            <VFlex gap='2px' etc="flex:1">
-                <Name>{data?.nickname}</Name>
-                <CreatedDate>{date}</CreatedDate>
-            </VFlex>
-        }
+            {(nickname && createdAt)
+                ?
+                <VFlex gap='2px'>
+                    <Name>{nickname}</Name>
+                    <CreatedDate>{createdAt}</CreatedDate>
+                </VFlex>
+                :
+                <VFlex gap='2px' etc="flex:1">
+                    <Name>{data?.nickname}</Name>
+                    <CreatedDate>{date}</CreatedDate>
+                </VFlex>
+            }
         </>
     )
 }
