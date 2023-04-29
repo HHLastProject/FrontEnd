@@ -210,5 +210,13 @@ export interface ReceivedBookmarks {
 }
 export interface PayloadFolderList {
     folderName: string,
-    shopList: number[],
+    shopList: PayloadShopList[],
+}
+
+export interface PayloadShopList {
+    shopId: number,
+}
+
+export interface PayloadForModifyScrapData {
+    folderList: PayloadFolderList[]
 }

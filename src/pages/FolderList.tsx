@@ -19,7 +19,7 @@ const FolderList = () => {
     useEffect(() => {
         const queriedData = scrapData?.folderList;
         setFolderList(queriedData);
-    }, [folderList]);
+    }, []);
 
     return (
         <FolderListContainer>

@@ -27,10 +27,11 @@ const ListedFolders = ({
         onSuccess: () => {
             queryClient.invalidateQueries(scrapKeys.GET_SCRAP);
         }
-    })
+    });
+
     useEffect(() => {
         console.log('등록 후 list :', list);
-        const payload = { folderList: list };
+        const payload = { folderList: list.map((element) => element.folderName) }
         mutate(payload);
     }, [list]);
 

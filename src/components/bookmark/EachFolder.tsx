@@ -30,14 +30,14 @@ const EachFolder = ({
 
     const deleteClickHandler = () => {
         dispatch(prev => [...prev].filter((element) => element !== name));
-        mutate(name.folderId);
+        // mutate(name.folderId);
     };
 
     const moveClickHandler = (direction: string, index: number) => {
         console.log(index);
         if (direction === "down") {
             dispatch(prev => {
-                if (prev.length - 1 === index + 1) {
+                if (prev.length - 1 === index) {
                     return prev;
                 } else {
                     const temp = [...prev];

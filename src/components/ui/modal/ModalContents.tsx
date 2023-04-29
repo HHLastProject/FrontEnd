@@ -85,8 +85,9 @@ const CreateFolderModalContents = ({
         const payload = {
             folderList: [...beforeList, newFolder]
         }
-
-        mutate(payload);
+        // mutate(payload);
+        const a = { folderId: 9999999, folderName: newFolder };
+        listDispatch(prev => [...prev, a]);
         dispatch(prev => false);
     }
 

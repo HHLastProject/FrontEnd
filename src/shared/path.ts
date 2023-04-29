@@ -63,6 +63,7 @@ export const apiPath: IPath = {
   editNickname: '/api/mypage/change/nickname',
   createScrapFolder: '/api/favorite/folder',
   deleteScrapFolder: '/api/favorite/folder',
+  postScrapData: '/api/favorite/modify',
 };
 
 export const imgPath: IPath = {

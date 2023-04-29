@@ -5,7 +5,7 @@ import { apiPath } from "../shared/path";
 import { ReceivedBookmarks } from "../custom/ym/types";
 
 const useScrapData = () => {
-    const { data, refetch, isSuccess, isError } = useQuery({
+    const { data, refetch, isSuccess, isError, isLoading } = useQuery({
         queryKey: scrapKeys.GET_SCRAP,
         queryFn: async () => {
             const res = await api_token.get(apiPath.scrapList);
@@ -23,7 +23,8 @@ const useScrapData = () => {
         scrapData: data,
         refetchScrapQuery: refetch,
         isSuccess,
-        isError
+        isError,
+        isLoading
     }
 }
 

@@ -7,11 +7,12 @@ import { useQuery } from '@tanstack/react-query';
 import { scrapKeys } from '../apis/queries';
 import { api_token } from '../shared/api';
 import { apiPath } from '../shared/path';
-import { FolderData, PayloadFolderList, ReceivedBookmarks, ScrapListEachData } from '../custom/ym/types';
+import { FolderData, PayloadFolderList, PayloadShopList, ReceivedBookmarks, ScrapListEachData } from '../custom/ym/types';
 import useScrapData from '../hooks/useScrapData';
 import { BookmarkContext, BookmarkDispatches, bookmarkContext, bookmarkDispatchesContext } from '../custom/ym/contextValues';
 import { Buttons } from '../components/ui/element/buttons/Buttons';
 import { Modals } from '../components/ui/modal/Modals';
+import useEditScrapData from '../hooks/useEditScrapData';
 
 
 export const ScrapContext = createContext(bookmarkContext);
@@ -25,7 +26,8 @@ const Bookmark = () => {
     const [scrapList, setScrapList] = useState<ScrapListEachData[]>();
     const [modal, setModal] = useState<boolean>(false);
 
-    const { scrapData, refetchScrapQuery, isSuccess, isError } = useScrapData();
+    const { scrapData, refetchScrapQuery, isSuccess, isError, isLoading } = useScrapData();
+    const { mutate } = useEditScrapData();
 
     const values: BookmarkContext = {
         editMode,
@@ -47,34 +49,31 @@ const Bookmark = () => {
     }
 
     const editFinishClickHandler = () => {
-        const a: PayloadFolderList[] = queryData?.folderList.map((folder) => {
+        const newFolderList: PayloadFolderList[] = queryData?.folderList.map((folder) => {
 
             const temp = scrapList?.map((element) => {
                 if (element.folderName === folder.folderName) {
-                    return element.shopId;
+                    return { shopId: element.shopId } as PayloadShopList;
                 }
                 return null;
             });
 
             const result: PayloadFolderList = {
                 folderName: folder.folderName,
-                shopList: (temp as number[]).filter((element) => element !== null),
+                shopList: (temp as PayloadShopList[]).filter((element) => element !== null),
             };
 
             return result;
         }) as PayloadFolderList[];
-        const c = {
-            folderList: a,
+
+        const payload = {
+            folderList: newFolderList,
         }
 
-        console.log('완료 누를시 완성되는 데이터 셋', c);
+        console.log('완료 누를시 완성되는 데이터 셋', newFolderList);
 
-        // const payload = {
-        //     folderList : [{
-        //         folderName: string,
-        //         shopList : [shopId,...],
-        //     },...]
-        // }
+        mutate(payload);
+
         setEditMode(false);
     }
 
@@ -86,13 +85,29 @@ const Bookmark = () => {
         setModal(true);
     }
 
+    // if (isSuccess) {
+    //     setQueryData(scrapData);
+    //     setScrapList(scrapData?.scrapList);
+    // }
+
+
     useEffect(() => {
         // refetchScrapQuery();
-        if (scrapData) {
+        // if (isLoading) {
+        // console.log('로딩중');
+        // }
+        if (isSuccess) {
+            // console.log("통신성공")
             setQueryData(scrapData);
-            setScrapList(scrapData.scrapList);
+            setScrapList(scrapData?.scrapList);
+            console.log(scrapData);
+            console.log(scrapList);
         }
     }, []);
+
+    if (isLoading) {
+        return <div>로딩중</div>;
+    };
 
     return (
         <ScrapContext.Provider value={values}>
@@ -101,7 +116,7 @@ const Bookmark = () => {
                     ? <Modals.MoveScrapToOtherFolder
                         dispatch={setModal} />
                     : null}
-                {scrapData
+                {queryData
                     ? <BookmarkContainer>
                         <VFlex>
                             {editMode
