@@ -70,6 +70,15 @@ const Home = () => {
         return result;
     }
 
+    const userTextSelectLimit = `
+    -ms-user-select: none; 
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+    overflow : hidden;
+    `;
+
     /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
     useEffect(() => {
         const newPayload = { lng: center.lng, lat: center.lat, range: range };
@@ -96,9 +105,8 @@ const Home = () => {
     }, [category]);
 
 
-
     return (
-        <VFlex etc='position: relative;'>
+        <VFlex etc={userTextSelectLimit}>
             <StateContext.Provider value={{ ...stateList }}>
                 <DispatchContext.Provider value={{ ...dispatchList }}>
                     <VFlexCenter etc="min-width:390px; height:100%; flex:1;">

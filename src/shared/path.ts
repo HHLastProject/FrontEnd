@@ -38,11 +38,15 @@ export const path: IPath = {
   adminLogin: "/admin/login",
   redirectNaver: "/redirect/naver",
   redirectKakao: "/redirect/kakao",
+
   bookmark: "/bookmark",
+  folderList: "/folder",
+
   mypage: '/mypage',
   allFeeds: "/mypage/feeds/:userId",
   toFeedDetail: "/feed/detail",
-  feedDetail: "/feed/detail/:feedId"
+  feedDetail: "/feed/detail/:feedId",
+  editNickname: "/mypage/edit",
 }
 
 export const apiPath: IPath = {
@@ -57,6 +61,11 @@ export const apiPath: IPath = {
   scrapList: '/api/favorite',
   mypage: '/api/mypage',
   feedDetail: '/api/mypage/:feedId',
+  deleteFeed: '/api/mypage/:feedId',
+  editNickname: '/api/mypage/change/nickname',
+  createScrapFolder: '/api/favorite/folder',
+  deleteScrapFolder: '/api/favorite/folder',
+  postScrapData: '/api/favorite/modify',
 };
 
 export const imgPath: IPath = {
@@ -104,5 +113,8 @@ export const iconImgPath: IPathObject = {
   upload: {
     commentActive40: setPublicUrl(`/images/button/btn_send_active.png`),
     commentInactive40: setPublicUrl(`/images/button/btn_send_inactive.png`),
+  },
+  bookmark: {
+    noFolder: setPublicUrl(`/images/bookmark/no_folder.png`),
   }
 };

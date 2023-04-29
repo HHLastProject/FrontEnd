@@ -77,7 +77,7 @@ const CarouselBox = () => {
     }, [activeShop])
 
     return (
-        <CarouselModule>
+        <CarouselModule onClick={(e) => e.stopPropagation()}>
             <Swiper
                 onSwiper={setSwiper}
                 spaceBetween={8}
@@ -151,6 +151,11 @@ const Box = styled.div`
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15), 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     background-color: white;
+    -ms-user-select: none; 
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 `;
 
 const Summary = styled.span`

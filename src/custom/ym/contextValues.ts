@@ -1,4 +1,4 @@
-import { Coordinate, categoryTypes } from "./types"
+import { Coordinate, FolderData, ReceivedBookmarks, ScrapListEachData, categoryTypes } from "./types"
 import { ShopData } from "./variables"
 
 export interface States {
@@ -46,4 +46,34 @@ export const dispatches: Dispatches = {
     setIsMoving: null,
     setIsChanged: null,
     setActiveShop: null,
+}
+export interface BookmarkContext {
+    editMode: boolean,
+    selected: number[],
+    queryData: ReceivedBookmarks | undefined,
+    targetFolder: FolderData | undefined,
+    scrapList: ScrapListEachData[] | undefined,
+}
+
+export interface BookmarkDispatches {
+    setEditMode: React.Dispatch<React.SetStateAction<boolean>> | null,
+    setSelected: React.Dispatch<React.SetStateAction<number[]>> | null,
+    setQueryData: React.Dispatch<React.SetStateAction<ReceivedBookmarks | undefined>> | undefined,
+    setTargetFolder: React.Dispatch<React.SetStateAction<FolderData | undefined>> | undefined,
+    setScrapList: React.Dispatch<React.SetStateAction<ScrapListEachData[] | undefined>> | undefined
+}
+export const bookmarkContext: BookmarkContext = {
+    editMode: false,
+    selected: [],
+    queryData: undefined,
+    targetFolder: undefined,
+    scrapList: undefined
+}
+
+export const bookmarkDispatchesContext: BookmarkDispatches = {
+    setEditMode: null,
+    setSelected: null,
+    setQueryData: undefined,
+    setTargetFolder: undefined,
+    setScrapList: undefined,
 }

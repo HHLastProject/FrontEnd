@@ -19,8 +19,6 @@ const FeedPictures = ({ isAll, children }: Props) => {
     }
     const arr = children as ReceivedFeed[];
 
-    console.log('feedPictures에서 칠드런:', children);
-
     if (isAll) {
         return (
             <HFlex gap='2px' height='fit-content' etc='flex-wrap: wrap;'>

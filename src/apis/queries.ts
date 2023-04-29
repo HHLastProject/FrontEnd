@@ -33,9 +33,17 @@ export const mapQueryKeys: IQueryKey = {
 
 export const scrapKeys: IQueryKey = {
   GET_SCRAP: ["GET_SCRAP"],
+  POST_FOLDER: ["POST_FOLDER"],
+  DELETE_FOLDER: ["DELETE_FOLDER"],
+  POST_SCRAP_DB: ["POST_SCRAP_DB"]
 }
 
 export const mypageKeys: IQueryKey = {
   GET_MYPAGE: ["GET_MYPAGE"],
   GET_FEED_DETAIL_IN_MYPAGE: ["GET_FEED_DETAIL_IN_MYPAGE"],
+  PATCH_NICKNAME: ["PETCH_NICKNAME"],
+}
+
+export const feedKeys: IQueryKey = {
+  DELETE_MYFEED: ["DELETE_MYFEED"],
 }

@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import { colorSet } from '../../styles/color';
 import { InternalJSX } from '../../../../custom/ym/types';
 
-const Default = ({ onClick, children, ...props }: InternalJSX) => {
+const Default = ({ onClick, children, disabled = false, ...props }: InternalJSX) => {
+    // console.log('버튼에서 disable:')
     return (
-        <DefaultContainer onClick={onClick}>{children}</DefaultContainer>
+        <DefaultContainer onClick={onClick} disabled={disabled} {...props}>{children}</DefaultContainer>
     )
 }
 
 const Others = ({ onClick, children, ...props }: InternalJSX) => {
     return (
-        <OtherContainer onClick={onClick}>{children}</OtherContainer>
+        <OtherContainer onClick={onClick} {...props}>{children}</OtherContainer>
     )
 }
 

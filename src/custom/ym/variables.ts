@@ -155,41 +155,7 @@ export type NavermapPointType = {
     y: number,
 }
 
-export const SAMPLE_DATA: EachData[] = [
-    {
-        shopId: 1,
-        category: "카페",
-        shopName: "1번 일반카페",
-        thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
-        region: "서울 강남구",
-        distance: 202,
-        rate: 4.8,
-        reviews: 1,
-        lat: 37.5104457,
-        lng: 127.0469272,
-    },
-    {
-        shopId: 2,
-        category: "사주카페",
-        shopName: "2번 사주카페",
-        thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
-        region: "서울 강남구",
-        distance: 302,
-        rate: 4.8,
-        reviews: 1,
-        lat: 37.5104457,
-        lng: 127.0466590,
-    },
-    {
-        shopId: 3,
-        category: "사주카페",
-        shopName: "3번 사주카페",
-        thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
-        region: "서울 강남구",
-        distance: 102,
-        rate: 4.8,
-        reviews: 1,
-        lat: 37.5109321,
-        lng: 127.0471200,
-    }
-];
+export const checkImg = {
+    checked: 'selected_scrap.png',
+    notChecked: 'not_selected_scrap.png',
+}

@@ -43,4 +43,4 @@ const Active = ({ children, isActive = false, ...props }: NavStateProp) => {
     );
 }
 
-export const Categorys = { Inactive, Active };
+export const Categories = { Inactive, Active };

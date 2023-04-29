@@ -12,8 +12,16 @@ const useMypage = () => {
         queryKey: mypageKeys.GET_MYPAGE,
         queryFn: async () => {
             const res = await api_token.get(apiPath.mypage);
-            return res.data.mypages[0];
+            const result = res.data.mypages as Feed[];
+            return result[0] as Feed;
         },
+        refetchOnMount: true,
+        refetchOnReconnect: true,
+        onSuccess(data) {
+        },
+        onError(err) {
+            throw err;
+        }
     });
 
     return { refetch, isError, isSuccess, data };
