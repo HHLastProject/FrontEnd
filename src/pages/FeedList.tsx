@@ -23,8 +23,12 @@ function FeedList() {
   const [category, setCategory] = useState<categoryTypes>("");
   const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
 
+  useEffect(() => {
+    console.log(feedList);
+  }, [])
+  
   if(feedListIsLoading) { return <div>로딩중</div> };
-
+  
   return (
     <ShopCategory.Provider value={
       {range, setRange, category, setCategory}

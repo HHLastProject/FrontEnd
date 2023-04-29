@@ -43,6 +43,7 @@ function ShopDetail() {
     setExpand(prev => !prev);
   }
 
+  //스크랩 클릭
   const scrapHandler = () => {
     const token = getToken();
     if(token) {
@@ -53,6 +54,7 @@ function ShopDetail() {
     }
   }
 
+  //스크랩 변경
   const changeScrap = async (shopId: number) => {
     const token = getToken();
     let result : boolean= false;
@@ -71,8 +73,14 @@ function ShopDetail() {
     return result;
   };
 
-  const scrollToTabInfo = () => {
+  //스크롤 이벤트
+  const scrollToTabInfo = (id: string) => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // const window = document.getElementById()
+    const el = document.getElementById(id)?.offsetTop;
+    
+    console.log(el);
+    window.scrollTo({top: el, behavior: 'smooth'});
   };
 
   if (shopDetailIsError) {
@@ -115,7 +123,7 @@ function ShopDetail() {
       </ListHeader>
 
       {/* 내용 */}
-      <div>
+      <div id='shop-detail-wrap'>
         <ShopDetailThumbnail>
           <div className='thumbnail-img'>
             <img
@@ -133,22 +141,40 @@ function ShopDetail() {
         <ShopDetailContainer>
           <ShopDetailTab>
             <ul id='detail-tab'>
-              <li id="">
+              <li>
                 <input type="radio" id='detail-tab-info' name='detail-tab' defaultChecked hidden />
-                <div className='detail-tab-div'>
+                <div 
+                  onClick={() => scrollToTabInfo(`info-top`)}
+                  className='detail-tab-div'
+                >
                   <label htmlFor="detail-tab-info">정보</label>
                 </div>
               </li>
-              <li id="">
-                <input type="radio" id='detail-tab-menu' name='detail-tab' hidden />
-                <div className='detail-tab-div'>
+              <li>
+                <input 
+                type="radio" id='detail-tab-menu' name='detail-tab' hidden />
+                <div 
+                  onClick={() => scrollToTabInfo(`menu-top`)}
+                  className='detail-tab-div'
+                >
                   <label htmlFor="detail-tab-menu">메뉴</label>
                 </div>
               </li>
-              <li id="">
-                <input type="radio" id='detail-tab-review' name='detail-tab' hidden />
-                <div className='detail-tab-div'>
-                  <label htmlFor="detail-tab-review">피드</label>
+              <li>
+                <input 
+                  type="radio" 
+                  id='detail-tab-review' 
+                  name='detail-tab'
+                  value={`feed-top`}
+                  
+                  hidden 
+                />
+                <div
+                  onClick={() => {scrollToTabInfo(`feed-top`)}}
+                  className='detail-tab-div'
+                >
+                  <label
+                    htmlFor="detail-tab-review">피드</label>
                 </div>
               </li>
             </ul>
@@ -156,7 +182,7 @@ function ShopDetail() {
 
           {/* 정보 */}
           <ShopDetailContentContainer>
-            <h2>정보</h2>
+            <h2 id='info-top'>정보</h2>
             <div>
               <ShopDetailContentInfo
                 iconImg={iconImgPath.detailInfo.mapPin}
@@ -186,7 +212,7 @@ function ShopDetail() {
         <ShopDetailContainer>
           <ShopDetailContentContainer>
             <div className='shop-detail-menu'>
-              <h2>메뉴</h2>
+              <h2 id='menu-top'>메뉴</h2>
               {shopDetailData?.Menus?.map((item: any) => {
                 return (
                   <ShopDetailMenu
@@ -206,7 +232,7 @@ function ShopDetail() {
           <ShopDetailContentContainer>
             <div className='shop-detail-review'>
               <div className='shop-detail-review-sub'>
-                <h2>피드</h2>
+                <h2 id='feed-top'>피드</h2>
                 <Link 
                   to={`${path.feedForm}`}
                   state={{shopId : param, shopName: shopDetailData?.shopName}}
