@@ -82,6 +82,7 @@ export const iconImgPath: IPathObject = {
   },
   map: {
     shopLocation: setPublicUrl(`/images/markers/icon_mappin_36.png`),
+    selectedShopLocation: setPublicUrl(`/markers/selected_shop.png`),
   },
   write: {
     pencil: setPublicUrl(`/images/feed/write_24.png`),
