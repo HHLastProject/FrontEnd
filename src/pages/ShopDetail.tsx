@@ -18,9 +18,6 @@ import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { getToken } from '../apis/getToken';
 import { api_token } from '../shared/api';
 import { IconSize28 } from '../components/ui/element/icons/IconSize';
-import { useMutation } from '@tanstack/react-query';
-import { queryKeys } from '../apis/queries';
-import { queryClient } from '..';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -68,6 +65,8 @@ function ShopDetail() {
       ).catch((error) => {
         throw error;
       });
+    } else {
+      alert('로그인이 필요합니다.');
     }
     return result;
   };
@@ -102,6 +101,7 @@ function ShopDetail() {
         scrap={true}
       >
         <div
+          style={{cursor: 'pointer'}}
           onClick={scrapHandler}
         >
           <IconSize28>
@@ -200,7 +200,7 @@ function ShopDetail() {
             </div>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
-        
+
         {/* 피드 */}
         <ShopDetailContainer>
           <ShopDetailContentContainer>
