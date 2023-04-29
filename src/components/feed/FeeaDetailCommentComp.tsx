@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { HFlex, VFlex } from '../../custom/ym/styleStore'
 import styled from 'styled-components'
 import { colorSet } from '../ui/styles/color'
@@ -32,9 +32,14 @@ function FeeaDetailCommentEl({commentList}: {commentList: IFeeaCommentList[]}) {
     }
   }
 
+  useEffect(() => {
+    console.log('렌더링')
+  }, [commentId]);
+
   return (
     <VFlex gap={'20px'} etc={'margin-bottom: 120px'}>
-      {commentList?.map((item: any) => {
+      {commentList?.filter((item: any) => item.commentId !== commentId)
+      .map((item: any) => {
         return(
           <Column key={item.feedCommentId}>
             {/* 프로필, 작성 타이밍, 버튼 */}

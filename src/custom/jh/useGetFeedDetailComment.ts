@@ -15,7 +15,7 @@ export interface ICommentList {
 
 const useGetFeedDetailComment = (feedId: number) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: queryKeys.GET_SHOP_DETAIL,
+    queryKey: queryKeys.GET_FEED_DETAIL_COMMENT,
     queryFn: async () => {
       const {data} = await api.get(`${apiPath.feedDetailComment}/${feedId}`, {
         headers: {
@@ -25,7 +25,7 @@ const useGetFeedDetailComment = (feedId: number) => {
       return data.commentList;
     },
     onSuccess: (res) => {
-      // queryClinet.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL });
+      // queryClient.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL_FEED });
     },
     onError: (error) => {
       throw error;

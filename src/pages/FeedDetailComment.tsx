@@ -34,7 +34,7 @@ function FeedDetailComment() {
 
   const onChangeTextareaHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
-    if(e.target.scrollHeight > 20){
+    if(e.target.scrollHeight > 30){
       e.target.rows = 2;
     } else {
       e.target.rows = 1;
@@ -50,7 +50,10 @@ function FeedDetailComment() {
     if(inputValue !== ''){
       //댓글 데이터 전송
       postFeedDetailComment({feedId: feedId, feedComment: inputValue})
-      .then((res) => alert('댓글이 추가되었습니다.'));
+      .then((res) => {
+        alert('댓글이 추가되었습니다.');
+        setInputValue('');
+      });
     } else {
       alert('댓글을 입력해주세요.');
     }
@@ -88,6 +91,7 @@ function FeedDetailComment() {
           <textarea
             maxLength={600}
             rows={1}
+            value={inputValue}
             onChange={onChangeTextareaHandler}
             placeholder='댓글 입력하기'
             required
