@@ -20,7 +20,7 @@ export const useGetFeedList = () => {
     },
   });
   return {
-    feedList : data,
+    feedList: data,
     feedListIsLoading: isLoading,
     feedListIsError: isError,
   };

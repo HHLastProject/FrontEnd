@@ -25,7 +25,7 @@ function FeedList() {
 
   useEffect(() => {
     console.log(feedList);
-  }, [])
+  }, [JSON.stringify(feedList)])
   
   if(feedListIsLoading) { return <div>로딩중</div> };
   
@@ -57,8 +57,8 @@ function FeedList() {
 
         {/* FEED 리스트 */}
         <div style={{marginBottom: '120px'}}>
-        { feedList?.filter((item: TossedFeedData) => orderBy !== "태그" ? item?.tag.includes(orderBy) : item)
-          .filter((item: TossedFeedData) => category !== "" ? item?.shopCategory === category : item)
+        { feedList?.filter((item: TossedFeedData) => (orderBy !== "태그") ? item?.tag.includes(orderBy) : item)
+          .filter((item: TossedFeedData) => (category !== "") ? item?.shopCategory === category : item)
           .map((item: any, index: number) => {
             return (
               <div key={item.feedId}>

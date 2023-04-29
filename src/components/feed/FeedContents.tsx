@@ -16,7 +16,7 @@ type Prop = {
 }
 const FeedContents = ({ children }: Prop) => {
     const [expand, setExpand] = useState<boolean>(false);
-    const { data } = useFeedDataCall(children);
+    const { data, isLoading, isError } = useFeedDataCall(children);
 
     const pic = imgPath.feedImg + data?.feedPic;
     const comment: string = data?.comment;
@@ -33,6 +33,11 @@ const FeedContents = ({ children }: Prop) => {
     const expandButtonHandler = () => {
         setExpand(prev => !prev);
     }
+    if (isLoading) return <div>로딩중</div>;
+    if (isError) return <div>에러</div>
+
+    console.log("받은 파라미터:", children);
+    console.log("FeedContents 쿼리결과", data);
 
     return (
         <VFlex gap='12px' etc='padding:20px;'>

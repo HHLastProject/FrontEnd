@@ -8,6 +8,7 @@ const useFeedDataCall = (feedId: number) => {
         queryKey: ["GET_USER_FEED"],
         queryFn: async () => {
             const { data } = await api_token.get(`${process.env.REACT_APP_SERVER_URL}/api/mypage/${feedId}`);
+            console.log('data:', data);
             return data.mypage;
         },
     });
