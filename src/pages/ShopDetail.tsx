@@ -16,7 +16,7 @@ import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
 import ListHeader from '../components/home/ListHeader';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { getToken } from '../apis/getToken';
-import { api_token } from '../shared/api';
+import api, { api_token } from '../shared/api';
 import { IconSize28 } from '../components/ui/element/icons/IconSize';
 
 function ShopDetail() {
@@ -47,6 +47,7 @@ function ShopDetail() {
   const scrapHandler = () => {
     const token = getToken();
     if(token) {
+      console.log('토큰있음')
       changeScrap(param);
     } else {
       const result = window.confirm('로그인이 필요한 기능입니다. 로그인 하시겠습니까?');
@@ -57,14 +58,21 @@ function ShopDetail() {
   //스크랩 변경
   const changeScrap = async (shopId: number) => {
     const token = getToken();
-    let result : boolean= false;
+    console.log('스크랩들어옴', shopId, token);
+    let result: {isScrap: boolean} = {isScrap: false};
     if(token) {
-      await api_token.put(`/api/${shopId}/scrap`)
-      .then((response) => {
-        result = response.data.isScrap;
-        setScrap(result);
+      result = await api.put(`/api/${shopId}/scrap`, {
+        headers: {
+          "Authorization": `${token}`,
         }
-      ).catch((error) => {
+      })
+      .then((res) => {
+        console.log('결과', res.data.isScrap);
+        setScrap(res.data.isScrap);
+        return res.data;
+      })
+      .catch((error) => {
+        console.log(error);
         throw error;
       });
     } else {
