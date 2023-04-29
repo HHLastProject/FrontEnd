@@ -48,18 +48,20 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
   return (
     <>
       {/* 피드 프로필 */}
-      {feedData?.profilePic 
-        ? 
-        <FeedProfile 
+      {feedData?.profilePic
+        ?
+        <FeedProfile
           profilePic={feedData?.profilePic}
           nickname={feedData?.nickname}
           createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
+          params={feedData.feedId}
         />
         :
         <FeedProfile
           profilePic={defaultImgPath.shopList}
           nickname={feedData?.nickname}
           createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
+          params={feedData.feedId}
         />
       }
 
@@ -80,7 +82,7 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
       {/* 피드 코멘트 */}
       <FeedComment isExpanded={expand}>{feedData?.comment as string}</FeedComment>
       {feedData?.comment && (feedData?.comment?.length > 86)
-        ? 
+        ?
         <ExpandButton onClick={expandButtonHandler}>
           <ExpandText>{expand ? "닫기" : "더 보기"}</ExpandText>
         </ExpandButton>
@@ -91,11 +93,9 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
       <TagList>{feedData?.tag}</TagList>
 
       {/* 해당 매장 정보 */}
-      <Link to={`${path.toShopDetail + '/' + feedData?.shopId}`}>
-        <PlaceCard
-          dataset={placeCardData}
-        />
-      </Link>
+      <PlaceCard
+        dataset={placeCardData}
+      />
     </>
   )
 }

@@ -30,12 +30,8 @@ const PlaceBookMark = ({ isScrap, shop }: { isScrap?: boolean, shop?: number }) 
             throw error;
         }
     })
-    // console.log('shopid', shop);
 
     const toggleScrap = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        // const result = mutate(item.shopId);
-        // const dispatchIsChanged = setIsChanged as React.Dispatch<React.SetStateAction<boolean>>;
-        // dispatchIsChanged(prev => !prev);
         mutate(shop as number);
     }
 
