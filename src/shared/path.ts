@@ -36,7 +36,10 @@ export const path: IPath = {
   adminLogin: "/admin/login",
   redirectNaver: "/redirect/naver",
   redirectKakao: "/redirect/kakao",
+
   bookmark: "/bookmark",
+  folderList: "/folder",
+
   mypage: '/mypage',
   allFeeds: "/mypage/feeds/:userId",
   toFeedDetail: "/feed/detail",
@@ -58,6 +61,9 @@ export const apiPath: IPath = {
   feedDetail: '/api/mypage/:feedId',
   deleteFeed: '/api/mypage/:feedId',
   editNickname: '/api/mypage/change/nickname',
+  createScrapFolder: '/api/favorite/folder',
+  deleteScrapFolder: '/api/favorite/folder',
+  postScrapData: '/api/favorite/modify',
 };
 
 export const imgPath: IPath = {
@@ -89,5 +95,8 @@ export const iconImgPath: IPathObject = {
   },
   arrow: {
     chevrondown16: setPublicUrl(`/chevrondown_16.png`),
+  },
+  bookmark: {
+    noFolder: setPublicUrl(`/images/bookmark/no_folder.png`),
   }
 };

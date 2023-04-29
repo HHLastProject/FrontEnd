@@ -1,28 +1,43 @@
-import React, { useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { HFlex } from '../../custom/ym/styleStore';
 import { TITLE_2 } from '../../custom/ym/variables';
-import { StateContextType, context } from '../../pages/Mypage';
 import { Buttons } from '../ui/element/buttons/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../shared/path';
+import useMypage from '../../hooks/useMypage';
 
 const UserProfile = () => {
 
-    const contextObjects = useContext(context);
+    const [profilePic, setProfilePic] = useState<string>("");
+    const [nickname, setNickname] = useState<string>("");
     const navi = useNavigate();
 
     const EditNicknameHandler = () => {
         navi(path.editNickname);
     }
 
+    const { data } = useMypage();
+
+    useEffect(() => {
+        if (data) {
+            setProfilePic(data?.profilePic);
+            setNickname(data?.nickname);
+        }
+        console.log('유즈이펙트', data);
+    }, [data]);
+
     return (
         <ProfileContainer>
             <HFlex gap='12px'>
                 <ImageFrame>
-                    <ProfileImage src={contextObjects?.props?.profilePic} alt="프로필 사진" />
+                    {profilePic
+                        ? <ProfileImage src={profilePic} alt="프로필 사진" />
+                        : null}
                 </ImageFrame>
-                <Nickname>{contextObjects?.props?.nickname}</Nickname>
+                {nickname
+                    ? <Nickname>{nickname}</Nickname>
+                    : null}
                 <Buttons.Others.IconButton
                     width={16}
                     height={16}

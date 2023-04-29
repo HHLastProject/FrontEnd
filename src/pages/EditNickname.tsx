@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { Headers } from '../components/ui/element/headers/Headers';
 import { useNavigate } from 'react-router-dom';
 import { VFlex, VFlexCenter } from '../custom/ym/styleStore';
-import InputTextRename from '../components/ui/element/input/InputTextRename';
 import { useMutation } from '@tanstack/react-query';
 import { mypageKeys } from '../apis/queries';
 import { api_token } from '../shared/api';
 import { apiPath } from '../shared/path';
 import { queryClient } from '..';
+import { Inputs } from '../components/ui/element/input/Inputs';
 
 const EditNickname = () => {
 
@@ -43,7 +43,7 @@ const EditNickname = () => {
                     RightOnClick={FinishClickHandler}
                     state={disable}
                 >완료</Headers.BackAndFinish>
-                <InputTextRename value={newNickname} dispatch={setNewNickname} disableDispatch={setDisable} />
+                <Inputs.TextRename value={newNickname} dispatch={setNewNickname} disableDispatch={setDisable} />
             </VFlexCenter>
         </EditContainer>
     )
