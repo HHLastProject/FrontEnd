@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import ListHeader from '../components/home/ListHeader'
 import DefaultWrap from '../components/ui/container/Wrap'
-import { CommentIdContext, HiddenContext, OrderByContext } from '../apis/context'
-import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler'
+import { CommentIdContext, OrderByContext } from '../apis/context'
 import FeeaDetailComments from '../components/feed/FeeaDetailCommentComp'
 import SelectBox, { SelectBoxId } from '../components/SelectBox'
 import { TextareaStyle } from '../components/search/SearchInput'
@@ -23,7 +22,6 @@ function FeedDetailComment() {
   const [inputValue, setInputValue] = useState<string>('');
   const [commentId, setCommentId] = useState<number>(0);
   const [orderBy, setOrderBy] = useState<string>('');
-  const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
 
   //data
   const {
