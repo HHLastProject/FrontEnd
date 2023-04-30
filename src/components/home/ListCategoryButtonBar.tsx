@@ -50,7 +50,7 @@ export const RangeFilterButtonBar = () => {
               selected={String(range)}
               onClick={(e) => filterClickHandler(item)}
             >
-              {(item <= 1000) ? `${item}m` : `${item / 1000}km`}
+              {(item < 1000) ? `${item}m` : `${item / 1000}km`}
             </FilterBtn>
           )
         })}
@@ -99,7 +99,7 @@ const rangeBtnStyle = (selected: string, name: string) => {
     color : ${color};
     border : none;
     border-radius: 12px;
-    padding : 10px 14px;
+    padding : 11px 16px;
     background-color : ${bgc};
   `);
 }

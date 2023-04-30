@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { path } from '../../shared/path';
 import { ReactNode } from 'react';
 import { colorSet } from '../ui/styles/color';
-import { controlHidden, controlVisible } from '../../custom/jh/controlHidden';
+import { controlVisible } from '../../custom/jh/controlHidden';
 import { SelectBoxId } from '../SelectBox';
 
 //close == true : 뒤로가기 버튼이 x로 바뀜

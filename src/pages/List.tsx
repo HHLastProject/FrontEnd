@@ -78,8 +78,10 @@ const List = () => {
             <HomeTabMenuStyle>
               <TabMenuUl>
                 <TabMenuLi id={1} isChecked={true}>
-                  내 주변
-                  <ListCount>{shopList?.length}</ListCount>
+                  <div style={{display: 'flex', gap: '4px'}}>
+                    내 주변
+                    <ListCount>{shopList?.length}</ListCount>
+                  </div>
                 </TabMenuLi>
                 <TabMenuLi id={2}>
                   추천식당
