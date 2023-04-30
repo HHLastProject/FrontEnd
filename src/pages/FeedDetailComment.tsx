@@ -3,8 +3,8 @@ import ListHeader from '../components/home/ListHeader'
 import DefaultWrap from '../components/ui/container/Wrap'
 import { CommentIdContext, HiddenContext, OrderByContext } from '../apis/context'
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler'
-import FeeaDetailCommentEl from '../components/feed/FeeaDetailCommentComp'
-import SelectBox from '../components/SelectBox'
+import FeeaDetailComments from '../components/feed/FeeaDetailCommentComp'
+import SelectBox, { SelectBoxId } from '../components/SelectBox'
 import { TextareaStyle } from '../components/search/SearchInput'
 import { colorSet } from '../components/ui/styles/color'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -71,6 +71,7 @@ function FeedDetailComment() {
     <OrderByContext.Provider value={{orderBy, setOrderBy}}>
       {/* 선택창 */}
       <SelectBox
+        id={SelectBoxId.MODIFY_SELECT_ID}
         isDeleteComment={true}
         param={feedId}
         arr={SelectData.MODIFY_DELETE_SELECT}
@@ -114,7 +115,7 @@ function FeedDetailComment() {
         <div style={{margin: '12px 0'}}>
           {
             feedDetailCommentData &&
-            <FeeaDetailCommentEl
+            <FeeaDetailComments
               commentList={feedDetailCommentData}
             />
           }

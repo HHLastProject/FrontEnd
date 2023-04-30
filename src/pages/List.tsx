@@ -5,7 +5,7 @@ import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 import HomeShopPostCard from '../components/home/HomePostCard';
 import ListCount from '../components/ListCount';
 import { HomeTabMenuStyle, TabMenuLi, TabMenuUl } from '../components/TabMenu';
-import SelectBox from '../components/SelectBox';
+import SelectBox, { SelectBoxId } from '../components/SelectBox';
 import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
 import ListHeader from '../components/home/ListHeader';
 import {ListCategoryButtonBar, RangeFilterButtonBar} from '../components/home/ListCategoryButtonBar';
@@ -17,6 +17,7 @@ import NoResult from '../components/home/NoShop';
 import { SelectData } from '../shared/select';
 import { Title4 } from '../components/FontStyle';
 import { VFlex } from '../custom/ym/styleStore';
+import { controlHidden } from '../custom/jh/controlHidden';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
@@ -27,6 +28,7 @@ const List = () => {
   const {isSelectHidden, setIsSelectHidden} = useOnClickHiddenHandler(true);
   getUserLocation(setLng, setLat).then((res) => {
   });
+
 
   //리스트 데이터
   const {
@@ -53,10 +55,12 @@ const List = () => {
     <OrderByContext.Provider value={{orderBy, setOrderBy}}>
     <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
       <SelectBox
-        id={'category-select-box'}
-        arr={SelectData.SHOP_LIST}
+        id={SelectBoxId.ORDER_BY_SELECT_ID}
+        arr={SelectData.ORDER_BY}
       />
-      <SelectBox id={'range-select-box'}>
+      <SelectBox
+        id={SelectBoxId.RANGE_SELECT_ID}
+      >
         <div style={{padding: '20px 20px 60px 20px'}}>
           <VFlex gap={'12px'}>
             <Title4>반경</Title4>
@@ -64,9 +68,11 @@ const List = () => {
           </VFlex>
         </div>
       </SelectBox>
+      {/* 헤더 */}
       <ListHeader
         range={range}
       />
+      {/* 컨테이너 */}
       <HomeWrap>
         <HomeContainer>
           <header>

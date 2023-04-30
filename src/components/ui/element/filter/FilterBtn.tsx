@@ -2,25 +2,20 @@ import styled from "styled-components";
 import { Body3 } from "../../../FontStyle";
 import { colorSet } from "../../styles/color";
 import { IconSmallDownArrow } from "../icons/IconsStyle";
-import { HiddenContext } from "../../../../apis/context";
-import { useContext } from "react";
+import { controlVisible } from "../../../../custom/jh/controlHidden";
+import { SelectBoxId } from "../../../SelectBox";
 
 export const OrderbyFilterBtn = ({ children }: { children: React.ReactNode }) => {
-  //선택창 보이기
-  const { setIsSelectHidden } = useContext(HiddenContext);
-
   return (
     <>
-      {setIsSelectHidden &&
-        <OrderbyFilterBtnStyle
-          onClick={() => setIsSelectHidden(prev => !prev)}
-        >
-          <div>
-            <Body3>{children}</Body3>
-            <IconSmallDownArrow />
-          </div>
-        </OrderbyFilterBtnStyle>
-      }
+      <OrderbyFilterBtnStyle
+        onClick={() => controlVisible(SelectBoxId.ORDER_BY_SELECT_ID)}
+      >
+        <div>
+          <Body3>{children}</Body3>
+          <IconSmallDownArrow />
+        </div>
+      </OrderbyFilterBtnStyle>
     </>
   )
 }

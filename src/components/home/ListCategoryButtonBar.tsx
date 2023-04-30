@@ -1,15 +1,12 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components';
-import { FILTER_LIST, LINE_LIGHT, LINE_MEDIUM, MEDIUM, PRIMARY_01, RANGE_FILTER_LIST, STRONG_MEDIUM } from '../../custom/ym/variables';
+import { FILTER_LIST, LINE_LIGHT, LINE_MEDIUM, PRIMARY_01, RANGE_FILTER_LIST, STRONG_MEDIUM } from '../../custom/ym/variables';
 import { categoryTypes, rangeTypes } from '../../custom/ym/types';
 import { fontType } from '../ui/styles/typo';
 import { ShopCategory } from '../../apis/context';
-import { Body3 } from '../FontStyle';
 
 export const ListCategoryButtonBar = () => {
-  const {category, setCategory} = useContext(ShopCategory);
-  
-  //category = 선택한 카테고리 이름;
+  const {category, setCategory} = useContext(ShopCategory); //선택한 카테고리 이름
 
   const filterClickHandler = (buttonName: categoryTypes) => {
     if(setCategory) { setCategory(buttonName); }

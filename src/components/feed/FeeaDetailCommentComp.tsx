@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { HFlex, VFlex } from '../../custom/ym/styleStore'
+import { VFlex } from '../../custom/ym/styleStore'
 import styled from 'styled-components'
 import { colorSet } from '../ui/styles/color'
 import timeForNow from '../../custom/jh/timeForNow'
@@ -8,7 +8,9 @@ import { CheckMine } from '../Authentication'
 import { IconEtc24 } from '../ui/element/icons/IconsStyle'
 import { fontType } from '../ui/styles/typo'
 import { displayHandler } from '../../custom/jh/useOnClickHiddenHandler'
-import { CommentIdContext, HiddenContext } from '../../apis/context'
+import { CommentIdContext } from '../../apis/context'
+import { controlHidden } from '../../custom/jh/controlHidden'
+import { SelectBoxId } from '../SelectBox'
 
 export interface IFeeaCommentList {
   nickname: string,
@@ -19,21 +21,18 @@ export interface IFeeaCommentList {
   isMine : boolean,
 }
 
-function FeeaDetailCommentEl({commentList}: {commentList: IFeeaCommentList[]}) {
-  const { setIsSelectHidden } = useContext(HiddenContext);
+function FeeaDetailComments({commentList}: {commentList: IFeeaCommentList[]}) {
   const {commentId, setCommentId} = useContext(CommentIdContext);
   
   const onClickHandler = (commentId: number) => {
     if(setCommentId) {
       setCommentId(commentId);
     }
-    if(setIsSelectHidden) {
-      setIsSelectHidden(prev => !prev);
-    }
+    controlHidden(SelectBoxId.MODIFY_SELECT_ID);
   }
 
   useEffect(() => {
-    console.log('렌더링')
+    
   }, [commentId]);
 
   return (
@@ -63,12 +62,9 @@ function FeeaDetailCommentEl({commentList}: {commentList: IFeeaCommentList[]}) {
               </Row>
               {/* 수정, 삭제 버튼 */}
               <CheckMine isMine={item.isMine}>
-                {setIsSelectHidden 
-                  &&
-                  <div onClick={(e) => onClickHandler(item.feedCommentId)}>
-                    <IconEtc24/>
-                  </div>
-                }
+                <div onClick={(e) => onClickHandler(item.feedCommentId)}>
+                  <IconEtc24/>
+                </div>
               </CheckMine>
             </SpaceBetween>
 
@@ -85,7 +81,7 @@ function FeeaDetailCommentEl({commentList}: {commentList: IFeeaCommentList[]}) {
   )
 }
 
-export default FeeaDetailCommentEl
+export default FeeaDetailComments
 
 const Row = styled.div<{gap?: number, alignCenter?: boolean}>`
   display: flex;

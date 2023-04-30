@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { VFlex } from '../../custom/ym/styleStore';
+import { useState } from 'react'
 import FeedProfile from '../FeedProfile';
 import FeedPicture from './FeedPicture';
 import FeedComment from './FeedComment';

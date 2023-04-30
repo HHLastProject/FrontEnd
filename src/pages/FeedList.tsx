@@ -9,10 +9,9 @@ import { HFlex, VFlex } from '../custom/ym/styleStore';
 import { path } from '../shared/path';
 import {ListCategoryButtonBar} from '../components/home/ListCategoryButtonBar';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
-import SelectBox from '../components/SelectBox';
+import SelectBox, { SelectBoxId } from '../components/SelectBox';
 import { TossedFeedData, categoryTypes } from '../custom/ym/types';
-import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
-import { HiddenContext, OrderByContext, ShopCategory } from '../apis/context';
+import { OrderByContext, ShopCategory } from '../apis/context';
 import { Heading2, Title4 } from '../components/FontStyle';
 import { SelectData } from '../shared/select';
 
@@ -21,7 +20,6 @@ function FeedList() {
   const [orderBy, setOrderBy] = useState<string>('태그');
   const [range, setRange] = useState(500);
   const [category, setCategory] = useState<categoryTypes>("");
-  const { isSelectHidden, setIsSelectHidden } = useOnClickHiddenHandler(true);
 
   useEffect(() => {
     console.log(feedList);
@@ -34,8 +32,9 @@ function FeedList() {
       {range, setRange, category, setCategory}
     }>
     <OrderByContext.Provider value={{orderBy, setOrderBy}}>
-    <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
+      {/* 태그 선택창 */}
       <SelectBox
+        id={SelectBoxId.ORDER_BY_SELECT_ID}
         arr={SelectData.TAG_SELECT}
       />
       <FeedContainer>
@@ -85,7 +84,7 @@ function FeedList() {
           </AlignItemCenter>
         </FeedPageWriteBtn>
       </Link>
-    </HiddenContext.Provider>
+    {/* </HiddenContext.Provider> */}
     </OrderByContext.Provider>
     </ShopCategory.Provider>
   )
