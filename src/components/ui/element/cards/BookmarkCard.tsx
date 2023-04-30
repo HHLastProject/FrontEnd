@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { HFlex, VFlex } from '../../../../custom/ym/styleStore'
 import styled from 'styled-components';
-import { BODY_3, TITLE_3, checkImg } from '../../../../custom/ym/variables';
+import { BODY_3, TITLE_3, checkImg, scrapImg } from '../../../../custom/ym/variables';
 import { colorSet } from '../../styles/color';
 import { BookmarkChildren } from '../../../../custom/ym/types';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { imgPath } from '../../../../shared/path';
 import { Buttons } from '../buttons/Buttons';
 import { ScrapContext, ScrapDispatchesContext } from '../../../../pages/Bookmark';
 import { BtnRadius } from '../buttons/BtnRadius';
+import useScrapToggle from '../../../../hooks/useScrapToggle';
 
 const BookmarkCard = ({ data }: BookmarkChildren) => {
 
@@ -17,6 +18,7 @@ const BookmarkCard = ({ data }: BookmarkChildren) => {
 
     const contextValues = useContext(ScrapContext);
     const contextDispatches = useContext(ScrapDispatchesContext);
+    const { mutate } = useScrapToggle();
 
     const mode = contextValues.editMode;
     const selected = contextValues.selected;
@@ -42,19 +44,32 @@ const BookmarkCard = ({ data }: BookmarkChildren) => {
         return selected.find((element) => element === value) ? true : false;
     }
 
+    const toggleScrap = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        mutate(data.shopId);
+    }
+
     return (
         <HFlex gap='8px' height={'fit-content'} onClick={mode ? () => { } : divClickHandler}>
             <ThumbnailFrame onClick={refreshSelectedHandler}
             >
                 <Thumbnail src={imgPath.shopThumbnailImg + data.thumbnail} alt={data.shopName} />
-                {mode
-                    ? <CheckBox>
-                        <Buttons.Others.IconButton
-                            width={24}
-                            height={24}
-                            fileName={isIncluded(data.shopId) ? checkImg.checked : checkImg.notChecked}
-                        /></CheckBox>
-                    : null}
+                {
+                    mode
+                        ? <CheckBox>
+                            <Buttons.Others.IconButton
+                                width={24}
+                                height={24}
+                                fileName={isIncluded(data.shopId) ? checkImg.checked : checkImg.notChecked}
+                            /></CheckBox>
+                        : <ScrapBox>
+                            <Buttons.Others.IconButton
+                                width={28}
+                                height={28}
+                                fileName={data.isScrap ? scrapImg.checked : scrapImg.notChecked}
+                                onClick={toggleScrap}
+                            /></ScrapBox>
+                }
             </ThumbnailFrame>
             <VFlex height='100px' etc='align-items:base-line;'>
                 <ShopName>{data.shopName}</ShopName>
@@ -66,6 +81,14 @@ const BookmarkCard = ({ data }: BookmarkChildren) => {
 }
 
 export default React.memo(BookmarkCard);
+
+const ScrapBox = styled.div`
+    position: absolute;
+    bottom : 4px;
+    right: 4px;
+    width: fit-content;
+    height: fit-content;
+`
 
 const CheckBox = styled.div`
     position: absolute;
