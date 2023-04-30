@@ -87,13 +87,6 @@ function ShopDetail() {
   const tabOnclickHandler = (id: string, name: string) => {
     scrollToTabInfo(id);
     setTabName(name);
-    const checkedTab = document.getElementsByName('detail-tab');
-    // const checkedTab = document.querySelector('input[type=radio][name=detail-tab]:checked');
-    if(checkedTab) {
-      for(let i in checkedTab){
-        // if(checkedTab[i].checked){}
-      }
-    }
   };
 
   //스크롤 이벤트
@@ -338,7 +331,7 @@ const ShopDetailTab = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      border-bottom: 3px solid #fff;
+      border-bottom: 1px solid ${colorSet.lineMedium};
       label {
         ${fontType.body_1}
         color: ${colorSet.textMedium};
@@ -395,21 +388,6 @@ const ShopDetailContentContainer = styled.div`
     display: flex;
     justify-content: space-between;
   }
-`;
-
-const ExpandButton = styled.button`
-  width: fit-content;
-  padding: 0px;
-  margin: 0px;
-  border: none;
-  background-color: transparent;
-`;
-
-const ExpandText = styled.span`
-  font-size: ${TITLE_5.fontSize};
-  font-weight: ${TITLE_5.fontWeight};
-  line-height: ${TITLE_5.lineHeight};
-  color: ${`#${PRIMARY_01}`};
 `;
 
 const FeedPageHr = styled.hr`

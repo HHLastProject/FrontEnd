@@ -5,9 +5,10 @@ import { SpanImg } from '../ImgStyle';
 interface IShopDetailContentInfo {
   iconImg: string;
   content: string;
+  copy?: boolean;
 };
 
-function ShopDetailContentInfo({iconImg, content}: IShopDetailContentInfo) {
+function ShopDetailContentInfo({iconImg, content, copy}: IShopDetailContentInfo) {
   return (
     <ShopDetailContentInfoStyle>
       <SpanImg
@@ -15,6 +16,7 @@ function ShopDetailContentInfo({iconImg, content}: IShopDetailContentInfo) {
         imgUrl={iconImg}
       />
       <label>{content}</label>
+      {copy && <></>}
     </ShopDetailContentInfoStyle>
   )
 };
