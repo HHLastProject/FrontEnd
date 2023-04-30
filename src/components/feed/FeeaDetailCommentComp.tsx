@@ -9,7 +9,7 @@ import { IconEtc24 } from '../ui/element/icons/IconsStyle'
 import { fontType } from '../ui/styles/typo'
 import { displayHandler } from '../../custom/jh/useOnClickHiddenHandler'
 import { CommentIdContext } from '../../apis/context'
-import { controlHidden } from '../../custom/jh/controlHidden'
+import { controlVisible } from '../../custom/jh/controlHidden'
 import { SelectBoxId } from '../SelectBox'
 
 export interface IFeeaCommentList {
@@ -28,7 +28,8 @@ function FeeaDetailComments({commentList}: {commentList: IFeeaCommentList[]}) {
     if(setCommentId) {
       setCommentId(commentId);
     }
-    controlHidden(SelectBoxId.MODIFY_SELECT_ID);
+    //선택창 숨기기
+    controlVisible(SelectBoxId.MODIFY_SELECT_ID);
   }
 
   useEffect(() => {
@@ -62,7 +63,9 @@ function FeeaDetailComments({commentList}: {commentList: IFeeaCommentList[]}) {
               </Row>
               {/* 수정, 삭제 버튼 */}
               <CheckMine isMine={item.isMine}>
-                <div onClick={(e) => onClickHandler(item.feedCommentId)}>
+                <div
+                  style={{cursor: 'pointer'}}
+                  onClick={(e) => onClickHandler(item.feedCommentId)}>
                   <IconEtc24/>
                 </div>
               </CheckMine>

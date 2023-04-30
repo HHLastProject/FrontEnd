@@ -66,7 +66,6 @@ function FeedDetailComment() {
   if(feedDetailCommentIsLoading) return <Loading/>;
 
   return (
-    <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
     <CommentIdContext.Provider value={{commentId, setCommentId}}>
     <OrderByContext.Provider value={{orderBy, setOrderBy}}>
       {/* 선택창 */}
@@ -123,7 +122,6 @@ function FeedDetailComment() {
       </DefaultWrap>
     </OrderByContext.Provider>
     </CommentIdContext.Provider>
-    </HiddenContext.Provider>
   )
 }
 
