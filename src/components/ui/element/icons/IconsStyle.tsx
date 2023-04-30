@@ -1,6 +1,7 @@
 import { iconImgPath } from "../../../../shared/path"
 import { IconSize12, IconSize16, IconSize24, IconSize40 } from "./IconSize"
 
+//연필
 export const IconPencil = () => {
   return (
     <IconSize16>
@@ -9,6 +10,7 @@ export const IconPencil = () => {
   )
 }
 
+//맵
 export const IconMapFilled24 = () => {
   return(
     <IconSize24>
@@ -17,6 +19,7 @@ export const IconMapFilled24 = () => {
   )
 }
 
+//아래 화살표
 export const IconSmallDownArrow = () => {
   return(
     <IconSize12>
@@ -25,6 +28,7 @@ export const IconSmallDownArrow = () => {
   )
 }
 
+//더하기
 export const IconPlusWhite24 = () => {
   return(
     <IconSize24>
@@ -71,14 +75,23 @@ export const IconEtc24 = () => {
 export const IconUploadActive = () => {
   return(
     <IconSize40>
-      <img src={iconImgPath.upload.commentActive40}/>
+      <img src={iconImgPath.upload.commentActive40} alt="댓글 추가 active"/>
     </IconSize40>
   )
 }
 export const IconUploadInactive = () => {
   return(
     <IconSize40>
-      <img src={iconImgPath.upload.commentInactive40}/>
+      <img src={iconImgPath.upload.commentInactive40} alt="댓글 추가 inactive"/>
     </IconSize40>
+  )
+}
+
+//탭 눌렀을때 옆에 추가되는 이미지
+export const IconTabPoint24 = () => {
+  return(
+    <IconSize24>
+      <img src={iconImgPath.tab.point24} alt="탭 포인트" />
+    </IconSize24>
   )
 }

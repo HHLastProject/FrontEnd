@@ -116,5 +116,8 @@ export const iconImgPath: IPathObject = {
   },
   bookmark: {
     noFolder: setPublicUrl(`/images/bookmark/no_folder.png`),
+  },
+  tab: {
+    point24: setPublicUrl(`/tab_point_24.png`),
   }
 };

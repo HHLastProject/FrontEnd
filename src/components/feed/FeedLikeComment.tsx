@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { IconComment24, IconLikeActive24, IconLikeInactive24 } from "../ui/element/icons/IconsStyle";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { path } from "../../shared/path";
 import { fontType } from "../ui/styles/typo";
-import { HFlex } from "../../custom/ym/styleStore";
 import usePutLike from "../../custom/jh/usePutLike";
 import { useEffect, useState } from "react";
 import { getToken } from "../../apis/getToken";
@@ -32,6 +31,10 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount, page}: IF
     }
   }
 
+  useEffect(() => {
+    
+  }, [like]);
+
   return (
     <FeedLikeCommentStyle>
       {/* 좋아요 */}
@@ -48,7 +51,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount, page}: IF
           <label>{likeCount}</label>
         </AlignCenter>
       </BtnResetStyle>
-      
+
       {/* 댓글 */}
       <BtnResetStyle
         onClick={() => navi(`${path.toFeedComment}/${feedId}`)}

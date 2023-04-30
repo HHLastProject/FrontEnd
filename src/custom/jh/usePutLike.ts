@@ -2,12 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import { queryKeys } from '../../apis/queries';
 import { api_token } from '../../shared/api';
 import { queryClient } from '../..';
-import { getToken } from '../../apis/getToken';
 
 export const usePutLike = ({feedId, page}: {feedId: number, page: string}) => {
-  const token = getToken();
   const KEY = queryKeys.PUT_LIKE.concat(['feedId']);
-  const { mutate } = useMutation({
+  const { data, mutate } = useMutation({
     mutationKey: KEY,
     mutationFn: async () => {
       const res = await api_token.put(`/api/feed/${feedId}/like`);
@@ -25,7 +23,10 @@ export const usePutLike = ({feedId, page}: {feedId: number, page: string}) => {
       throw error;
     }
   })
-  return {changeLike : mutate};
+  return {
+    isLike : data,
+    changeLike : mutate,
+  };
 }
 
 export default usePutLike

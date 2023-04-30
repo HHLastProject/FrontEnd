@@ -10,20 +10,22 @@ import { iconImgPath, imgPath, path } from '../shared/path';
 import { colorSet } from '../components/ui/styles/color';
 import { fontType } from '../components/ui/styles/typo';
 import { Buttons } from '../components/ui/element/buttons/Buttons';
-import { IconPencil } from '../components/ui/element/icons/IconsStyle';
-import { VFlex } from '../custom/ym/styleStore';
+import { IconPencil, IconTabPoint24 } from '../components/ui/element/icons/IconsStyle';
+import { HFlex, VFlex } from '../custom/ym/styleStore';
 import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
 import ListHeader from '../components/home/ListHeader';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { getToken } from '../apis/getToken';
 import api, { api_token } from '../shared/api';
 import { IconSize28 } from '../components/ui/element/icons/IconSize';
+import ListCount from '../components/ListCount';
 
 function ShopDetail() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
   const [scrap, setScrap] = useState(false);
   const [expand, setExpand] = useState<boolean>(false);
+  const [tabName, setTabName] = useState<string>('정보');
 
   //data
   const {
@@ -81,12 +83,23 @@ function ShopDetail() {
     return result;
   };
 
+  //탭 눌렀을때
+  const tabOnclickHandler = (id: string, name: string) => {
+    scrollToTabInfo(id);
+    setTabName(name);
+    const checkedTab = document.getElementsByName('detail-tab');
+    // const checkedTab = document.querySelector('input[type=radio][name=detail-tab]:checked');
+    if(checkedTab) {
+      for(let i in checkedTab){
+        // if(checkedTab[i].checked){}
+      }
+    }
+  };
+
   //스크롤 이벤트
   const scrollToTabInfo = (id: string) => {
     // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
-    // const window = document.getElementById()
     const el = document.getElementById(id)?.offsetTop;
-    
     console.log(el);
     window.scrollTo({top: el, behavior: 'smooth'});
   };
@@ -98,11 +111,8 @@ function ShopDetail() {
 
   useEffect(() => {
     getShopDetailFeedList();
-    console.log('최초',shopDetailData?.isScrap);
+    console.log('바뀜',shopDetailData?.isScrap);
     setScrap(shopDetailData?.isScrap);
-  }, []);
-
-  useEffect(() => {
     console.log('테스트',scrap);
   }, [scrap]);
 
@@ -150,39 +160,47 @@ function ShopDetail() {
           <ShopDetailTab>
             <ul id='detail-tab'>
               <li>
-                <input type="radio" id='detail-tab-info' name='detail-tab' defaultChecked hidden />
+                <input 
+                  onChange={(e) => tabOnclickHandler(`info-top`, '정보')}
+                  type="radio" id='detail-tab-info' name='detail-tab' defaultChecked hidden />
                 <div 
-                  onClick={() => scrollToTabInfo(`info-top`)}
                   className='detail-tab-div'
                 >
-                  <label htmlFor="detail-tab-info">정보</label>
+                  <div style={{display: 'flex', gap:'4px'}}>
+                    {tabName === '정보' && <IconTabPoint24/>}
+                    <label htmlFor="detail-tab-info">정보</label>
+                  </div>
                 </div>
               </li>
               <li>
                 <input 
-                type="radio" id='detail-tab-menu' name='detail-tab' hidden />
+                  onChange={(e) => tabOnclickHandler(`menu-top`, '메뉴')}
+                  type="radio" id='detail-tab-menu' name='detail-tab' hidden />
                 <div 
-                  onClick={() => scrollToTabInfo(`menu-top`)}
                   className='detail-tab-div'
                 >
-                  <label htmlFor="detail-tab-menu">메뉴</label>
+                  <div style={{display: 'flex', gap:'4px'}}>
+                    {tabName === '메뉴' && <IconTabPoint24/>}
+                    <label htmlFor="detail-tab-menu">메뉴</label>
+                  </div>
                 </div>
               </li>
               <li>
                 <input 
+                  onChange={(e) => tabOnclickHandler(`feed-top`, '피드')}
                   type="radio" 
                   id='detail-tab-review' 
                   name='detail-tab'
-                  value={`feed-top`}
-                  
-                  hidden 
+                  hidden
                 />
                 <div
-                  onClick={() => {scrollToTabInfo(`feed-top`)}}
                   className='detail-tab-div'
                 >
-                  <label
-                    htmlFor="detail-tab-review">피드</label>
+                  <div style={{display: 'flex', gap:'4px'}}>
+                    {tabName === '피드' && <IconTabPoint24/>}
+                    <label htmlFor="detail-tab-review">피드</label>
+                    <ListCount>{shopDetailFeedList?.length}</ListCount>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -256,11 +274,13 @@ function ShopDetail() {
             {
               shopDetailFeedList?.map((item: any, index: number) => {
                 //tag: [{tag: 내용}]
-                if(item?.tag) {
+                if(item?.tag.length !== 0) {
                   let tags = [];
-                  for(let i of item.tag){
-                    const {tag} = i;
-                    tags.push(tag);
+                  for(let i of item?.tag){
+                    if(i){
+                      const {tag} = i;
+                      tags.push(tag);
+                    }
                   }
                   item.tag = [...tags];
                 }

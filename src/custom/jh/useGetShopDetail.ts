@@ -20,7 +20,6 @@ export interface IFeedList {
 };
 
 export const useGetShopDetail = (param: number | undefined) => {
-  const queryClinet = useQueryClient();
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.GET_SHOP_DETAIL,
     queryFn: async () => {
@@ -43,7 +42,6 @@ export const useGetShopDetail = (param: number | undefined) => {
 
 export const useGetShopDetailFeed = (param: number | undefined) => {
   const token = getToken();
-  // const queryClinet = useQueryClient();
   const { data, mutate, isLoading, isError } = useMutation({
     mutationKey: queryKeys.GET_SHOP_DETAIL_FEED,
     mutationFn: async () => {
@@ -52,12 +50,10 @@ export const useGetShopDetailFeed = (param: number | undefined) => {
           authorization: `${token}`,
         },
       });
-      console.log('피드 데이터', data);
       return data;
     },
     onSuccess: (o) => {
       console.log('성공 피드 데이터', o);
-      queryClient.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL_FEED });
     },
     onError: () => {
       console.log('피드 에러');

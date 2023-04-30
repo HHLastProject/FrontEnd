@@ -10,15 +10,12 @@ interface IShopDetailMenu {
 }
 
 function ShopDetailMenu({menuName, price, picture}: IShopDetailMenu) {
-  // if(price >= 1000) {
-    
-  // }
   const menuImgUrl = `${imgPath.shopMenuImg + picture}`;
   return (
     <ShopDetailMenuContainer>
       <div className="shop-detail-menu-content">
         <MenuNameFont>{menuName}</MenuNameFont>
-        <MenuPriceFont>{price}원</MenuPriceFont>
+        <MenuPriceFont>{price.toLocaleString()}원</MenuPriceFont>
       </div>
       { picture && (
         <ShopDetailMenuImg>
