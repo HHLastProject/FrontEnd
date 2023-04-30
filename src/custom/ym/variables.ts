@@ -159,3 +159,8 @@ export const checkImg = {
     checked: 'selected_scrap.png',
     notChecked: 'not_selected_scrap.png',
 }
+
+export const scrapImg = {
+    checked: 'bookmark checked.png',
+    notChecked: 'book mark white_28.png'
+}
