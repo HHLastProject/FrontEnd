@@ -17,7 +17,6 @@ import NoResult from '../components/home/NoShop';
 import { SelectData } from '../shared/select';
 import { Title4 } from '../components/FontStyle';
 import { VFlex } from '../custom/ym/styleStore';
-import { controlHidden } from '../custom/jh/controlHidden';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
@@ -25,7 +24,6 @@ const List = () => {
   const [orderBy, setOrderBy] = useState<string>('거리순');
   const [range, setRange] = useState(1000);
   const [category, setCategory] = useState<categoryTypes>("");
-  const {isSelectHidden, setIsSelectHidden} = useOnClickHiddenHandler(true);
   getUserLocation(setLng, setLat).then((res) => {
   });
 
@@ -101,7 +99,11 @@ const List = () => {
           </div>
 
           <HomeShopListContainer>
-            {shopList?.sort((a: any, b: any) => (orderBy === '인기순') ? (b.feedCount - a.feedCount) : (a.distance - b.distance))
+            {shopList?.sort((a: any, b: any) => {
+              if(orderBy === '피드순') return (b.feedCount - a.feedCount);  //내림차순
+              if(orderBy === '거리순') return (a.distance - b.distance);    //올림차순
+              if(orderBy === '인기순') return (b.scrapCount - a.scrapCount);//내림차순
+            })
               .filter((item: ListTossedData) => {
                 let result = null;
                 if(item.distance <= range){result = item}
@@ -111,7 +113,11 @@ const List = () => {
               ? 
               <NoResult shopList={true} />
               :
-              shopList?.sort((a: any, b: any) => (orderBy === '인기순') ? (b.feedCount - a.feedCount) : (a.distance - b.distance))
+              shopList?.sort((a: any, b: any) => {
+                if(orderBy === '피드순') return (b.feedCount - a.feedCount);  //내림차순
+                if(orderBy === '거리순') return (a.distance - b.distance);    //올림차순
+                if(orderBy === '인기순') return (b.scrapCount - a.scrapCount);//내림차순
+              })
               .filter((item: ListTossedData) => {
                 let result = null;
                 if(item.distance <= range){result = item}
