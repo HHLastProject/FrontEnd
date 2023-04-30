@@ -53,7 +53,6 @@ const List = () => {
       {range, setRange, category, setCategory}
     }>
     <OrderByContext.Provider value={{orderBy, setOrderBy}}>
-    <HiddenContext.Provider value={{isSelectHidden, setIsSelectHidden}}>
       <SelectBox
         id={SelectBoxId.ORDER_BY_SELECT_ID}
         arr={SelectData.ORDER_BY}
@@ -135,7 +134,6 @@ const List = () => {
 
         </HomeContainer>
       </HomeWrap>
-    </HiddenContext.Provider>
     </OrderByContext.Provider>
     </ShopCategory.Provider>
   );

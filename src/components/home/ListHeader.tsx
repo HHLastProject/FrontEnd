@@ -6,6 +6,9 @@ import { Body1, Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
 import { path } from '../../shared/path';
 import { ReactNode } from 'react';
+import { colorSet } from '../ui/styles/color';
+import { controlHidden, controlVisible } from '../../custom/jh/controlHidden';
+import { SelectBoxId } from '../SelectBox';
 
 //close == true : 뒤로가기 버튼이 x로 바뀜
 //scrap == true : 스크랩 버튼
@@ -26,12 +29,17 @@ const ListHeader = ({name, range, close, feedForm, children, scrap}: {name?: str
         {name && <div style={{width: '100%'}}><Body1>{name}</Body1></div>}
         {range && 
           <>
+            {/* 거리 나타내기 */}
             <VFlex etc="height:fit-content">
               <div>
                 <HeaderTextSmall>내 위치에서</HeaderTextSmall>
               </div>
-              <HFlex gap="5px">
-                <HeaderTextMedium>{range}m</HeaderTextMedium>
+              <HFlex 
+                gap="5px" 
+                etc={`cursor: pointer`}
+                onClick={() => {controlVisible(SelectBoxId.RANGE_SELECT_ID)}}
+              >
+                <HeaderTextMedium>{(range < 1000 ? `${range}m` : `${range/1000}km`)}</HeaderTextMedium>
                 <Image2 src={`${process.env.PUBLIC_URL}/icon/chevron_down_16.png`} alt="" />
               </HFlex>
             </VFlex>
@@ -88,6 +96,7 @@ const HeaderTextMedium = styled.span`
   font-size : 18px;
   padding : 3px 0px;
   font-weight: bold;
+  color: ${colorSet.primary_02};
 `
 
 const ButtonContainer = styled.button`
