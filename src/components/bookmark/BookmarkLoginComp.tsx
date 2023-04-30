@@ -12,7 +12,7 @@ import { ScrapContext } from '../../pages/Bookmark';
 const BookmarkLoginComp = ({ folderState }: FolderProp) => {
 
     const navi = useNavigate();
-    const { scrapList } = useContext(ScrapContext);
+    const { scrapList, queryData } = useContext(ScrapContext);
 
     const [folderList, setFolderList] = useState<FolderData[]>();
 
@@ -29,7 +29,7 @@ const BookmarkLoginComp = ({ folderState }: FolderProp) => {
         };
         const folders = copy?.folderList;
         setFolderList(prev => folders);
-    }, []);
+    }, [scrapList]);
 
 
     return (
@@ -54,5 +54,5 @@ const BookmarkLoginComp = ({ folderState }: FolderProp) => {
     )
 }
 
-export default React.memo(BookmarkLoginComp);
+export default BookmarkLoginComp;
 // export default BookmarkLoginComp;

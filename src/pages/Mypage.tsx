@@ -4,11 +4,6 @@ import { VFlex } from '../custom/ym/styleStore';
 import UserProfile from '../components/mypage/UserProfile';
 import MyFeeds from '../components/mypage/MyFeeds';
 import CustomerCenter from '../components/mypage/CustomerCenter';
-import { mypageData } from '../custom/ym/dummydata';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { mypageKeys } from '../apis/queries';
-import { api_token } from '../shared/api';
-import { apiPath } from '../shared/path';
 import NoLoginStatus from '../components/mypage/NoLoginStatus';
 import { ReceivedFeed } from '../custom/ym/types';
 import useMypage from '../hooks/useMypage';
@@ -43,19 +38,33 @@ const Mypage = () => {
     const [feedData, setFeedData] = useState<Feed | null>(null);
     const [isLogin, setIsLogin] = useState<boolean>(false);
 
-    const { refetch, data } = useMypage();
-
-
+    const { data, isSuccess, isError, isLoading, refetch } = useMypage();
 
     useEffect(() => {
-        if (data) {
-            setFeedData(data);
+        if (localStorage.getItem("access_token")) {
+            refetch();
+            setIsLogin(true);
+        } else {
+            setIsLogin(false);
         }
-        localStorage.getItem("access_token")
-            ? setIsLogin(true)
-            : setIsLogin(false);
         localStorage.setItem("nickname", feedData?.nickname as string);
-    }, [isLogin]);
+    }, []);
+
+    useEffect(() => {
+        if (isSuccess) {
+            setFeedData(data as Feed);
+            setIsLogin(true);
+            localStorage.setItem("nickname", data?.nickname as string);
+        }
+    }, [isSuccess, data]);
+
+    useEffect(() => {
+        isError && setIsLogin(false);
+    }, [isError]);
+
+    if (isLoading) return <div>로딩중</div>;
+
+
 
 
     return (
