@@ -5,10 +5,6 @@ import { IconSmallDownArrow } from "../icons/IconsStyle";
 import { HiddenContext } from "../../../../apis/context";
 import { useContext } from "react";
 
-export const RangeFilterBtn = () => {
-
-}
-
 export const OrderbyFilterBtn = ({ children }: { children: React.ReactNode }) => {
   //선택창 보이기
   const { setIsSelectHidden } = useContext(HiddenContext);

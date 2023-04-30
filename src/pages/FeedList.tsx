@@ -7,7 +7,7 @@ import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { HFlex, VFlex } from '../custom/ym/styleStore';
 import { path } from '../shared/path';
-import ListCategoryButtonBar from '../components/home/ListCategoryButtonBar';
+import {ListCategoryButtonBar} from '../components/home/ListCategoryButtonBar';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import SelectBox from '../components/SelectBox';
 import { TossedFeedData, categoryTypes } from '../custom/ym/types';

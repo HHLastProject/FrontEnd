@@ -1,19 +1,20 @@
 import styled from 'styled-components'
 import { colorSet } from './ui/styles/color';
 import { fontType } from './ui/styles/typo';
-import { useContext } from 'react';
-import { CommentIdContext, HiddenContext, OrderByContext } from '../apis/context';
+import { ReactNode, useContext } from 'react';
+import { CommentIdContext, HiddenContext, OrderByContext, ShopCategory } from '../apis/context';
 import deleteFeedComment from '../custom/jh/deleteFeedComment';
+import { RangeFilterButtonBar } from './home/ListCategoryButtonBar';
 
-function SelectBox({arr, param, isDeleteComment}: {arr: string[], param?: number, isDeleteComment?:boolean}) {
-  //선택창 보이기
-  const {isSelectHidden, setIsSelectHidden } = useContext(HiddenContext);
+function SelectBox({children, id, arr, param, isRange, isDeleteComment}: {children?: ReactNode, id?: string, arr?: string[], param?: number, isRange?: boolean, isDeleteComment?:boolean}) {
+  if(!id) id = 'select-box';
+  if(isRange) id = 'range-select-box';
+  const {isSelectHidden, setIsSelectHidden } = useContext(HiddenContext);//선택창 보이기
   const {commentId} = useContext(CommentIdContext);
   const {orderBy, setOrderBy} = useContext(OrderByContext);
+  const {range} = useContext(ShopCategory);
 
   const onClickHandler = (order: string) => {
-    if(setIsSelectHidden) {setIsSelectHidden(prev => !prev);}
-
     if(setOrderBy) {setOrderBy(order);}
 
     if((orderBy === '삭제하기') && isDeleteComment && (param !== undefined)){
@@ -25,11 +26,13 @@ function SelectBox({arr, param, isDeleteComment}: {arr: string[], param?: number
         })
       }
     }
-    // if(orderBy === '수정하기'){}
+
+    if(setIsSelectHidden) {setIsSelectHidden(prev => !prev);}
   }
 
   return (
     <div
+      id={id}
       style={{
         width: "390px",
         height: "100%",
@@ -40,6 +43,7 @@ function SelectBox({arr, param, isDeleteComment}: {arr: string[], param?: number
     >
       <SelectBoxStyle>
         <SelectTop/>
+        {children}
         { arr?.map((item) => {
             return(
               <div 

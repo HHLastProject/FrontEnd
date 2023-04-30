@@ -1,6 +1,6 @@
 import React from "react";
 import { EachData } from "../../pages/Home";
-import { Coordinate, categoryTypes } from "./types";
+import { Coordinate, categoryTypes, rangeTypes } from "./types";
 
 
 type Font = {
@@ -21,14 +21,15 @@ export const KAKAO_AUTH_URL: string = `https://kauth.kakao.com/oauth/authorize?c
 
 export const NAVER_MAPS_CLIENT: string = 'ldgh7n9aiz';
 
+export const RANGE_FILTER_LIST: rangeTypes[] = [100, 200, 300, 500, 1000];
 export const FILTER_LIST: categoryTypes[] = ["카페", "보드카페", "사주카페", "애견카페", "전통찻집"];
 export const STRONG = '191919';
 export const STRONG_MEDIUM = '2E3338';
 export const MEDIUM = '717176';
 export const LIGHT = 'A1A1AC';
 
-export const PRIMARY_01 = '767676';
-export const PRIMARY_02 = 'ADADAD';
+export const PRIMARY_01 = '010101';
+export const PRIMARY_02 = 'B81B1B';
 
 export const BG_MEDIUM = 'F1F1F5';
 export const BG_LIGHT = 'F8F8FA';
