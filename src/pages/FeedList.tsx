@@ -56,7 +56,10 @@ function FeedList() {
 
         {/* FEED 리스트 */}
         <div style={{marginBottom: '120px'}}>
-        { feedList?.filter((item: TossedFeedData) => (orderBy !== "태그") ? item?.tag.includes(orderBy) : item)
+        { feedList?.filter((item: TossedFeedData) => {
+            if(orderBy !== "태그") return item?.tag.includes(orderBy);
+            return item;
+          })
           .filter((item: TossedFeedData) => (category !== "") ? item?.shopCategory === category : item)
           .map((item: any, index: number) => {
             return (

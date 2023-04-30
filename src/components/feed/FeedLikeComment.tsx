@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { IconComment24, IconLikeActive24, IconLikeInactive24 } from "../ui/element/icons/IconsStyle";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { path } from "../../shared/path";
 import { fontType } from "../ui/styles/typo";
 import { HFlex } from "../../custom/ym/styleStore";
 import usePutLike from "../../custom/jh/usePutLike";
 import { useEffect, useState } from "react";
 import { getToken } from "../../apis/getToken";
+import BtnResetStyle from "../ui/element/buttons/BtnReset";
 
 interface IFeedLikeComment {
   isLike: boolean,
@@ -20,13 +21,12 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount, page}: IF
   const {changeLike} = usePutLike({feedId, page});
   const [like, setLike] = useState(isLike);
   const token = getToken();
+  const navi = useNavigate();
 
   const onClickLike = () => {
     if(token) {
-      changeLike();
+      changeLike(); //서버 전송
       setLike(prev => !prev);
-      console.log('하트누름', like);
-
     } else {
       alert('로그인 후 이용 가능합니다.');
     }
@@ -34,7 +34,8 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount, page}: IF
 
   return (
     <FeedLikeCommentStyle>
-      <div
+      {/* 좋아요 */}
+      <BtnResetStyle
         onClick={onClickLike}
       >
         <AlignCenter gap={5}>
@@ -46,14 +47,17 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount, page}: IF
           }
           <label>{likeCount}</label>
         </AlignCenter>
-      </div>
-
-      <Link to={`${path.toFeedComment}/${feedId}`}>
+      </BtnResetStyle>
+      
+      {/* 댓글 */}
+      <BtnResetStyle
+        onClick={() => navi(`${path.toFeedComment}/${feedId}`)}
+      >
         <AlignCenter gap={5}>
           <IconComment24/>
           <label>{feedCommentCount}</label>
         </AlignCenter>
-      </Link>
+      </BtnResetStyle>
     </FeedLikeCommentStyle>
   )
 }
