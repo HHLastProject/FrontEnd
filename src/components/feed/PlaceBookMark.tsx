@@ -5,7 +5,7 @@ import { mypageData } from '../../custom/ym/dummydata';
 import { EachFeed } from '../../pages/Mypage';
 import { Buttons } from '../ui/element/buttons/Buttons';
 import { useMutation } from '@tanstack/react-query';
-import { keys } from '../../apis/queries';
+import { keys, queryKeys } from '../../apis/queries';
 import { ShopData } from '../../custom/ym/variables';
 import { api_token } from '../../shared/api';
 import { queryClient } from '../..';
@@ -24,6 +24,7 @@ const PlaceBookMark = ({ isScrap, shop }: { isScrap?: boolean, shop?: number }) 
         },
         onSuccess: () => {
             queryClient.invalidateQueries(["GET_USER_FEED"]);
+            queryClient.invalidateQueries(queryKeys.GET_FEEDS);
             console.log("즐겨찾기 변경 성공");
         },
         onError: (error) => {

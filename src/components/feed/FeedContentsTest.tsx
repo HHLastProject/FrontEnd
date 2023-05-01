@@ -6,8 +6,7 @@ import styled from 'styled-components';
 import { PRIMARY_01, TITLE_5 } from '../../custom/ym/variables';
 import TagList from './TagList';
 import PlaceCard from './PlaceCard';
-import { defaultImgPath, path } from '../../shared/path';
-import { Link } from 'react-router-dom';
+import { defaultImgPath } from '../../shared/path';
 import moment from 'moment';
 import FeedLikeComment from './FeedLikeComment';
 
