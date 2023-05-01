@@ -1,12 +1,9 @@
 import React, { createContext, useEffect, useState } from 'react'
 import MapModule from '../components/map/MapModule';
-import { Container as MapDiv, useNavermaps, useMap } from 'react-naver-maps';
-import { getRealtimeLocation, getUserLocation } from '../custom/jh/getUserLocation';
 import { VFlex, VFlexCenter } from '../custom/ym/styleStore';
-import styled from 'styled-components';
 import MapHeader from '../components/map/MapHeader';
 import CarouselBox from '../components/map/carousel/CarouselBox';
-import { MapCoordPayload, ShopData } from '../custom/ym/variables';
+import { ShopData } from '../custom/ym/variables';
 import { Coordinate, categoryTypes } from '../custom/ym/types';
 import useMapDataCall from '../hooks/useMapDataCall';
 import { dispatches, states } from '../custom/ym/contextValues';
@@ -55,7 +52,7 @@ const Home = () => {
     const location = useLocation();
     let shopLng = 0;
     let shopLat = 0;
-    if(location.state) {
+    if (location.state) {
         shopLng = Number(location.state.lng);
         shopLat = Number(location.state.lat);
     }

@@ -20,11 +20,13 @@ export const TagSize = { Tag, Category };
 const TagSizing = styled.div`
     width: fit-content;
     height: fit-content;
+    min-width: 44px;
     padding: 7px 12px;
 `
 
 const CategorySizing = styled.div`
-width: fit-content;
-height: fit-content;
-padding: 8px 12px;
+    width: fit-content;
+    height: fit-content;
+    min-width: 44px;
+    padding: 8px 12px;
 `

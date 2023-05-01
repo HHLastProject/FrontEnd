@@ -36,15 +36,3 @@ const WhiteText = styled.span`
 const BlackText = styled.span`
   color : ${colorSet.textStrongMedium};
 `;
-
-const FontStyle = styled.span`
-    width: fit-content;
-    height: fit-content;
-    padding: 0px;
-    margin : 0px;
-
-    font-size: ${BODY_3.fontSize};
-    line-height: ${BODY_3.lineHeight};
-    font-weight: ${BODY_3.fontWeight};
-    color : inherit;
-`

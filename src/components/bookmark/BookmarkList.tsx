@@ -30,7 +30,7 @@ const BookmarkList = () => {
 
     return (
         <>
-            <HFlex gap='2px' height='fit-content' etc="padding:8px 20px;">
+            <HFlex gap='4px' height='fit-content' etc="padding:8px 20px;">
                 {
                     folderList?.map((element) => {
                         if (folder === element) {

@@ -19,15 +19,6 @@ const MyFeeds = () => {
                     }
                 }
             </MypageContext.Consumer>
-            {/* <MypageContext.Consumer>
-                {
-                    value => {
-                        return value?.props?.feedCount as number > 0
-                            ? <FeedPictures isAll={false}>{value?.props?.feeds}</FeedPictures>
-                            : null
-                    }
-                } */}
-            {/* </MypageContext.Consumer> */}
         </VFlex>
     )
 }
