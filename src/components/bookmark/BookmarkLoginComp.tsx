@@ -40,10 +40,10 @@ const BookmarkLoginComp = ({ folderState }: FolderProp) => {
                         const targetFolder = folderState?.folderName === "" ? null : folderState?.folderName;
                         return element.folderName === targetFolder;
                     }).length > 0
-                        ? scrapList?.map((element) => {
+                        ? scrapList?.map((element, index) => {
                             const targetFolder = folderState?.folderName === "" ? null : folderState?.folderName;
                             return element.folderName === targetFolder
-                                ? <BookmarkCard key={uuid()} data={element} />
+                                ? <BookmarkCard key={uuid()} data={element} idx={index} />
                                 : null;
                         })
                         : <NoExistBookmark />}
