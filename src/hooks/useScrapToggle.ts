@@ -14,7 +14,7 @@ const useScrapToggle = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries(mapQueryKeys.POST_SHOPS_IN_RANGE);
-            queryClient.invalidateQueries(scrapKeys.GET_SCRAP);
+            // queryClient.invalidateQueries(scrapKeys.GET_SCRAP);
             console.log("즐겨찾기 변경 성공");
         },
         onError: (error) => {

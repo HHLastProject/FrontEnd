@@ -80,6 +80,7 @@ export interface ScrapDataSet {
 
 export interface BookmarkChildren extends ComponentPropsWithoutRef<'div'> {
     data: ScrapDataSet;
+    idx: number;
 }
 
 export interface CategoryProp {
