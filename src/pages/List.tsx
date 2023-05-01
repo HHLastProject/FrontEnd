@@ -40,7 +40,7 @@ const List = () => {
     if (lng !== 0 && lat !== 0) {
       getshopList();
     };
-  }, [lng, lat, range, orderBy]);
+  }, [lng, lat, range]);
 
   useEffect(() => {
     localStorage.setItem('access_token', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc1MzE3NzA0NiwiaWF0IjoxNjgyOTQxNzkzfQ.nlsXPpfOjW6yuP05IV3Ya0aRp2EvJByOg8N4MTCeRrI`);

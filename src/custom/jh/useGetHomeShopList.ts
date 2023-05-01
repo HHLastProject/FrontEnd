@@ -30,7 +30,7 @@ export const useGetHomeShopList = ({ lng, lat, range }: locationType) => {
       return data.shops;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.GET_HOME_SHOPLIST });
+      // queryClient.invalidateQueries({ queryKey: queryKeys.GET_HOME_SHOPLIST });
     },
     onError: (error) => {
       console.log('메인 불러오기 error', error);
