@@ -19,13 +19,15 @@ function ShopDetailTab({tabEl, listCount}: {tabEl: TTabEl[], listCount?: number}
 
   //탭 눌렀을때
   const tabOnclickHandler = (id: string, value: string, checkId: string) => {
-    console.log('탭 누름')
     setTabValue(value);
     const radio = document.getElementById(checkId);
+    // const radio = document.getElementById(checkId);
     if(radio){
-      // radio.ariaChecked
+      console.log(radio.getAttribute('name'));
+      // if(radio.checked){
+      //   radio.checked = 'true';
+      // }
     }
-    console.log(tabValue);
     scrollToTabInfo(id);
   };
 
@@ -44,22 +46,28 @@ function ShopDetailTab({tabEl, listCount}: {tabEl: TTabEl[], listCount?: number}
         {tabEl?.map((item: TTabEl) => {
           return(
             <li>
-              <input
-                onChange={(e) => console.log('체크')}
-                type="radio" id={item.checkId} name='detail-tab' defaultChecked hidden
-              />
+              {(item.value === tabEl[0].value) 
+                ?
+                <input
+                  onChange={(e) => {console.log('체크')}}
+                  type="radio" id={item.checkId} name='detail-tab' defaultChecked hidden
+                />
+                :
+                <input
+                  onChange={(e) => {console.log('체크')}}
+                  type="radio" id={item.checkId} name='detail-tab' hidden
+                />
+              }
               <div className='detail-tab-div'
                 onClick={(e) => tabOnclickHandler(item.id, item.value, item.checkId)}
               >
-                {/* <a href={`#${item.id}`}> */}
-                  <div style={{display: 'flex', alignItems: 'center'}}>
-                    {(tabValue === item.value) && <IconTabPoint24/>}
-                    <label htmlFor={item.checkId}>
-                      {item.value}
-                      {(item.value === '피드') && <span style={{margin: '4px'}}><ListCount>{listCount}</ListCount></span>}
-                    </label>
-                  </div>
-                {/* </a> */}
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                  {(tabValue === item.value) && <IconTabPoint24/>}
+                  <label htmlFor={item.checkId}>
+                    {item.value}
+                    {(item.value === '피드') && <span style={{margin: '4px'}}><ListCount>{listCount}</ListCount></span>}
+                  </label>
+                </div>
               </div>
             </li>
           )
@@ -73,6 +81,7 @@ export default ShopDetailTab
 
 const ShopDetailTabStyle = styled.div`
   width: 100%;
+  
   ul {
     display: flex;
     flex-direction: row;
