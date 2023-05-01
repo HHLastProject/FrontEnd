@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { imgPath, path } from "../../shared/path";
 import { fontType } from "../ui/styles/typo";
-import { colorSet } from "../ui/styles/color";
+import { colorSet, onErrorColor } from "../ui/styles/color";
+import { displayHandler } from "../../custom/jh/useOnClickHiddenHandler";
 
 export interface IShopPostList {
   id:number;
@@ -29,18 +30,19 @@ function HomeShopPostCard (
   const thumbnailUrl = `${imgPath.shopThumbnailImg + thumbnail}`;
   const [imgSrc, setImgSrc] = useState<string>(thumbnailUrl);
 
-  const onErrorImg = () => {
-    setImgSrc(`${process.env.PUBLIC_URL}/shop-default-img.jpg`);
+  const onErrorImg = (id: string) => {
+    displayHandler(id);
   };
 
   return (
     <Link to={`${path.toShopDetail}/${id}`}>
       <HomeShopPostCardContainer>
-        <div className="home-postcard-thumbnail">
+        <div style={{backgroundColor: `${onErrorColor}`}} className="home-postcard-thumbnail">
           <img
+            id="shop-post-card-img"
             src={imgSrc} 
             alt={shopName} 
-            onError={onErrorImg}
+            onError={() => onErrorImg('shop-post-card-img')}
           />
         </div>
         <div className="home-postcard-content-wrap">

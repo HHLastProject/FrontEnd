@@ -89,7 +89,7 @@ const List = () => {
           </header>
 
           {/* 필터버튼 */}
-          <div style={{ overflow: 'hidden', }}>
+          <div style={{ overflow: 'hidden' }}>
             <HFlex gap='4px'>
               <OrderbyFilterBtn>
                 {orderBy}

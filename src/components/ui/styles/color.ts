@@ -19,3 +19,5 @@ export const colorSet = {
     lineLight: setColor('EDEDED'),
     blue: setColor('427AF5'),
 }
+
+export const onErrorColor = `${colorSet.lineMedium}`;

@@ -42,7 +42,7 @@ function FeeaDetailComments({commentList}: {commentList: IFeeaCommentList[]}) {
       .map((item: any) => {
         return(
           <Column key={item.feedCommentId}>
-            {/* 프로필, 작성 타이밍, 버튼 */}
+            {/* 프로필, 작성 시간, 버튼 */}
             <SpaceBetween>
               <Row gap={4} alignCenter={true}>
                 <ProfileImg
@@ -50,10 +50,10 @@ function FeeaDetailComments({commentList}: {commentList: IFeeaCommentList[]}) {
                   height={40}
                 >
                   <img
-                    id={`feed-img-${item.feedCommentId}`}
+                    id={`feed-comment-img-${item.feedCommentId}`}
                     src={`${item.profilePic}`}
                     alt="프로필 이미지"
-                    onError={(e) => displayHandler(`feed-img-${item.feedCommentId}`)}
+                    onError={(e) => displayHandler(`feed-comment-img-${item.feedCommentId}`)}
                   />
                 </ProfileImg>
                 <Column>

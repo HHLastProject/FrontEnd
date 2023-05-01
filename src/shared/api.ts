@@ -16,7 +16,7 @@ export const api_token = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_URL}`,
   headers: {
     "Authorization": localStorage.getItem("access_token"),
-    
+    "authorization": localStorage.getItem("access_token"),
   }
 })
 

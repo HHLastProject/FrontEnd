@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailFeed } from '../custom/jh/useGetShopDetail';
@@ -8,24 +8,23 @@ import ShopDetailStoreName from '../components/home/ShopDetailStoreName';
 import ShopDetailContentInfo from '../components/shopDetail/ShopDetailContent';
 import { iconImgPath, imgPath, path } from '../shared/path';
 import { colorSet } from '../components/ui/styles/color';
-import { fontType } from '../components/ui/styles/typo';
 import { Buttons } from '../components/ui/element/buttons/Buttons';
-import { IconPencil, IconTabPoint24 } from '../components/ui/element/icons/IconsStyle';
-import { HFlex, VFlex } from '../custom/ym/styleStore';
-import { PRIMARY_01, TITLE_5 } from '../custom/ym/variables';
+import { IconPencil } from '../components/ui/element/icons/IconsStyle';
+import { VFlex } from '../custom/ym/styleStore';
 import ListHeader from '../components/home/ListHeader';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { getToken } from '../apis/getToken';
-import api, { api_token } from '../shared/api';
+import api from '../shared/api';
 import { IconSize28 } from '../components/ui/element/icons/IconSize';
-import ListCount from '../components/ListCount';
+import Loading from '../components/Loading';
+import { displayHandler } from '../custom/jh/useOnClickHiddenHandler';
+import ShopDetailTab, { shopDetailTabEl } from '../components/shopDetail/ShopDetailTab';
 
 function ShopDetail() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
   const [scrap, setScrap] = useState(false);
   const [expand, setExpand] = useState<boolean>(false);
-  const [tabName, setTabName] = useState<string>('정보');
 
   //data
   const {
@@ -39,11 +38,6 @@ function ShopDetail() {
     shopDetailFeedIsLoading,
     shopDetailFeedIsError,
   } = useGetShopDetailFeed(param);
-
-  //util
-  const expandButtonHandler = () => {
-    setExpand(prev => !prev);
-  }
 
   //스크랩 클릭
   const scrapHandler = () => {
@@ -83,19 +77,6 @@ function ShopDetail() {
     return result;
   };
 
-  //탭 눌렀을때
-  const tabOnclickHandler = (id: string, name: string) => {
-    scrollToTabInfo(id);
-    setTabName(name);
-  };
-
-  //스크롤 이벤트
-  const scrollToTabInfo = (id: string) => {
-    // tabInfoRef.current?.scrollIntoView({ behavior: 'smooth' });
-    const el = document.getElementById(id)?.offsetTop;
-    console.log(el);
-    window.scrollTo({top: el, behavior: 'smooth'});
-  };
 
   if (shopDetailIsError) {
     alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
@@ -109,9 +90,7 @@ function ShopDetail() {
     console.log('테스트',scrap);
   }, [scrap]);
 
-  if (shopDetailIsLoading) {
-    return(<div>로딩중</div>)
-  }
+  if (shopDetailIsLoading) return <Loading/>;
 
   return (
     <>
@@ -126,8 +105,8 @@ function ShopDetail() {
           <IconSize28>
             {shopDetailData?.isScrap && <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="" />}
             {scrap
-              ? <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="" />
-              : <img src={`${process.env.PUBLIC_URL}/icon/book mark line_28.png`} alt="" />
+              ? <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="스크랩" />
+              : <img src={`${process.env.PUBLIC_URL}/icon/book mark line_28.png`} alt="스크랩" />
             }
           </IconSize28>
         </div>
@@ -136,10 +115,12 @@ function ShopDetail() {
       {/* 내용 */}
       <div id='shop-detail-wrap'>
         <ShopDetailThumbnail>
-          <div className='thumbnail-img'>
+          <div className='thumbnail-img' style={{backgroundColor: `${colorSet.lineMedium}`}}>
             <img
+              id={`shop-detail-thumbnail`}
               src={`${imgPath.shopThumbnailImg + shopDetailData?.thumbnail}`}
               alt={shopDetailData?.shopName}
+              onError={(e) => displayHandler(`shop-detail-thumbnail`)}
             />
           </div>
           <ShopDetailStoreName
@@ -148,60 +129,13 @@ function ShopDetail() {
           />
         </ShopDetailThumbnail>
 
-        {/* 탭 */}
         <ShopDetailContainer>
-          <ShopDetailTab>
-            <ul id='detail-tab'>
-              <li>
-                <input 
-                  onChange={(e) => tabOnclickHandler(`info-top`, '정보')}
-                  type="radio" id='detail-tab-info' name='detail-tab' defaultChecked hidden />
-                <div 
-                  className='detail-tab-div'
-                >
-                  <div style={{display: 'flex', gap:'4px'}}>
-                    {tabName === '정보' && <IconTabPoint24/>}
-                    <label htmlFor="detail-tab-info">정보</label>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <input 
-                  onChange={(e) => tabOnclickHandler(`menu-top`, '메뉴')}
-                  type="radio" id='detail-tab-menu' name='detail-tab' hidden />
-                <div 
-                  className='detail-tab-div'
-                >
-                  <div style={{display: 'flex', gap:'4px'}}>
-                    {tabName === '메뉴' && <IconTabPoint24/>}
-                    <label htmlFor="detail-tab-menu">메뉴</label>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <input 
-                  onChange={(e) => tabOnclickHandler(`feed-top`, '피드')}
-                  type="radio" 
-                  id='detail-tab-review' 
-                  name='detail-tab'
-                  hidden
-                />
-                <div
-                  className='detail-tab-div'
-                >
-                  <div style={{display: 'flex', gap:'4px'}}>
-                    {tabName === '피드' && <IconTabPoint24/>}
-                    <label htmlFor="detail-tab-review">피드</label>
-                    <ListCount>{shopDetailFeedList?.length}</ListCount>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </ShopDetailTab>
+          {/* 탭 */}
+          <ShopDetailTab tabEl={shopDetailTabEl} listCount={shopDetailFeedList?.length}/>
 
           {/* 정보 */}
-          <ShopDetailContentContainer>
-            <h2 id='info-top'>정보</h2>
+          <ShopDetailContentContainer id={shopDetailTabEl[0].id}>
+            <h2>정보</h2>
             <div>
               <ShopDetailContentInfo
                 iconImg={iconImgPath.detailInfo.mapPin}
@@ -229,9 +163,9 @@ function ShopDetail() {
 
         {/* 메뉴 */}
         <ShopDetailContainer>
-          <ShopDetailContentContainer>
+          <ShopDetailContentContainer id={shopDetailTabEl[1].id}>
             <div className='shop-detail-menu'>
-              <h2 id='menu-top'>메뉴</h2>
+              <h2>메뉴</h2>
               {shopDetailData?.Menus?.map((item: any) => {
                 return (
                   <ShopDetailMenu
@@ -248,10 +182,10 @@ function ShopDetail() {
 
         {/* 피드 */}
         <ShopDetailContainer>
-          <ShopDetailContentContainer>
+          <ShopDetailContentContainer id={shopDetailTabEl[2].id}>
             <div className='shop-detail-review'>
               <div className='shop-detail-review-sub'>
-                <h2 id='feed-top'>피드</h2>
+                <h2>피드</h2>
                 <Link 
                   to={`${path.feedForm}`}
                   state={{shopId : param, shopName: shopDetailData?.shopName}}
@@ -305,47 +239,6 @@ const XFlexCenter = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-`;
-
-const ShopDetailTab = styled.div`
-  width: 100%;
-  ul {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    text-align: center;
-
-    li {
-      width: 33.33%; 
-    }
-
-    label {
-      width: 100%;
-      line-height: 50px;
-      display: block;
-      cursor: pointer;
-    }
-
-    input[type="radio"] + div {
-      height: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-bottom: 1px solid ${colorSet.lineMedium};
-      label {
-        ${fontType.body_1}
-        color: ${colorSet.textMedium};
-      }
-    }
-
-    input[type="radio"]:checked + div {
-      border-bottom: 3px solid ${colorSet.primary_01};
-      label {
-        ${fontType.title_4}
-        color: ${colorSet.textStrong};
-      }
-    }
-  }
 `;
 
 const ShopDetailContainer = styled.div`
