@@ -14,7 +14,7 @@ import { VFlex } from '../custom/ym/styleStore';
 import ListHeader from '../components/home/ListHeader';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { getToken } from '../apis/getToken';
-import api, { api_token } from '../shared/api';
+import { api_token } from '../shared/api';
 import { IconSize28 } from '../components/ui/element/icons/IconSize';
 import Loading from '../components/Loading';
 import { displayHandler } from '../custom/jh/useOnClickHiddenHandler';
@@ -196,7 +196,10 @@ function ShopDetail() {
                 </Link>
               </div>
             </div>
-            {
+            {shopDetailFeedIsLoading 
+              ?
+              <>로딩중...</>
+              :
               shopDetailFeedList?.map((item: any, index: number) => {
                 //tag: [{tag: 내용}]
                 if(item?.tag.length !== 0) {
@@ -241,15 +244,14 @@ const XFlexCenter = styled.div`
 
 const ShopDetailContainer = styled.div`
   width: 100%;
-  border-top: 12px solid #EDEDED;
-  background-color: #fff;
+  border-top: 12px solid ${colorSet.lineLight};
+  padding: 0 0 120px 0;
 `;
 
 const ShopDetailThumbnail = styled.div`
   width: 100%;
   position: relative;
   padding-bottom: 72px;
-  background-color: #fff;
   .thumbnail-img {
     width: 100%;
     height: 252px;
@@ -264,7 +266,6 @@ const ShopDetailThumbnail = styled.div`
 `;
 
 const ShopDetailContentContainer = styled.div`
-  /* width: 100%; */
   padding: 40px 20px 40px 20px;
   display: flex;
   flex-direction: column;

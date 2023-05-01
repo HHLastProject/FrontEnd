@@ -52,8 +52,8 @@ export const useGetShopDetailFeed = (param: number | undefined) => {
       });
       return data;
     },
-    onSuccess: (o) => {
-      console.log('성공 피드 데이터', o);
+    onSuccess: (res) => {
+      console.log('성공 피드 데이터', res);
     },
     onError: () => {
       console.log('피드 에러');
