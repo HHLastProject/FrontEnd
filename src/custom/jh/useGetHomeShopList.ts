@@ -17,11 +17,12 @@ export const useGetHomeShopList = ({ lng, lat, range }: locationType) => {
   const { data, mutate, isLoading, isSuccess, isError } = useMutation({
     mutationKey: queryKeys.GET_HOME_SHOPLIST,
     mutationFn: async () => {
+      console.log('데이터 가지러옴', token);
       const { data } = await api.post(`${apiPath.shopList}`, {
         lng,
         lat,
         range,
-      }, 
+      },
       {
         headers: {
           authorization: `${token}`,
@@ -30,6 +31,7 @@ export const useGetHomeShopList = ({ lng, lat, range }: locationType) => {
       return data.shops;
     },
     onSuccess: (data) => {
+      console.log('데이터 가져왔나?');
       queryClient.invalidateQueries({ queryKey: queryKeys.GET_HOME_SHOPLIST });
     },
     onError: (error) => {

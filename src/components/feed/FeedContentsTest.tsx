@@ -68,9 +68,7 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
       }
 
       {/* 피드 사진 */}
-      <Link to={`${path.toFeedDetail + '/' + feedData?.feedId}`}>
-        <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + feedData?.feedPic}</FeedPicture>
-      </Link>
+      <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + feedData?.feedPic}</FeedPicture>
 
       {/* 좋아요 댓글 */}
       <FeedLikeComment

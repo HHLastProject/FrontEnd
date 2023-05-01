@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { HFlex, VFlex } from '../../custom/ym/styleStore';
 import useNavigateHandler from '../../custom/jh/useNavigateHandler';
-import { LoginCheck } from '../Authentication';
 import { Body1, Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
 import { path } from '../../shared/path';
@@ -9,23 +8,39 @@ import { ReactNode } from 'react';
 import { colorSet } from '../ui/styles/color';
 import { controlVisible } from '../../custom/jh/controlHidden';
 import { SelectBoxId } from '../SelectBox';
+import BtnResetStyle from '../ui/element/buttons/BtnReset';
+import { IconSize16, IconSize24 } from '../ui/element/icons/IconSize';
+import { deleteToken, getToken } from '../../apis/getToken';
 
-//close == true : 뒤로가기 버튼이 x로 바뀜
+//close == true : 뒤로가기 버튼이 x로 바뀜f
 //scrap == true : 스크랩 버튼
 const ListHeader = ({name, range, close, feedForm, children, scrap}: {name?: string, range?: number, close?: boolean, feedForm?: true, children?: ReactNode, scrap?: boolean}) => {
   const {backClickHandler} = useNavigateHandler();
   const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
+  const token = getToken();
+
+  const onClickLogout = () => {
+    const result = window.confirm('로그아웃 하시겠습니까?');
+    if(result) {
+      deleteToken();
+      alert('로그아웃 되었습니다.');
+    }
+  }
 
   return (
-    <HeaderContainer>
+    <HeaderContainer
+      id='header'
+    >
       <HFlex width='100%'>
-        <div
+        <BtnResetStyle
           onClick={backClickHandler}
         >
-          <ButtonContainer>
-            <Image src={backIconSrc} alt="" />
-          </ButtonContainer>
-        </div>
+          <BothSideDiv>
+            <IconSize24>
+              <img src={backIconSrc} alt="뒤로가기" />
+            </IconSize24>
+          </BothSideDiv>
+        </BtnResetStyle>
         {name && <div style={{width: '100%'}}><Body1>{name}</Body1></div>}
         {range && 
           <>
@@ -34,40 +49,54 @@ const ListHeader = ({name, range, close, feedForm, children, scrap}: {name?: str
               <div>
                 <HeaderTextSmall>내 위치에서</HeaderTextSmall>
               </div>
-              <HFlex 
-                gap="5px" 
-                etc={`cursor: pointer`}
-                onClick={() => {controlVisible(SelectBoxId.RANGE_SELECT_ID)}}
-              >
-                <HeaderTextMedium>{(range < 1000 ? `${range}m` : `${range/1000}km`)}</HeaderTextMedium>
-                <Image2 src={`${process.env.PUBLIC_URL}/icon/chevron_down_16.png`} alt="" />
-              </HFlex>
+              <BtnResetStyle
+                onClick={() => {controlVisible(SelectBoxId.RANGE_SELECT_ID)}}>
+                <HFlex gap="5px">
+                  <HeaderTextMedium>{(range < 1000 ? `${range}m` : `${range/1000}km`)}</HeaderTextMedium>
+                  <IconSize16>
+                    <img src={`${process.env.PUBLIC_URL}/icon/chevron_down_16.png`} alt="거리 선택하기" />
+                  </IconSize16>
+                </HFlex>
+              </BtnResetStyle>
             </VFlex>
           </>
         }
+
+        <div style={{flex: '1'}}/>
+
+        {/* 오른쪽 */}
         <RightContainer>
           {range &&
             <>
-              <LoginCheck>
-                <Title5>
-                  <Link to={'/login'}>로그인 하기</Link>
-                </Title5>
-              </LoginCheck>
+              {token
+                ?
+                <BtnResetStyle onClick={onClickLogout}>
+                  <Title5>로그아웃</Title5>
+                </BtnResetStyle>
+                :
+                <Link to={'/login'}>
+                  <Title5>로그인하기</Title5>
+                </Link>
+              }
 
               {/* 검색하기 */}
               <Link
                 to={`${path.search}`}
                 state={{link: null}}
               >
-                <ButtonContainer>
-                  <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
-                </ButtonContainer>
+                <BothSideDiv>
+                  <IconSize24>
+                    <img src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="검색" />
+                  </IconSize24>
+                </BothSideDiv>
               </Link>
             </>
           }
           {(feedForm || scrap) && 
             <>
+            <BothSideDiv>
               {children}
+            </BothSideDiv>
             </>
           }
         </RightContainer>
@@ -78,10 +107,9 @@ const ListHeader = ({name, range, close, feedForm, children, scrap}: {name?: str
 
 export default ListHeader;
 
-export const HeaderContainer = styled.div`
+export const HeaderContainer = styled.header`
   height: 60px;
   width: 100%;
-  padding: 0 5px;
   background-color: white;
 `
 
@@ -99,31 +127,13 @@ const HeaderTextMedium = styled.span`
   color: ${colorSet.primary_02};
 `
 
-const ButtonContainer = styled.button`
-  width: fit-content;
-  border: none;
-  margin: 0px 8px;
-  background-color: white;
+const BothSideDiv = styled.div`
+  margin: 0px 20px;
 `
-
-const Image = styled.img`
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  background-color: none;
-`
-
-const Image2 = styled.img`
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
-  background-color: none;
-`;
 
 const RightContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-right: 20px;
 `;

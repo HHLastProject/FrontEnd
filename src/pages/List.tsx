@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { TUserLocation, getUserLocation } from '../custom/jh/getUserLocation';
+import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
 import HomeShopPostCard from '../components/home/HomePostCard';
 import ListCount from '../components/ListCount';
 import { HomeTabMenuStyle, TabMenuLi, TabMenuUl } from '../components/TabMenu';
 import SelectBox, { SelectBoxId } from '../components/SelectBox';
-import useOnClickHiddenHandler from '../custom/jh/useOnClickHiddenHandler';
 import ListHeader from '../components/home/ListHeader';
 import {ListCategoryButtonBar, RangeFilterButtonBar} from '../components/home/ListCategoryButtonBar';
 import { ListTossedData, categoryTypes } from '../custom/ym/types';
 import { HFlex } from '../custom/ym/styleStore';
-import { HiddenContext, OrderByContext, ShopCategory } from '../apis/context';
+import { OrderByContext, ShopCategory } from '../apis/context';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import NoResult from '../components/home/NoShop';
 import { SelectData } from '../shared/select';
 import { Title4 } from '../components/FontStyle';
 import { VFlex } from '../custom/ym/styleStore';
+import { getToken } from '../apis/getToken';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
@@ -27,7 +27,6 @@ const List = () => {
   getUserLocation(setLng, setLat).then((res) => {
   });
 
-
   //리스트 데이터
   const {
     shopList,
@@ -37,13 +36,19 @@ const List = () => {
   } = useGetHomeShopList({ lng, lat, range });
 
   useEffect(() => {
+    console.log(lng, lat)
     if (lng !== 0 && lat !== 0) {
       getshopList();
     };
   }, [lng, lat, range]);
 
+  getToken()
+  useEffect(() => {
+    localStorage.setItem('access_token', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc1MzE3NzA0NiwiaWF0IjoxNjgyOTQxNzkzfQ.nlsXPpfOjW6yuP05IV3Ya0aRp2EvJByOg8N4MTCeRrI`);
+  }, []);
+
   //로딩 화면
-  if (getshopListIsLoading) { return <div>로딩중...</div>; }
+  // if (getshopListIsLoading) { return <div>로딩중...</div>; }
   // if (getshopListIsError) return <div>에러</div>;
 
   return (
@@ -51,6 +56,7 @@ const List = () => {
       {range, setRange, category, setCategory}
     }>
     <OrderByContext.Provider value={{orderBy, setOrderBy}}>
+      {/* 선택창 */}
       <SelectBox
         id={SelectBoxId.ORDER_BY_SELECT_ID}
         arr={SelectData.ORDER_BY}
@@ -65,6 +71,7 @@ const List = () => {
           </VFlex>
         </div>
       </SelectBox>
+
       {/* 헤더 */}
       <ListHeader
         range={range}
