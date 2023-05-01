@@ -20,6 +20,8 @@ const useMypage = () => {
             const result = res.data.mypages as Feed[];
             return result[0] as Feed;
         },
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
         onError(err: AxiosError) {
             if (err.response?.status === 401) {
                 console.log(err);

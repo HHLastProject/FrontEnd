@@ -49,7 +49,12 @@ const BookmarkCard = ({ data, idx }: BookmarkChildren) => {
 
     const toggleScrap = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+
+        /* 스크랩을 풀면 아예 없어지는 경우의 코드 */
         mutate(data.shopId);
+        setScrapList(prev => {
+            return prev.filter((element) => element !== data);
+        });
         // if (data.isScrap) {
         //     mutate(data.shopId);
         //     setScrapList(prev => {

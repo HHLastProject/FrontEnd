@@ -1,12 +1,9 @@
-import React, { useContext } from 'react'
 import styled from 'styled-components';
 import { VFlexCenter } from '../../custom/ym/styleStore';
-import { context } from '../../pages/Mypage';
 import { BODY_4 } from '../../custom/ym/variables';
 import { colorSet } from '../ui/styles/color';
 import { Buttons } from '../ui/element/buttons/Buttons';
 import { useNavigate } from 'react-router-dom';
-import { path } from '../../shared/path';
 
 const NoMyFeeds = () => {
 

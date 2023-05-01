@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { HFlex, VFlex } from '../../custom/ym/styleStore';
 import styled from 'styled-components';
 import { BODY_1 } from '../../custom/ym/variables';
-import { context } from '../../pages/Mypage';
+import { MypageContext } from '../../pages/Mypage';
 
 const CenterContents = () => {
 

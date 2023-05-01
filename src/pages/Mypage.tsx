@@ -31,7 +31,7 @@ export interface Feed {
     feedCount: number,
 }
 
-export const context = createContext<StateContextType | null>(null);
+export const MypageContext = createContext<StateContextType | null>(null);
 
 const Mypage = () => {
 
@@ -68,7 +68,7 @@ const Mypage = () => {
 
 
     return (
-        <context.Provider value={{ props: feedData, propsFunc: setFeedData, isLogin: isLogin }}>
+        <MypageContext.Provider value={{ props: feedData, propsFunc: setFeedData, isLogin: isLogin }}>
             <MypageContainer>
                 <VFlex gap='40px' height='fit-content'>
                     {isLogin
@@ -80,7 +80,7 @@ const Mypage = () => {
                     <CustomerCenter />
                 </VFlex>
             </MypageContainer>
-        </context.Provider>
+        </MypageContext.Provider>
     )
 }
 

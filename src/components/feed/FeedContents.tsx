@@ -41,7 +41,7 @@ const FeedContents = ({ children }: Prop) => {
 
     return (
         <VFlex gap='12px' etc='padding:20px;'>
-            <FeedProfile profilePic={data?.profilePic} params={children} />
+            <FeedProfile profilePic={data?.profilePic} params={children} isMine={true} />
             <FeedPicture>{pic as string}</FeedPicture>
             <FeedComment isExpanded={expand}>{comment as string}</FeedComment>
             {comment?.length > 86

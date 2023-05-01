@@ -1,11 +1,9 @@
-import React, { useContext } from 'react'
 import HeaderBack from '../components/HeaderBack';
 import { VFlex } from '../custom/ym/styleStore';
 import FeedSet from '../components/mypage/FeedSet';
 import { mypageData } from '../custom/ym/dummydata';
 import FeedPictures from '../components/mypage/FeedPictures';
 import styled from 'styled-components';
-import { context } from './Mypage';
 import { useParams } from 'react-router-dom';
 
 const AllFeeds = () => {

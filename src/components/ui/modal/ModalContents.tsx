@@ -5,7 +5,7 @@ import ModalContentsCover from './ModalContentsCover';
 import { BODY_1 } from '../../../custom/ym/variables';
 import { queryClient } from '../../..';
 import { useMutation } from '@tanstack/react-query';
-import { feedKeys, scrapKeys } from '../../../apis/queries';
+import { feedKeys, queryKeys, scrapKeys } from '../../../apis/queries';
 import { api_token } from '../../../shared/api';
 import { useNavigate } from 'react-router-dom';
 import { BtnRadius } from '../element/buttons/BtnRadius';
@@ -16,7 +16,7 @@ import { apiPath } from '../../../shared/path';
 import useScrapData from '../../../hooks/useScrapData';
 import { ScrapContext, ScrapDispatchesContext } from '../../../pages/Bookmark';
 
-const FeedModalContents = ({ target }: { target: number }) => {
+const FeedModalContents = ({ target, stateDispatch }: { target: number, stateDispatch: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     const navi = useNavigate();
 
@@ -33,15 +33,18 @@ const FeedModalContents = ({ target }: { target: number }) => {
 
     const deleteFeedHandler = () => {
         mutate(target);
-        navi('/mypage');
+        if (window.location.pathname.includes("/feed/detail/")) {
+            navi(-1);
+        } else {
+            queryClient.refetchQueries(queryKeys.GET_FEEDS);
+            stateDispatch(false);
+            // queryClient.invalidateQueries(queryKeys.GET_FEEDS);
+        }
     }
     return (
         <ModalContentsContainer>
             <VFlex>
                 <ModalContentsCover />
-                <FeedSelector>
-                    <FeedSelectorLabel>수정하기</FeedSelectorLabel>
-                </FeedSelector>
                 <FeedSelector>
                     <BtnRadius.Default onClick={deleteFeedHandler}>
                         <FeedSelectorLabel>삭제하기</FeedSelectorLabel>
