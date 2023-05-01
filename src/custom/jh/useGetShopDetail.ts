@@ -1,9 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../apis/queries';
 import api from '../../shared/api';
 import { apiPath } from '../../shared/path';
 import { getToken } from '../../apis/getToken';
-import { queryClient } from '../..';
 
 export interface IFeedList {
   nickname: string;
@@ -19,18 +18,19 @@ export interface IFeedList {
   isScrap : boolean;
 };
 
-export const useGetShopDetail = (param: number | undefined) => {
+export const useGetShopDetail = (param: number | undefined, setScrap?: React.Dispatch<React.SetStateAction<boolean>>) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.GET_SHOP_DETAIL,
     queryFn: async () => {
       const {data} = await api.get(`${apiPath.toShopDetail}/${param}`);
       return data.shop;
     },
-    onSuccess: () => {
-      // queryClinet.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL });
+    onSuccess: (res) => {
+      const {isScrap} = res;
+      if(setScrap) {setScrap(isScrap)};
     },
-    onError: () => {
-      console.log('상세정보 에러');
+    onError: (error) => {
+      throw error;
     },
   });
   return {

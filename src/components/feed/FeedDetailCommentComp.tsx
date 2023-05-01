@@ -21,7 +21,7 @@ export interface IFeeaCommentList {
   isMine : boolean,
 }
 
-function FeeaDetailComments({commentList}: {commentList: IFeeaCommentList[]}) {
+function FeedDetailComments({commentList}: {commentList: IFeeaCommentList[]}) {
   const {commentId, setCommentId} = useContext(CommentIdContext);
   
   const onClickHandler = (commentId: number) => {
@@ -84,7 +84,7 @@ function FeeaDetailComments({commentList}: {commentList: IFeeaCommentList[]}) {
   )
 }
 
-export default FeeaDetailComments
+export default FeedDetailComments
 
 const Row = styled.div<{gap?: number, alignCenter?: boolean}>`
   display: flex;

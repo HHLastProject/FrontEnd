@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ListHeader from '../components/home/ListHeader'
 import DefaultWrap from '../components/ui/container/Wrap'
 import { CommentIdContext, OrderByContext } from '../apis/context'
-import FeeaDetailComments from '../components/feed/FeeaDetailCommentComp'
+import FeedDetailComments from '../components/feed/FeedDetailCommentComp'
 import SelectBox, { SelectBoxId } from '../components/SelectBox'
 import { TextareaStyle } from '../components/search/SearchInput'
 import { colorSet } from '../components/ui/styles/color'
@@ -112,7 +112,7 @@ function FeedDetailComment() {
         <div style={{margin: '12px 0'}}>
           {
             feedDetailCommentData &&
-            <FeeaDetailComments
+            <FeedDetailComments
               commentList={feedDetailCommentData}
             />
           }

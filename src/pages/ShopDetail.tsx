@@ -14,24 +14,25 @@ import { VFlex } from '../custom/ym/styleStore';
 import ListHeader from '../components/home/ListHeader';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { getToken } from '../apis/getToken';
-import api from '../shared/api';
+import api, { api_token } from '../shared/api';
 import { IconSize28 } from '../components/ui/element/icons/IconSize';
 import Loading from '../components/Loading';
 import { displayHandler } from '../custom/jh/useOnClickHiddenHandler';
 import ShopDetailTab, { shopDetailTabEl } from '../components/shopDetail/ShopDetailTab';
+import { queryClient } from '..';
+import { queryKeys } from '../apis/queries';
 
 function ShopDetail() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
   const [scrap, setScrap] = useState(false);
-  const [expand, setExpand] = useState<boolean>(false);
 
   //data
   const {
     shopDetailData,
     shopDetailIsLoading,
     shopDetailIsError
-  } = useGetShopDetail(param);
+  } = useGetShopDetail(param, setScrap);
   const {
     shopDetailFeedList,
     getShopDetailFeedList,
@@ -55,28 +56,24 @@ function ShopDetail() {
   const changeScrap = async (shopId: number) => {
     const token = getToken();
     console.log('스크랩들어옴', shopId, token);
-    let result: {isScrap: boolean} = {isScrap: false};
     if(token) {
-      result = await api.put(`/api/${shopId}/scrap`, {
-        headers: {
-          "Authorization": `${token}`,
-        }
-      })
+      const result = await api_token.put(`/api/${shopId}/scrap`)
       .then((res) => {
         console.log('결과', res.data.isScrap);
-        setScrap(res.data.isScrap);
+        queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL);
+        const result = res.data.isScrap;
+        setScrap(result);
         return res.data;
       })
       .catch((error) => {
         console.log(error);
         throw error;
       });
+      console.log(result);
     } else {
-      alert('로그인이 필요합니다.');
+      alert('로그인이 필요한 기능입니다.');
     }
-    return result;
   };
-
 
   if (shopDetailIsError) {
     alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
@@ -98,6 +95,7 @@ function ShopDetail() {
       <ListHeader
         scrap={true}
       >
+        {/* 스크랩 */}
         <div
           style={{cursor: 'pointer'}}
           onClick={scrapHandler}

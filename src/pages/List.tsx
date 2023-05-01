@@ -36,19 +36,18 @@ const List = () => {
   } = useGetHomeShopList({ lng, lat, range });
 
   useEffect(() => {
-    console.log(lng, lat)
+    console.log(lng, lat);
     if (lng !== 0 && lat !== 0) {
       getshopList();
     };
-  }, [lng, lat, range]);
+  }, [lng, lat, range, orderBy]);
 
-  getToken()
   useEffect(() => {
     localStorage.setItem('access_token', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc1MzE3NzA0NiwiaWF0IjoxNjgyOTQxNzkzfQ.nlsXPpfOjW6yuP05IV3Ya0aRp2EvJByOg8N4MTCeRrI`);
   }, []);
 
   //로딩 화면
-  // if (getshopListIsLoading) { return <div>로딩중...</div>; }
+  if (getshopListIsLoading) { return <div>로딩중...</div>; }
   // if (getshopListIsError) return <div>에러</div>;
 
   return (

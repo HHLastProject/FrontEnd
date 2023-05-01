@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import FeedProfile from '../FeedProfile';
 import FeedPicture from './FeedPicture';
 import FeedComment from './FeedComment';
@@ -43,6 +43,10 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
     isScrap: feedData?.isScrap,
     shopId: feedData?.shopId,
   };
+
+  useEffect(() => {
+    
+  }, []);
 
   return (
     <>

@@ -9,6 +9,7 @@ import { keys, queryKeys } from '../../apis/queries';
 import { ShopData } from '../../custom/ym/variables';
 import { api_token } from '../../shared/api';
 import { queryClient } from '../..';
+import { useGetShopDetailFeed } from '../../custom/jh/useGetShopDetail';
 
 const PlaceBookMark = ({ isScrap, shop }: { isScrap?: boolean, shop?: number }) => {
     // const { shopThumbnail } = mypageData.feeds[2] as EachFeed;
