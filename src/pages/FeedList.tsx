@@ -39,15 +39,16 @@ function FeedList() {
         id={SelectBoxId.ORDER_BY_SELECT_ID}
         arr={SelectData.TAG_SELECT}
       />
+
       <FeedContainer>
         {/* 제목 */}
-        <div style={{margin: '0 20px'}}>
+        <div style={{margin: '10px 20px'}}>
           <Heading2>Feed</Heading2>
         </div>
 
         {/* 필터버튼 */}
         <div style={{ overflow: 'hidden', marginLeft: `20px`}}>
-          <HFlex gap='4px' etc={'margin-top: 15px'}>
+          <HFlex gap='4px' etc={'margin-top: 8px'}>
             <OrderbyFilterBtn
             >
               {orderBy}
@@ -78,9 +79,9 @@ function FeedList() {
           })
         }
         </div>
-
-        {/* 피드 작성 버튼 */}
       </FeedContainer>
+
+      {/* 피드 작성 버튼 */}
       <Link to={`${path.feedForm}`}>
         <FeedPageWriteBtn>
           <AlignItemCenter>
@@ -89,7 +90,6 @@ function FeedList() {
           </AlignItemCenter>
         </FeedPageWriteBtn>
       </Link>
-    {/* </HiddenContext.Provider> */}
     </OrderByContext.Provider>
     </ShopCategory.Provider>
   )
@@ -99,7 +99,7 @@ export default FeedList
 
 const FeedContainer = styled.div`
   min-height: 100vh;
-  margin: 40px 0 120px 0;
+  margin: 0 0 120px 0;
   position: relative;
 `;
 

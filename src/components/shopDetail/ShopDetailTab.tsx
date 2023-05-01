@@ -23,7 +23,7 @@ function ShopDetailTab({tabEl, listCount}: {tabEl: TTabEl[], listCount?: number}
     const radio = document.getElementById(checkId);
     // const radio = document.getElementById(checkId);
     if(radio){
-      console.log(radio.getAttribute('name'));
+      console.log(typeof radio.getAttribute('checked'), radio.getAttribute('checked'));
       // if(radio.checked){
       //   radio.checked = 'true';
       // }
