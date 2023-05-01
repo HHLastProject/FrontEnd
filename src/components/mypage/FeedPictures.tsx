@@ -1,5 +1,4 @@
 import React from 'react'
-import { EachFeed, Feed } from '../../pages/Mypage'
 import { HFlex } from '../../custom/ym/styleStore'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'

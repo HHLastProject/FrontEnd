@@ -11,10 +11,11 @@ type TFeedProfile = {
     profilePic?: string | null;
     nickname?: string;
     createdAt?: string;
-    params?: number
+    params?: number;
+    isMine?: boolean;
 }
 
-const FeedProfile = ({ profilePic, nickname, createdAt, params }: TFeedProfile) => {
+const FeedProfile = ({ profilePic, nickname, createdAt, params, isMine }: TFeedProfile) => {
     const [modifyModal, setModifyModal] = useState(false);
 
     if (!profilePic) { profilePic = defaultImgPath.shopList };
@@ -35,12 +36,14 @@ const FeedProfile = ({ profilePic, nickname, createdAt, params }: TFeedProfile) 
                     :
                     <FeedNameCard />
                 }
-                <Buttons.Others.IconButton
-                    width={24}
-                    height={24}
-                    onClick={modifyClickHandler}
-                    fileName={"feed_modify.png"}
-                />
+                {isMine
+                    ? <Buttons.Others.IconButton
+                        width={24}
+                        height={24}
+                        onClick={modifyClickHandler}
+                        fileName={"feed_modify.png"}
+                    />
+                    : null}
                 {(modifyModal && (params !== undefined))
                     ? <Modals.Feed stateDispatch={setModifyModal} params={params} />
                     : null}

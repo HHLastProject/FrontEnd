@@ -81,6 +81,7 @@ export interface ScrapDataSet {
 
 export interface BookmarkChildren extends ComponentPropsWithoutRef<'div'> {
     data: ScrapDataSet;
+    idx: number;
 }
 
 export interface CategoryProp {
@@ -123,6 +124,7 @@ export type TossedFeedData = {
     shopThumbnail: string,
     shopCategory?: string,
     tag: string[],
+    isMinde: boolean,
 }
 
 

@@ -4,6 +4,7 @@ import FeedContents from '../../feed/FeedContents';
 import { ModalContents } from './ModalContents';
 import { VFlexCenter } from '../../../custom/ym/styleStore';
 import { FolderData } from '../../../custom/ym/types';
+import { useNavigate } from 'react-router-dom';
 
 const Feed = ({ stateDispatch, params }: { stateDispatch: React.Dispatch<React.SetStateAction<boolean>>, params: number }) => {
     const backgroundClickHandler = () => {
@@ -13,7 +14,7 @@ const Feed = ({ stateDispatch, params }: { stateDispatch: React.Dispatch<React.S
         <ModalContainer>
             <VFlexCenter>
                 <GrayBackground onClick={backgroundClickHandler} />
-                <ModalContents.FeedModalContents target={params} />
+                <ModalContents.FeedModalContents target={params} stateDispatch={stateDispatch} />
             </VFlexCenter>
         </ModalContainer>
     )

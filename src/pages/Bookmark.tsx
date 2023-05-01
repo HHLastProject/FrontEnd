@@ -3,10 +3,6 @@ import styled from 'styled-components';
 import { Headers } from '../components/ui/element/headers/Headers';
 import { VFlex } from '../custom/ym/styleStore';
 import BookmarkList from '../components/bookmark/BookmarkList';
-import { useQuery } from '@tanstack/react-query';
-import { scrapKeys } from '../apis/queries';
-import { api_token } from '../shared/api';
-import { apiPath } from '../shared/path';
 import { FolderData, PayloadFolderList, PayloadShopList, ReceivedBookmarks, ScrapListEachData } from '../custom/ym/types';
 import useScrapData from '../hooks/useScrapData';
 import { BookmarkContext, BookmarkDispatches, bookmarkContext, bookmarkDispatchesContext } from '../custom/ym/contextValues';
@@ -26,7 +22,7 @@ const Bookmark = () => {
     const [scrapList, setScrapList] = useState<ScrapListEachData[]>();
     const [modal, setModal] = useState<boolean>(false);
 
-    const { scrapData, refetchScrapQuery, isSuccess, isError, isLoading } = useScrapData();
+    const { scrapData, isSuccess, isError, isLoading } = useScrapData();
     const { mutate } = useEditScrapData();
 
     const values: BookmarkContext = {
@@ -44,70 +40,45 @@ const Bookmark = () => {
         setScrapList
     };
 
-    const editBackClickHandler = () => {
-        setEditMode(false);
-    }
-
     const editFinishClickHandler = () => {
-        const newFolderList: PayloadFolderList[] = queryData?.folderList.map((folder) => {
+        const newFolderList: PayloadFolderList[]
+            = queryData?.folderList.map((folder) => {
 
-            const temp = scrapList?.map((element) => {
-                if (element.folderName === folder.folderName) {
-                    return { shopId: element.shopId } as PayloadShopList;
-                }
-                return null;
-            });
+                const temp = scrapList?.map((element) => {
+                    if (element.folderName === folder.folderName) {
+                        return { shopId: element.shopId } as PayloadShopList;
+                    }
+                    return null;
+                });
 
-            const result: PayloadFolderList = {
-                folderName: folder.folderName,
-                shopList: (temp as PayloadShopList[]).filter((element) => element !== null),
-            };
+                const result: PayloadFolderList = {
+                    folderName: folder.folderName,
+                    shopList: (temp as PayloadShopList[]).filter((element) => element !== null),
+                };
 
-            return result;
-        }) as PayloadFolderList[];
+                return result;
+            }) as PayloadFolderList[];
 
         const payload = {
             folderList: newFolderList,
         }
-
-        console.log('완료 누를시 완성되는 데이터 셋', newFolderList);
-
         mutate(payload);
 
         setEditMode(false);
     }
-
-    const editModeClickHandler = () => {
-        setEditMode(true);
-    }
-
-    const moveFolderClickhandler = () => {
-        setModal(true);
-    }
-
-    // if (isSuccess) {
-    //     setQueryData(scrapData);
-    //     setScrapList(scrapData?.scrapList);
-    // }
-
+    const editBackClickHandler = () => setEditMode(false);
+    const editModeClickHandler = () => setEditMode(true);
+    const moveFolderClickhandler = () => setModal(true);
 
     useEffect(() => {
-        // refetchScrapQuery();
-        // if (isLoading) {
-        // console.log('로딩중');
-        // }
         if (isSuccess) {
-            // console.log("통신성공")
             setQueryData(scrapData);
             setScrapList(scrapData?.scrapList);
-            console.log(scrapData);
-            console.log(scrapList);
         }
-    }, []);
+    }, [isSuccess, scrapData]);
 
-    if (isLoading) {
-        return <div>로딩중</div>;
-    };
+    if (isLoading) return <div>로딩중</div>;
+    if (isError) return <div>통신 에러</div>;
 
     return (
         <ScrapContext.Provider value={values}>
@@ -116,7 +87,7 @@ const Bookmark = () => {
                     ? <Modals.MoveScrapToOtherFolder
                         dispatch={setModal} />
                     : null}
-                {queryData
+                {isSuccess
                     ? <BookmarkContainer>
                         <VFlex>
                             {editMode
