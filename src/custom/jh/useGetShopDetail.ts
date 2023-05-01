@@ -31,7 +31,7 @@ export const useGetShopDetail = (param: number | undefined, setState:React.Dispa
       const {isScrap} = res;
       setState(isScrap);
       getShopDetailFeedList();
-      queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
+      // queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
     },
     onError: (error) => {
       throw error;

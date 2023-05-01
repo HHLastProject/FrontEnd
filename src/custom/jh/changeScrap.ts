@@ -1,9 +1,29 @@
 import { useMutation } from "@tanstack/react-query";
 import { getToken } from "../../apis/getToken";
+import { api_token } from "../../shared/api";
 import { queryKeys } from "../../apis/queries";
-import api, { api_token } from "../../shared/api";
 import { queryClient } from "../..";
 
+//스크랩 변경
+export const changeScrap = async (shopId: number) => {
+  const token = getToken();
+  if(token) {
+    const result = await api_token.put(`/api/${shopId}/scrap`)
+      .then((res) => {
+        console.log('스크랩결과', res.data.isScrap);
+        return res.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        throw error;
+      });
+    return result;
+  } else {
+    alert('로그인이 필요한 기능입니다.');
+  }
+};
+
+//스크랩 변경 mutate
 export const useChangeScrap = (param: number | undefined) => {
   const { data, mutate } = useMutation({
     mutationKey: queryKeys.GET_SHOP_DETAIL_FEED,
@@ -24,5 +44,3 @@ export const useChangeScrap = (param: number | undefined) => {
     putScrap : mutate,
   };
 };
-
-export default useChangeScrap

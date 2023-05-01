@@ -20,12 +20,12 @@ import { displayHandler } from '../custom/jh/useOnClickHiddenHandler';
 import ShopDetailTab, { shopDetailTabEl } from '../components/shopDetail/ShopDetailTab';
 import IconScrap from '../components/shopDetail/ScrapBtn';
 import BtnResetStyle from '../components/ui/element/buttons/BtnReset';
-import useChangeScrap from '../custom/jh/useChangeScrap';
+import { changeScrap } from '../custom/jh/changeScrap';
 
 function ShopDetail() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
-  const [scrap, setScrap] = useState(true);
+  const [scrap, setScrap] = useState(false);
 
   //data
   const {
@@ -39,7 +39,6 @@ function ShopDetail() {
     shopDetailFeedIsLoading,
     shopDetailFeedIsError,
   } = useGetShopDetailFeed(param);
-  const {putScrap} = useChangeScrap(param);
 
   //스크랩 클릭
   const scrapHandler = () => {
@@ -51,31 +50,11 @@ function ShopDetail() {
           const {isScrap} = res;
           setScrap(isScrap);
         });
-      // putScrap();
     } else {
       const result = window.confirm('로그인이 필요한 기능입니다. 로그인 하시겠습니까?');
       if(result) navi(`${path.login}`);
     }
   }
-
-  //스크랩 변경
-  const changeScrap = async (shopId: number) => {
-    const token = getToken();
-    if(token) {
-      const result = await api_token.put(`/api/${shopId}/scrap`)
-        .then((res) => {
-          console.log('스크랩결과', res.data.isScrap);
-          return res.data;
-        })
-        .catch((error) => {
-          console.log(error);
-          throw error;
-        });
-      return result;
-    } else {
-      alert('로그인이 필요한 기능입니다.');
-    }
-  };
 
   if (shopDetailIsError) {
     alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
