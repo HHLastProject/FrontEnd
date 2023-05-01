@@ -32,7 +32,7 @@ function ShopDetail() {
     shopDetailData,
     shopDetailIsLoading,
     shopDetailIsError
-  } = useGetShopDetail(param, setScrap);
+  } = useGetShopDetail(param);
   const {
     shopDetailFeedList,
     getShopDetailFeedList,
@@ -45,7 +45,11 @@ function ShopDetail() {
     const token = getToken();
     if(token) {
       console.log('토큰있음')
-      changeScrap(param);
+      changeScrap(param)
+        .then((res) => {
+          const {isScrap} = res;
+          setScrap(isScrap);
+        });
     } else {
       const result = window.confirm('로그인이 필요한 기능입니다. 로그인 하시겠습니까?');
       if(result) navi(`${path.login}`);
@@ -55,21 +59,18 @@ function ShopDetail() {
   //스크랩 변경
   const changeScrap = async (shopId: number) => {
     const token = getToken();
-    console.log('스크랩들어옴', shopId, token);
     if(token) {
       const result = await api_token.put(`/api/${shopId}/scrap`)
-      .then((res) => {
-        console.log('결과', res.data.isScrap);
-        queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL);
-        const result = res.data.isScrap;
-        setScrap(result);
-        return res.data;
-      })
-      .catch((error) => {
-        console.log(error);
-        throw error;
-      });
-      console.log(result);
+        .then((res) => {
+          console.log('스크랩결과', res.data.isScrap);
+          queryClient.invalidateQueries({queryKey: queryKeys.GET_SHOP_DETAIL});
+          return res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          throw error;
+        });
+      return result;
     } else {
       alert('로그인이 필요한 기능입니다.');
     }
@@ -82,10 +83,7 @@ function ShopDetail() {
 
   useEffect(() => {
     getShopDetailFeedList();
-    console.log('바뀜',shopDetailData?.isScrap);
-    setScrap(shopDetailData?.isScrap);
-    console.log('테스트',scrap);
-  }, [scrap]);
+  }, []);
 
   if (shopDetailIsLoading) return <Loading/>;
 
@@ -101,7 +99,6 @@ function ShopDetail() {
           onClick={scrapHandler}
         >
           <IconSize28>
-            {shopDetailData?.isScrap && <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="" />}
             {scrap
               ? <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="스크랩" />
               : <img src={`${process.env.PUBLIC_URL}/icon/book mark line_28.png`} alt="스크랩" />

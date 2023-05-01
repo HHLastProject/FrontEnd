@@ -18,7 +18,7 @@ export interface IFeedList {
   isScrap : boolean;
 };
 
-export const useGetShopDetail = (param: number | undefined, setScrap?: React.Dispatch<React.SetStateAction<boolean>>) => {
+export const useGetShopDetail = (param: number | undefined) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.GET_SHOP_DETAIL,
     queryFn: async () => {
@@ -27,7 +27,7 @@ export const useGetShopDetail = (param: number | undefined, setScrap?: React.Dis
     },
     onSuccess: (res) => {
       const {isScrap} = res;
-      if(setScrap) {setScrap(isScrap)};
+      return isScrap;
     },
     onError: (error) => {
       throw error;
