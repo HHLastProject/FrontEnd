@@ -28,6 +28,9 @@ const FeedModalContents = ({ target, stateDispatch }: { target: number, stateDis
         },
         onSuccess: () => {
             queryClient.invalidateQueries(["GET_USER_FEED"]);
+            queryClient.invalidateQueries(queryKeys.GET_FEEDS);
+            queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL);
+            queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
         }
     })
 

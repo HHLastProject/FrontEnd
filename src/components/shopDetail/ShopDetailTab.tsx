@@ -45,7 +45,7 @@ function ShopDetailTab({tabEl, listCount}: {tabEl: TTabEl[], listCount?: number}
       <ul id='detail-tab'>
         {tabEl?.map((item: TTabEl) => {
           return(
-            <li>
+            <li key={item.value}>
               {(item.value === tabEl[0].value) 
                 ?
                 <input

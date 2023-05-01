@@ -26,6 +26,7 @@ const PlaceBookMark = ({ isScrap, shop }: { isScrap?: boolean, shop?: number }) 
         onSuccess: () => {
             queryClient.invalidateQueries(["GET_USER_FEED"]);
             queryClient.invalidateQueries(queryKeys.GET_FEEDS);
+            queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
             console.log("즐겨찾기 변경 성공");
         },
         onError: (error) => {

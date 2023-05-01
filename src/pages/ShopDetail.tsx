@@ -15,30 +15,31 @@ import ListHeader from '../components/home/ListHeader';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { getToken } from '../apis/getToken';
 import { api_token } from '../shared/api';
-import { IconSize28 } from '../components/ui/element/icons/IconSize';
 import Loading from '../components/Loading';
 import { displayHandler } from '../custom/jh/useOnClickHiddenHandler';
 import ShopDetailTab, { shopDetailTabEl } from '../components/shopDetail/ShopDetailTab';
-import { queryClient } from '..';
-import { queryKeys } from '../apis/queries';
+import IconScrap from '../components/shopDetail/ScrapBtn';
+import BtnResetStyle from '../components/ui/element/buttons/BtnReset';
+import useChangeScrap from '../custom/jh/useChangeScrap';
 
 function ShopDetail() {
   const navi = useNavigate();
   const param = Number(useParams().shopId);
-  const [scrap, setScrap] = useState(false);
+  const [scrap, setScrap] = useState(true);
 
   //data
   const {
     shopDetailData,
     shopDetailIsLoading,
     shopDetailIsError
-  } = useGetShopDetail(param);
+  } = useGetShopDetail(param, setScrap);
   const {
     shopDetailFeedList,
     getShopDetailFeedList,
     shopDetailFeedIsLoading,
     shopDetailFeedIsError,
   } = useGetShopDetailFeed(param);
+  const {putScrap} = useChangeScrap(param);
 
   //스크랩 클릭
   const scrapHandler = () => {
@@ -50,6 +51,7 @@ function ShopDetail() {
           const {isScrap} = res;
           setScrap(isScrap);
         });
+      // putScrap();
     } else {
       const result = window.confirm('로그인이 필요한 기능입니다. 로그인 하시겠습니까?');
       if(result) navi(`${path.login}`);
@@ -63,7 +65,6 @@ function ShopDetail() {
       const result = await api_token.put(`/api/${shopId}/scrap`)
         .then((res) => {
           console.log('스크랩결과', res.data.isScrap);
-          queryClient.invalidateQueries({queryKey: queryKeys.GET_SHOP_DETAIL});
           return res.data;
         })
         .catch((error) => {
@@ -84,6 +85,9 @@ function ShopDetail() {
   useEffect(() => {
     getShopDetailFeedList();
   }, []);
+  useEffect(() => {
+    console.log('스크랩 바뀜');
+  }, [scrap]);
 
   if (shopDetailIsLoading) return <Loading/>;
 
@@ -94,17 +98,9 @@ function ShopDetail() {
         scrap={true}
       >
         {/* 스크랩 */}
-        <div
-          style={{cursor: 'pointer'}}
-          onClick={scrapHandler}
-        >
-          <IconSize28>
-            {scrap
-              ? <img src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="스크랩" />
-              : <img src={`${process.env.PUBLIC_URL}/icon/book mark line_28.png`} alt="스크랩" />
-            }
-          </IconSize28>
-        </div>
+        <BtnResetStyle onClick={scrapHandler}>
+          <IconScrap isScrap={scrap}/>
+        </BtnResetStyle>
       </ListHeader>
 
       {/* 내용 */}
@@ -193,6 +189,7 @@ function ShopDetail() {
                 </Link>
               </div>
             </div>
+            {/* 피드들 */}
             {shopDetailFeedIsLoading 
               ?
               <>로딩중...</>
