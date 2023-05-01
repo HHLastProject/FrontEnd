@@ -123,6 +123,7 @@ export type TossedFeedData = {
     shopThumbnail: string,
     shopCategory?: string,
     tag: string[],
+    isMinde: boolean,
 }
 
 

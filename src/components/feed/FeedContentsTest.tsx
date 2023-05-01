@@ -25,6 +25,7 @@ interface FeedCardData {
   nickname: string,
   createdAt: string,
   tag: [] | string[],
+  isMine: boolean,
   isLike: boolean, //좋아요
   likeCount: number, //좋아요 개수
   feedCommentCount: number, //댓글 개수
@@ -54,6 +55,7 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
           profilePic={feedData?.profilePic}
           nickname={feedData?.nickname}
           createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
+          isMine={feedData?.isMine}
           params={feedData.feedId}
         />
         :
@@ -61,6 +63,7 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
           profilePic={defaultImgPath.shopList}
           nickname={feedData?.nickname}
           createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
+          isMine={feedData?.isMine}
           params={feedData.feedId}
         />
       }
