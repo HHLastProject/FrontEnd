@@ -31,14 +31,6 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
     }
   }
 
-  useEffect(() => {
-    if(likeResult){
-      setLikeCountResult(pre => ++pre);
-    } else {
-      setLikeCountResult(pre => --pre)
-    }
-  }, [likeResult]);
-
   return (
     <FeedLikeCommentStyle>
       {/* 좋아요 */}
@@ -52,7 +44,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
             :
             <IconLikeInactive24 />
           }
-          <label>{likeCountResult}</label>
+          <label>{likeResult ? likeCountResult + 1 : likeCountResult}</label>
         </AlignCenter>
       </BtnResetStyle>
 
