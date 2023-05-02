@@ -15,9 +15,6 @@ export const usePutLike = ({feedId}: {feedId: number}) => {
     onSuccess: () => {
       queryClient.invalidateQueries(queryKeys.GET_FEEDS);
       queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
-      // if(page === 'feedList') {
-      // } else if (page === 'shopDetailFeed') {
-      // }
     },
     onError: (error) => {
       throw error;

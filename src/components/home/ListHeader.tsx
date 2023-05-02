@@ -4,7 +4,7 @@ import useNavigateHandler from '../../custom/jh/useNavigateHandler';
 import { Body1, Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
 import { path } from '../../shared/path';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { colorSet } from '../ui/styles/color';
 import { controlVisible } from '../../custom/jh/controlHidden';
 import { SelectBoxId } from '../SelectBox';
@@ -49,7 +49,6 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
               </IconSize24>
             </BtnResetStyle>
           }
-          {name && <div style={{width: '100%'}}><Body1>{name}</Body1></div>}
           {range && 
             <>
               {/* 거리 나타내기 */}
@@ -70,6 +69,11 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
             </>
           }
         </BothSideDiv>
+        {name && 
+          <div style={{width: '100%'}}>
+            <Body1>{name}</Body1>
+          </div>
+        }
 
         <div style={{flex: '1'}}/>
 
@@ -138,7 +142,7 @@ const HeaderTextMedium = styled.span`
 `
 
 const BothSideDiv = styled.div`
-  margin: 0px 20px;
+  padding: 0px 20px;
 `
 
 const RightContainer = styled.div`
