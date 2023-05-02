@@ -13,11 +13,11 @@ export const usePutLike = ({feedId, page}: {feedId: number, page: string}) => {
       return res.data;
     },
     onSuccess: () => {
-      if(page === 'feedList') {
-        queryClient.invalidateQueries(queryKeys.GET_FEEDS);
-      } else if (page === 'shopDetailFeed') {
-        queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
-      }
+      queryClient.invalidateQueries(queryKeys.GET_FEEDS);
+      queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
+      // if(page === 'feedList') {
+      // } else if (page === 'shopDetailFeed') {
+      // }
     },
     onError: (error) => {
       throw error;

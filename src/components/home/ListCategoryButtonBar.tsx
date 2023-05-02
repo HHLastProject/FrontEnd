@@ -5,7 +5,6 @@ import { categoryTypes, rangeTypes } from '../../custom/ym/types';
 import { fontType } from '../ui/styles/typo';
 import { ShopCategory } from '../../apis/context';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { SlideCase } from '../bookmark/BookmarkList';
 
 export const ListCategoryButtonBar = () => {
   const {category, setCategory} = useContext(ShopCategory); //선택한 카테고리 이름
