@@ -40,7 +40,9 @@ function Search() {
 
           {/* 검색 결과 */}
           <div className='search-result-list'>
-            {(dataList !== undefined) ? ((dataList?.length !== 0) && dataList?.map((item: IDataList) => {
+            {(dataList !== undefined) 
+              ? 
+              ((dataList?.length !== 0) && dataList?.map((item: IDataList) => {
               // state로 받는 값에 따라 링크가 달라짐
               link = `${path.toShopDetail}/${item.shopId}`;
               if(location.state.link) {link = location.state.link;}

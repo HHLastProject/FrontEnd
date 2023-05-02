@@ -85,7 +85,7 @@ export function SearchInput({
   };
 
   useEffect(() => {
-    console.log('검색 결과 데이터',dataList);
+    console.log('최종 검색 결과 데이터',dataList);
   }, [dataList]);
 
   return (
