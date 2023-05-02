@@ -14,9 +14,9 @@ export interface ISearchInput {
 };
 
 export interface ISearchResult {
-  shopId : number;
-  shopName : string;
-  shopAddress : string;
+  shopId: number;
+  shopName: string;
+  shopAddress: string;
 };
 
 function SearchStore({
@@ -25,8 +25,8 @@ function SearchStore({
   placeholder,
   setDataList,
   children,
-  }: ISearchInput) {
-  return(
+}: ISearchInput) {
+  return (
     <SearchStoreStyle>
       <div id='search-input'>
         <img src={iconImgPath.search.loupe} alt="검색하기" />
@@ -65,8 +65,8 @@ const SearchStoreStyle = styled.div`
 `;
 
 export function SearchInput({
-  inputValue, 
-  setInputValue, 
+  inputValue,
+  setInputValue,
   placeholder,
   dataList,
   setDataList,
@@ -76,8 +76,8 @@ export function SearchInput({
   const debounceCallback = useCallback(
     debounce((value: string, delaySec?: number) => {
       getSearchResult(value, setDataList);
-    }, (delaySec ? delaySec*1000 : 2000))
-  , []);
+    }, (delaySec ? delaySec * 1000 : 2000))
+    , []);
 
   const onChangeInputCallback = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -85,7 +85,7 @@ export function SearchInput({
   };
 
   useEffect(() => {
-    console.log('최종 검색 결과 데이터',dataList);
+    console.log('최종 검색 결과 데이터', dataList);
   }, [dataList]);
 
   return (
@@ -99,10 +99,10 @@ export function SearchInput({
   )
 }
 
-export const InputStyle = styled.input<{margin?: string}>`
+export const InputStyle = styled.input<{ margin?: string }>`
   width: 100%;
   border-style: none;
-  margin: ${({margin}) => margin};
+  margin: ${({ margin }) => margin};
   font-weight: 400;
   font-size: 14px;
   &:focus {
@@ -111,21 +111,20 @@ export const InputStyle = styled.input<{margin?: string}>`
 `;
 
 const centerd = () => {
-  return(`
+  return (`
     display: flex;
     justify-content: center;
     align-items: center;
   `)
 }
 
-export const TextareaStyle = styled.div<{margin?: string, padding?: string, border?: string, radius?: string}>`
+export const TextareaStyle = styled.div<{ margin?: string, padding?: string, border?: string, radius?: string }>`
   display: flex;
   align-items: center;
-  border: ${({border}) => border};
-  border-radius: ${({radius}) => radius};
-  padding: ${({padding}) => padding};
-  margin: ${({margin}) => margin};
-
+  border: ${({ border }) => border};
+  border-radius: ${({ radius }) => radius};
+  padding: ${({ padding }) => padding};
+  margin: ${({ margin }) => margin};
   input::-webkit-input-placeholder,
   input::-moz-placeholder,
   input:-ms-input-placeholder,
@@ -133,7 +132,6 @@ export const TextareaStyle = styled.div<{margin?: string, padding?: string, bord
   input::placeholder {
     text-align: center;
   }
-
   textarea {
     flex: 1;
     border-style: none;
