@@ -4,7 +4,7 @@ import useNavigateHandler from '../../custom/jh/useNavigateHandler';
 import { Body1, Title5 } from '../FontStyle';
 import { Link } from 'react-router-dom';
 import { path } from '../../shared/path';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { colorSet } from '../ui/styles/color';
 import { controlVisible } from '../../custom/jh/controlHidden';
 import { SelectBoxId } from '../SelectBox';
@@ -14,18 +14,26 @@ import { deleteToken, getToken } from '../../apis/getToken';
 
 //close == true : 뒤로가기 버튼이 x로 바뀜f
 //scrap == true : 스크랩 버튼
+//name : 헤더에 들어갈 이름
 const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name?: string, range?: number, close?: boolean, list?: boolean, feedForm?: true, children?: ReactNode, scrap?: boolean}) => {
   const {backClickHandler} = useNavigateHandler();
   const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
   const token = getToken();
+  const [isLogin, setIsLogin] = useState(false);
+  if(token) {setIsLogin(true)};
 
   const onClickLogout = () => {
     const result = window.confirm('로그아웃 하시겠습니까?');
     if(result) {
       deleteToken();
+      setIsLogin(false);
       alert('로그아웃 되었습니다.');
     }
   }
+
+  useEffect(() => {
+
+  }, [isLogin]);
 
   return (
     <HeaderContainer
@@ -40,13 +48,11 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
             <BtnResetStyle
               onClick={backClickHandler}
             >
-              
-                <IconSize24>
-                  <img src={backIconSrc} alt="뒤로가기" />
-                </IconSize24>
+              <IconSize24>
+                <img src={backIconSrc} alt="뒤로가기" />
+              </IconSize24>
             </BtnResetStyle>
           }
-          
           {name && <div style={{width: '100%'}}><Body1>{name}</Body1></div>}
           {range && 
             <>
@@ -75,7 +81,8 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
         <RightContainer>
           {range &&
             <>
-              {token
+              {/* 로그인 로그아웃 */}
+              {isLogin
                 ?
                 <BtnResetStyle onClick={onClickLogout}>
                   <Title5>로그아웃</Title5>

@@ -16,7 +16,6 @@ import NoResult from '../components/home/NoShop';
 import { SelectData } from '../shared/select';
 import { Title4 } from '../components/FontStyle';
 import { VFlex } from '../custom/ym/styleStore';
-import { getToken } from '../apis/getToken';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
@@ -43,9 +42,9 @@ const List = () => {
     };
   }, [lng, lat, range]);
 
-  useEffect(() => {
-    localStorage.setItem('access_token', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc1MzE3NzA0NiwiaWF0IjoxNjgyOTQxNzkzfQ.nlsXPpfOjW6yuP05IV3Ya0aRp2EvJByOg8N4MTCeRrI`);
-  }, []);
+  // useEffect(() => {
+  //   localStorage.setItem('access_token', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc1MzE3NzA0NiwiaWF0IjoxNjgyOTQxNzkzfQ.nlsXPpfOjW6yuP05IV3Ya0aRp2EvJByOg8N4MTCeRrI`);
+  // }, []);
 
   //로딩 화면
   if (getshopListIsLoading) { return <div>로딩중...</div>; }
