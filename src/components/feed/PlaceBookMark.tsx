@@ -1,17 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 import { VFlexCenter } from '../../custom/ym/styleStore';
-import { mypageData } from '../../custom/ym/dummydata';
-import { EachFeed } from '../../pages/Mypage';
-import { Buttons } from '../ui/element/buttons/Buttons';
 import { useMutation } from '@tanstack/react-query';
 import { keys, queryKeys } from '../../apis/queries';
-import { ShopData } from '../../custom/ym/variables';
 import { api_token } from '../../shared/api';
 import { queryClient } from '../..';
-import { useGetShopDetailFeed } from '../../custom/jh/useGetShopDetail';
 
 const PlaceBookMark = ({ isScrap, shop }: { isScrap?: boolean, shop?: number }) => {
+    const [scrapResult, setScrapResult] = useState(isScrap);
     // const { shopThumbnail } = mypageData.feeds[2] as EachFeed;
 
     // const {mutate} = useMutation(keys.PUT_TOGGLE_BOOKMARK);
@@ -23,10 +19,10 @@ const PlaceBookMark = ({ isScrap, shop }: { isScrap?: boolean, shop?: number }) 
             const res = await api_token.put(`/api/${shop}/scrap`);
             return res.data;
         },
-        onSuccess: () => {
+        onSuccess: (res) => {
             queryClient.invalidateQueries(["GET_USER_FEED"]);
             queryClient.invalidateQueries(queryKeys.GET_FEEDS);
-            queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
+            setScrapResult(res.isScrap);
             console.log("즐겨찾기 변경 성공");
         },
         onError: (error) => {
@@ -43,7 +39,7 @@ const PlaceBookMark = ({ isScrap, shop }: { isScrap?: boolean, shop?: number }) 
             <VFlexCenter>
                 <ButtonForScrap onClick={toggleScrap}>
                     <IconBox>
-                        {isScrap
+                        {scrapResult
                             ? <Image src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="" />
                             : <Image src={`${process.env.PUBLIC_URL}/icon/book mark line_28.png`} alt="" />
                         }
