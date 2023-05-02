@@ -16,9 +16,6 @@ import BtnResetStyle from '../components/ui/element/buttons/BtnReset';
 import { SelectData } from '../shared/select';
 import CheckBtns from '../components/feedForm/CheckBtns';
 
-type Ttag = { tag: string } | string;
-type Ttags = Ttag[] | [] | null | any;
-
 interface IImgFile {
   feedPic: File | null;
   previewPic: string | ArrayBuffer | null;
@@ -30,17 +27,15 @@ function FeedForm() {
   if(location.state?.shopId) shopId = Number(location.state.shopId);
   let shopName: string | null = null;
   if(location.state?.shopName) shopName = location.state.shopName;
+  let isFeedForm: boolean = false;
+  if(location.state?.isFeedForm) isFeedForm = location.state.isFeedForm;
 
   const navi = useNavigate();
-  // const tags: string[] = [];
-  // const tagRef: Ttags = useRef([]);
   const maxLength = 500;
-  const [checkList, setCheckList] = useState<string[]>([]);
-  const [token, setToken] = useState<string | null>(null);
   const [comment, setComment] = useState<string | null>(null);
-  const [hashTags, setHashTags] = useState<Ttags>([]);
-  const [inputValue, setInputValue] = useState('');
   const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
+  const [inputValue, setInputValue] = useState('');//가게 이름 입력
+  const [checkList, setCheckList] = useState<string[]>([]);
   const [imgFile, setImgFile] = useState<IImgFile>({
     feedPic: null,
     previewPic: null,
@@ -66,14 +61,25 @@ function FeedForm() {
 
   //전송 버튼 눌렀을때
   const onClickSendFeedData = (shopId: number | null) => {
+    //[{tag: '데이터'}, ]
+    let tags = [];
+    if(checkList.length !== 0) {
+      for(let i of checkList)
+      tags.push({tag: i});
+    }
+    const checkResult = [...tags];
     const token = getToken();
     if (shopId && imgFile.feedPic && token) {
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
       formData.append('shopId', shopId.toString());
       formData.append('comment', comment ? comment : '');
-      formData.append('tags', JSON.stringify(checkList));
-      sendFeedData(shopId, formData).then(() => {navi(-1)});
+      formData.append('tags', JSON.stringify(checkResult));
+      sendFeedData(shopId, formData).then(() => {
+        if(isFeedForm){
+          navi(`${path.feedList}`);
+        } else {navi(-1)};
+      });
     } else {
       alert("가게명 또는 사진을 등록해주세요.");
     };
@@ -85,7 +91,6 @@ function FeedForm() {
 
   useEffect(() => {
     if (shopName) { setInputValue(shopName) };
-    setToken(getToken());
 
     if (!getToken()) {
       alert('로그인 해야 이용 가능합니다.');
@@ -93,6 +98,10 @@ function FeedForm() {
       return;
     };
   }, []);
+
+  useEffect(() => {
+    console.log(JSON.stringify(checkList));
+  }, [checkList]);
 
   return (
     <>
@@ -147,7 +156,6 @@ function FeedForm() {
             onChange={previewImg}
             style={{display: 'none'}}
           />
-          <BtnResetStyle>
             <ImgPreview
               onClick={inputClickHandler}
             >
@@ -161,7 +169,6 @@ function FeedForm() {
                 </PriviewDiv>
               }
             </ImgPreview>
-          </BtnResetStyle>
         </VFlex>
 
         <VFlex>
@@ -186,6 +193,7 @@ function FeedForm() {
           <FeedFormTitle>
             <Title4>태그</Title4>
             {/* <Body4 color={colorSet.textMedium}>3개까지 선택</Body4> */}
+            <Body4 color={colorSet.textMedium}>선택</Body4>
           </FeedFormTitle>
           <HFlex gap={'4px'}>
             <CheckBtns
@@ -233,6 +241,7 @@ const ImgPreview = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  cursor: pointer;
   background-color: ${colorSet.lineMedium};
   #preview-img {
     height: 112px;

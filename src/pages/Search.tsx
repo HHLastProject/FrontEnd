@@ -49,12 +49,13 @@ function Search() {
 
               return(
                 <div key={item.shopId}>
-                  <Link 
+                  <Link
                     to={link}
                     state={{
-                      shopId: item.shopId, 
-                      shopName: item.shopName, 
-                      lat: item.lat, 
+                      isFeedForm: true,
+                      shopId: item.shopId,
+                      shopName: item.shopName,
+                      lat: item.lat,
                       lng: item.lng,
                     }}
                   >
