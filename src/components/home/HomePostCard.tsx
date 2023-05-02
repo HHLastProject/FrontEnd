@@ -39,10 +39,10 @@ function HomeShopPostCard (
       <HomeShopPostCardContainer>
         <div style={{backgroundColor: `${onErrorColor}`}} className="home-postcard-thumbnail">
           <img
-            id="shop-post-card-img"
+            id={String(id)}
             src={imgSrc} 
             alt={shopName} 
-            onError={() => onErrorImg('shop-post-card-img')}
+            onError={() => onErrorImg(String(id))}
           />
         </div>
         <div className="home-postcard-content-wrap">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
@@ -24,6 +24,7 @@ const List = () => {
   const [orderBy, setOrderBy] = useState<string>('거리순');
   const [range, setRange] = useState(1000);
   const [category, setCategory] = useState<categoryTypes>("");
+  const shopListRef = useRef([]);
   getUserLocation(setLng, setLat).then((res) => {
   });
 
@@ -109,13 +110,12 @@ const List = () => {
               if(orderBy === '피드순') return (b.feedCount - a.feedCount);  //내림차순
               if(orderBy === '거리순') return (a.distance - b.distance);    //올림차순
               if(orderBy === '인기순') return (b.scrapCount - a.scrapCount);//내림차순
-            })
+              })
               .filter((item: ListTossedData) => {
                 let result = null;
-                if(item.distance <= range){result = item}
-                return(
-                  category !== "" ? (item?.category === category) : result
-              )}).length === 0
+                if(item?.distance <= range){result = item}
+                return(category !== "" ? (item?.category === category) : result);
+              }).length === 0
               ? 
               <NoResult shopList={true} />
               :
@@ -145,7 +145,6 @@ const List = () => {
               )})
             }
           </HomeShopListContainer>
-
         </HomeContainer>
       </HomeWrap>
     </OrderByContext.Provider>
