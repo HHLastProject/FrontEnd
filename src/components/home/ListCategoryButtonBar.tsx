@@ -5,6 +5,7 @@ import { categoryTypes, rangeTypes } from '../../custom/ym/types';
 import { fontType } from '../ui/styles/typo';
 import { ShopCategory } from '../../apis/context';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { SlideCase } from '../bookmark/BookmarkList';
 
 export const ListCategoryButtonBar = () => {
   const {category, setCategory} = useContext(ShopCategory); //선택한 카테고리 이름
@@ -15,16 +16,16 @@ export const ListCategoryButtonBar = () => {
 
   return (
     <>
-    <div>
+    <SlideCase2>
     <Swiper
       spaceBetween={4}
-      slidesPerView={0}
-      style={{ width: 'fit-content' }}
+      slidesPerView={'auto'}
+      style={{ boxSizing: 'border-box', width: 'fit-content' }}
     >
-      <CategoryButtons>
+      {/* <CategoryButtons> */}
         <div className='nowrap-buttons'>
           {FILTER_LIST.map((filterName) => 
-            <SwiperSlide>
+            <SwiperSlide style={{ width: 'fit-content', flex: 'none' }}>
               <FilterBtn
                 key={filterName}
                 category={'shopCategory'}
@@ -38,9 +39,9 @@ export const ListCategoryButtonBar = () => {
             )
           }
         </div>
-      </CategoryButtons>
+      {/* </CategoryButtons> */}
     </Swiper>
-    </div>
+    </SlideCase2>
     </>
   )
 }
@@ -54,24 +55,31 @@ export const RangeFilterButtonBar = () => {
 
   return (
     <CategoryButtons>
-      <div>
-        {range && RANGE_FILTER_LIST.map((item: rangeTypes) => {
-          return(
-            <FilterBtn
-              key={`filter${item}`}
-              category={'range'}
-              name={String(item)}
-              selected={String(range)}
-              onClick={(e) => filterClickHandler(item)}
-            >
-              {(item < 1000) ? `${item}m` : `${item / 1000}km`}
-            </FilterBtn>
-          )
-        })}
-      </div>
-    </CategoryButtons>
+    <div>
+      {range && RANGE_FILTER_LIST.map((item: rangeTypes) => {
+        return(
+          <FilterBtn
+            key={`filter${item}`}
+            category={'range'}
+            name={String(item)}
+            selected={String(range)}
+            onClick={(e) => filterClickHandler(item)}
+          >
+            {(item < 1000) ? `${item}m` : `${item / 1000}km`}
+          </FilterBtn>
+        )
+      })}
+    </div>
+  </CategoryButtons>
   )
 }
+
+const SlideCase2 = styled.div`
+width: 100%;
+height: fit-content;
+box-sizing: border-box;
+overflow-x: hidden;
+`
 
 const CategoryButtons = styled.div`
   position: relative;

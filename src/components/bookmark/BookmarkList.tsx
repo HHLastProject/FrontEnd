@@ -79,7 +79,7 @@ const BookmarkList = () => {
 
 export default BookmarkList;
 
-const SlideCase = styled.div`
+export const SlideCase = styled.div`
     width: 100%;
     height: fit-content;
     padding: 0px 20px;
