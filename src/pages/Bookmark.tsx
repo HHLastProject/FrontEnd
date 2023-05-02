@@ -77,7 +77,8 @@ const Bookmark = () => {
         }
     }, [isSuccess, scrapData]);
 
-    if (isLoading) return <div>로딩중</div>;
+    if (isLoading && !localStorage.getItem("access_token")) return <div>로그인이 필요합니다</div>;
+    if (isLoading && localStorage.getItem("access_token")) return <div>로딩중</div>;
     if (isError) return <div>통신 에러</div>;
 
     return (

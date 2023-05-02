@@ -18,6 +18,7 @@ const Category = ({ children }: ChildrenForJSX) => {
 export const TagSize = { Tag, Category };
 
 const TagSizing = styled.div`
+    white-space: nowrap;
     width: fit-content;
     height: fit-content;
     min-width: 44px;
@@ -25,6 +26,7 @@ const TagSizing = styled.div`
 `
 
 const CategorySizing = styled.div`
+    white-space: nowrap;
     width: fit-content;
     height: fit-content;
     min-width: 44px;
