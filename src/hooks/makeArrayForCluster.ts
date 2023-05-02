@@ -2,7 +2,7 @@ import { GuCoord, GuData, GuInformation, guList } from "../shared/guCoordInform"
 
 const makeArrayForCluster = (data: GuData[]) => {
 
-    const result = data?.map((element) => {
+    const result = data.map((element) => {
         // console.log(element);
         const guCoordData: GuCoord = guList.filter((item) => item.guName === Object.keys(element)[0])[0];
         const newObj: GuInformation = {

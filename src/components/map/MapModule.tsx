@@ -55,8 +55,11 @@ const MapModule = () => {
         anchor: new navermaps.Point(0, 0),
     }
 
-    const { gooList } = useGetGooList();
-    const guData = makeArrayForCluster(gooList);
+    const { guList, gooIsSuccess } = useGetGooList();
+    if (gooIsSuccess) {
+        const guData = makeArrayForCluster(guList.guList);
+    }
+    // const guData = makeArrayForCluster(gooList);
 
     const centerChangeHandler = (
         setState: React.Dispatch<React.SetStateAction<Coordinate>>,
