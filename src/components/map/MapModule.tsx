@@ -6,6 +6,8 @@ import { DispatchContext, EachData, StateContext } from '../../pages/Home';
 import { NavermapPointType, ShopData } from '../../custom/ym/variables';
 import styled from 'styled-components';
 import MarkerMemo from './MarkerMemo';
+import useGetGooList from '../../hooks/useGetGooList';
+import makeArrayForCluster from '../../hooks/makeArrayForCluster';
 
 export type Coordinate = {
     lng: number,
@@ -52,6 +54,9 @@ const MapModule = () => {
         url: `${process.env.PUBLIC_URL}/markers/selected_shop.png`,
         anchor: new navermaps.Point(0, 0),
     }
+
+    const { gooList } = useGetGooList();
+    const guData = makeArrayForCluster(gooList);
 
     const centerChangeHandler = (
         setState: React.Dispatch<React.SetStateAction<Coordinate>>,
@@ -122,12 +127,6 @@ const MapModule = () => {
         const dispatch = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
 
         dispatch(shop);
-
-        // const tempSetCenter = setCenter as React.Dispatch<React.SetStateAction<Coordinate>>;
-        // const tempSetIsMoving = setIsMoving as React.Dispatch<React.SetStateAction<boolean>>;
-
-        // tempSetIsMoving(true);
-        // tempSetCenter({ lng: e.point.x, lat: e.point.y });
     }
 
 
@@ -176,22 +175,28 @@ const MapModule = () => {
                         position={center}
                     />} */}
 
-                {list?.map((element) => {
-                    if (element) {
-                        // return <MarkerMemo
-                        //     onClick={markerClickHandler}
-                        //     element={element as ShopData} />
-                        return <Marker
-                            key={uuid()}
-                            onClick={(e) => markerClickHandler(e, element.shopId)}
-                            icon={element?.shopId === activeShop
-                                ? activeIcon
-                                : icon}
-                            defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />;
-                    } else {
-                        return null;
-                    }
-                })
+                {zoom > 14
+                    ? list?.map((element) => {
+                        if (element) {
+                            // return <MarkerMemo
+                            //     onClick={markerClickHandler}
+                            //     element={element as ShopData} />
+                            return <Marker
+                                key={uuid()}
+                                onClick={(e) => markerClickHandler(e, element.shopId)}
+                                icon={element?.shopId === activeShop
+                                    ? activeIcon
+                                    : icon}
+                                defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />;
+                        } else {
+                            return null;
+                        }
+                    })
+                    : null}
+                {
+                    zoom < 15
+                        ? null
+                        : null
                 }
             </NaverMap>
             <AimBtn onClick={aimClickListner}>
