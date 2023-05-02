@@ -16,6 +16,7 @@ import NoResult from '../components/home/NoShop';
 import { SelectData } from '../shared/select';
 import { Title4 } from '../components/FontStyle';
 import { VFlex } from '../custom/ym/styleStore';
+import { Swiper } from 'swiper/react';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);

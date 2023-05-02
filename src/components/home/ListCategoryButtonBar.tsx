@@ -4,6 +4,7 @@ import { FILTER_LIST, LINE_LIGHT, LINE_MEDIUM, PRIMARY_01, RANGE_FILTER_LIST, ST
 import { categoryTypes, rangeTypes } from '../../custom/ym/types';
 import { fontType } from '../ui/styles/typo';
 import { ShopCategory } from '../../apis/context';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export const ListCategoryButtonBar = () => {
   const {category, setCategory} = useContext(ShopCategory); //선택한 카테고리 이름
@@ -13,21 +14,34 @@ export const ListCategoryButtonBar = () => {
   };
 
   return (
-    <CategoryButtons>
-      <div className='nowrap-buttons'>
-        {FILTER_LIST.map((filterName) => 
-          <FilterBtn
-            key={filterName}
-            category={'shopCategory'}
-            name={filterName}
-            selected={category}
-            onClick={(e) => filterClickHandler(filterName)}
-          >
-            {filterName}
-          </FilterBtn>)
-        }
-      </div>
-    </CategoryButtons>
+    <>
+    <div>
+    <Swiper
+      spaceBetween={4}
+      slidesPerView={0}
+      style={{ width: 'fit-content' }}
+    >
+      <CategoryButtons>
+        <div className='nowrap-buttons'>
+          {FILTER_LIST.map((filterName) => 
+            <SwiperSlide>
+              <FilterBtn
+                key={filterName}
+                category={'shopCategory'}
+                name={filterName}
+                selected={category}
+                onClick={(e) => filterClickHandler(filterName)}
+              >
+                {filterName}
+              </FilterBtn>
+            </SwiperSlide>
+            )
+          }
+        </div>
+      </CategoryButtons>
+    </Swiper>
+    </div>
+    </>
   )
 }
 
