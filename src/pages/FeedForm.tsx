@@ -27,9 +27,9 @@ interface IImgFile {
 function FeedForm() {
   const location = useLocation();
   let shopId: number | null = null;
-  if(location.state?.shopId) shopId = Number(location.state.shopId);
+  if (location.state?.shopId) shopId = Number(location.state.shopId);
   let shopName: string | null = null;
-  if(location.state?.shopName) shopName = location.state.shopName;
+  if (location.state?.shopName) shopName = location.state.shopName;
 
   const navi = useNavigate();
   // const tags: string[] = [];
@@ -73,11 +73,15 @@ function FeedForm() {
       formData.append('shopId', shopId.toString());
       formData.append('comment', comment ? comment : '');
       formData.append('tags', JSON.stringify(checkList));
-      sendFeedData(shopId, formData).then(() => {navi(-1)});
+      sendFeedData(shopId, formData).then(() => { navi(-1) });
     } else {
       alert("가게명 또는 사진을 등록해주세요.");
     };
   };
+
+  const moveSearch = () => {
+    navi(`${path.search}`);
+  }
 
   const inputClickHandler = () => {
     document.getElementById('input-preview-img')?.click();
@@ -96,22 +100,22 @@ function FeedForm() {
 
   return (
     <>
-    <ListHeader
-      feedForm={true}
-    >
-      <div
-        onClick={() => onClickSendFeedData(shopId)}
+      <ListHeader
+        feedForm={true}
       >
-        {(comment && imgFile)
-          ?
-          <BtnResetStyle>
-            <Title4 color={`${colorSet.blue}`}>완료</Title4>
-          </BtnResetStyle>
-          :
-          <Title4 color={`${colorSet.lineLight}`}>완료</Title4>
-        }
-      </div>
-    </ListHeader>
+        <div
+          onClick={() => onClickSendFeedData(shopId)}
+        >
+          {(comment && imgFile)
+            ?
+            <BtnResetStyle>
+              <Title4 color={`${colorSet.blue}`}>완료</Title4>
+            </BtnResetStyle>
+            :
+            <Title4 color={`${colorSet.lineLight}`}>완료</Title4>
+          }
+        </div>
+      </ListHeader>
       <FeedFormContainer>
         <VFlex>
           <Margin margin={`0 0 20px 0`}>
@@ -121,17 +125,17 @@ function FeedForm() {
             <Title4>방문한 카페</Title4>
             <Body4 color={colorSet.textMedium}>필수</Body4>
           </FeedFormTitle>
-          <Link
+          {/* <Link
             to={`${path.search}`}
             state={{link: `${path.feedForm}`}}
-          >
-            <SearchStore
-              inputValue={inputValue}
-              setInputValue={setInputValue}
-              placeholder='카페 이름 입력하기'
-              setDataList={setInputValue}
-            />
-          </Link>
+          > */}
+          <SearchStore
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            placeholder='카페 이름 입력하기'
+            setDataList={setInputValue}
+          />
+          {/* </Link> */}
         </VFlex>
 
         {/* 미리보기 */}
@@ -145,18 +149,18 @@ function FeedForm() {
             type="file"
             name="feedPic"
             onChange={previewImg}
-            style={{display: 'none'}}
+            style={{ display: 'none' }}
           />
           <BtnResetStyle>
             <ImgPreview
               onClick={inputClickHandler}
             >
-              {(typeof imgFile.previewPic === "string") 
-                ? 
+              {(typeof imgFile.previewPic === "string")
+                ?
                 <img id='preview-img' src={imgFile.previewPic} alt="이미지 미리보기" />
                 :
                 <PriviewDiv>
-                  <IconPlusWhite24/>
+                  <IconPlusWhite24 />
                   <label>0/1</label>
                 </PriviewDiv>
               }
@@ -212,8 +216,8 @@ const FeedFormContainer = styled.div`
   background-color: #fff;
 `;
 
-const Margin = styled.div<{margin: string}>`
-  margin: ${({margin}) => margin};
+const Margin = styled.div<{ margin: string }>`
+  margin: ${({ margin }) => margin};
 `;
 
 const FeedFormTextarea = styled.textarea`
@@ -259,19 +263,19 @@ const CommentTextCount = styled.div`
   justify-content: flex-end;
 `;
 
-export const Title4 = styled.label<{color?: string}>`
-  color: ${({color})=> color};
+export const Title4 = styled.label<{ color?: string }>`
+  color: ${({ color }) => color};
   ${fontType.title_4}
 `;
-export const Title3 = styled.label<{color?: string}>`
-  color: ${({color})=> color};
+export const Title3 = styled.label<{ color?: string }>`
+  color: ${({ color }) => color};
   ${fontType.title_3}
 `;
-export const Body4 = styled.label<{color?: string}>`
-  color: ${({color})=> color};
+export const Body4 = styled.label<{ color?: string }>`
+  color: ${({ color }) => color};
   ${fontType.body_4}
 `;
-export const Body5 = styled.label<{color?: string}>`
-  color: ${({color})=> color};
+export const Body5 = styled.label<{ color?: string }>`
+  color: ${({ color }) => color};
   ${fontType.body_5}
 `;
