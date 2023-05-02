@@ -49,13 +49,13 @@ const CarouselBox = () => {
         }
     })
 
-    const toggleScrap = (e: React.MouseEvent<HTMLImageElement, MouseEvent>, item: ShopData) => {
+    const toggleScrap = React.useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>, item: ShopData) => {
         e.stopPropagation();
 
         const result = mutate(item.shopId);
         const dispatchIsChanged = setIsChanged as React.Dispatch<React.SetStateAction<boolean>>;
         dispatchIsChanged(prev => !prev);
-    }
+    }, []);
 
     const convertAddress = (text: string) => {
         const stringData = text.replace("경기도 ", "").replace("특별", "").split(" ");
