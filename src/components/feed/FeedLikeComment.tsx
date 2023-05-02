@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { path } from "../../shared/path";
 import { fontType } from "../ui/styles/typo";
 import usePutLike from "../../custom/jh/usePutLike";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { getToken } from "../../apis/getToken";
 import BtnResetStyle from "../ui/element/buttons/BtnReset";
 
@@ -19,7 +19,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
   const token = getToken();
   const navi = useNavigate();
   const [likeResult, setLikeResult] = useState(isLike);
-  const [likeCountResult, setLikeCountResult] = useState(likeCount);
+  const likeCountRef = useRef(likeCount);
   const {changeLike} = usePutLike({feedId, setLikeResult});
 
   const onClickLike = () => {
@@ -44,7 +44,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
             :
             <IconLikeInactive24 />
           }
-          <label>{likeResult ? likeCountResult + 1 : likeCountResult}</label>
+          <label>{likeResult ? likeCountRef.current + 1 : likeCountRef.current}</label>
         </AlignCenter>
       </BtnResetStyle>
 
