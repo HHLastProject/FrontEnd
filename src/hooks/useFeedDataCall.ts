@@ -4,7 +4,7 @@ import { FeedDetails, TossedFeedData } from "../custom/ym/types";
 
 const useFeedDataCall = (feedId: number) => {
 
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError, isSuccess } = useQuery({
         queryKey: ["GET_USER_FEED"],
         queryFn: async () => {
             const { data } = await api_token.get(`${process.env.REACT_APP_SERVER_URL}/api/mypage/${feedId}`);
@@ -13,6 +13,6 @@ const useFeedDataCall = (feedId: number) => {
         },
     });
 
-    return { data, isLoading, isError };
+    return { data, isLoading, isError, isSuccess };
 }
 export default useFeedDataCall;

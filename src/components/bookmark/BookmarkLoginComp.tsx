@@ -35,7 +35,7 @@ const BookmarkLoginComp = ({ folderState }: FolderProp) => {
     return (
         <>
             {scrapList
-                ? <VFlex height='fit-content' gap='20px' etc="padding:20px; flex:none;">
+                ? <VFlex height='fit-content' gap='20px' etc="padding:20px 0px; flex:none;">
                     {scrapList?.filter((element) => {
                         const targetFolder = folderState?.folderName === "" ? null : folderState?.folderName;
                         return element.folderName === targetFolder;

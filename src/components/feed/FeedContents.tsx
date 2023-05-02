@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { VFlex } from '../../custom/ym/styleStore';
 import FeedProfile from '../FeedProfile';
 import FeedPicture from './FeedPicture';
@@ -16,7 +16,7 @@ type Prop = {
 }
 const FeedContents = ({ children }: Prop) => {
     const [expand, setExpand] = useState<boolean>(false);
-    const { data, isLoading, isError } = useFeedDataCall(children);
+    const { data, isLoading, isError, isSuccess } = useFeedDataCall(children);
 
     const pic = imgPath.feedImg + data?.feedPic;
     const comment: string = data?.comment;
@@ -33,6 +33,9 @@ const FeedContents = ({ children }: Prop) => {
     const expandButtonHandler = () => {
         setExpand(prev => !prev);
     }
+    useEffect(() => {
+        console.log(data);
+    }, [isSuccess]);
     if (isLoading) return <div>로딩중</div>;
     if (isError) return <div>에러</div>
 
@@ -43,6 +46,7 @@ const FeedContents = ({ children }: Prop) => {
         <VFlex gap='12px' etc='padding:20px;'>
             <FeedProfile profilePic={data?.profilePic} params={children} isMine={true} />
             <FeedPicture>{pic as string}</FeedPicture>
+            {/* <FeedSummary likeCount={}  /> */}
             <FeedComment isExpanded={expand}>{comment as string}</FeedComment>
             {comment?.length > 86
                 ? <ExpandButton onClick={expandButtonHandler}>
