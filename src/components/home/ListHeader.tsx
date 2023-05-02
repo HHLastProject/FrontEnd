@@ -78,7 +78,7 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
           {range &&
             <>
               {/* 로그인 로그아웃 */}
-              {isLogin
+              {token
                 ?
                 <BtnResetStyle onClick={onClickLogout}>
                   <Title5>로그아웃</Title5>

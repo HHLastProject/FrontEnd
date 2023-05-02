@@ -3,7 +3,7 @@ import { queryKeys } from '../../apis/queries';
 import { api_token } from '../../shared/api';
 import { queryClient } from '../..';
 
-export const usePutLike = ({feedId, page}: {feedId: number, page: string}) => {
+export const usePutLike = ({feedId}: {feedId: number}) => {
   const KEY = queryKeys.PUT_LIKE.concat(['feedId']);
   const { data, mutate } = useMutation({
     mutationKey: KEY,

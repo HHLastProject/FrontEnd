@@ -75,7 +75,6 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
 
       {/* 좋아요 댓글 */}
       <FeedLikeComment
-        page={page}
         isLike={feedData?.isLike}
         likeCount={feedData?.likeCount}
         feedCommentCount={feedData?.feedCommentCount}

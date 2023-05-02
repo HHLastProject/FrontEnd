@@ -13,11 +13,10 @@ interface IFeedLikeComment {
   likeCount: number,
   feedCommentCount: number,
   feedId: number,
-  page: string,
 };
 
-function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount, page}: IFeedLikeComment) {
-  const {changeLike} = usePutLike({feedId, page});
+function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLikeComment) {
+  const {changeLike} = usePutLike({feedId});
   const [like, setLike] = useState(isLike);
   const token = getToken();
   const navi = useNavigate();
