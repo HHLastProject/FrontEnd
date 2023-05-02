@@ -173,18 +173,6 @@ function ShopDetail() {
               <>로딩중...</>
               :
               shopDetailFeedList?.map((item: any, index: number) => {
-                //tag: [{tag: 내용}]
-                if(item?.tag.length !== 0) {
-                  let tags = [];
-                  for(let i of item?.tag){
-                    if(i){
-                      const {tag} = i;
-                      console.log(i)
-                      tags.push(tag);
-                    }
-                  }
-                  item.tag = [...tags];
-                }
                 return(
                   <div key={`Feed${item.shopId + index}`}>
                     <VFlex gap='12px'>

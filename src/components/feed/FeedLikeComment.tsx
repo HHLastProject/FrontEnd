@@ -16,23 +16,28 @@ interface IFeedLikeComment {
 };
 
 function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLikeComment) {
-  const {changeLike} = usePutLike({feedId});
-  const [like, setLike] = useState(isLike);
   const token = getToken();
   const navi = useNavigate();
+  const [likeResult, setLikeResult] = useState(isLike);
+  const [likeCountResult, setLikeCountResult] = useState(likeCount);
+  const {changeLike} = usePutLike({feedId, setLikeResult});
 
   const onClickLike = () => {
     if (token) {
       changeLike(); //서버 전송
-      setLike(prev => !prev);
+      setLikeResult(prev => !prev);
     } else {
       alert('로그인 후 이용 가능합니다.');
     }
   }
 
   useEffect(() => {
-
-  }, [like]);
+    if(likeResult){
+      setLikeCountResult(pre => ++pre);
+    } else {
+      setLikeCountResult(pre => --pre)
+    }
+  }, [likeResult]);
 
   return (
     <FeedLikeCommentStyle>
@@ -41,13 +46,13 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
         onClick={onClickLike}
       >
         <AlignCenter gap={5}>
-          {isLike
+          {likeResult
             ?
             <IconLikeActive24 />
             :
             <IconLikeInactive24 />
           }
-          <label>{likeCount}</label>
+          <label>{likeCountResult}</label>
         </AlignCenter>
       </BtnResetStyle>
 

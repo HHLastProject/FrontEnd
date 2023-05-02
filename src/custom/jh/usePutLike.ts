@@ -3,7 +3,7 @@ import { queryKeys } from '../../apis/queries';
 import { api_token } from '../../shared/api';
 import { queryClient } from '../..';
 
-export const usePutLike = ({feedId}: {feedId: number}) => {
+export const usePutLike = ({feedId, setLikeResult}: {feedId: number, setLikeResult: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const KEY = queryKeys.PUT_LIKE.concat(['feedId']);
   const { data, mutate } = useMutation({
     mutationKey: KEY,
@@ -12,7 +12,8 @@ export const usePutLike = ({feedId}: {feedId: number}) => {
       console.log('성공!',res.data);
       return res.data;
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
+      setLikeResult(res.isLike);
       queryClient.invalidateQueries(queryKeys.GET_FEEDS);
       queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
     },
