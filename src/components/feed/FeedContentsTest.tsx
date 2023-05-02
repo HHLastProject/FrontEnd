@@ -44,10 +44,6 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
     shopId: feedData?.shopId,
   };
 
-  useEffect(() => {
-    
-  }, []);
-
   return (
     <>
       {/* 피드 프로필 */}
@@ -95,9 +91,12 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
       <TagList>{feedData?.tag}</TagList>
 
       {/* 해당 매장 정보 */}
-      <PlaceCard
-        dataset={placeCardData}
-      />
+      {(page !== 'shopDetailFeed')
+        &&
+        <PlaceCard
+          dataset={placeCardData}
+        />
+      }
     </>
   )
 }

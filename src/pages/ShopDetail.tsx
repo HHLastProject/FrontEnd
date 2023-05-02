@@ -20,6 +20,7 @@ import IconScrap from '../components/shopDetail/ScrapBtn';
 import BtnResetStyle from '../components/ui/element/buttons/BtnReset';
 import { changeScrap } from '../custom/jh/changeScrap';
 import Loading from '../components/loading/Loading';
+import { Title3 } from '../components/FontStyle';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -63,9 +64,6 @@ function ShopDetail() {
   useEffect(() => {
     getShopDetailFeedList();
   }, []);
-  useEffect(() => {
-    console.log('스크랩 바뀜');
-  }, [scrap]);
 
   if (shopDetailIsLoading) return <Loading/>;
 
@@ -84,14 +82,14 @@ function ShopDetail() {
       {/* 내용 */}
       <div style={{padding: '0 0 120px 0'}}>
         <ShopDetailThumbnail>
-          <div className='thumbnail-img' style={{backgroundColor: `${colorSet.lineMedium}`}}>
+          <ThumbnailDiv>
             <img
               id={`shop-detail-thumbnail`}
               src={`${imgPath.shopThumbnailImg + shopDetailData?.thumbnail}`}
               alt={shopDetailData?.shopName}
               onError={(e) => displayHandler(`shop-detail-thumbnail`)}
             />
-          </div>
+          </ThumbnailDiv>
           <ShopDetailStoreName
             shopName={shopDetailData?.shopName}
             category={shopDetailData?.category}
@@ -104,7 +102,7 @@ function ShopDetail() {
 
           {/* 정보 */}
           <ShopDetailContentContainer id={shopDetailTabEl[0].id}>
-            <h2>정보</h2>
+            <Title3>정보</Title3>
             <div>
               <ShopDetailContentInfo
                 iconImg={iconImgPath.detailInfo.mapPin}
@@ -134,7 +132,7 @@ function ShopDetail() {
         <ShopDetailContainer>
           <ShopDetailContentContainer id={shopDetailTabEl[1].id}>
             <div className='shop-detail-menu'>
-              <h2>메뉴</h2>
+              <Title3>메뉴</Title3>
               {shopDetailData?.Menus?.map((item: any) => {
                 return (
                   <ShopDetailMenu
@@ -152,20 +150,21 @@ function ShopDetail() {
         {/* 피드 */}
         <ShopDetailContainer>
           <ShopDetailContentContainer id={shopDetailTabEl[2].id}>
-            <div className='shop-detail-review'>
-              <div className='shop-detail-review-sub'>
-                <h2>피드</h2>
+            <div>
+              <SpaceBetween>
+                <Title3>피드</Title3>
                 <Link 
                   to={`${path.feedForm}`}
                   state={{shopId : param, shopName: shopDetailData?.shopName}}
                 >
+                  {/* 피드쓰기 버튼 */}
                   <Buttons.Small.Default>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                       <IconPencil />피드 쓰기
                     </div>
                   </Buttons.Small.Default>
                 </Link>
-              </div>
+              </SpaceBetween>
             </div>
             {/* 피드들 */}
             {shopDetailFeedIsLoading 
@@ -174,15 +173,20 @@ function ShopDetail() {
               :
               shopDetailFeedList?.map((item: any, index: number) => {
                 return(
-                  <div key={`Feed${item.shopId + index}`}>
-                    <VFlex gap='12px'>
-                      <FeedContentsTest
-                        page={'shopDetailFeed'}
-                        feedData={item}
-                      />
-                    </VFlex>
+                  <>
+                    {index === 0 && <div style={{height: '12px'}}/>}
+                    {index > 0 && <div style={{height: '40px'}}/>}
+                    <div className='shop-detail-feed' key={`Feed${item.shopId + index}`}>
+                      <VFlex gap='12px'>
+                        <FeedContentsTest
+                          page={'shopDetailFeed'}
+                          feedData={item}
+                        />
+                      </VFlex>
+                    </div>
+                    {(index < shopDetailFeedList.length-1) && <div style={{height: `${40-12}px`}}/>}
                     {(index >=0 && index < shopDetailFeedList.length-1) && <FeedPageHr/>}
-                  </div>
+                  </>
                 )
               })
             }
@@ -212,39 +216,37 @@ const ShopDetailThumbnail = styled.div`
   width: 100%;
   position: relative;
   padding-bottom: 72px;
-  .thumbnail-img {
-    width: 100%;
-    height: 252px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    img {
-      width: 100%;
-    }
-  }
 `;
 
+const ThumbnailDiv = styled.div`
+  width: 100%;
+  height: 252px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${colorSet.lineMedium};
+  img {
+    width: 100%;
+  }
+`
+
 const ShopDetailContentContainer = styled.div`
-  padding: 40px 20px 40px 20px;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   position: relative;
-  h2 {
-    font-size: 1.2rem;
-    margin: 10px 0;
-    font-weight: 600;
-    display: inline-block;
-  }
-  .shop-detail-review-sub {
-    display: flex;
-    justify-content: space-between;
-  }
+`;
+
+const SpaceBetween = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const FeedPageHr = styled.hr`
   width: 350px;
   height: 1px;
+  margin: 0;
   background-color: ${colorSet.lineLight};
   border: 0;
 `;
