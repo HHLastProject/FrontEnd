@@ -32,7 +32,7 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
   }
 
   useEffect(() => {
-
+    
   }, [isLogin]);
 
   return (
