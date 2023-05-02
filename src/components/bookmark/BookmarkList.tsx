@@ -6,6 +6,8 @@ import { FolderData } from '../../custom/ym/types'
 import BookmarkLoginComp from './BookmarkLoginComp'
 import BookmarkLogoutComp from './BookmarkLogoutComp'
 import { ScrapContext } from '../../pages/Bookmark'
+import SlideBox from '../ui/container/slide/SlideBox'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 const BookmarkList = () => {
 
@@ -30,29 +32,41 @@ const BookmarkList = () => {
 
     return (
         <>
-            <HFlex gap='2px' height='fit-content' etc="padding:8px 20px;">
+            <Swiper
+                spaceBetween={4}
+                slidesPerView={0}
+                style={{ width: 'fit-content' }}
+            >
+                {/* <HFlex gap='4px' height='fit-content' etc="padding:8px 20px;"> */}
                 {
                     folderList?.map((element) => {
                         if (folder === element) {
                             return (
-                                <Categories.Active
-                                    key={uuid()}
-                                    name={element.folderName}
-                                    onClick={() => folderClickHandler(element)}
-                                >{element.folderName}</Categories.Active>
+                                <SwiperSlide>
+                                    <Categories.Active
+                                        key={uuid()}
+                                        name={element.folderName}
+                                        onClick={() => folderClickHandler(element)}
+                                        draggable={false}
+                                    >{element.folderName}</Categories.Active>
+                                </SwiperSlide>
                             );
                         } else {
                             return (
-                                <Categories.Inactive
-                                    key={uuid()}
-                                    name={element.folderName}
-                                    onClick={() => folderClickHandler(element)}
-                                >{element.folderName}</Categories.Inactive>
+                                <SwiperSlide>
+                                    <Categories.Inactive
+                                        key={uuid()}
+                                        name={element.folderName}
+                                        onClick={() => folderClickHandler(element)}
+                                        draggable={false}
+                                    >{element.folderName}</Categories.Inactive>
+                                </SwiperSlide>
                             )
                         }
                     })
                 }
-            </HFlex>
+                {/* </HFlex> */}
+            </Swiper>
             {
                 isLogin
                     ? <BookmarkLoginComp folderState={folder as FolderData} />

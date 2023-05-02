@@ -15,6 +15,7 @@ import { FolderData, ReceivedBookmarks, ScrapListEachData } from '../../../custo
 import { apiPath } from '../../../shared/path';
 import useScrapData from '../../../hooks/useScrapData';
 import { ScrapContext, ScrapDispatchesContext } from '../../../pages/Bookmark';
+import useCreateFolder from '../../../hooks/useCreateFolder';
 
 const FeedModalContents = ({ target, stateDispatch }: { target: number, stateDispatch: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
@@ -68,18 +69,7 @@ const CreateFolderModalContents = ({
     const [newFolder, setNewFolder] = useState<string>('');
     const [validate, setValidate] = useState<boolean>(false);
     const [beforeList, setBeforeList] = useState<string[]>(['']);
-
-    const { mutate } = useMutation({
-        mutationKey: scrapKeys.POST_FOLDER,
-        mutationFn: async (payload: object) => {
-            const res = await api_token.post(apiPath.createScrapFolder, payload);
-            console.log('생성 결과', res);
-            return res.data;
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries(scrapKeys.GET_SCRAP);
-        }
-    })
+    const { createFolder } = useCreateFolder();
 
     const checkValidation = (text: string) => {
         return beforeList.filter((element) => element !== text).length === beforeList.length
@@ -88,12 +78,20 @@ const CreateFolderModalContents = ({
     }
 
     const addListHandler = () => {
-        const payload = {
-            folderList: [...beforeList, newFolder]
-        }
+        // const payload = {
+        //     folderList: [...beforeList, newFolder]
+        // }
         // mutate(payload);
         const a = { folderId: 9999999, folderName: newFolder };
-        listDispatch(prev => [...prev, a]);
+        listDispatch(prev => {
+            const newList = [...prev, a];
+
+            const payload = {
+                folderList: newList.map((element) => element.folderName),
+            }
+            createFolder(payload);
+            return newList;
+        });
         dispatch(prev => false);
     }
 

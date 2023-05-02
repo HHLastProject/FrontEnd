@@ -64,9 +64,6 @@ const Mypage = () => {
 
     if (isLoading) return <div>로딩중</div>;
 
-
-
-
     return (
         <MypageContext.Provider value={{ props: feedData, propsFunc: setFeedData, isLogin: isLogin }}>
             <MypageContainer>

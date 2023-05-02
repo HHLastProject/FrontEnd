@@ -4,12 +4,9 @@ import { HFlex, HFlexSpaceBetween, VFlex, VFlexCenter } from '../../custom/ym/st
 import { BODY_1 } from '../../custom/ym/variables';
 import { Buttons } from '../ui/element/buttons/Buttons';
 import { colorSet } from '../ui/styles/color';
-import { EachFolderProps } from '../../custom/ym/types';
-import { useMutation } from '@tanstack/react-query';
-import { scrapKeys } from '../../apis/queries';
-import { api_token } from '../../shared/api';
-import { apiPath } from '../../shared/path';
-import { queryClient } from '../..';
+import { EachFolderProps, FolderData } from '../../custom/ym/types';
+import useDeleteFolder from '../../hooks/useDeleteFolder';
+import useCreateFolder from '../../hooks/useCreateFolder';
 
 const EachFolder = ({
     name,
@@ -17,20 +14,12 @@ const EachFolder = ({
     index,
     ...props }: EachFolderProps) => {
 
-    const { mutate } = useMutation({
-        mutationKey: scrapKeys.DELETE_FOLDER,
-        mutationFn: async (folderNumber: number) => {
-            const res = await api_token.delete(apiPath.deleteScrapFolder + `/${folderNumber}`);
-            console.log(res);
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries(scrapKeys.GET_SCRAP);
-        }
-    })
+    const { deleteFolder } = useDeleteFolder();
+    const { createFolder } = useCreateFolder();
 
     const deleteClickHandler = () => {
         dispatch(prev => [...prev].filter((element) => element !== name));
-        mutate(name.folderId);
+        deleteFolder(name.folderId);
     };
 
     const moveClickHandler = (direction: string, index: number) => {
@@ -40,11 +29,15 @@ const EachFolder = ({
                 if (prev.length - 1 === index) {
                     return prev;
                 } else {
-                    const temp = [...prev];
-                    const prevValue = temp[index];
-                    temp[index] = temp[index + 1];
-                    temp[index + 1] = prevValue;
-                    return temp;
+                    const tempArr = [...prev];
+                    const prevValue = tempArr[index];
+                    tempArr[index] = tempArr[index + 1];
+                    tempArr[index + 1] = prevValue;
+                    const payload = {
+                        folderList: tempArr.map((element) => element.folderName),
+                    }
+                    createFolder(payload);
+                    return tempArr;
                 }
             });
         } else if (direction === "up") {
@@ -52,11 +45,15 @@ const EachFolder = ({
                 if (index === 0) {
                     return prev;
                 } else {
-                    const temp = [...prev];
-                    const prevValue = temp[index];
-                    temp[index] = temp[index - 1];
-                    temp[index - 1] = prevValue;
-                    return temp;
+                    const tempArr = [...prev];
+                    const prevValue = tempArr[index];
+                    tempArr[index] = tempArr[index - 1];
+                    tempArr[index - 1] = prevValue;
+                    const payload = {
+                        folderList: tempArr.map((element) => element.folderName),
+                    }
+                    createFolder(payload);
+                    return tempArr;
                 }
             })
         };
