@@ -20,20 +20,16 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
   const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
   const token = getToken();
   const [isLogin, setIsLogin] = useState(false);
-  if(token) {setIsLogin(true)};
+  // if(token) {setIsLogin(true)};
 
   const onClickLogout = () => {
     const result = window.confirm('로그아웃 하시겠습니까?');
     if(result) {
       deleteToken();
-      setIsLogin(false);
+      // setIsLogin(false);
       alert('로그아웃 되었습니다.');
     }
   }
-
-  useEffect(() => {
-    
-  }, [isLogin]);
 
   return (
     <HeaderContainer
