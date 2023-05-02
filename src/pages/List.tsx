@@ -87,9 +87,9 @@ const List = () => {
                     <ListCount>{shopList?.length}</ListCount>
                   </div>
                 </TabMenuLi>
-                <TabMenuLi id={2}>
+                {/* <TabMenuLi id={2}>
                   추천식당
-                </TabMenuLi>
+                </TabMenuLi> */}
               </TabMenuUl>
             </HomeTabMenuStyle>
           </header>

@@ -82,7 +82,7 @@ function ShopDetail() {
       </ListHeader>
 
       {/* 내용 */}
-      <div id='shop-detail-wrap'>
+      <div style={{padding: '0 0 120px 0'}}>
         <ShopDetailThumbnail>
           <div className='thumbnail-img' style={{backgroundColor: `${colorSet.lineMedium}`}}>
             <img
@@ -218,7 +218,6 @@ const XFlexCenter = styled.div`
 const ShopDetailContainer = styled.div`
   width: 100%;
   border-top: 12px solid ${colorSet.lineLight};
-  padding: 0 0 120px 0;
 `;
 
 const ShopDetailThumbnail = styled.div`

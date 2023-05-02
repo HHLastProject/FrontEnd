@@ -3,6 +3,7 @@ import BiasedRound from '../BiasedRound';
 import BigSizingBox from '../BigSizingBox';
 import styled from 'styled-components';
 import { imgPath } from '../../shared/path';
+import { displayHandler } from '../../custom/jh/useOnClickHiddenHandler';
 type Prop = {
     children: string
 }
@@ -10,7 +11,12 @@ const FeedPicture = ({ children }: Prop) => {
     return (
         <BiasedRound>
             <BigSizingBox>
-                <Image src={children} alt="" />
+                <Image 
+                    onError={(e) => displayHandler(`${children}`)}
+                    id={`${children}`}
+                    src={children}
+                    alt="피드 이미지"
+                />
             </BigSizingBox>
         </BiasedRound>
     )
