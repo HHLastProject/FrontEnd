@@ -14,7 +14,7 @@ import { TossedFeedData, categoryTypes } from '../custom/ym/types';
 import { OrderByContext, ShopCategory } from '../apis/context';
 import { Heading2, Title4 } from '../components/FontStyle';
 import { SelectData } from '../shared/select';
-import Loading from '../components/Loading';
+import Loading from '../components/loading/Loading';
 
 function FeedList() {
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();

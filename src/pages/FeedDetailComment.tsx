@@ -14,7 +14,7 @@ import { path } from '../shared/path'
 import useGetFeedDetailComment from '../custom/jh/useGetFeedDetailComment'
 import styled from 'styled-components'
 import { IconUploadActive, IconUploadInactive } from '../components/ui/element/icons/IconsStyle'
-import Loading from '../components/Loading'
+import Loading from '../components/loading/Loading'
 
 function FeedDetailComment() {
   const navi = useNavigate();

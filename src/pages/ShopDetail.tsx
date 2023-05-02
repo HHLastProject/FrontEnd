@@ -14,13 +14,12 @@ import { VFlex } from '../custom/ym/styleStore';
 import ListHeader from '../components/home/ListHeader';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { getToken } from '../apis/getToken';
-import { api_token } from '../shared/api';
-import Loading from '../components/Loading';
 import { displayHandler } from '../custom/jh/useOnClickHiddenHandler';
 import ShopDetailTab, { shopDetailTabEl } from '../components/shopDetail/ShopDetailTab';
 import IconScrap from '../components/shopDetail/ScrapBtn';
 import BtnResetStyle from '../components/ui/element/buttons/BtnReset';
 import { changeScrap } from '../custom/jh/changeScrap';
+import Loading from '../components/loading/Loading';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -180,6 +179,7 @@ function ShopDetail() {
                   for(let i of item?.tag){
                     if(i){
                       const {tag} = i;
+                      console.log(i)
                       tags.push(tag);
                     }
                   }

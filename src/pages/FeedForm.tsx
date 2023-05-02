@@ -12,6 +12,9 @@ import { Link } from 'react-router-dom';
 import { HFlex, VFlex } from '../custom/ym/styleStore';
 import ListHeader from '../components/home/ListHeader';
 import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
+import BtnResetStyle from '../components/ui/element/buttons/BtnReset';
+import { SelectData } from '../shared/select';
+import CheckBtns from '../components/feedForm/CheckBtns';
 
 type Ttag = { tag: string } | string;
 type Ttags = Ttag[] | [] | null | any;
@@ -22,36 +25,26 @@ interface IImgFile {
 };
 
 function FeedForm() {
-  const navi = useNavigate();
   const location = useLocation();
   let shopId: number | null = null;
   if(location.state?.shopId) shopId = Number(location.state.shopId);
   let shopName: string | null = null;
   if(location.state?.shopName) shopName = location.state.shopName;
 
-  const tags: string[] = [];
-  const tagRef: Ttags = useRef([]);
-  const [token, setToken] = useState<string | null>(null);
+  const navi = useNavigate();
+  // const tags: string[] = [];
+  // const tagRef: Ttags = useRef([]);
   const maxLength = 500;
+  const [checkList, setCheckList] = useState<string[]>([]);
+  const [token, setToken] = useState<string | null>(null);
   const [comment, setComment] = useState<string | null>(null);
   const [hashTags, setHashTags] = useState<Ttags>([]);
+  const [inputValue, setInputValue] = useState('');
+  const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
   const [imgFile, setImgFile] = useState<IImgFile>({
     feedPic: null,
     previewPic: null,
   });
-
-  const [inputValue, setInputValue] = useState('');
-  const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
-
-  //태그 추가
-  const addTag = (value: string, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    if (value) {
-      tags.push(value);
-      tagRef.current = tags;
-      setHashTags([...tagRef.current]);
-    };
-  };
 
   //이미지 미리보기
   const previewImg = (e: React.ChangeEvent<HTMLInputElement> | any) => {
@@ -75,13 +68,11 @@ function FeedForm() {
   const onClickSendFeedData = (shopId: number | null) => {
     const token = getToken();
     if (shopId && imgFile.feedPic && token) {
-      const tagsList = tagRef.current.map((item: string) => { return { tag: item } });
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
       formData.append('shopId', shopId.toString());
       formData.append('comment', comment ? comment : '');
-      formData.append('tags', JSON.stringify(tagsList));
-
+      formData.append('tags', JSON.stringify(checkList));
       sendFeedData(shopId, formData).then(() => {navi(-1)});
     } else {
       alert("가게명 또는 사진을 등록해주세요.");
@@ -98,7 +89,7 @@ function FeedForm() {
 
     if (!getToken()) {
       alert('로그인 해야 이용 가능합니다.');
-      navi('/login');
+      navi(path.login);
       return;
     };
   }, []);
@@ -111,7 +102,14 @@ function FeedForm() {
       <div
         onClick={() => onClickSendFeedData(shopId)}
       >
-        <Title4 color={`#427AF5`}>완료</Title4>
+        {(comment && imgFile)
+          ?
+          <BtnResetStyle>
+            <Title4 color={`${colorSet.blue}`}>완료</Title4>
+          </BtnResetStyle>
+          :
+          <Title4 color={`${colorSet.lineLight}`}>완료</Title4>
+        }
       </div>
     </ListHeader>
       <FeedFormContainer>
@@ -136,6 +134,7 @@ function FeedForm() {
           </Link>
         </VFlex>
 
+        {/* 미리보기 */}
         <VFlex>
           <FeedFormTitle>
             <Title4>사진</Title4>
@@ -148,18 +147,21 @@ function FeedForm() {
             onChange={previewImg}
             style={{display: 'none'}}
           />
-          <ImgPreview
-            onClick={inputClickHandler}
-          >
-            {(typeof imgFile.previewPic === "string") ? 
-              <img id='preview-img' src={imgFile.previewPic} alt="이미지 미리보기" />
-              :
-              <PriviewDiv>
-                <IconPlusWhite24/>
-                <label>0/1</label>
-              </PriviewDiv>
-            }
-          </ImgPreview>
+          <BtnResetStyle>
+            <ImgPreview
+              onClick={inputClickHandler}
+            >
+              {(typeof imgFile.previewPic === "string") 
+                ? 
+                <img id='preview-img' src={imgFile.previewPic} alt="이미지 미리보기" />
+                :
+                <PriviewDiv>
+                  <IconPlusWhite24/>
+                  <label>0/1</label>
+                </PriviewDiv>
+              }
+            </ImgPreview>
+          </BtnResetStyle>
         </VFlex>
 
         <VFlex>
@@ -179,19 +181,18 @@ function FeedForm() {
           </Margin>
         </VFlex>
 
+        {/* 태그 */}
         <VFlex>
           <FeedFormTitle>
             <Title4>태그</Title4>
-            <Body4 color={colorSet.textMedium}>3개까지 선택</Body4>
+            {/* <Body4 color={colorSet.textMedium}>3개까지 선택</Body4> */}
           </FeedFormTitle>
           <HFlex gap={'4px'}>
-            {["분위기 맛집", "디저트 맛집", "커피 맛집", "뷰 맛집"].map((item: string) => {
-              return(
-                <TagBtn onClick={(e) => addTag(item, e)}>
-                  {item}
-                </TagBtn>
-              )})
-            }
+            <CheckBtns
+              checkList={checkList}
+              setCheckList={setCheckList}
+              arr={SelectData.TAG_SELECT}
+            />
           </HFlex>
         </VFlex>
       </FeedFormContainer>
@@ -256,19 +257,6 @@ const FeedFormTitle = styled.div`
 const CommentTextCount = styled.div`
   display: flex;
   justify-content: flex-end;
-`;
-
-const TagBtn = styled.button`
-  padding: 7px 12px;
-  background-color: ${colorSet.lineLight};
-  border-radius: 100px;
-  ${fontType.body_3}
-  color: ${colorSet.textMedium};
-  border: none;
-  &:active {
-    color: white;
-    background-color: #010101;
-  }
 `;
 
 export const Title4 = styled.label<{color?: string}>`

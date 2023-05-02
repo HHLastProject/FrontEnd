@@ -10,7 +10,6 @@ export const changeScrap = async (shopId: number) => {
   if(token) {
     const result = await api_token.put(`/api/${shopId}/scrap`)
       .then((res) => {
-        console.log('스크랩결과', res.data.isScrap);
         return res.data;
       })
       .catch((error) => {
