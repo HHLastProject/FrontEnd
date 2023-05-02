@@ -74,6 +74,7 @@ const List = () => {
 
       {/* 헤더 */}
       <ListHeader
+        list={true}
         range={range}
       />
       {/* 컨테이너 */}

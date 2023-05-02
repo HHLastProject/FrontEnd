@@ -14,7 +14,7 @@ import { deleteToken, getToken } from '../../apis/getToken';
 
 //close == true : 뒤로가기 버튼이 x로 바뀜f
 //scrap == true : 스크랩 버튼
-const ListHeader = ({name, range, close, feedForm, children, scrap}: {name?: string, range?: number, close?: boolean, feedForm?: true, children?: ReactNode, scrap?: boolean}) => {
+const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name?: string, range?: number, close?: boolean, list?: boolean, feedForm?: true, children?: ReactNode, scrap?: boolean}) => {
   const {backClickHandler} = useNavigateHandler();
   const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
   const token = getToken();
@@ -32,35 +32,42 @@ const ListHeader = ({name, range, close, feedForm, children, scrap}: {name?: str
       id='header'
     >
       <HFlex width='100%'>
-        <BtnResetStyle
-          onClick={backClickHandler}
-        >
-          <BothSideDiv>
-            <IconSize24>
-              <img src={backIconSrc} alt="뒤로가기" />
-            </IconSize24>
-          </BothSideDiv>
-        </BtnResetStyle>
-        {name && <div style={{width: '100%'}}><Body1>{name}</Body1></div>}
-        {range && 
-          <>
-            {/* 거리 나타내기 */}
-            <VFlex etc="height:fit-content">
-              <div>
-                <HeaderTextSmall>내 위치에서</HeaderTextSmall>
-              </div>
-              <BtnResetStyle
-                onClick={() => {controlVisible(SelectBoxId.RANGE_SELECT_ID)}}>
-                <HFlex gap="5px">
-                  <HeaderTextMedium>{(range < 1000 ? `${range}m` : `${range/1000}km`)}</HeaderTextMedium>
-                  <IconSize16>
-                    <img src={`${process.env.PUBLIC_URL}/icon/chevron_down_16.png`} alt="거리 선택하기" />
-                  </IconSize16>
-                </HFlex>
-              </BtnResetStyle>
-            </VFlex>
-          </>
-        }
+        <BothSideDiv>
+          {list
+            ?
+            <></>
+            :
+            <BtnResetStyle
+              onClick={backClickHandler}
+            >
+              
+                <IconSize24>
+                  <img src={backIconSrc} alt="뒤로가기" />
+                </IconSize24>
+            </BtnResetStyle>
+          }
+          
+          {name && <div style={{width: '100%'}}><Body1>{name}</Body1></div>}
+          {range && 
+            <>
+              {/* 거리 나타내기 */}
+              <VFlex etc="height:fit-content">
+                <div>
+                  <HeaderTextSmall>내 위치에서</HeaderTextSmall>
+                </div>
+                <BtnResetStyle
+                  onClick={() => {controlVisible(SelectBoxId.RANGE_SELECT_ID)}}>
+                  <HFlex gap="5px">
+                    <HeaderTextMedium>{(range < 1000 ? `${range}m` : `${range/1000}km`)}</HeaderTextMedium>
+                    <IconSize16>
+                      <img src={`${process.env.PUBLIC_URL}/icon/chevron_down_16.png`} alt="거리 선택하기" />
+                    </IconSize16>
+                  </HFlex>
+                </BtnResetStyle>
+              </VFlex>
+            </>
+          }
+        </BothSideDiv>
 
         <div style={{flex: '1'}}/>
 
