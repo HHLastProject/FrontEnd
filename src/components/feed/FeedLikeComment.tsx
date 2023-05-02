@@ -22,7 +22,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
   const navi = useNavigate();
 
   const onClickLike = () => {
-    if(token) {
+    if (token) {
       changeLike(); //서버 전송
       setLike(prev => !prev);
     } else {
@@ -31,7 +31,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
   }
 
   useEffect(() => {
-    
+
   }, [like]);
 
   return (
@@ -43,9 +43,9 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
         <AlignCenter gap={5}>
           {isLike
             ?
-            <IconLikeActive24/>
+            <IconLikeActive24 />
             :
-            <IconLikeInactive24/>
+            <IconLikeInactive24 />
           }
           <label>{likeCount}</label>
         </AlignCenter>
@@ -56,7 +56,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
         onClick={() => navi(`${path.toFeedComment}/${feedId}`)}
       >
         <AlignCenter gap={5}>
-          <IconComment24/>
+          <IconComment24 />
           <label>{feedCommentCount}</label>
         </AlignCenter>
       </BtnResetStyle>
@@ -74,8 +74,8 @@ const FeedLikeCommentStyle = styled.div`
   ${fontType.body_3}
 `;
 
-const AlignCenter = styled.div<{gap: number}>`
+const AlignCenter = styled.div<{ gap: number }>`
   display: flex;
   align-items: center;
-  gap: ${({gap}) => gap}px;
+  gap: ${({ gap }) => gap}px;
 `;
