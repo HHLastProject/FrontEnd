@@ -132,7 +132,7 @@ const CarouselModule = styled.div`
     bottom: 0;
     width: 332px;
     height: 214px;
-    /* padding : 20px; */
+    padding-left : 20px;
     padding-right: 0px;
     background-color: transparent;
 `;
