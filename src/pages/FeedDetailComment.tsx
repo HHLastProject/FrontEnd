@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ListHeader from '../components/home/ListHeader'
 import DefaultWrap from '../components/ui/container/Wrap'
 import { CommentIdContext, OrderByContext } from '../apis/context'
@@ -15,6 +15,7 @@ import useGetFeedDetailComment from '../custom/jh/useGetFeedDetailComment'
 import styled from 'styled-components'
 import { IconUploadActive, IconUploadInactive } from '../components/ui/element/icons/IconsStyle'
 import Loading from '../components/loading/Loading'
+import { scrollTop } from '../custom/jh/scrollTop'
 
 function FeedDetailComment() {
   const navi = useNavigate();
@@ -60,6 +61,10 @@ function FeedDetailComment() {
       alert('600자 이하로 입력해주세요.');
     }
   };
+
+  useEffect(() => {
+    scrollTop();
+  }, []);
 
   if(feedDetailCommentIsLoading) return <Loading/>;
 

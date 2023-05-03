@@ -7,6 +7,7 @@ const deleteFeedComment = async({feedId, commentId}: {feedId: number, commentId:
   .then((res) => {
     console.log('삭제성공', res);
     queryClient.invalidateQueries({ queryKey: queryKeys.GET_FEED_DETAIL_COMMENT});
+    // queryClient.invalidateQueries(queryKeys.GET_FEED_DETAIL_COMMENT);
     return res;
   })
   .catch((error) => {

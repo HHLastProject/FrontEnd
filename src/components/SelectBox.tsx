@@ -27,23 +27,25 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
   const {orderBy, setOrderBy} = useContext(OrderByContext);
 
   const onClickHandler = (order: string) => {
-    if(setOrderBy) {setOrderBy(order);}
+    if(setOrderBy) {
+      setOrderBy(order);
 
-    //삭제하기 기능 있을때
-    if((orderBy === '삭제하기') && isDeleteComment && (param !== undefined)){
-      const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
-      if(result){
-        deleteFeedComment({feedId: param, commentId: commentId})
-        .then(() => {
-          alert('삭제되었습니다.');
-        })
+      //댓글 삭제하기 기능 있을때
+      if((orderBy === '삭제하기') && isDeleteComment && param){
+        const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
+        if(result){
+          deleteFeedComment({feedId: param, commentId: commentId})
+          .then(() => {
+            alert('삭제되었습니다.');
+          })
+        }
+        controlHidden(id);
       }
     }
-    controlHidden(id);
   }
 
   useEffect(() => {
-    //기본적으로 숨겨둠
+    //기본적으로 창을 숨겨둠
     controlHidden(id);
   }, []);
 

@@ -11,6 +11,7 @@ import { displayHandler } from '../../custom/jh/useOnClickHiddenHandler'
 import { CommentIdContext } from '../../apis/context'
 import { controlVisible } from '../../custom/jh/controlHidden'
 import { SelectBoxId } from '../SelectBox'
+import BtnResetStyle from '../ui/element/buttons/BtnReset'
 
 export interface IFeeaCommentList {
   nickname: string,
@@ -61,13 +62,12 @@ function FeedDetailComments({commentList}: {commentList: IFeeaCommentList[]}) {
                   <Body5 color={colorSet.textMedium}>{timeForNow(item.createdAt)}</Body5>
                 </Column>
               </Row>
+
               {/* 수정, 삭제 버튼 */}
               <CheckMine isMine={item.isMine}>
-                <div
-                  style={{cursor: 'pointer'}}
-                  onClick={(e) => onClickHandler(item.feedCommentId)}>
+                <BtnResetStyle onClick={(e) => onClickHandler(item.feedCommentId)}>
                   <IconEtc24/>
-                </div>
+                </BtnResetStyle>
               </CheckMine>
             </SpaceBetween>
 
