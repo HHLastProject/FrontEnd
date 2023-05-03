@@ -6,9 +6,9 @@ import IconSize from '../ui/element/icons/IconSize';
 function Loading() {
   return (
     <Centered>
-      <IconSize.size100>
+      <IconSize.Size100>
         <img src={`${iconImgPath.loading.default}`} alt="로딩 중" />
-      </IconSize.size100>
+      </IconSize.Size100>
     </Centered>
   )
 }

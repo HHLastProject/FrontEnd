@@ -4,6 +4,11 @@ import { Buttons } from '../ui/element/buttons/Buttons';
 import { Link } from 'react-router-dom';
 import { path } from '../../shared/path';
 import { getToken } from '../../apis/getToken';
+import { controlVisible } from '../../custom/jh/controlHidden';
+import { SelectBoxId } from '../SelectBox';
+import IconSize from '../ui/element/icons/IconSize';
+import { colorSet } from '../ui/styles/color';
+import { fontType } from '../ui/styles/typo';
 
 interface INoResult {
   shopList?: boolean,
@@ -31,12 +36,18 @@ function NoResult({shopList, search, feedList, favorite, comment, mypage}: INoRe
 
   return (
     <NoResultContainer>
-      <img src={resultImg} alt="결과가 없습니다." />
+      <IconSize.Size100>
+        <img src={resultImg} alt="결과가 없습니다." />
+      </IconSize.Size100>
 
       {shopList &&
       <>
         <label>주변엔 카페가 없어요.<br/>반경을 더 넓혀보세요.</label>
-        <Buttons.Medium.Default>반경 설정하기</Buttons.Medium.Default>
+        <Buttons.Medium.Default
+          onClick={() => controlVisible(SelectBoxId.RANGE_SELECT_ID)}
+        >
+          반경 설정하기
+        </Buttons.Medium.Default>
       </>
       }
 
@@ -54,6 +65,7 @@ function NoResult({shopList, search, feedList, favorite, comment, mypage}: INoRe
           </Link>
         </>
       }
+
       {(favorite && token) &&
         <>
           <label>사람들이 방문한 곳에서<br/>새로운 카페를 찾아보세요.</label>
@@ -64,6 +76,7 @@ function NoResult({shopList, search, feedList, favorite, comment, mypage}: INoRe
           </Link>
         </>
       }
+
       {comment &&
         <>
           <label>첫 댓글을 작성해 보세요.</label>
@@ -84,15 +97,9 @@ const NoResultContainer = styled.div`
   align-items: center;
   top: 120px;
   gap: 25px;
-  img {
-    width: 100px;
-    height: 100px;
-  }
   label {
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 18px;
+    ${fontType.body_4}
+    color: ${colorSet.textMedium};
     text-align: center;
-    color: #717176;
   }
 `;

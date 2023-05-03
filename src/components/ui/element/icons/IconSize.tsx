@@ -65,13 +65,13 @@ export const IconSize100 = styled.span`
 `;
 
 const IconSize = {
-  size12 : IconSize12,
-  size16 : IconSize16,
-  size20 : IconSize20,
-  size24 : IconSize24,
-  size28 : IconSize28,
-  size40 : IconSize40,
-  size100 : IconSize100,
+  Size12 : IconSize12,
+  Size16 : IconSize16,
+  Size20 : IconSize20,
+  Size24 : IconSize24,
+  Size28 : IconSize28,
+  Size40 : IconSize40,
+  Size100 : IconSize100,
 };
 
 export default IconSize
