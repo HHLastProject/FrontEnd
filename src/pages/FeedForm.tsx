@@ -115,7 +115,7 @@ function FeedForm() {
         <div
           onClick={() => onClickSendFeedData(shopId)}
         >
-          {(comment && imgFile)
+          {(inputValue && imgFile)
             ?
             <BtnResetStyle>
               <Title4 color={`${colorSet.blue}`}>완료</Title4>

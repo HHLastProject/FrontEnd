@@ -11,6 +11,9 @@ export const ListCategoryButtonBar = () => {
 
   const filterClickHandler = (buttonName: categoryTypes) => {
     if(setCategory) { setCategory(buttonName); }
+    if((category === buttonName) && setCategory ) {
+      setCategory('');
+    }
   };
 
   return (
@@ -21,24 +24,22 @@ export const ListCategoryButtonBar = () => {
       slidesPerView={'auto'}
       style={{ boxSizing: 'border-box', width: 'fit-content' }}
     >
-      {/* <CategoryButtons> */}
-        <div className='nowrap-buttons'>
-          {FILTER_LIST.map((filterName) => 
-            <SwiperSlide style={{ width: 'fit-content', flex: 'none' }}>
-              <FilterBtn
-                key={filterName}
-                category={'shopCategory'}
-                name={filterName}
-                selected={category}
-                onClick={(e) => filterClickHandler(filterName)}
-              >
-                {filterName}
-              </FilterBtn>
-            </SwiperSlide>
-            )
-          }
-        </div>
-      {/* </CategoryButtons> */}
+      <div className='nowrap-buttons'>
+        {FILTER_LIST.map((filterName) => 
+          <SwiperSlide style={{ width: 'fit-content', flex: 'none' }}>
+            <FilterBtn
+              key={filterName}
+              category={'shopCategory'}
+              name={filterName}
+              selected={category}
+              onClick={(e) => filterClickHandler(filterName)}
+            >
+              {filterName}
+            </FilterBtn>
+          </SwiperSlide>
+          )
+        }
+      </div>
     </Swiper>
     </SlideCase2>
     </>
@@ -138,4 +139,3 @@ const FilterBtn = styled.button<{
     if(category === 'range') return rangeBtnStyle(selected, name);
   }};
 `;
-

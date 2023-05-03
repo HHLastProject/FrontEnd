@@ -80,7 +80,7 @@ const List = () => {
       {/* 컨테이너 */}
       <HomeWrap>
         <HomeContainer>
-          <header>
+          <nav>
             <HomeTabMenuStyle>
               <TabMenuUl>
                 <TabMenuLi id={1} isChecked={true}>
@@ -94,7 +94,7 @@ const List = () => {
                 </TabMenuLi> */}
               </TabMenuUl>
             </HomeTabMenuStyle>
-          </header>
+          </nav>
 
           {/* 필터버튼 */}
           <div style={{ overflow: 'hidden', width: '100%' }}>
