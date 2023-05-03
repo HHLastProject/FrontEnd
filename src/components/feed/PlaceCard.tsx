@@ -6,7 +6,6 @@ import PlaceBookMark from './PlaceBookMark';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../shared/path';
 
-
 interface childrenForPlaceCard {
     dataset?: FeedCardData
 }

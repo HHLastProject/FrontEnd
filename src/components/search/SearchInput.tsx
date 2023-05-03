@@ -1,14 +1,13 @@
 import styled from 'styled-components'
 import { iconImgPath } from '../../shared/path';
 import { debounce } from '../../custom/jh/debounce';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import getSearchResult from '../../custom/jh/useSearchResult';
 
 export interface ISearchInput {
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   placeholder?: string;
-  dataList?: [];
   setDataList: React.Dispatch<React.SetStateAction<never[]>> | ISearchResult[] | any;
   children?: React.ReactNode;
 };
@@ -68,25 +67,21 @@ export function SearchInput({
   inputValue,
   setInputValue,
   placeholder,
-  dataList,
   setDataList,
 }: ISearchInput) {
 
+  //검색 로직
   const delaySec: number = 1;
   const debounceCallback = useCallback(
     debounce((value: string, delaySec?: number) => {
       getSearchResult(value, setDataList);
     }, (delaySec ? delaySec * 1000 : 2000))
-    , []);
+  , []);
 
   const onChangeInputCallback = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     debounceCallback(e.target.value);
   };
-
-  useEffect(() => {
-    console.log('최종 검색 결과 데이터', dataList);
-  }, [dataList]);
 
   return (
     <InputStyle
@@ -110,14 +105,6 @@ export const InputStyle = styled.input<{ margin?: string }>`
   }
 `;
 
-const centerd = () => {
-  return (`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `)
-}
-
 export const TextareaStyle = styled.div<{ margin?: string, padding?: string, border?: string, radius?: string }>`
   display: flex;
   align-items: center;
@@ -125,6 +112,7 @@ export const TextareaStyle = styled.div<{ margin?: string, padding?: string, bor
   border-radius: ${({ radius }) => radius};
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
+
   input::-webkit-input-placeholder,
   input::-moz-placeholder,
   input:-ms-input-placeholder,
@@ -132,6 +120,7 @@ export const TextareaStyle = styled.div<{ margin?: string, padding?: string, bor
   input::placeholder {
     text-align: center;
   }
+
   textarea {
     flex: 1;
     border-style: none;

@@ -46,7 +46,6 @@ function Search() {
               // state로 받는 값에 따라 링크가 달라짐
               link = `${path.toShopDetail}/${item.shopId}`;
               if(location.state.link) {link = location.state.link;}
-
               return(
                 <div key={item.shopId}>
                   <Link

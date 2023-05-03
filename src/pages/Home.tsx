@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useReducer, useState } from 'react'
 import MapModule from '../components/map/MapModule';
 import { VFlex, VFlexCenter } from '../custom/ym/styleStore';
 import MapHeader from '../components/map/MapHeader';
@@ -83,10 +83,6 @@ const Home = () => {
     const location = useLocation();
     let shopLng = 0;
     let shopLat = 0;
-    if (location.state) {
-        shopLng = Number(location.state.lng);
-        shopLat = Number(location.state.lat);
-    }
 
     const userTextSelectLimit = `
     -ms-user-select: none; 
@@ -114,6 +110,13 @@ const Home = () => {
             })
         } else return [null];
     }
+
+    useEffect(() => {
+        if (location.state) {
+            shopLng = Number(location.state.lng);
+            shopLat = Number(location.state.lat);
+        }
+    }, [])
 
     /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
     useEffect(() => {

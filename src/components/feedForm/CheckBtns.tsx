@@ -31,14 +31,12 @@ const TagBtn = ({children, checkList, setCheckList}: {children: string, checkLis
       if(!isChecked){
         //체크된 값 추가
         setCheckList(pre => {
-          console.log('체크o',[...pre, value]);
           return [...pre, value];
         });
       } else {
         //value와 값이 같지 않은 것, 즉 체크되지 않은 것만 filter로 거르기
         setCheckList(pre => {
           const result = [...pre].filter((item:string) => (item !== value));
-          console.log('체크x', [...result]);
           return [...result];
         });
       }

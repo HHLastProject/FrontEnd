@@ -1,9 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { queryKeys } from '../../apis/queries';
-import api from '../../shared/api';
+import { api_token } from '../../shared/api';
 import { apiPath } from '../../shared/path';
 import { getToken } from '../../apis/getToken';
-import { ListTossedData } from '../ym/types';
 
 type locationType = {
   lng: number,
@@ -12,12 +11,11 @@ type locationType = {
 };
 
 export const useGetHomeShopList = ({ lng, lat, range }: locationType) => {
-  const queryClient = useQueryClient();
   const token = getToken();
   const { data, mutate, isLoading, isSuccess, isError } = useMutation({
     mutationKey: queryKeys.GET_HOME_SHOPLIST,
     mutationFn: async () => {
-      const { data } = await api.post(`${apiPath.shopList}`, {
+      const { data } = await api_token.post(`${apiPath.shopList}`, {
         lng,
         lat,
         range,
@@ -30,11 +28,9 @@ export const useGetHomeShopList = ({ lng, lat, range }: locationType) => {
       return data.shops;
     },
     onSuccess: (data) => {
-      // queryClient.invalidateQueries({ queryKey: queryKeys.GET_HOME_SHOPLIST });
     },
     onError: (error) => {
-      console.log('메인 불러오기 error', error);
-      return error;
+      throw error;
     }
   });
 

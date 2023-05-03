@@ -24,7 +24,6 @@ const List = () => {
   const [orderBy, setOrderBy] = useState<string>('거리순');
   const [range, setRange] = useState(300);
   const [category, setCategory] = useState<categoryTypes>("");
-  const shopListRef = useRef([]);
   getUserLocation(setLng, setLat).then((res) => {
   });
 
