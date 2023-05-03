@@ -23,7 +23,6 @@ const EachFolder = ({
     };
 
     const moveClickHandler = (direction: string, index: number) => {
-        console.log(index);
         if (direction === "down") {
             dispatch(prev => {
                 if (prev.length - 1 === index) {

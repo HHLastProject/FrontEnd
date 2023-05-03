@@ -24,7 +24,6 @@ const UserProfile = () => {
             setProfilePic(data?.profilePic);
             setNickname(data?.nickname);
         }
-        console.log('유즈이펙트', data);
     }, [data]);
 
     return (

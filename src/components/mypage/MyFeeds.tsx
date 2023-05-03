@@ -11,7 +11,6 @@ const MyFeeds = () => {
             <MypageContext.Consumer>
                 {
                     value => {
-                        console.log(value);
                         return value?.props?.feedCount as number > 0
                             ? <>
                                 <FeedSet>{value?.props?.feedCount}</FeedSet>

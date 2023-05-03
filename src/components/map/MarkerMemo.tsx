@@ -23,16 +23,15 @@ const MarkerMemo = ({ element, onClick }: MarkerProps) => {
         anchor: new navermaps.Point(0, 0),
     }
 
+    console.log('요소', element.shopName);
+
     return (
-        <div>
-            {/* <button></button> */}
-            <Marker
-                onClick={(e) => clickHandler(e, element.shopId)}
-                icon={element?.shopId === activeShop
-                    ? activeIcon
-                    : icon}
-                defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />
-        </div>
+        <Marker
+            onClick={(e) => clickHandler(e, element.shopId)}
+            icon={element?.shopId === activeShop
+                ? activeIcon
+                : icon}
+            defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />
     )
 }
 

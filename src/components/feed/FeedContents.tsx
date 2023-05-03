@@ -42,13 +42,10 @@ const FeedContents = ({ children }: Prop) => {
         refetch();
     }, []);
     useEffect(() => {
-        console.log(data);
     }, [isSuccess]);
+
     if (isLoading) return <div>로딩중</div>;
     if (isError) return <div>에러</div>
-
-    console.log("받은 파라미터:", children);
-    console.log("FeedContents 쿼리결과", data);
 
     return (
         <VFlex gap='12px' etc='padding:20px;'>
