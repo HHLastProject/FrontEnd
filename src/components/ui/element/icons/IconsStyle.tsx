@@ -1,5 +1,5 @@
 import { iconImgPath } from "../../../../shared/path"
-import { IconSize12, IconSize16, IconSize24, IconSize40 } from "./IconSize"
+import IconSize, { IconSize12, IconSize16, IconSize24, IconSize40 } from "./IconSize"
 
 //연필
 export const IconPencil = () => {
@@ -93,5 +93,13 @@ export const IconTabPoint24 = () => {
     <IconSize24>
       <img src={iconImgPath.tab.point24} alt="탭 포인트" />
     </IconSize24>
+  )
+}
+
+export const IconXRount16 = () => {
+  return(
+    <IconSize.Size20>
+      <img src={iconImgPath.cancel.xRound16} alt="x버튼" />
+    </IconSize.Size20>
   )
 }

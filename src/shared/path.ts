@@ -123,5 +123,8 @@ export const iconImgPath: IPathObject = {
   },
   loading: {
     default: setPublicUrl(`/images/loading/img_loading.png`),
+  },
+  cancel: {
+    xRound16: setPublicUrl(`/icon/feed/x_rouned_16.png`),
   }
 };

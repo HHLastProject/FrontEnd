@@ -45,9 +45,7 @@ function FeedList() {
         {/* 필터버튼 */}
         <div style={{ overflow: 'hidden', marginLeft: `20px`}}>
           <HFlex gap='4px' etc={'margin-top: 8px'}>
-            <OrderbyFilterBtn>
-              {orderBy}
-            </OrderbyFilterBtn>
+            <OrderbyFilterBtn/>
             <ListCategoryButtonBar />
           </HFlex>
         </div>

@@ -1,9 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../apis/queries';
-import api, { api_token } from '../../shared/api';
+import { api_token } from '../../shared/api';
 import { apiPath } from '../../shared/path';
-import { getToken } from '../../apis/getToken';
-import { queryClient } from '../..';
 
 export interface IFeedList {
   nickname: string;
