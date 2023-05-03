@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useGetFeedList from '../custom/jh/useGetFeedList'
 import styled from 'styled-components';
 import { colorSet } from '../components/ui/styles/color';
@@ -21,10 +21,6 @@ function FeedList() {
   const [orderBy, setOrderBy] = useState<string>('태그');
   const [range, setRange] = useState(500);
   const [category, setCategory] = useState<categoryTypes>("");
-
-  useEffect(() => {
-    
-  }, [JSON.stringify(feedList)])
   
   if(feedListIsLoading) { return <Loading/> };
   if(feedListIsError) { alert('에러가 발생했습니다.') };

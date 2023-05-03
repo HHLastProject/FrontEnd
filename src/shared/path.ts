@@ -118,6 +118,10 @@ export const iconImgPath: IPathObject = {
     noFolder: setPublicUrl(`/images/bookmark/no_folder.png`),
   },
   tab: {
+    //상세페이지 탭 눌렀을때 옆에 나타나는 아이콘
     point24: setPublicUrl(`/tab_point_24.png`),
+  },
+  loading: {
+    default: setPublicUrl(`/images/loading/img_loading.png`),
   }
 };

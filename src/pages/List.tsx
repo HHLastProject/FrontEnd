@@ -17,6 +17,7 @@ import { SelectData } from '../shared/select';
 import { Title4 } from '../components/FontStyle';
 import { VFlex } from '../custom/ym/styleStore';
 import { Swiper } from 'swiper/react';
+import Loading from '../components/loading/Loading';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
@@ -48,7 +49,7 @@ const List = () => {
   // }, []);
 
   //로딩 화면
-  if (getshopListIsLoading) { return <div>로딩중...</div>; }
+  if (getshopListIsLoading) { return <Loading/>; }
   // if (getshopListIsError) return <div>에러</div>;
 
   return (
@@ -109,8 +110,8 @@ const List = () => {
           <HomeShopListContainer>
             {shopList?.sort((a: any, b: any) => {
               if(orderBy === '피드순') return (b.feedCount - a.feedCount);  //내림차순
-              if(orderBy === '거리순') return (a.distance - b.distance);    //올림차순
               if(orderBy === '인기순') return (b.scrapCount - a.scrapCount);//내림차순
+              return (a.distance - b.distance); //거리순 올림차순
               })
               .filter((item: ListTossedData) => {
                 let result = null;
@@ -122,8 +123,8 @@ const List = () => {
               :
               shopList?.sort((a: any, b: any) => {
                 if(orderBy === '피드순') return (b.feedCount - a.feedCount);  //내림차순
-                if(orderBy === '거리순') return (a.distance - b.distance);    //올림차순
                 if(orderBy === '인기순') return (b.scrapCount - a.scrapCount);//내림차순
+                return (a.distance - b.distance); //거리순 올림차순
               })
               .filter((item: ListTossedData) => {
                 let result = null;

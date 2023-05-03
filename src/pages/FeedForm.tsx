@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { path } from '../shared/path';
 import { fontType } from '../components/ui/styles/typo';

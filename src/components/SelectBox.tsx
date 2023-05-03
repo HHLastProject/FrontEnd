@@ -13,17 +13,23 @@ export const SelectBoxId = {
   MODIFY_SELECT_ID : 'modify-select-box',
 }
 
-function SelectBox(
-  {children, id, arr, param, isRange, isDeleteComment}
-  : {children?: ReactNode, id: string, arr?: string[], param?: number, isRange?: boolean, isDeleteComment?:boolean}) {
-  
-    if(!id) id = 'select-box';
-  if(isRange) id = 'range-select-box';
+interface ISelectBox {
+  children?: ReactNode, 
+  id: string, 
+  arr?: string[],
+  param?: number, 
+  isDeleteComment?:boolean,
+}
+
+function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
+  if(!id) id = 'select-box';
   const {commentId} = useContext(CommentIdContext);
   const {orderBy, setOrderBy} = useContext(OrderByContext);
 
   const onClickHandler = (order: string) => {
     if(setOrderBy) {setOrderBy(order);}
+
+    //삭제하기 기능 있을때
     if((orderBy === '삭제하기') && isDeleteComment && (param !== undefined)){
       const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
       if(result){
@@ -37,6 +43,7 @@ function SelectBox(
   }
 
   useEffect(() => {
+    //기본적으로 숨겨둠
     controlHidden(id);
   }, []);
 

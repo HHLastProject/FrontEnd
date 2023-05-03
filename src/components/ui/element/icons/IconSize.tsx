@@ -55,3 +55,23 @@ export const IconSize40 = styled.span`
     height: 40px;
   }
 `;
+
+export const IconSize100 = styled.span`
+  ${centered()}
+  img {
+    width: 100px;
+    height: 100px;
+  }
+`;
+
+const IconSize = {
+  size12 : IconSize12,
+  size16 : IconSize16,
+  size20 : IconSize20,
+  size24 : IconSize24,
+  size28 : IconSize28,
+  size40 : IconSize40,
+  size100 : IconSize100,
+};
+
+export default IconSize
