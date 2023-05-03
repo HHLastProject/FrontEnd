@@ -7,6 +7,7 @@ import { SelectBoxId } from "../../../SelectBox";
 import { useContext } from "react";
 import { OrderByContext } from "../../../../apis/context";
 import BtnResetStyle from "../buttons/BtnReset";
+import { SelectData } from "../../../../shared/select";
 
 export const OrderbyFilterBtn = ({ children }: { children?: React.ReactNode }) => {
   const {orderBy, setOrderBy} = useContext(OrderByContext);
@@ -14,15 +15,17 @@ export const OrderbyFilterBtn = ({ children }: { children?: React.ReactNode }) =
   return (
     <>
       {
-        (orderBy === '태그')
+        (!SelectData.TAG_SELECT.includes(orderBy))
         ?
-        <OrderbyFilterBtnStyle
-          onClick={() => controlVisible(SelectBoxId.ORDER_BY_SELECT_ID)}
-        >
+        <OrderbyFilterBtnStyle>
+          <BtnResetStyle
+            onClick={() => controlVisible(SelectBoxId.ORDER_BY_SELECT_ID)}
+          >
           <div>
             <Body3>{orderBy}</Body3>
             <IconSmallDownArrow />
           </div>
+          </BtnResetStyle>
         </OrderbyFilterBtnStyle>
         :
         <>
@@ -33,9 +36,7 @@ export const OrderbyFilterBtn = ({ children }: { children?: React.ReactNode }) =
             >
               <Body3>{orderBy}</Body3>
             </BtnResetStyle>
-            <BtnResetStyle
-              // onClick={() => setOrderBy && setOrderBy('태그')}
-            >
+            <BtnResetStyle>
               <IconXRount16/>
             </BtnResetStyle>
           </div>
@@ -50,7 +51,7 @@ export const OrderbyFilterBtn = ({ children }: { children?: React.ReactNode }) =
   )
 }
 
-const OrderbyFilterBtnStyle = styled.button<{onClick?: React.MouseEventHandler<HTMLButtonElement>}>`
+const OrderbyFilterBtnStyle = styled.div<{onClick?: React.MouseEventHandler<HTMLButtonElement>}>`
   background-color: ${colorSet.bgMedium};
   border: none;
   padding: 8px 12px;

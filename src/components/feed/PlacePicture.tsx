@@ -10,7 +10,7 @@ const PlacePicture = ({
 }) => {
     // const { shopThumbnail } = mypageData.feeds[2] as EachFeed;
     const url: string = imgPath.shopThumbnailImg + imgUrl;
-    console.log(url);
+    // console.log(url);
     return (
         <PictureSize onClick={onClick}>
             <Picture src={url} alt="" />

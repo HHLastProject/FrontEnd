@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import { useGetShopDetail, useGetShopDetailFeed } from '../custom/jh/useGetShopDetail';
@@ -135,12 +135,13 @@ function ShopDetail() {
               <Title3>메뉴</Title3>
               {shopDetailData?.Menus?.map((item: any) => {
                 return (
-                  <ShopDetailMenu
-                    key={`${item.menuName + item.price}`}
-                    menuName={item.menuName}
-                    price={item.price}
-                    picture={item.picture}
-                  />
+                  <div key={`${item.menuName + item.price}`}>
+                    <ShopDetailMenu
+                      menuName={item.menuName}
+                      price={item.price}
+                      picture={item.picture}
+                    />
+                  </div>
                 )
               })}
             </div>
@@ -169,24 +170,22 @@ function ShopDetail() {
             {/* 피드들 */}
             {shopDetailFeedIsLoading 
               ?
-              <>로딩중...</>
+              <Loading/>
               :
               shopDetailFeedList?.map((item: any, index: number) => {
                 return(
-                  <>
-                    {index === 0 && <div style={{height: '12px'}}/>}
-                    {index > 0 && <div style={{height: '40px'}}/>}
-                    <div className='shop-detail-feed' key={`Feed${item.shopId + index}`}>
-                      <VFlex gap='12px'>
-                        <FeedContentsTest
-                          page={'shopDetailFeed'}
-                          feedData={item}
-                        />
-                      </VFlex>
-                    </div>
+                  <React.Fragment key={`FeedDetailList${item.shopId + index}`}>
+                    {(index === 0) && <div style={{height: '12px'}}/>}
+                    {(index > 0) && <div style={{height: '40px'}}/>}
+                    <VFlex gap='12px'>
+                      <FeedContentsTest
+                        page={'shopDetailFeed'}
+                        feedData={item}
+                      />
+                    </VFlex>
                     {(index < shopDetailFeedList.length-1) && <div style={{height: `${40-12}px`}}/>}
-                    {(index >=0 && index < shopDetailFeedList.length-1) && <FeedPageHr/>}
-                  </>
+                    {((index >=0) && (index < shopDetailFeedList.length-1)) && <FeedPageHr/>}
+                  </React.Fragment>
                 )
               })
             }

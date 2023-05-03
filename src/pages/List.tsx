@@ -50,7 +50,6 @@ const List = () => {
 
   //로딩 화면
   if (getshopListIsLoading) { return <Loading/>; }
-  // if (getshopListIsError) return <div>에러</div>;
 
   return (
     <ShopCategory.Provider value={
@@ -100,9 +99,7 @@ const List = () => {
           {/* 필터버튼 */}
           <div style={{ overflow: 'hidden', width: '100%' }}>
             <HFlex gap='4px'>
-              <OrderbyFilterBtn>
-                {orderBy}
-              </OrderbyFilterBtn>
+              <OrderbyFilterBtn/>
               <ListCategoryButtonBar />
             </HFlex>
           </div>

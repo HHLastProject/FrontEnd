@@ -26,9 +26,8 @@ export const ListCategoryButtonBar = () => {
     >
       <div className='nowrap-buttons'>
         {FILTER_LIST.map((filterName) => 
-          <SwiperSlide style={{ width: 'fit-content', flex: 'none' }}>
+          <SwiperSlide key={filterName} style={{ width: 'fit-content', flex: 'none' }}>
             <FilterBtn
-              key={filterName}
               category={'shopCategory'}
               name={filterName}
               selected={category}

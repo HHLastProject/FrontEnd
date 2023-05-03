@@ -7,12 +7,11 @@ export const useGetFeedList = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.GET_FEEDS,
     queryFn: async () => {
-      console.log('요청 보냄');
       const {data} = await api_token.get(`${apiPath.feedList}`);
       return data;
     },
     onSuccess: (data) => {
-      console.log(data, '성공');
+      return data;
     },
     onError: (error) => {
       console.log(error);

@@ -10,7 +10,7 @@ const TagList = ({ children }: Prop) => {
         <HFlex gap='4px' height='fit-content' etc='flex-wrap:wrap;'>
             {
                 children?.map((item) => {
-                    if (item) return <Tags.Default>{item}</Tags.Default>;
+                    if (item) return <Tags.Default key={`taglist${item}`}>{item}</Tags.Default>;
                     return null;
                 })
             }
