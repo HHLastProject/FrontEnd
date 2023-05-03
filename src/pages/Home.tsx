@@ -12,6 +12,7 @@ import { useLocation } from 'react-router-dom';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { getRealtimeLocation } from '../custom/jh/getUserLocation';
 import shopCoordList from '../custom/ym/shopCoordList';
+import Loading from '../components/loading/Loading';
 
 
 export interface EachData {
@@ -116,6 +117,7 @@ const Home = () => {
         } else return [null];
     }
 
+
     useEffect(() => {
         if (location.state) {
             shopLng = Number(location.state.lng);
@@ -157,6 +159,7 @@ const Home = () => {
         }
     }, [category]);
 
+    if (isLoading) return <Loading />;
 
     return (
         <VFlex etc={userTextSelectLimit}>

@@ -21,7 +21,7 @@ const Login = () => {
                 </div>
                 <div>
                     <KakaoLogin />
-                    <NaverLogin />
+                    {/* <NaverLogin /> */}
                     <AdminButton onClick={adminLoginHandler}>관리자로 로그인하기</AdminButton>
                 </div>
             </VFlexCenter>
