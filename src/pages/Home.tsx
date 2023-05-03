@@ -42,6 +42,10 @@ export interface Markers {
     lat: number,
     lng: number,
 }
+export interface SearchedShop {
+    shopLng: number,
+    shopLat: number
+}
 
 const defaultCenter: CenterContextDefault = {
     center: {
@@ -65,6 +69,7 @@ const Home = () => {
     // const [isChanged, setIsChanged] = useState<boolean>(false);
     const [activeShop, setActiveShop] = useState<number>(0);
     const [markers, setMarkers] = useState<Markers[] | null[]>([]);
+    const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     // 실시간 유저 위치
     const [userCoord, setUserCoord] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
@@ -76,7 +81,7 @@ const Home = () => {
     // const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged, setActiveShop };
     const stateList = { userCoord, shopCoord, category, range, activeShop };
     const dispatchList = { setRange, setCategory, setUserCoord, setShopCoord, setActiveShop };
-    const listArr = { list, setList }
+    // const listArr = { list, setList }
     const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
 
     //검색 페이지에서 받는 위도 경도
@@ -123,7 +128,7 @@ const Home = () => {
         const newPayload = { lng: center.lng, lat: center.lat, range: range };
         mutateAsync(newPayload)
             .then((data: ShopData[]) => {
-                const listPivot = list.map((element) => element?.shopId).sort() as number[];
+                const listPivot = list?.map((element) => element?.shopId).sort() as number[];
                 const dataPivot = data?.map((element) => element?.shopId).sort() as number[];
                 const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
                 if (!equal(listPivot, dataPivot)) {
@@ -160,7 +165,10 @@ const Home = () => {
                     <CenterContext.Provider value={{ center, setCenter }}>
                         <VFlexCenter etc="min-width:390px; height:100%; flex:1;">
                             <MapHeader />
-                            <MapModule list={markers} setList={setMarkers} />
+                            <MapModule
+                                list={markers}
+                                setList={setMarkers}
+                            />
                         </VFlexCenter>
                         <CategoryButtonBar />
                         <CarouselBox list={list} setList={setList} />
