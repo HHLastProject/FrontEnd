@@ -9,7 +9,7 @@ const useEditScrapData = () => {
         mutationKey: scrapKeys.POST_SCRAP_DB,
         mutationFn: async (payload: PayloadForModifyScrapData) => {
             const res = await api_token.post(apiPath.postScrapData, payload);
-            console.log(res.data);
+            return res;
         }
     });
 

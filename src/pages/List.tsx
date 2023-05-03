@@ -16,14 +16,13 @@ import NoResult from '../components/home/NoShop';
 import { SelectData } from '../shared/select';
 import { Title4 } from '../components/FontStyle';
 import { VFlex } from '../custom/ym/styleStore';
-import { Swiper } from 'swiper/react';
 import Loading from '../components/loading/Loading';
 
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
   const [lat, setLat] = useState(37.5108407);
   const [orderBy, setOrderBy] = useState<string>('거리순');
-  const [range, setRange] = useState(1000);
+  const [range, setRange] = useState(300);
   const [category, setCategory] = useState<categoryTypes>("");
   const shopListRef = useRef([]);
   getUserLocation(setLng, setLat).then((res) => {

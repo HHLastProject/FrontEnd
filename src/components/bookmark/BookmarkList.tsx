@@ -43,7 +43,7 @@ const BookmarkList = () => {
                     folderList?.map((element) => {
                         if (folder === element) {
                             return (
-                                <SwiperSlide style={{ paddingLeft: '0px' }}>
+                                <SwiperSlide style={{ width: 'fit-content' }}>
                                     <Categories.Active
                                         key={uuid()}
                                         name={element.folderName}
@@ -54,7 +54,7 @@ const BookmarkList = () => {
                             );
                         } else {
                             return (
-                                <SwiperSlide>
+                                <SwiperSlide style={{ width: 'fit-content' }}>
                                     <Categories.Inactive
                                         key={uuid()}
                                         name={element.folderName}

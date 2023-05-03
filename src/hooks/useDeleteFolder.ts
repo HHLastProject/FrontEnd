@@ -9,7 +9,7 @@ const useDeleteFolder = () => {
         mutationKey: scrapKeys.DELETE_FOLDER,
         mutationFn: async (folderNumber: number) => {
             const res = await api_token.delete(apiPath.deleteScrapFolder + `/${folderNumber}`);
-            console.log(res);
+            return res;
         },
         onSuccess: () => {
             queryClient.invalidateQueries(scrapKeys.GET_SCRAP);

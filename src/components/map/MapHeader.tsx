@@ -21,13 +21,13 @@ const MapHeader = () => {
                 <VFlex height="fit-content" etc='padding:20px 10px;'>
                     <AroundSpan>내 주변</AroundSpan>
                     <HFlex height='fit-content' gap='2px'>
-                        <RangeSpan>{range}m</RangeSpan>
+                        <RangeSpan>{range !== 0 ? `${range}m` : '다른 지역'}</RangeSpan>
                         <HeaderTextMedium>의 카페</HeaderTextMedium>
                     </HFlex>
                 </VFlex>
-                <Link 
+                <Link
                     to={`${path.search}`}
-                    state={{link: `${path.home}`}}
+                    state={{ link: `${path.home}` }}
                 >
                     <ButtonContainer>
                         <Image src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="" />
@@ -38,7 +38,7 @@ const MapHeader = () => {
     )
 }
 
-export default MapHeader;
+export default React.memo(MapHeader);
 const AroundSpan = styled.span`
     font-size: ${BODY_5.fontSize};
     line-height: ${BODY_5.lineHeight};

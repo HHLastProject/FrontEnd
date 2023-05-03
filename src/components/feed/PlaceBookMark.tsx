@@ -14,15 +14,13 @@ const PlaceBookMark = ({ isScrap, shop }: { isScrap?: boolean, shop?: number }) 
     const { mutate } = useMutation({
         mutationKey: keys.PUT_TOGGLE_BOOKMARK,
         mutationFn: async (shop: number) => {
-            // console.log("payload:", shop);
-            // console.log('경로:', `/api/${shop}/scrap`);
             const res = await api_token.put(`/api/${shop}/scrap`);
             return res.data;
         },
         onSuccess: (res) => {
             queryClient.invalidateQueries(["GET_USER_FEED"]);
             setScrapResult(res.isScrap);
-            // console.log("즐겨찾기 변경 성공");
+            queryClient.invalidateQueries(queryKeys.GET_FEEDS);
         },
         onError: (error) => {
             throw error;

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { HFlex, HFlexSpaceBetween, VFlex, VFlexCenter } from '../../../custom/ym/styleStore';
-import { DispatchContext, EachData, StateContext } from '../../../pages/Home';
+import { DispatchContext, EachData, ListContextDefault, StateContext } from '../../../pages/Home';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import uuid from 'react-uuid';
@@ -17,7 +17,7 @@ type CarouselProps = {
     children: (ShopData | null)[]
 }
 // const CarouselBox = ({ children }: CarouselProps) => {
-const CarouselBox = () => {
+const CarouselBox = ({ list, setList }: ListContextDefault) => {
     const queryClient = useQueryClient();
     const navi = useNavigate();
     const openDetail = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, shopId: number) => {
@@ -26,12 +26,9 @@ const CarouselBox = () => {
     }
     const [now, setNow] = useState<number>(0);
     const [swiper, setSwiper] = useState<SwiperCore>();
-    // const swiper = useSwiper();
-    // console.log('인덱스', swiper.realIndex);
-    // console.log(swiper);
 
-    const { list, activeShop } = useContext(StateContext);
-    const { setIsChanged, setActiveShop } = useContext(DispatchContext);
+    const { activeShop } = useContext(StateContext);
+    const { setActiveShop } = useContext(DispatchContext);
     const { mutate } = useMutation({
         mutationKey: keys.PUT_TOGGLE_BOOKMARK,
         mutationFn: async (payload: number) => {
@@ -52,9 +49,8 @@ const CarouselBox = () => {
     const toggleScrap = React.useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>, item: ShopData) => {
         e.stopPropagation();
 
-        const result = mutate(item.shopId);
-        const dispatchIsChanged = setIsChanged as React.Dispatch<React.SetStateAction<boolean>>;
-        dispatchIsChanged(prev => !prev);
+        mutate(item.shopId);
+        item.isScrap = !item.isScrap;
     }, []);
 
     const convertAddress = (text: string) => {
@@ -63,9 +59,11 @@ const CarouselBox = () => {
     }
 
     useEffect(() => {
-        const activeChange = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
-        activeChange(list[0]?.shopId as number);
-    }, []);
+        if (list) {
+            setActiveShop && setActiveShop(list[0] ? list[0].shopId : 0);
+        }
+    }, [list]);
+
     useEffect(() => {
         const activeChange = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
         activeChange(list[now]?.shopId as number);
@@ -85,47 +83,48 @@ const CarouselBox = () => {
                 onRealIndexChange={swiper => setNow(swiper.realIndex)}
                 parallax
             >
-                {list?.map((item, index) => {
-                    if (!item) return null;
-                    return <SwiperSlide key={uuid()}>
-                        <Box onClick={(e) => openDetail(e, item.shopId)}>
-                            <VFlex>
-                                <HFlexSpaceBetween>
-                                    <div style={{ fontSize: '12px', fontWeight: '400' }}>
-                                        <span>검색된 식당</span>
-                                        <span> {list.length}</span>
-                                    </div>
-                                    <CountBox>
-                                        <VFlexCenter>
-                                            {index + 1} / {list.length}
-                                        </VFlexCenter>
-                                    </CountBox>
-                                </HFlexSpaceBetween>
-                                <HFlex gap='8px'>
-                                    <PictureDiv pic={`${imgPath.shopThumbnailImg + item.thumbnail}`}>
-                                        <Bookmark>
-                                            {item.isScrap
-                                                ? <Thumbnail onClick={(e) => toggleScrap(e, item)} src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="즐겨찾기 제거"></Thumbnail>
-                                                : <Thumbnail onClick={(e) => toggleScrap(e, item)} src={`${process.env.PUBLIC_URL}/icon/book mark white_28.png`} alt="즐겨찾기 추가"></Thumbnail>}
-                                        </Bookmark>
-                                    </PictureDiv>
-                                    <VFlex>
-                                        <ShopName>{item.shopName}</ShopName>
-                                        <Region>{convertAddress(item.address)}</Region>
-                                        <Summary>{`${item.distance} m | 피드 ${item.feedCount}`}</Summary>
-                                        {/* <Summary>{(item as ShopData).distance} m | 피드 {(item as ShopData).reviews}</Summary> */}
-                                    </VFlex>
-                                </HFlex>
-                            </VFlex>
-                        </Box>
-                    </SwiperSlide>;
-                })}
+                {
+                    list?.map((item, index) => {
+                        if (!item) return null;
+                        return <SwiperSlide key={uuid()}>
+                            <Box onClick={(e) => openDetail(e, item.shopId)}>
+                                <VFlex>
+                                    <HFlexSpaceBetween>
+                                        <div style={{ fontSize: '12px', fontWeight: '400' }}>
+                                            <span>검색된 식당</span>
+                                            <span> {list.length}</span>
+                                        </div>
+                                        <CountBox>
+                                            <VFlexCenter>
+                                                {index + 1} / {list.length}
+                                            </VFlexCenter>
+                                        </CountBox>
+                                    </HFlexSpaceBetween>
+                                    <HFlex gap='8px'>
+                                        <PictureDiv pic={`${imgPath.shopThumbnailImg + item.thumbnail}`}>
+                                            <Bookmark>
+                                                {item.isScrap
+                                                    ? <Thumbnail onClick={(e) => toggleScrap(e, item)} src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="즐겨찾기 제거"></Thumbnail>
+                                                    : <Thumbnail onClick={(e) => toggleScrap(e, item)} src={`${process.env.PUBLIC_URL}/icon/book mark white_28.png`} alt="즐겨찾기 추가"></Thumbnail>}
+                                            </Bookmark>
+                                        </PictureDiv>
+                                        <VFlex>
+                                            <ShopName>{item.shopName}</ShopName>
+                                            <Region>{convertAddress(item.address)}</Region>
+                                            <Summary>{`${item.distance} m | 피드 ${item.feedCount}`}</Summary>
+                                            {/* <Summary>{(item as ShopData).distance} m | 피드 {(item as ShopData).reviews}</Summary> */}
+                                        </VFlex>
+                                    </HFlex>
+                                </VFlex>
+                            </Box>
+                        </SwiperSlide>;
+                    })}
             </Swiper>
         </CarouselModule>
     )
 }
 
-export default CarouselBox;
+export default React.memo(CarouselBox);
 
 const CarouselModule = styled.div`
     position: absolute;

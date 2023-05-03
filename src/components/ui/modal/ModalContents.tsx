@@ -151,7 +151,6 @@ const MoveToOtherFolder = ({ dispatch }: { dispatch: React.Dispatch<React.SetSta
             });
             return modifiedList;
         });
-        console.log('수정후', scrapList);
         const tempSetSelected = setSelected as React.Dispatch<React.SetStateAction<number[]>>;
         tempSetSelected(prev => []);
 
