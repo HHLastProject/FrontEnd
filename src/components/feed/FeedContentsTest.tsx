@@ -44,27 +44,18 @@ const FeedContentsTest = ({ feedData, page }: { feedData: FeedCardData, page: st
     shopId: feedData?.shopId,
   };
 
+  const profilePic = feedData?.profilePic ? feedData?.profilePic : defaultImgPath.shopList;
+
   return (
     <>
       {/* 피드 프로필 */}
-      {feedData?.profilePic
-        ?
-        <FeedProfile
-          profilePic={feedData?.profilePic}
-          nickname={feedData?.nickname}
-          createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
-          isMine={feedData?.isMine}
-          params={feedData.feedId}
-        />
-        :
-        <FeedProfile
-          profilePic={defaultImgPath.shopList}
-          nickname={feedData?.nickname}
-          createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
-          isMine={feedData?.isMine}
-          params={feedData.feedId}
-        />
-      }
+      <FeedProfile
+        profilePic={profilePic}
+        nickname={feedData?.nickname}
+        createdAt={moment(feedData?.createdAt).format("YYYY.MM.DD")}
+        isMine={feedData?.isMine}
+        params={feedData.feedId}
+      />
 
       {/* 피드 사진 */}
       <FeedPicture>{process.env.REACT_APP_SERVER_URL + '/uploads/' + feedData?.feedPic}</FeedPicture>

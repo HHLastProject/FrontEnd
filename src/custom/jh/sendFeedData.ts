@@ -9,12 +9,10 @@ export const sendFeedData = async (shopId: number, formData: FormData) => {
       "Content-Type": "multipart/form-data",
       authorization: `${token}`,
     },
-  }).then((resolve) => {
-      console.log("피드 등록 성공");
-      alert("등록이 완료되었습니다!");
-      console.log('성공', formData.get('feedPic'));
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  })
+  .then((resolve) => {
+    alert("등록이 완료되었습니다!");
+  })
+  .catch((error) => {
+  });
 };

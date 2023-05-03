@@ -3,7 +3,7 @@ import { categoryTypes } from "../custom/ym/types";
 
 export const RangeContext = createContext<{range: number, setRange: React.Dispatch<React.SetStateAction<number>>} | null>(null);
 export const ShopListOrderByContext = createContext<{orderBy: string, setOrderBy: React.Dispatch<React.SetStateAction<string>>} | null>(null);
-
+//타입
 export type THidden = {
   isSelectHidden?: boolean,
   setIsSelectHidden?: React.Dispatch<React.SetStateAction<boolean>> | null,
@@ -12,6 +12,10 @@ export type THidden = {
 export type TSetNumber = {
   commentId: number,
   setCommentId: React.Dispatch<React.SetStateAction<number>> | null,
+}
+export type TFeedId = {
+  feedId: number,
+  setFeedId: React.Dispatch<React.SetStateAction<number>> | null,
 }
 export type TOrderBy = {
   orderBy: string,
@@ -24,6 +28,8 @@ export interface IShopCategory {
   category: string,
   setCategory: React.Dispatch<React.SetStateAction<categoryTypes>> | null,
 }
+
+//Context
 export const HiddenContext = createContext<THidden>({
   isSelectHidden: false,
   setIsSelectHidden: null,
@@ -44,4 +50,9 @@ export const CommentIdContext = createContext<TSetNumber>({
 export const OrderByContext = createContext<TOrderBy>({
   orderBy: '',
   setOrderBy: null,
+});
+
+export const FeedIdContext = createContext<TFeedId>({
+  feedId: 0,
+  setFeedId: null,
 });

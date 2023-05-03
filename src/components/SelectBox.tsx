@@ -39,8 +39,9 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
             alert('삭제되었습니다.');
           })
         }
-        controlHidden(id);
       }
+      
+      controlHidden(id);
     }
   }
 

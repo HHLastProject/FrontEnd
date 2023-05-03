@@ -9,7 +9,6 @@ export const usePutLike = ({feedId, setLikeResult}: {feedId: number, setLikeResu
     mutationKey: KEY,
     mutationFn: async () => {
       const res = await api_token.put(`/api/feed/${feedId}/like`);
-      console.log('성공!',res.data);
       return res.data;
     },
     onSuccess: (res) => {

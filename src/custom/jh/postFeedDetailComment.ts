@@ -11,13 +11,12 @@ export const postFeedDetailComment = async({feedId, feedComment}: {feedId: numbe
     },
   })
   .then((res) => {
-    console.log('성공', res);
     queryClient.invalidateQueries({queryKey: queryKeys.GET_FEED_DETAIL_COMMENT});
-    return res;
+    return res.data;
   })
   .catch((error) => {throw error});
   return { 
-    postedComment: data.comment,
+    postedComment: data,
     postedCommentMsg: data.msg,
   };
 }

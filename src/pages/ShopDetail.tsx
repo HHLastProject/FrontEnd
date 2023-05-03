@@ -21,31 +21,33 @@ import BtnResetStyle from '../components/ui/element/buttons/BtnReset';
 import { changeScrap } from '../custom/jh/changeScrap';
 import Loading from '../components/loading/Loading';
 import { Title3 } from '../components/FontStyle';
+import { FeedIdContext } from '../apis/context';
 
 function ShopDetail() {
   const navi = useNavigate();
-  const param = Number(useParams().shopId);
+  const shopId = Number(useParams().shopId);
   const [scrap, setScrap] = useState(false);
+  const [feedId, setFeedId] = useState(-1);
 
   //data
   const {
     shopDetailData,
     shopDetailIsLoading,
     shopDetailIsError
-  } = useGetShopDetail(param, setScrap);
+  } = useGetShopDetail(shopId, setScrap);
   const {
     shopDetailFeedList,
     getShopDetailFeedList,
     shopDetailFeedIsLoading,
     shopDetailFeedIsError,
-  } = useGetShopDetailFeed(param);
+  } = useGetShopDetailFeed(shopId);
 
   //스크랩 클릭
   const scrapHandler = () => {
     const token = getToken();
     if(token) {
       console.log('토큰있음')
-      changeScrap(param)
+      changeScrap(shopId)
         .then((res) => {
           const {isScrap} = res;
           setScrap(isScrap);
@@ -63,7 +65,7 @@ function ShopDetail() {
 
   useEffect(() => {
     getShopDetailFeedList();
-  }, []);
+  }, [feedId]);
 
   if (shopDetailIsLoading) return <Loading/>;
 
@@ -147,7 +149,8 @@ function ShopDetail() {
             </div>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
-
+        
+        
         {/* 피드 */}
         <ShopDetailContainer>
           <ShopDetailContentContainer id={shopDetailTabEl[2].id}>
@@ -156,7 +159,7 @@ function ShopDetail() {
                 <Title3>피드</Title3>
                 <Link 
                   to={`${path.feedForm}`}
-                  state={{shopId : param, shopName: shopDetailData?.shopName}}
+                  state={{shopId : shopId, shopName: shopDetailData?.shopName}}
                 >
                   {/* 피드쓰기 버튼 */}
                   <Buttons.Small.Default>
@@ -167,12 +170,15 @@ function ShopDetail() {
                 </Link>
               </SpaceBetween>
             </div>
+            
             {/* 피드들 */}
+            <FeedIdContext.Provider value={{feedId, setFeedId}}>
             {shopDetailFeedIsLoading 
               ?
               <Loading/>
               :
-              shopDetailFeedList?.map((item: any, index: number) => {
+              shopDetailFeedList?.filter((item: any) => (feedId !== item.feedId))
+              .map((item: any, index: number) => {
                 return(
                   <React.Fragment key={`FeedDetailList${item.shopId + index}`}>
                     {(index === 0) && <div style={{height: '12px'}}/>}
@@ -191,8 +197,10 @@ function ShopDetail() {
             }
             {(shopDetailFeedList?.length === 0 || !shopDetailFeedList) && (<div>피드가 없습니다.</div>)}
             {shopDetailFeedIsError && (<div>피드 에러</div>)}
+          </FeedIdContext.Provider>
           </ShopDetailContentContainer>
         </ShopDetailContainer>
+        
       </div>
     </>
   )
@@ -204,11 +212,6 @@ const XFlexCenter = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-`;
-
-const ShopDetailContainer = styled.div`
-  width: 100%;
-  border-top: 12px solid ${colorSet.lineLight};
 `;
 
 const ShopDetailThumbnail = styled.div`
@@ -229,6 +232,11 @@ const ThumbnailDiv = styled.div`
     width: 100%;
   }
 `
+
+const ShopDetailContainer = styled.div`
+  width: 100%;
+  border-top: 12px solid ${colorSet.lineLight};
+`;
 
 const ShopDetailContentContainer = styled.div`
   padding: 40px 20px;

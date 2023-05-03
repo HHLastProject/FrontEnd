@@ -38,7 +38,7 @@ const List = () => {
   } = useGetHomeShopList({ lng, lat, range });
 
   useEffect(() => {
-    console.log(lng, lat);
+    // console.log(lng, lat);
     if (lng !== 0 && lat !== 0) {
       getshopList();
     };

@@ -12,26 +12,24 @@ import { BtnRadius } from '../element/buttons/BtnRadius';
 import { Inputs } from '../element/input/Inputs';
 import { Buttons } from '../element/buttons/Buttons';
 import { FolderData, ReceivedBookmarks, ScrapListEachData } from '../../../custom/ym/types';
-import { apiPath } from '../../../shared/path';
-import useScrapData from '../../../hooks/useScrapData';
 import { ScrapContext, ScrapDispatchesContext } from '../../../pages/Bookmark';
 import useCreateFolder from '../../../hooks/useCreateFolder';
+import { FeedIdContext } from '../../../apis/context';
 
 const FeedModalContents = ({ target, stateDispatch }: { target: number, stateDispatch: React.Dispatch<React.SetStateAction<boolean>> }) => {
-
     const navi = useNavigate();
+    const {setFeedId} = useContext(FeedIdContext);
 
     const { mutate } = useMutation({
         mutationKey: feedKeys.DELETE_MYFEED,
         mutationFn: async (feedId: number) => {
             const res = await api_token.delete(`/api/mypage/${feedId}`);
-            console.log(res.data);
+            return res.data.msg;
         },
         onSuccess: () => {
+            if(setFeedId) {setFeedId(target)};
             queryClient.invalidateQueries(["GET_USER_FEED"]);
             queryClient.invalidateQueries(queryKeys.GET_FEEDS);
-            queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL);
-            queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
         }
     })
 
