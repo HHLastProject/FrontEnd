@@ -10,7 +10,6 @@ const FeedNameCard = ({ nickname, createdAt }: { nickname?: string, createdAt?: 
     let date = '';
 
     if ((nickname === undefined) && (createdAt === undefined)) {
-        console.log(queryClient.getQueriesData(["GET_USER_FEED"]));
         data = queryClient.getQueriesData(["GET_USER_FEED"])[0][1] as TossedFeedData;
         date = moment(data?.createdAt).format("YYYY.MM.DD");
     }

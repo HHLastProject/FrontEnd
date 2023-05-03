@@ -55,22 +55,6 @@ const BookmarkCard = ({ data, idx }: BookmarkChildren) => {
         setScrapList(prev => {
             return prev.filter((element) => element !== data);
         });
-        // if (data.isScrap) {
-        //     mutate(data.shopId);
-        //     setScrapList(prev => {
-        //         const a = [...prev];
-        //         a[idx] = { ...data, isScrap: !data.isScrap };
-        //         return a;
-        //     })
-        // } else {
-        //     mutate(data.shopId);
-        //     setScrapList(prev => {
-        //         const a = [...prev];
-        //         a[idx] = { ...data, isScrap: !data.isScrap };
-        //         return a;
-        //     });
-        //     queryClient.invalidateQueries(mapQueryKeys.POST_SHOPS_IN_RANGE);
-        // }
     }
 
     return (

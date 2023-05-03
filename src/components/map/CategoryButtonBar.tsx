@@ -4,7 +4,6 @@ import { FILTER_LIST, LINE_MEDIUM, MEDIUM, STRONG_MEDIUM } from '../../custom/ym
 import { DispatchContext, StateContext } from '../../pages/Home';
 import { categoryTypes } from '../../custom/ym/types';
 import uuid from 'react-uuid';
-import { colorSet } from '../ui/styles/color';
 
 const CategoryButtonBar = () => {
     const { category } = useContext(StateContext);
@@ -18,9 +17,6 @@ const CategoryButtonBar = () => {
         } else {
             changeCategory(prev => buttonName);
         }
-
-        console.log(category);
-        // console.log(buttonName);
     }
 
     return (

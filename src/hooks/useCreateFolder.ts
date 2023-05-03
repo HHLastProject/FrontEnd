@@ -9,7 +9,6 @@ const useCreateFolder = () => {
         mutationKey: scrapKeys.POST_FOLDER,
         mutationFn: async (payload: object) => {
             const res = await api_token.post(apiPath.createScrapFolder, payload);
-            // console.log('생성 결과', res);
             return res.data;
         },
         onSuccess: () => {
