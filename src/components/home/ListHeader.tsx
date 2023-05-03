@@ -12,24 +12,23 @@ import BtnResetStyle from '../ui/element/buttons/BtnReset';
 import { IconSize16, IconSize24 } from '../ui/element/icons/IconSize';
 import { deleteToken, getToken } from '../../apis/getToken';
 
-//close == true : 뒤로가기 버튼이 x로 바뀜f
+//close == true : 뒤로가기 버튼이 x로 바뀜
 //scrap == true : 스크랩 버튼
 //name : 헤더에 들어갈 이름
 const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name?: string, range?: number, close?: boolean, list?: boolean, feedForm?: true, children?: ReactNode, scrap?: boolean}) => {
   const {backClickHandler} = useNavigateHandler();
   const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
   const token = getToken();
-  const [isLogin, setIsLogin] = useState(false);
-  // if(token) {setIsLogin(true)};
+  const [isLogin, setIsLogin] = useState(token ? true : false);
 
-  const onClickLogout = () => {
-    const result = window.confirm('로그아웃 하시겠습니까?');
-    if(result) {
-      deleteToken();
-      // setIsLogin(false);
-      alert('로그아웃 되었습니다.');
-    }
-  }
+  // const onClickLogout = () => {
+  //   const result = window.confirm('로그아웃 하시겠습니까?');
+  //   if(result) {
+  //     deleteToken();
+  //     alert('로그아웃 되었습니다.');
+  //     setIsLogin(false);
+  //   }
+  // }
 
   return (
     <HeaderContainer
@@ -80,39 +79,42 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
         {/* 오른쪽 */}
         <RightContainer>
           {range &&
-            <>
-              {/* 로그인 로그아웃 */}
-              {token
-                ?
-                <BtnResetStyle onClick={onClickLogout}>
-                  <Title5>로그아웃</Title5>
-                </BtnResetStyle>
-                :
-                <Link to={'/login'}>
-                  <Title5>로그인하기</Title5>
-                </Link>
-              }
-
-              {/* 검색하기 */}
-              <Link
-                to={`${path.search}`}
-                state={{link: null}}
-              >
-                <BothSideDiv>
-                  <IconSize24>
-                    <img src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="검색" />
-                  </IconSize24>
-                </BothSideDiv>
+          <>
+            {/* 로그인 로그아웃 */}
+            {isLogin
+              ?
+              <></>
+              // <BtnResetStyle onClick={onClickLogout}>
+              //   <Title5>로그아웃</Title5>
+              // </BtnResetStyle>
+              :
+              <Link to={'/login'}>
+                <Title5>로그인하기</Title5>
               </Link>
-            </>
-          }
-          {(feedForm || scrap) && 
-            <>
-            <BothSideDiv>
-              {children}
-            </BothSideDiv>
-            </>
-          }
+            }
+
+            {/* 검색하기 */}
+            <Link
+              to={`${path.search}`}
+              state={{link: null}}
+            >
+              <BothSideDiv>
+                <IconSize24>
+                  <img src={`${process.env.PUBLIC_URL}/icon/search_24.png`} alt="검색" />
+                </IconSize24>
+              </BothSideDiv>
+            </Link>
+          </>
+        }
+
+        {/* 스크랩, 또는 피드폼일때 들어올 칠드런 위치 */}
+        {(feedForm || scrap) && 
+          <>
+          <BothSideDiv>
+            {children}
+          </BothSideDiv>
+          </>
+        }
         </RightContainer>
       </HFlex>
     </HeaderContainer>
