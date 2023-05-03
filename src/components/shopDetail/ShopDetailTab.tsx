@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useState } from 'react'
 import { IconTabPoint24 } from '../ui/element/icons/IconsStyle';
 import styled from 'styled-components';
 import { colorSet } from '../ui/styles/color';
@@ -15,19 +15,10 @@ export const shopDetailTabEl: TTabEl[] = [
 
 function ShopDetailTab({tabEl, listCount}: {tabEl: TTabEl[], listCount?: number}) {
   const [tabValue, setTabValue] = useState<string>('정보');
-  const checkRef = useRef<HTMLInputElement>();
 
   //탭 눌렀을때
   const tabOnclickHandler = (id: string, value: string, checkId: string) => {
     setTabValue(value);
-    const radio = document.getElementById(checkId);
-    // const radio = document.getElementById(checkId);
-    if(radio){
-      console.log(typeof radio.getAttribute('checked'), radio.getAttribute('checked'));
-      // if(radio.checked){
-      //   radio.checked = 'true';
-      // }
-    }
     scrollToTabInfo(id);
   };
 
@@ -49,18 +40,16 @@ function ShopDetailTab({tabEl, listCount}: {tabEl: TTabEl[], listCount?: number}
               {(item.value === tabEl[0].value) 
                 ?
                 <input
-                  onChange={(e) => {console.log('체크')}}
+                  onChange={(e) => tabOnclickHandler(item.id, item.value, item.checkId)}
                   type="radio" id={item.checkId} name='detail-tab' defaultChecked hidden
                 />
                 :
                 <input
-                  onChange={(e) => {console.log('체크')}}
+                  onChange={(e) => tabOnclickHandler(item.id, item.value, item.checkId)}
                   type="radio" id={item.checkId} name='detail-tab' hidden
                 />
               }
-              <div className='detail-tab-div'
-                onClick={(e) => tabOnclickHandler(item.id, item.value, item.checkId)}
-              >
+              <div className='detail-tab-div'>
                 <div style={{display: 'flex', alignItems: 'center'}}>
                   {(tabValue === item.value) && <IconTabPoint24/>}
                   <label htmlFor={item.checkId}>

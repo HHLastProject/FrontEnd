@@ -46,7 +46,6 @@ function ShopDetail() {
   const scrapHandler = () => {
     const token = getToken();
     if(token) {
-      console.log('토큰있음')
       changeScrap(shopId)
         .then((res) => {
           const {isScrap} = res;

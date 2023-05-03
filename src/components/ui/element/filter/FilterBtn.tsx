@@ -13,63 +13,66 @@ export const OrderbyFilterBtn = ({ children }: { children?: React.ReactNode }) =
   const {orderBy, setOrderBy} = useContext(OrderByContext);
 
   return (
-    <>
+    <OrderbyFilterBtnWrap>
       {
         (!SelectData.TAG_SELECT.includes(orderBy))
         ?
+        // 화살표 버튼일때
         <OrderbyFilterBtnStyle>
           <BtnResetStyle
             onClick={() => controlVisible(SelectBoxId.ORDER_BY_SELECT_ID)}
           >
-          <div>
+          <FilterDivStyle style={{gap: '4px', padding: '8px 12px'}}>
             <Body3>{orderBy}</Body3>
             <IconSmallDownArrow />
-          </div>
+          </FilterDivStyle>
           </BtnResetStyle>
         </OrderbyFilterBtnStyle>
         :
+        // x버튼일때
         <>
         <OrderbyFilterBtnStyle>
-          <div>
+          <FilterDivStyle>
             <BtnResetStyle
               onClick={() => controlVisible(SelectBoxId.ORDER_BY_SELECT_ID)}
             >
-              <Body3>{orderBy}</Body3>
+              <Body3 style={{marginLeft: '12px'}}>{orderBy}</Body3>
             </BtnResetStyle>
-            <BtnResetStyle>
-              <IconXRount16/>
-            </BtnResetStyle>
-          </div>
+            <XBtnStyle onClick={() => setOrderBy && setOrderBy('태그')}>
+              <BtnResetStyle>
+                <IconXRount16/>
+              </BtnResetStyle>
+            </XBtnStyle>
+          </FilterDivStyle>
         </OrderbyFilterBtnStyle>
-
-        <BtnResetStyle>
-          <XBtnStyle onClick={() => setOrderBy && setOrderBy('태그')}/>
-        </BtnResetStyle>
         </>
       }
-    </>
+    </OrderbyFilterBtnWrap>
   )
 }
 
-const OrderbyFilterBtnStyle = styled.div<{onClick?: React.MouseEventHandler<HTMLButtonElement>}>`
-  background-color: ${colorSet.bgMedium};
-  border: none;
-  padding: 8px 12px;
+const OrderbyFilterBtnWrap = styled.div`
+  flex: none; 
   border-radius: 100px;
-  flex: none;
-  div {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 4px;
-  }
+  overflow: hidden;
+`;
+
+const OrderbyFilterBtnStyle = styled.div`
+  border: none;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${colorSet.bgMedium};
+`;
+
+const FilterDivStyle = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
 `;
 
 const XBtnStyle = styled.div`
-  width: 35px;
-  height: 35px;
-  position: absolute;
-  left: 96px;
-  top: 54px;
-  background-color: transparent;
+  display: flex;
+  padding: 10px 12px;
 `;
