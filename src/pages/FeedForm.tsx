@@ -81,13 +81,9 @@ function FeedForm() {
         } else {navi(-1)};
       });
     } else {
-      alert("가게명 또는 사진을 등록해주세요.");
+      alert("가게명과 사진을 등록해주세요.");
     };
   };
-
-  const moveSearch = () => {
-    navi(`${path.search}`);
-  }
 
   const inputClickHandler = () => {
     document.getElementById('input-preview-img')?.click();
@@ -102,10 +98,6 @@ function FeedForm() {
       return;
     };
   }, []);
-
-  useEffect(() => {
-    console.log(JSON.stringify(checkList));
-  }, [checkList]);
 
   return (
     <>
@@ -134,17 +126,17 @@ function FeedForm() {
             <Title4>방문한 카페</Title4>
             <Body4 color={colorSet.textMedium}>필수</Body4>
           </FeedFormTitle>
-          {/* <Link
+          <Link
             to={`${path.search}`}
             state={{link: `${path.feedForm}`}}
-          > */}
+          >
           <SearchStore
             inputValue={inputValue}
             setInputValue={setInputValue}
             placeholder='카페 이름 입력하기'
             setDataList={setInputValue}
           />
-          {/* </Link> */}
+          </Link>
         </VFlex>
 
         {/* 미리보기 */}
