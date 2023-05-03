@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
 import uuid from 'react-uuid';
-import { CenterContext, DispatchContext, ListContextDefault, Markers, StateContext } from '../../pages/Home';
+import { CenterContext, DispatchContext, ListContextDefault, Markers, SearchedShop, StateContext } from '../../pages/Home';
 import { NavermapPointType } from '../../custom/ym/variables';
 import styled from 'styled-components';
 import MarkerMemo from './MarkerMemo';
 import useGetGooList from '../../hooks/useGetGooList';
 import makeArrayForCluster from '../../hooks/makeArrayForCluster';
+import { useLocation } from 'react-router-dom';
 
 export type Coordinate = {
     lng: number,
@@ -27,7 +28,7 @@ type MapModuleProps = {
 
 interface MapProps {
     list: Markers[] | null[],
-    setList: React.Dispatch<React.SetStateAction<Markers[] | null[]>>
+    setList: React.Dispatch<React.SetStateAction<Markers[] | null[]>>,
 }
 
 const MapModule = ({ list, setList }: MapProps) => {
@@ -35,7 +36,7 @@ const MapModule = ({ list, setList }: MapProps) => {
     const mapRef = useRef(null);
     const [zoom, setZoom] = useState<number>(17);
     const [map, setMap] = useState<naver.maps.Map | null>(null);
-
+    // const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     let timeCheck: NodeJS.Timeout | null = null;
 
@@ -52,6 +53,22 @@ const MapModule = ({ list, setList }: MapProps) => {
         setRange,
     } = useContext(DispatchContext);
 
+
+    const defaultSearchResult: SearchedShop = {
+        shopLat: 0,
+        shopLng: 0,
+    }
+
+    //검색 페이지에서 받는 위도 경도
+    const location = useLocation();
+    if (location.state) {
+        const searchedShop = {
+            shopLng: Number(location.state.lng),
+            shopLat: Number(location.state.lat)
+        };
+
+        // setSearch(searchedShop);
+    }
 
     const icon = {
         url: `${process.env.PUBLIC_URL}/markers/non_selected_shop.png`,
@@ -140,6 +157,18 @@ const MapModule = ({ list, setList }: MapProps) => {
         }
     });
 
+
+    useEffect(() => {
+        if (location.state) {
+            const searchedShop = {
+                shopLng: Number(location.state.lng),
+                shopLat: Number(location.state.lat)
+            };
+            centerChangeHandler({ y: searchedShop.shopLat, x: searchedShop.shopLng });
+        }
+    }, [location.state]);
+
+
     /* 메모리누수 방지 */
     useEffect(() => {
         return () => {
@@ -150,7 +179,6 @@ const MapModule = ({ list, setList }: MapProps) => {
     }, [timeCheck]);
 
     useEffect(() => {
-        // const dispatch = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
         list && (setActiveShop && setActiveShop(list[0]?.shopId as number));
     }, [list]);
 
