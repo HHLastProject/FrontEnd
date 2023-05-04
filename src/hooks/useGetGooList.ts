@@ -7,7 +7,10 @@ const useGetGooList = () => {
         queryFn: async () => {
             const res = await api_token.get('/api/search/summary');
             return res.data;
-        }
+        },
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchInterval: false,
     })
     return { guList: data, gooIsSuccess: isSuccess };
 }

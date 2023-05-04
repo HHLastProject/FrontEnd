@@ -3,7 +3,7 @@ import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } 
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
 import uuid from 'react-uuid';
 import { CenterContext, DispatchContext, ListContextDefault, Markers, SearchedShop, StateContext } from '../../pages/Home';
-import { NavermapPointType, clusterHTML } from '../../custom/ym/variables';
+import { NavermapPointType, ShopData, clusterHTML } from '../../custom/ym/variables';
 import styled from 'styled-components';
 import MarkerMemo from './MarkerMemo';
 import useGetGooList from '../../hooks/useGetGooList';
@@ -11,6 +11,8 @@ import makeArrayForCluster from '../../hooks/makeArrayForCluster';
 import { useLocation } from 'react-router-dom';
 import { colorSet } from '../ui/styles/color';
 import { GuInformation } from '../../shared/guCoordInform';
+import useMapDataCall from '../../hooks/useMapDataCall';
+import shopCoordList from '../../custom/ym/shopCoordList';
 
 export type Coordinate = {
     lng: number,
@@ -38,6 +40,7 @@ const MapModule = ({ list, setList }: MapProps) => {
     const mapRef = useRef(null);
     const [zoom, setZoom] = useState<number>(17);
     const [map, setMap] = useState<naver.maps.Map | null>(null);
+    const [markers, setMarkers] = useState<Markers[] | null[]>([]);
     // const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     let timeCheck: NodeJS.Timeout | null = null;
@@ -45,15 +48,19 @@ const MapModule = ({ list, setList }: MapProps) => {
     const { isChanged } = useContext(StateContext);
     const { setIsChanged } = useContext(DispatchContext);
     const { center, setCenter } = useContext(CenterContext);
-
+    const { data, mutate, isSuccess, isError, isLoading } = useMapDataCall();
     const {
+        range,
         activeShop,
+        category,
         // list,
         userCoord,
     } = useContext(StateContext);
 
     const {
         setActiveShop,
+        setShopCoord,
+        setCategory,
         setRange,
     } = useContext(DispatchContext);
 
@@ -159,11 +166,23 @@ const MapModule = ({ list, setList }: MapProps) => {
         dispatch(shop);
     }
 
+
+
+
     map?.addListener('dragend', () => {
         if (zoom > 14) {
             centerChangeHandler(map.getCenter());
         }
     });
+
+    map?.addListener('zoom_changed', () => {
+        setZoom(map.getZoom());
+        const newPayload = { lng: center.lng, lat: center.lat, range: range };
+        // console.log("요청했음");
+        mutate(newPayload);
+    })
+
+
 
     const clusterText = (guName: string, num: number) => {
         const clusterHTML = `<div style="cursor:pointer;width:fit-content;min-width:40px;height:fit-content;line-height:22px;font-size:12px;color:${colorSet.primary_02};text-align:center;font-weight:bold;background-color:white;border:2px solid ${colorSet.primary_02};border-radius:5px;"><div style="font-weight:bold;color:${colorSet.primary_01}">${guName}</div>${num}</div>`
@@ -182,6 +201,31 @@ const MapModule = ({ list, setList }: MapProps) => {
         }
         return result
     }
+    const convert = (data: ShopData[] | null[]) => {
+        if (data) {
+            return data?.map((element) => {
+                return {
+                    shopId: element?.shopId,
+                    lat: element?.lat,
+                    lng: element?.lng
+                } as Markers;
+            })
+        } else return [null];
+    }
+
+    useEffect(() => {
+        const listPivot = list?.map((element) => element?.shopId).sort() as number[];
+        const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
+        const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
+        if (!equal(listPivot, dataPivot)) {
+            setList(data);
+            const searchResult = data?.filter(
+                (item: ShopData) => item.category === category);
+            setMarkers(convert(category ? searchResult : data));
+            setShopCoord && setShopCoord(shopCoordList(data));
+        }
+    }, [isSuccess]);
+
     useEffect(() => {
         if (location.state) {
             const searchedShop = {

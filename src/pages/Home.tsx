@@ -9,6 +9,7 @@ import useMapDataCall from '../hooks/useMapDataCall';
 import { dispatches, states } from '../custom/ym/contextValues';
 import CategoryButtonBar from '../components/map/CategoryButtonBar';
 import { useLocation } from 'react-router-dom';
+import { debounce } from '../custom/jh/debounce';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { getRealtimeLocation } from '../custom/jh/getUserLocation';
 import shopCoordList from '../custom/ym/shopCoordList';
@@ -137,12 +138,20 @@ const Home = () => {
             setShopCoord(shopCoordList(data));
         }
     }, [isSuccess]);
+    let timeCheck: NodeJS.Timeout | null = null;
 
-    /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
-    useEffect(() => {
-        const newPayload = { lng: center.lng, lat: center.lat, range: range };
-        mutate(newPayload);
-    }, [range, center]);
+    // const send = (newPayload: {
+    //     lng: number;
+    //     lat: number;
+    //     range: number;
+    // }) => {
+    //     debounce(mutate(newPayload), 100);
+    // }
+    // useEffect(() => {
+    //     const newPayload = { lng: center.lng, lat: center.lat, range: range };
+    //     // console.log("요청했음");
+    //     send(newPayload);
+    // }, [range, center]);
 
 
     /* 카테고리 버튼에 대한 데이터 리렌더링 */
