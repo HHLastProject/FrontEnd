@@ -9,9 +9,11 @@ import useMapDataCall from '../hooks/useMapDataCall';
 import { dispatches, states } from '../custom/ym/contextValues';
 import CategoryButtonBar from '../components/map/CategoryButtonBar';
 import { useLocation } from 'react-router-dom';
+import { debounce } from '../custom/jh/debounce';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { getRealtimeLocation } from '../custom/jh/getUserLocation';
 import shopCoordList from '../custom/ym/shopCoordList';
+import Loading from '../components/loading/Loading';
 
 
 export interface EachData {
@@ -33,14 +35,18 @@ export interface CenterContextDefault {
 }
 
 export interface ListContextDefault {
-    list: ShopData[] | null[],
-    setList: React.Dispatch<React.SetStateAction<ShopData[] | null[]>> | null
+    list: ShopData[] | null,
+    setList: React.Dispatch<React.SetStateAction<ShopData[] | null>> | null
 }
 
 export interface Markers {
     shopId: number,
     lat: number,
     lng: number,
+}
+export interface SearchedShop {
+    shopLng: number,
+    shopLat: number
 }
 
 const defaultCenter: CenterContextDefault = {
@@ -59,12 +65,13 @@ const Home = () => {
 
     const [range, setRange] = useState(300);
     const [category, setCategory] = useState<categoryTypes | ''>('');
-    const [list, setList] = useState<ShopData[] | null[]>([null]);
+    const [list, setList] = useState<ShopData[] | null>(null);
     const [center, setCenter] = useState<Coordinate>(defaultCenter.center);
     // const [isMoving, setIsMoving] = useState<boolean>(false);
-    // const [isChanged, setIsChanged] = useState<boolean>(false);
+    const [isChanged, setIsChanged] = useState<boolean>(true);
     const [activeShop, setActiveShop] = useState<number>(0);
     const [markers, setMarkers] = useState<Markers[] | null[]>([]);
+    const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     // 실시간 유저 위치
     const [userCoord, setUserCoord] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
@@ -72,11 +79,8 @@ const Home = () => {
     // 샵 위치
     const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
 
-    // const stateList = { userCoord, shopCoord, category, range, list, center, isMoving, isChanged, activeShop };
-    // const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged, setActiveShop };
-    const stateList = { userCoord, shopCoord, category, range, activeShop };
-    const dispatchList = { setRange, setCategory, setUserCoord, setShopCoord, setActiveShop };
-    const listArr = { list, setList }
+    const stateList = { list, userCoord, shopCoord, category, range, isChanged, activeShop, markers };
+    const dispatchList = { setList, setRange, setCategory, setUserCoord, setShopCoord, setIsChanged, setActiveShop, setMarkers };
     const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
 
     //검색 페이지에서 받는 위도 경도
@@ -111,30 +115,14 @@ const Home = () => {
         } else return [null];
     }
 
+
     useEffect(() => {
         if (location.state) {
             shopLng = Number(location.state.lng);
             shopLat = Number(location.state.lat);
         }
-    }, [])
-
-    /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
-    useEffect(() => {
-        const newPayload = { lng: center.lng, lat: center.lat, range: range };
-        mutateAsync(newPayload)
-            .then((data: ShopData[]) => {
-                const listPivot = list.map((element) => element?.shopId).sort() as number[];
-                const dataPivot = data?.map((element) => element?.shopId).sort() as number[];
-                const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
-                if (!equal(listPivot, dataPivot)) {
-                    setList(data);
-                    const searchResult = data?.filter(
-                        (item: ShopData) => item.category === category);
-                    setMarkers(convert(category ? searchResult : data));
-                    setShopCoord(shopCoordList(data));
-                }
-            });
-    }, [range, center]);
+        mutate({ lat: userCoord.lat, lng: userCoord.lng, range });
+    }, []);
 
 
     /* 카테고리 버튼에 대한 데이터 리렌더링 */
@@ -160,10 +148,10 @@ const Home = () => {
                     <CenterContext.Provider value={{ center, setCenter }}>
                         <VFlexCenter etc="min-width:390px; height:100%; flex:1;">
                             <MapHeader />
-                            <MapModule list={markers} setList={setMarkers} />
+                            <MapModule />
                         </VFlexCenter>
                         <CategoryButtonBar />
-                        <CarouselBox list={list} setList={setList} />
+                        <CarouselBox />
                     </CenterContext.Provider>
                 </DispatchContext.Provider>
             </StateContext.Provider>

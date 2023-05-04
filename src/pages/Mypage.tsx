@@ -7,6 +7,7 @@ import CustomerCenter from '../components/mypage/CustomerCenter';
 import NoLoginStatus from '../components/mypage/NoLoginStatus';
 import { ReceivedFeed } from '../custom/ym/types';
 import useMypage from '../hooks/useMypage';
+import Loading from '../components/loading/Loading';
 
 export type StateContextType = {
     props: Feed | null,
@@ -62,7 +63,7 @@ const Mypage = () => {
         isError && setIsLogin(false);
     }, [isError]);
 
-    if (isLoading) return <div>로딩중</div>;
+    if (isLoading) return <Loading />;
 
     return (
         <MypageContext.Provider value={{ props: feedData, propsFunc: setFeedData, isLogin: isLogin }}>

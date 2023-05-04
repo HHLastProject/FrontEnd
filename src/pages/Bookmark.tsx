@@ -9,6 +9,7 @@ import { BookmarkContext, BookmarkDispatches, bookmarkContext, bookmarkDispatche
 import { Buttons } from '../components/ui/element/buttons/Buttons';
 import { Modals } from '../components/ui/modal/Modals';
 import useEditScrapData from '../hooks/useEditScrapData';
+import Loading from '../components/loading/Loading';
 
 
 export const ScrapContext = createContext(bookmarkContext);
@@ -76,9 +77,8 @@ const Bookmark = () => {
             setScrapList(scrapData?.scrapList);
         }
     }, [isSuccess, scrapData]);
-
-    if (isLoading && !localStorage.getItem("access_token")) return <div>로그인이 필요합니다</div>;
-    if (isLoading && localStorage.getItem("access_token")) return <div>로딩중</div>;
+    if (isLoading && !localStorage.getItem("access_token")) return <><Loading />로그인이 필요합니다</>;
+    if (isLoading && localStorage.getItem("access_token")) return <Loading />;
     if (isError) return <div>통신 에러</div>;
 
     return (
