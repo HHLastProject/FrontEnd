@@ -141,7 +141,6 @@ const Home = () => {
     /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
     useEffect(() => {
         const newPayload = { lng: center.lng, lat: center.lat, range: range };
-        console.log("리렌더링됐다");
         mutate(newPayload);
     }, [range, center]);
 
