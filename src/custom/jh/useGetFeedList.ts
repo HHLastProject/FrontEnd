@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "../../apis/queries";
-import api from "../../shared/api";
+import { api_token } from "../../shared/api";
 import { apiPath } from "../../shared/path";
 
 export const useGetFeedList = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.GET_FEEDS,
     queryFn: async () => {
-      const {data} = await api.get(`${apiPath.feedList}`);
+      const {data} = await api_token.get(`${apiPath.feedList}`);
       return data;
     },
     onSuccess: (data) => {
-      console.log(data, '성공');
+      return data;
     },
     onError: (error) => {
       console.log(error);
@@ -19,7 +19,7 @@ export const useGetFeedList = () => {
     },
   });
   return {
-    feedList : data,
+    feedList: data,
     feedListIsLoading: isLoading,
     feedListIsError: isError,
   };

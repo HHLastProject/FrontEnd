@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { loginKeys } from '../apis/queries';
+import { KAKAO_CALLBACK_URL_LOCAL, KAKAO_CALLBACK_URL_S3 } from '../custom/ym/variables';
 
 type Payload = {
     code: string
@@ -38,6 +39,10 @@ const RedirectKakao = () => {
         kakaoAccessToken();
         const payload = {
             code: localStorage.getItem('kakaoAuth') as string,
+            /* S3 배포용 */
+            // redirectURL: KAKAO_CALLBACK_URL_S3,
+            /* 로컬 스토리지용 */
+            redirectURL: KAKAO_CALLBACK_URL_LOCAL,
         };
         mutate(payload);
     }, []);

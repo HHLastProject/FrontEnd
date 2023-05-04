@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Container as MapDiv, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 import styled from 'styled-components';
+import { iconImgPath } from '../../shared/path';
 
 type Size = {
   width: number,
@@ -38,7 +39,7 @@ const ShopDetailMap = ({ width, height, lng, lat }: IShopDetailMap) => {
           zoomControl={true}
         >
           <Marker
-            icon={`${process.env.PUBLIC_URL}/markers/icon_mappin_36.png`}
+            icon={`${iconImgPath.map.selectedShopLocation}`}
             position={new navermaps.LatLng(lat, lng)}
           />
         </NaverMap>

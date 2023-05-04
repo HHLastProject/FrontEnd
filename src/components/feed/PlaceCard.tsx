@@ -1,10 +1,10 @@
-import React, { createContext } from 'react'
 import PlaceCardRound from '../PlaceCardRound';
-import { HFlex, HFlexSpaceBetween } from '../../custom/ym/styleStore';
+import { HFlexSpaceBetween } from '../../custom/ym/styleStore';
 import PlacePicture from './PlacePicture';
 import PlaceNameCard from './PlaceNameCard';
 import PlaceBookMark from './PlaceBookMark';
-
+import { useNavigate } from 'react-router-dom';
+import { path } from '../../shared/path';
 
 interface childrenForPlaceCard {
     dataset?: FeedCardData
@@ -19,12 +19,16 @@ export interface FeedCardData {
 }
 
 const PlaceCard = ({ dataset }: childrenForPlaceCard) => {
-    console.log(dataset);
+    const navi = useNavigate();
+
+    const cardClickHandler = () => {
+        navi(`${path.toShopDetail + '/' + dataset?.shopId}`)
+    }
     return (
         <PlaceCardRound>
             <HFlexSpaceBetween>
-                <PlacePicture imgUrl={dataset?.shopThumbnail} />
-                <PlaceNameCard shopName={dataset?.shopName} shopAddress={dataset?.shopAddress} />
+                <PlacePicture imgUrl={dataset?.shopThumbnail} onClick={cardClickHandler} />
+                <PlaceNameCard shopName={dataset?.shopName} shopAddress={dataset?.shopAddress} onClick={cardClickHandler} />
                 <PlaceBookMark isScrap={dataset?.isScrap} shop={dataset?.shopId} />
             </HFlexSpaceBetween>
         </PlaceCardRound>

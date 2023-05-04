@@ -7,8 +7,8 @@ function ListCount({children}: PropsWithChildren) {
   return (
     <ListCountStyle
       className='list-count'
-    >
-      {children}
+    > 
+      {children ? children : 0}
     </ListCountStyle>
   )
 }

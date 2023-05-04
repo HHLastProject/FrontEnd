@@ -4,10 +4,9 @@ import { FILTER_LIST, LINE_MEDIUM, MEDIUM, STRONG_MEDIUM } from '../../custom/ym
 import { DispatchContext, StateContext } from '../../pages/Home';
 import { categoryTypes } from '../../custom/ym/types';
 import uuid from 'react-uuid';
-import { colorSet } from '../ui/styles/color';
 
 const CategoryButtonBar = () => {
-    const { category } = useContext(StateContext);
+    const { category, isChanged } = useContext(StateContext);
     const { setCategory } = useContext(DispatchContext);
 
     const changeCategory = setCategory as React.Dispatch<React.SetStateAction<"" | categoryTypes>>;
@@ -18,20 +17,24 @@ const CategoryButtonBar = () => {
         } else {
             changeCategory(prev => buttonName);
         }
-
-        console.log(category);
-        // console.log(buttonName);
     }
 
     return (
-        <CategoryButtons>
-            {FILTER_LIST.map((element) => <FilterBtn
-                selected={category}
-                name={element}
-                key={uuid()}
-                onClick={(e) => filterClickHandler(element)}
-            >{element}</FilterBtn>)}
-        </CategoryButtons>
+        <>
+            {
+                isChanged
+                    ? <CategoryButtons>
+                        {
+                            FILTER_LIST.map((element) => <FilterBtn
+                                selected={category}
+                                name={element}
+                                key={uuid()}
+                                onClick={(e) => filterClickHandler(element)}
+                            >{element}</FilterBtn>)
+                        }
+                    </CategoryButtons >
+                    : null}
+        </>
     )
 }
 

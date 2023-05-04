@@ -24,7 +24,9 @@ export const path: IPath = {
   toShopDetail: '/shop',
   shopDetail: '/shop/:shopId',
   feedList: '/feed',
-  feedForm: '/shop/:shopId/feedform',
+  toFeedComment: '/feed/comment',
+  feedComment: '/feed/comment/:feedId',
+  feedForm: '/feedform',
   search: '/search',
   feedFormSearch: '/search/:isfeed',
 
@@ -36,31 +38,41 @@ export const path: IPath = {
   adminLogin: "/admin/login",
   redirectNaver: "/redirect/naver",
   redirectKakao: "/redirect/kakao",
+
   bookmark: "/bookmark",
+  folderList: "/folder",
+
   mypage: '/mypage',
   allFeeds: "/mypage/feeds/:userId",
   toFeedDetail: "/feed/detail",
-  feedDetail: "/feed/detail/:feedId"
+  feedDetail: "/feed/detail/:feedId",
+  editNickname: "/mypage/edit",
 }
 
 export const apiPath: IPath = {
   shopList: '/api/shop/main',
   shopDetail: '/api/shop/:shopId',
   toShopDetail: '/api/shop',
-  shopDetailReview: '/api/shop/:shopId/review',
   editShopDetailReview: '/api/shop/:shopId/review/:reviewId',
   search: '/api/search',
   feedList: '/api/feed',
+  feedDetailComment: `/api/feed/comment`,
   toggleScrap: '/api/:shopId/scrap',
   scrapList: '/api/favorite',
   mypage: '/api/mypage',
   feedDetail: '/api/mypage/:feedId',
+  deleteFeed: '/api/mypage/:feedId',
+  editNickname: '/api/mypage/change/nickname',
+  createScrapFolder: '/api/favorite/folder',
+  deleteScrapFolder: '/api/favorite/folder',
+  postScrapData: '/api/favorite/modify',
 };
 
 export const imgPath: IPath = {
   shopMenuImg: setServerUrl(`/uploads/shopMenu/`),
   shopThumbnailImg: setServerUrl(`/uploads/shopThumbnail/`),
   feedImg: setServerUrl(`/uploads/`),
+  userProfileImg: setServerUrl(`/uploads/`),
 };
 
 export const defaultImgPath: IPath = {
@@ -79,12 +91,40 @@ export const iconImgPath: IPathObject = {
   },
   map: {
     shopLocation: setPublicUrl(`/images/markers/icon_mappin_36.png`),
+    selectedShopLocation: setPublicUrl(`/markers/selected_shop.png`),
   },
   write: {
     pencil: setPublicUrl(`/images/feed/write_24.png`),
     plus: setPublicUrl(`/plus_white_24.png`),
   },
   arrow: {
-    chevrondown16: setPublicUrl(`/chevrondown_16.png`),
+    chevrondown16: setPublicUrl(`/icon/chevrondown_16.png`),
+  },
+  like: {
+    likeInactive24: setPublicUrl(`/icon/like_inactive_24.png`),
+    likeActive24: setPublicUrl(`/icon/like_active_24.png`),
+  },
+  comment: {
+    comment24: setPublicUrl(`/icon/comment_24.png`),
+  },
+  etc: {
+    etc1: setPublicUrl(`/icon/etc_btn_24.png`),
+  },
+  upload: {
+    commentActive40: setPublicUrl(`/images/button/btn_send_active.png`),
+    commentInactive40: setPublicUrl(`/images/button/btn_send_inactive.png`),
+  },
+  bookmark: {
+    noFolder: setPublicUrl(`/images/bookmark/no_folder.png`),
+  },
+  tab: {
+    //상세페이지 탭 눌렀을때 옆에 나타나는 아이콘
+    point24: setPublicUrl(`/tab_point_24.png`),
+  },
+  loading: {
+    default: setPublicUrl(`/images/loading/img_loading.png`),
+  },
+  cancel: {
+    xRound16: setPublicUrl(`/icon/feed/x_rouned_16.png`),
   }
 };

@@ -1,22 +1,38 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../../apis/queries';
-import api from '../../shared/api';
+import { api_token } from '../../shared/api';
 import { apiPath } from '../../shared/path';
-import { IFeedList } from '../../components/FeedContents2';
 
-export const useGetShopDetail = (param: number | undefined) => {
-  const queryClinet = useQueryClient();
+export interface IFeedList {
+  nickname: string;
+  profilePic : string | undefined | null;
+  createdAt : string | Date;
+  feedPic : string;
+  comment : string | null;
+  tags : [] | string[];
+  shopId : number;
+  shopName : string;
+  shopAddress : string;
+  shopThumbnail : string;
+  isScrap : boolean;
+};
+
+export const useGetShopDetail = (param: number | undefined, setState:React.Dispatch<React.SetStateAction<boolean>>) => {
+  const {getShopDetailFeedList} = useGetShopDetailFeed(param);
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.GET_SHOP_DETAIL,
     queryFn: async () => {
-      const {data} = await api.get(`${apiPath.toShopDetail}/${param}`);
+      const {data} = await api_token.get(`${apiPath.toShopDetail}/${param}`);
       return data.shop;
     },
-    onSuccess: () => {
-      // queryClinet.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL });
+    onSuccess: (res) => {
+      const {isScrap} = res;
+      setState(isScrap);
+      getShopDetailFeedList();
+      // queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
     },
-    onError: () => {
-      console.log('상세정보 에러');
+    onError: (error) => {
+      throw error;
     },
   });
   return {
@@ -27,20 +43,16 @@ export const useGetShopDetail = (param: number | undefined) => {
 };
 
 export const useGetShopDetailFeed = (param: number | undefined) => {
-  const queryClinet = useQueryClient();
   const { data, mutate, isLoading, isError } = useMutation({
     mutationKey: queryKeys.GET_SHOP_DETAIL_FEED,
     mutationFn: async () => {
-      const {data}: {data: IFeedList[]} = await api.get(`${apiPath.toShopDetail}/${param}/feed`);
-      console.log('피드 데이터', data);
+      const {data} = await api_token.get(`${apiPath.toShopDetail}/${param}/feed2`);
       return data;
     },
-    onSuccess: (o) => {
-      console.log('성공 피드 데이터', o);
-      // queryClinet.invalidateQueries({ queryKey: queryKeys.GET_SHOP_DETAIL_FEED });
+    onSuccess: (res) => {
+      return res;
     },
-    onError: () => {
-      console.log('피드 에러');
+    onError: (error) => {
     },
   });
   return {

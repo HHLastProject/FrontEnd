@@ -12,12 +12,7 @@ const api = axios.create({
   baseURL: `${process.env.REACT_APP_SERVER_URL}`,
 })
 
-export const api_token = axios.create({
-  baseURL: `${process.env.REACT_APP_SERVER_URL}`,
-  headers: {
-    "Authorization": localStorage.getItem("access_token"),
-  }
-})
+export const api_token = axios.create(axiosConfig);
 
 api.interceptors.request.use(
   // 요청을 보내기 전 수행되는 함수
@@ -33,10 +28,10 @@ api.interceptors.request.use(
   }
 )
 
-api.interceptors.response.use(
-  // 응답을 내보내기 전 수행되는 함수
-  function (response) {
-    return response;
+api_token.interceptors.request.use(
+  function (config) {
+    config.headers.Authorization = localStorage.getItem("access_token");
+    return config;
   },
 
   // 오류 응답을 내보내기 전 수행되는 함수

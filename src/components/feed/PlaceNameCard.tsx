@@ -1,20 +1,29 @@
 import React from 'react'
 import { VFlex } from '../../custom/ym/styleStore'
-import { mypageData } from '../../custom/ym/dummydata'
-import { EachFeed } from '../../pages/Mypage'
 import styled from 'styled-components'
-import { B14, BODY_3, MEDIUM, TITLE_5 } from '../../custom/ym/variables'
+import { BODY_3, MEDIUM, TITLE_5 } from '../../custom/ym/variables'
 
-const PlaceNameCard = ({ shopName, shopAddress }: { shopName?: string, shopAddress?: string }) => {
+
+interface NameCardProps extends React.ComponentPropsWithRef<'div'> {
+    shopName?: string,
+    shopAddress?: string,
+    onClick: React.MouseEventHandler<HTMLDivElement>,
+}
+
+const PlaceNameCard = ({ shopName, shopAddress, onClick }: NameCardProps) => {
     const split = shopAddress?.split(" ");
     let modifiedAddress: string = "";
 
     if (split !== undefined) {
-        modifiedAddress = split[0].split("시")[0] + " " + split[1];
+        if (split[0] === '서울특별시') {
+            modifiedAddress = split[0].split("특별시")[0] + " " + split[1];
+        } else {
+            modifiedAddress = split[0].split("시")[0] + " " + split[1];
+        }
     }
 
     return (
-        <VFlex etc='flex:1;font-family : "Pretendard"; padding-left: 16px;'>
+        <VFlex etc='cursor: pointer; flex:1;font-family : "Pretendard"; padding-left: 16px;' onClick={onClick}>
             <ShopName>{shopName}</ShopName>
             <ShopAddress>{modifiedAddress}</ShopAddress>
         </VFlex>

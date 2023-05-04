@@ -5,11 +5,15 @@ type Prop = {
     children: string[] | null | undefined
 }
 const TagList = ({ children }: Prop) => {
+
     return (
         <HFlex gap='4px' height='fit-content' etc='flex-wrap:wrap;'>
-            {children?.map((item) => {
-                return <Tags.Default>{item}</Tags.Default>;
-            })}
+            {
+                children?.map((item) => {
+                    if (item) return <Tags.Default key={`taglist${item}`}>{item}</Tags.Default>;
+                    return null;
+                })
+            }
         </HFlex>
     )
 }

@@ -1,61 +1,82 @@
-import React, { useEffect, useState } from 'react'
-import { HFlex } from '../../custom/ym/styleStore'
-import { FILTER_LIST } from '../../custom/ym/variables'
-import { Categorys } from '../ui/element/tags/Categorys'
+import React, { useContext, useEffect, useState } from 'react'
+import { Categories } from '../ui/element/tags/Categories'
 import uuid from 'react-uuid'
-import { categoryTypes } from '../../custom/ym/types'
+import { FolderData } from '../../custom/ym/types'
 import BookmarkLoginComp from './BookmarkLoginComp'
 import BookmarkLogoutComp from './BookmarkLogoutComp'
+import { ScrapContext } from '../../pages/Bookmark'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import styled from 'styled-components'
 
 const BookmarkList = () => {
-    const [category, setCategory] = useState<categoryTypes | null>(null);
+
+    const [folder, setFolder] = useState<FolderData | null>();
+    const [folderList, setFolderList] = useState<FolderData[]>([]);
     const [isLogin, setIsLogin] = useState<boolean>(false);
 
-    const categoryClickHandler = (
-        e: React.MouseEvent<HTMLButtonElement>,
-        element: categoryTypes
-    ) => {
-        if (isLogin) {
-            element === category
-                ? setCategory(null)
-                : setCategory(element)
-        } else;
+    const { queryData } = useContext(ScrapContext);
+
+    const folderClickHandler = (element: FolderData) => {
+        isLogin && element.folderName === folder?.folderName
+            ? setFolder(null)
+            : setFolder(element)
     }
 
     useEffect(() => {
-        localStorage.getItem("access_token") && setIsLogin(prev => !prev);
-    }, [])
+        localStorage.getItem("access_token") && setIsLogin(true);
+        setFolderList(queryData?.folderList as FolderData[]);
+        setFolder(queryData?.folderList[0]);
+    }, [queryData]);
+
 
     return (
-        <>
-            <HFlex gap='2px' height='fit-content' etc="padding:8px 20px;">
-                {FILTER_LIST.map((element) => {
-                    if (category === element) {
-                        return (
-                            <Categorys.Active
-                                key={uuid()}
-                                name={element}
-                                onClick={(e) => categoryClickHandler(e, element)}
-                            >{element}</Categorys.Active>
-                        );
-                    } else {
-                        return (
-                            <Categorys.Inactive
-                                key={uuid()}
-                                name={element}
-                                onClick={(e) => categoryClickHandler(e, element)}
-                            >{element}</Categorys.Inactive>
-                        )
-                    }
-                })}
-            </HFlex>
+        <SlideCase>
+            <Swiper
+                spaceBetween={4}
+                slidesPerView={'auto'}
+                style={{ boxSizing: 'border-box' }}
+            >
+                {
+                    folderList?.map((element) => {
+                        if (folder === element) {
+                            return (
+                                <SwiperSlide key={uuid()} style={{ width: 'fit-content' }}>
+                                    <Categories.Active
+                                        name={element.folderName}
+                                        onClick={() => folderClickHandler(element)}
+                                        draggable={false}
+                                    >{element.folderName}</Categories.Active>
+                                </SwiperSlide>
+                            );
+                        } else {
+                            return (
+                                <SwiperSlide key={uuid()} style={{ width: 'fit-content' }}>
+                                    <Categories.Inactive
+                                        name={element.folderName}
+                                        onClick={() => folderClickHandler(element)}
+                                        draggable={false}
+                                    >{element.folderName}</Categories.Inactive>
+                                </SwiperSlide>
+                            )
+                        }
+                    })
+                }
+            </Swiper>
             {
                 isLogin
-                    ? <BookmarkLoginComp categoryState={category} />
+                    ? <BookmarkLoginComp folderState={folder as FolderData} />
                     : <BookmarkLogoutComp />
             }
-        </>
+        </SlideCase>
     )
 }
 
-export default BookmarkList
+export default BookmarkList;
+
+export const SlideCase = styled.div`
+    width: 100%;
+    height: fit-content;
+    padding: 0px 20px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+`

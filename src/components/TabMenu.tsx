@@ -34,7 +34,7 @@ export const TabMenuLi = ({children, id, isChecked}: {children: React.ReactNode,
   );
 }
 
-export const HomeTabMenuStyle = styled.header`
+export const HomeTabMenuStyle = styled.nav`
   padding: 11px 0 15px 0;
   overflow: hidden;
   ul {

@@ -1,6 +1,6 @@
 import React from "react";
 import { EachData } from "../../pages/Home";
-import { Coordinate, categoryTypes } from "./types";
+import { Coordinate, categoryTypes, rangeTypes } from "./types";
 
 
 type Font = {
@@ -10,25 +10,28 @@ type Font = {
     color: string,
 }
 export const NAVER_KEY: string = "8A68yt_6sjtArfei4u69";
-export const NAVER_CALLBACK_URL: string = "http://localhost:3000/redirect/naver";
+export const NAVER_CALLBACK_URL_LOCAL: string = "http://localhost:3000/redirect/naver";
+export const NAVER_CALLBACK_URL: string = "http://yongminbucket.s3-website.ap-northeast-2.amazonaws.com/redirect/naver";
 
-export const KAKAO_CALLBACK_URL: string = "http://yongminbucket.s3-website.ap-northeast-2.amazonaws.com/redirect/kakao";
-export const KAKAO_CALLBACK_URL1: string = "http://localhost:3000/redirect/kakao"
+export const KAKAO_CALLBACK_URL_S3: string = "http://yongminbucket.s3-website.ap-northeast-2.amazonaws.com/redirect/kakao";
+export const KAKAO_CALLBACK_URL_LOCAL: string = "http://localhost:3000/redirect/kakao"
 export const KAKAO_CLIENT_SECRET: string = "X8gvhqId5AS6wHDNM34MZ4kwS0DWMJa7";
 export const KAKAO_CLIENT_ID: string = "552308e28dcc9e6296fed9c2a196525e";
-export const KAKAO_AUTH_URL: string = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_CALLBACK_URL1}&response_type=code&prompt=login`;
+// export const KAKAO_AUTH_URL: string = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_CALLBACK_URL_S3}&response_type=code&prompt=login`;
+export const KAKAO_AUTH_URL: string = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_CALLBACK_URL_LOCAL}&response_type=code&prompt=login`;
 
 
 export const NAVER_MAPS_CLIENT: string = 'ldgh7n9aiz';
 
+export const RANGE_FILTER_LIST: rangeTypes[] = [100, 200, 300, 500, 1000];
 export const FILTER_LIST: categoryTypes[] = ["카페", "보드카페", "사주카페", "애견카페", "전통찻집"];
 export const STRONG = '191919';
 export const STRONG_MEDIUM = '2E3338';
 export const MEDIUM = '717176';
 export const LIGHT = 'A1A1AC';
 
-export const PRIMARY_01 = '767676';
-export const PRIMARY_02 = 'ADADAD';
+export const PRIMARY_01 = '010101';
+export const PRIMARY_02 = 'B81B1B';
 
 export const BG_MEDIUM = 'F1F1F5';
 export const BG_LIGHT = 'F8F8FA';
@@ -155,41 +158,15 @@ export type NavermapPointType = {
     y: number,
 }
 
-export const SAMPLE_DATA: EachData[] = [
-    {
-        shopId: 1,
-        category: "카페",
-        shopName: "1번 일반카페",
-        thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
-        region: "서울 강남구",
-        distance: 202,
-        rate: 4.8,
-        reviews: 1,
-        lat: 37.5104457,
-        lng: 127.0469272,
-    },
-    {
-        shopId: 2,
-        category: "사주카페",
-        shopName: "2번 사주카페",
-        thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
-        region: "서울 강남구",
-        distance: 302,
-        rate: 4.8,
-        reviews: 1,
-        lat: 37.5104457,
-        lng: 127.0466590,
-    },
-    {
-        shopId: 3,
-        category: "사주카페",
-        shopName: "3번 사주카페",
-        thumbnail: `${process.env.PUBLIC_URL}/coffee.jpg`,
-        region: "서울 강남구",
-        distance: 102,
-        rate: 4.8,
-        reviews: 1,
-        lat: 37.5109321,
-        lng: 127.0471200,
-    }
-];
+export const checkImg = {
+    checked: 'selected_scrap.png',
+    notChecked: 'not_selected_scrap.png',
+}
+
+export const scrapImg = {
+    checked: 'bookmark checked.png',
+    notChecked: 'book mark white_28.png'
+}
+
+
+export const clusterHTML = '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-color:gray;border-radius:50%;">dd</div>'

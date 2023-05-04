@@ -1,27 +1,25 @@
-import React, { useContext } from 'react'
-import { context } from '../../pages/Mypage'
-import { HFlex, VFlex } from '../../custom/ym/styleStore';
-import styled from 'styled-components';
-import { TITLE_3 } from '../../custom/ym/variables';
-import FeedCount from './FeedCount';
+import { MypageContext } from '../../pages/Mypage'
+import { VFlex } from '../../custom/ym/styleStore';
 import FeedPictures from './FeedPictures';
 import FeedSet from './FeedSet';
-import NoMyFeeds from './NoMyFeeds';
+import { useEffect } from 'react';
 
 const MyFeeds = () => {
-    const contextData = useContext(context);
-    const feedCount = contextData?.props?.feedCount as number;
-    const feeds = contextData?.props?.feeds;
-
-    console.log('props:', contextData?.props);
 
     return (
         <VFlex gap='12px'>
-            <FeedSet>{feedCount}</FeedSet>
-            {feedCount > 0
-                ? <FeedPictures isAll={false}>{feeds}</FeedPictures>
-                : <NoMyFeeds />
-            }
+            <MypageContext.Consumer>
+                {
+                    value => {
+                        return value?.props?.feedCount as number > 0
+                            ? <>
+                                <FeedSet>{value?.props?.feedCount}</FeedSet>
+                                <FeedPictures isAll={false}>{value?.props?.feeds}</FeedPictures>
+                            </>
+                            : null
+                    }
+                }
+            </MypageContext.Consumer>
         </VFlex>
     )
 }

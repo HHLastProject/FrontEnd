@@ -8,7 +8,7 @@ import { BtnSize } from './BtnSize'
 import { BtnLargeLength, BtnMediumLength, BtnSmallLength } from './BtnLength'
 import { BtnText } from './BtnText'
 import BtnNavContents from './BtnNavContents'
-import { BtnNavProps, CategoryStateProp, ChildrenForJSX, DivProp, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
+import { BtnNavProps, CategoryStateProp, ChildrenForJSX, DivProp, EditNicknameProps, IconButtonProps, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 
@@ -268,50 +268,31 @@ const NavButton = ({ isActive = true, onClick, name, ...props }: NavStateProp) =
         />
     )
 }
-// const List = ({ isActive = false, onClick, name, ...props }: NavStateProp) => {
-//     return (
-//         <NavButtonGenerator
-//             onClick={onClick}
-//             isActive={isActive}
-//             btnType={name as NavButtonInputLimit}
-//         />
-//     )
-// }
-// const Feed = ({ isActive = false, onClick, name, ...props }: NavStateProp) => {
-//     return (
-//         <NavButtonGenerator
-//             onClick={onClick}
-//             isActive={isActive}
-//             btnType={name as NavButtonInputLimit}
-//         />
-//     )
-// }
-// const Bookmark = ({ isActive = false, onClick, name, ...props }: NavStateProp) => {
-//     return (
-//         <NavButtonGenerator
-//             onClick={onClick}
-//             isActive={isActive}
-//             btnType={name as NavButtonInputLimit}
-//         />
-//     )
-// }
-// const Mypage = ({ isActive = false, onClick, name, ...props }: NavStateProp) => {
-//     return (
-//         <NavButtonGenerator
-//             onClick={onClick}
-//             isActive={isActive}
-//             btnType={name as NavButtonInputLimit}
-//         />
-//     )
-// }
 
-// const Others = { Home, List, Feed, Bookmark, Mypage };
-const Others = { NavButton };
+const IconButton = ({ width, height, onClick, fileName, ...props }: EditNicknameProps) => {
+    return (
+        <BtnRadius.Default onClick={onClick} {...props}>
+            <IconContainer width={width} height={height}>
+                <Icon src={`${process.env.PUBLIC_URL}/icon/${fileName}`} alt="Icon" />
+            </IconContainer>
+        </BtnRadius.Default>
+    )
+}
+
+const Others = { NavButton, IconButton };
 
 export const Buttons = {
     Large, Medium, Small, Others
 }
 
 
+const IconContainer = styled.div<{ width: number, height: number }>`
+    width: ${({ width }) => `${width}px`};
+    height: ${({ height }) => `${height}px`};
+`
 
-
+const Icon = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+`

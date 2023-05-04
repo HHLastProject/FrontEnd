@@ -1,11 +1,11 @@
 import React from 'react'
-import { EachFeed, Feed } from '../../pages/Mypage'
 import { HFlex } from '../../custom/ym/styleStore'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import MyAllFeeds from './AllFeedsButton'
 import { ReceivedFeed } from '../../custom/ym/types'
 import { imgPath } from '../../shared/path'
+import uuid from 'react-uuid'
 
 type Props = {
     isAll: boolean,
@@ -19,14 +19,12 @@ const FeedPictures = ({ isAll, children }: Props) => {
     }
     const arr = children as ReceivedFeed[];
 
-    console.log('feedPictures에서 칠드런:', children);
-
     if (isAll) {
         return (
             <HFlex gap='2px' height='fit-content' etc='flex-wrap: wrap;'>
                 {arr.map((element) => {
-                    return <Shot onClick={() => openFeedDetail(element.feadId as number)}>
-                        <FeedImg src={element?.feedPic} />
+                    return <Shot key={uuid()} onClick={() => openFeedDetail(element.feadId as number)}>
+                        <FeedImg key={uuid()} src={element?.feedPic} />
                     </Shot>;
                 })}
             </HFlex>
@@ -37,8 +35,8 @@ const FeedPictures = ({ isAll, children }: Props) => {
         <HFlex gap='2px' height='fit-content' etc='flex-wrap: wrap;'>
             {children?.map((element, index) => {
                 if (index < 9) {
-                    return <Shot onClick={() => openFeedDetail(element?.feadId as number)}>
-                        <FeedImg src={`${imgPath.feedImg}${element?.feedPic}`} />
+                    return <Shot key={uuid()} onClick={() => openFeedDetail(element?.feadId as number)}>
+                        <FeedImg key={uuid()} src={`${imgPath.feedImg}${element?.feedPic}`} />
                     </Shot>;
                 } else {
                     return null;

@@ -1,73 +1,140 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components';
-import { FILTER_LIST, LINE_MEDIUM, MEDIUM, STRONG_MEDIUM } from '../../custom/ym/variables';
-import { DispatchContext, StateContext } from '../../pages/Home';
-import { categoryTypes } from '../../custom/ym/types';
-import uuid from 'react-uuid';
-import { colorSet } from '../ui/styles/color';
+import { FILTER_LIST, LINE_LIGHT, LINE_MEDIUM, PRIMARY_01, RANGE_FILTER_LIST, STRONG_MEDIUM } from '../../custom/ym/variables';
+import { categoryTypes, rangeTypes } from '../../custom/ym/types';
 import { fontType } from '../ui/styles/typo';
+import { ShopCategory } from '../../apis/context';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-const ListCategoryButtonBar = () => {
-    const { category } = useContext(StateContext);
-    const { setCategory } = useContext(DispatchContext);
+export const ListCategoryButtonBar = () => {
+  const {category, setCategory} = useContext(ShopCategory); //선택한 카테고리 이름
 
-    const changeCategory = setCategory as React.Dispatch<React.SetStateAction<"" | categoryTypes>>;
-
-    const filterClickHandler = (buttonName: categoryTypes) => {
-        if (category === buttonName) {
-            changeCategory("");
-        } else {
-            changeCategory(prev => buttonName);
-        }
-
-        console.log(category);
-        console.log(buttonName);
+  const filterClickHandler = (buttonName: categoryTypes) => {
+    if(setCategory) { setCategory(buttonName); }
+    if((category === buttonName) && setCategory ) {
+      setCategory('');
     }
+  };
 
-    return (
-        <CategoryButtons>
-          <div>
-            {FILTER_LIST.map((element) => <FilterBtn
-                selected={category}
-                name={element}
-                key={uuid()}
-                onClick={(e) => filterClickHandler(element)}
-            >{element}</FilterBtn>)}
-          </div>
-        </CategoryButtons>
-    )
+  return (
+    <>
+    <SlideCase2>
+    <Swiper
+      spaceBetween={4}
+      slidesPerView={'auto'}
+      style={{ boxSizing: 'border-box', width: 'fit-content' }}
+    >
+      <div className='nowrap-buttons'>
+        {FILTER_LIST.map((filterName) => 
+          <SwiperSlide key={filterName} style={{ width: 'fit-content', flex: 'none' }}>
+            <FilterBtn
+              category={'shopCategory'}
+              name={filterName}
+              selected={category}
+              onClick={(e) => filterClickHandler(filterName)}
+            >
+              {filterName}
+            </FilterBtn>
+          </SwiperSlide>
+          )
+        }
+      </div>
+    </Swiper>
+    </SlideCase2>
+    </>
+  )
 }
 
-export default ListCategoryButtonBar;
+export const RangeFilterButtonBar = () => {
+  const {range, setRange} = useContext(ShopCategory);
 
+  const filterClickHandler = (range: rangeTypes) => {
+    if(setRange) {setRange(range);}
+  };
+
+  return (
+    <CategoryButtons>
+    <div>
+      {range && RANGE_FILTER_LIST.map((item: rangeTypes) => {
+        return(
+          <FilterBtn
+            key={`filter${item}`}
+            category={'range'}
+            name={String(item)}
+            selected={String(range)}
+            onClick={(e) => filterClickHandler(item)}
+          >
+            {(item < 1000) ? `${item}m` : `${item / 1000}km`}
+          </FilterBtn>
+        )
+      })}
+    </div>
+  </CategoryButtons>
+  )
+}
+
+const SlideCase2 = styled.div`
+width: 100%;
+height: fit-content;
+box-sizing: border-box;
+overflow-x: hidden;
+`
 
 const CategoryButtons = styled.div`
   position: relative;
   overflow: hidden;
   overflow-x: scroll;
-  -ms-overflow-style: none; /* 인터넷 익스플로러 */
-  scrollbar-width: none; /* 파이어폭스 */
+  //스크롤
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   };
-  div {
+
+  div{
+    display: flex;
     gap : 4px;
+  }
+  .nowrap-buttons {
     flex-wrap: nowrap;
     white-space: nowrap;
   }
 `;
 
+const categoryBtnStyle = (selected: string, name: string) => {
+  const color = (selected === name) ? 'white' : `#${STRONG_MEDIUM}`;
+  const border = (selected === name) ? `#${PRIMARY_01}` : `#${LINE_MEDIUM}`;
+  const bgc = (selected === name) ? `#${PRIMARY_01}` : 'white';
+  return(`
+    color : ${color};
+    border : 1px solid ${border};
+    border-radius: 18px;
+    padding : 7px 12px;
+    background-color : ${bgc};
+  `);
+}
+const rangeBtnStyle = (selected: string, name: string) => {
+  const color = (selected === name) ? 'white' : `#${STRONG_MEDIUM}`;
+  const bgc = (selected === name) ? `#${PRIMARY_01}` : `#${LINE_LIGHT}`;
+  return(`
+    color : ${color};
+    border : none;
+    border-radius: 12px;
+    padding : 11px 16px;
+    background-color : ${bgc};
+  `);
+}
+
 const FilterBtn = styled.button<{
-  selected: string,
+  category: string,
   name: string,
+  selected: string,
 }>`
-  height: 36px;
-  padding : 7px 12px;
-  border : 1px solid ${({ selected, name }) =>
-    selected === name ? `#${MEDIUM}` : `#${LINE_MEDIUM}`};
-  border-radius: 18px;
-  color : ${({ selected, name }) =>
-    selected === name ? 'white' : `#${STRONG_MEDIUM}`};
+  color : ${({ selected, name }) => selected === name ? 'white' : `#${STRONG_MEDIUM}`};
   ${fontType.body_3}
-  background-color : ${({ selected, name }) => selected === name ? `#${MEDIUM}` : 'white'};
+
+  ${({selected, name, category}) => {
+    if(category === 'shopCategory') return categoryBtnStyle(selected, name);
+    if(category === 'range') return rangeBtnStyle(selected, name);
+  }};
 `;

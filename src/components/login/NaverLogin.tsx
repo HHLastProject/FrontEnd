@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
-import { NAVER_KEY, NAVER_CALLBACK_URL } from '../../custom/ym/variables'
+import { NAVER_KEY, NAVER_CALLBACK_URL_LOCAL } from '../../custom/ym/variables'
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -14,7 +14,7 @@ const NaverLogin = () => {
     // const naverRef = useRef<RefObject<HTMLDivElement>>();
 
     const CLIENT_ID: string = NAVER_KEY;
-    const CALLBACK_URL: string = NAVER_CALLBACK_URL;
+    const CALLBACK_URL: string = NAVER_CALLBACK_URL_LOCAL;
     // console.log(CLIENT_ID);
     // console.log(CALLBACK_URL);
     const [userInform, setUserInform] = useState<User>({

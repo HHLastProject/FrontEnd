@@ -1,11 +1,16 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
+import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
 import uuid from 'react-uuid';
-import { DispatchContext, EachData, StateContext } from '../../pages/Home';
-import { NavermapPointType, ShopData } from '../../custom/ym/variables';
+import { CenterContext, DispatchContext, ListContextDefault, Markers, SearchedShop, StateContext } from '../../pages/Home';
+import { NavermapPointType, clusterHTML } from '../../custom/ym/variables';
 import styled from 'styled-components';
 import MarkerMemo from './MarkerMemo';
+import useGetGooList from '../../hooks/useGetGooList';
+import makeArrayForCluster from '../../hooks/makeArrayForCluster';
+import { useLocation } from 'react-router-dom';
+import { colorSet } from '../ui/styles/color';
+import { GuInformation } from '../../shared/guCoordInform';
 
 export type Coordinate = {
     lng: number,
@@ -22,26 +27,52 @@ type JsonData = {
 type MapModuleProps = {
     category: string
 };
-const MapModule = () => {
+
+interface MapProps {
+    list: Markers[] | null[],
+    setList: React.Dispatch<React.SetStateAction<Markers[] | null[]>>,
+}
+
+const MapModule = ({ list, setList }: MapProps) => {
     const navermaps = useNavermaps();
     const mapRef = useRef(null);
     const [zoom, setZoom] = useState<number>(17);
+    const [map, setMap] = useState<naver.maps.Map | null>(null);
+    // const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     let timeCheck: NodeJS.Timeout | null = null;
+    let guData: GuInformation[] | null = null;
+    const { isChanged } = useContext(StateContext);
+    const { setIsChanged } = useContext(DispatchContext);
+    const { center, setCenter } = useContext(CenterContext);
 
     const {
         activeShop,
-        center,
-        list,
+        // list,
         userCoord,
-        isMoving } = useContext(StateContext);
+    } = useContext(StateContext);
 
     const {
         setActiveShop,
         setRange,
-        setCenter,
-        setIsMoving } = useContext(DispatchContext);
+    } = useContext(DispatchContext);
 
+
+    const defaultSearchResult: SearchedShop = {
+        shopLat: 0,
+        shopLng: 0,
+    }
+
+    //검색 페이지에서 받는 위도 경도
+    const location = useLocation();
+    if (location.state) {
+        const searchedShop = {
+            shopLng: Number(location.state.lng),
+            shopLat: Number(location.state.lat)
+        };
+
+        // setSearch(searchedShop);
+    }
 
     const icon = {
         url: `${process.env.PUBLIC_URL}/markers/non_selected_shop.png`,
@@ -53,8 +84,16 @@ const MapModule = () => {
         anchor: new navermaps.Point(0, 0),
     }
 
+    const { guList, gooIsSuccess } = useGetGooList();
+    if (gooIsSuccess) {
+        guData = makeArrayForCluster(guList.guList);
+    }
+    // const guData = makeArrayForCluster(gooList);
+    // const cluster = new MarKerClustering();
+
+
+
     const centerChangeHandler = (
-        setState: React.Dispatch<React.SetStateAction<Coordinate>>,
         centerOnMap: naver.maps.Coord | NavermapPointType
     ) => {
 
@@ -65,9 +104,9 @@ const MapModule = () => {
         timeCheck && clearTimeout(timeCheck);
 
         timeCheck = setTimeout(() => {
-            setState(newCoord);
+            setCenter && setCenter(newCoord);
             timeCheck = null;
-        }, 300);
+        }, 100);
     }
 
     const returnRadius = (value: number) => {
@@ -91,44 +130,67 @@ const MapModule = () => {
     //     setZoom(value);
     //     return value;
     // }
-
     const zoomChangeHandler = (zoomUnit: number) => {
         setZoom(zoomUnit);
-        const changeRange =
-            setRange as React.Dispatch<React.SetStateAction<number>>;
+
         if (zoomUnit > 14 && zoomUnit < 20) {
-            changeRange(returnRadius(zoomUnit));
+            setIsChanged && setIsChanged(true);
+            setRange && setRange(returnRadius(zoomUnit));
         } else {
-            changeRange(0);
+            setIsChanged && setIsChanged(false);
+            setRange && setRange(0);
             /* 클러스터링은 이쪽에서 향후에 컨트z롤 할 것 */
         }
     }
 
-    const aimClickListner = () => {
-
+    const aimClickHandler = () => {
         const tempData: NavermapPointType = {
             x: userCoord.lng,
             y: userCoord.lat,
         }
-
-        const tempSetCenter = setCenter as React.Dispatch<React.SetStateAction<Coordinate>>;
-        const tempSetIsMoving = setIsMoving as React.Dispatch<React.SetStateAction<boolean>>;
-
-        tempSetIsMoving(true);
-        tempSetCenter(userCoord);
+        map?.panTo({ lng: tempData.x, lat: tempData.y });
+        const centerDispatch = setCenter as React.Dispatch<React.SetStateAction<Coordinate>>;
+        centerDispatch(userCoord);
     }
 
     const markerClickHandler = (e: naver.maps.PointerEvent, shop: number) => {
         const dispatch = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
 
         dispatch(shop);
-
-        // const tempSetCenter = setCenter as React.Dispatch<React.SetStateAction<Coordinate>>;
-        // const tempSetIsMoving = setIsMoving as React.Dispatch<React.SetStateAction<boolean>>;
-
-        // tempSetIsMoving(true);
-        // tempSetCenter({ lng: e.point.x, lat: e.point.y });
     }
+
+    map?.addListener('dragend', () => {
+        if (zoom > 14) {
+            centerChangeHandler(map.getCenter());
+        }
+    });
+
+    const clusterText = (guName: string, num: number) => {
+        const clusterHTML = `<div style="cursor:pointer;width:fit-content;min-width:40px;height:fit-content;line-height:22px;font-size:12px;color:${colorSet.primary_02};text-align:center;font-weight:bold;background-color:white;border:2px solid ${colorSet.primary_02};border-radius:5px;"><div style="font-weight:bold;color:${colorSet.primary_01}">${guName}</div>${num}</div>`
+        return clusterHTML
+    }
+    const clusterClickHandler = (lat: number, lng: number) => {
+        map?.setCenter({ lat: lat, lng: lng });
+        map?.setZoom(15);
+        centerChangeHandler({ x: lng, y: lat });
+    }
+    const createClusterMarkerIcon = (guName: string, count: number) => {
+        const result = {
+            content: clusterText(guName, count),
+            size: new navermaps.Size(40, 40),
+            anchor: new navermaps.Point(20, 20)
+        }
+        return result
+    }
+    useEffect(() => {
+        if (location.state) {
+            const searchedShop = {
+                shopLng: Number(location.state.lng),
+                shopLat: Number(location.state.lat)
+            };
+            centerChangeHandler({ y: searchedShop.shopLat, x: searchedShop.shopLng });
+        }
+    }, [location.state]);
 
 
     /* 메모리누수 방지 */
@@ -141,8 +203,7 @@ const MapModule = () => {
     }, [timeCheck]);
 
     useEffect(() => {
-        const dispatch = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
-        typeof list === 'object' && dispatch(list[0]?.shopId as number);
+        list && (setActiveShop && setActiveShop(list[0]?.shopId as number));
     }, [list]);
 
     return (
@@ -150,51 +211,43 @@ const MapModule = () => {
             <NaverMap
                 center={center}
                 defaultZoom={17}
-                ref={mapRef}
-                disableKineticPan={false}
-                onCenterChanged={
-                    (centerCoord) => {
-                        !isMoving &&
-                            centerChangeHandler(
-                                setCenter as React.Dispatch<React.SetStateAction<Coordinate>>,
-                                centerCoord
-                            );
-                    }
-                }
+                ref={e => setMap(e)}
+                disableKineticPan={true}
                 onZoomChanged={(value) => zoomChangeHandler(value)}
                 zoomOrigin={center}
                 maxZoom={19}
+                minZoom={11}
             >
                 <Marker
                     icon={`${process.env.PUBLIC_URL}/markers/icon_mylocation_36.png`}
-                    position={userCoord}
+                    position={center}
                 />
-                {/* {(center === userCoord) && !isMoving
-                    ? null
-                    : <Marker
-                        icon={`${process.env.PUBLIC_URL}/markers/centerlocation.png`}
-                        position={center}
-                    />} */}
 
-                {list?.map((element) => {
-                    if (element) {
-                        // return <MarkerMemo
-                        //     onClick={markerClickHandler}
-                        //     element={element as ShopData} />
+                {zoom > 14
+                    ? list?.map((element: Markers | null) => {
+                        if (element) {
+                            return <Marker
+                                key={uuid()}
+                                onClick={(e) => markerClickHandler(e, element.shopId)}
+                                icon={element?.shopId === activeShop
+                                    ? activeIcon
+                                    : icon}
+                                defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />
+                        } else {
+                            return null;
+                        }
+                    })
+                    : guData?.map((element) => {
                         return <Marker
                             key={uuid()}
-                            onClick={(e) => markerClickHandler(e, element.shopId)}
-                            icon={element?.shopId === activeShop
-                                ? activeIcon
-                                : icon}
-                            defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />;
-                    } else {
-                        return null;
-                    }
-                })
-                }
+                            icon={createClusterMarkerIcon(element.guName, element.shopCount)}
+                            position={{ lat: element.lat, lng: element.lng }}
+                            onClick={() => clusterClickHandler(element.lat, element.lng)}
+                        />
+                    })}
+
             </NaverMap>
-            <AimBtn onClick={aimClickListner}>
+            <AimBtn onClick={aimClickHandler}>
                 <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
             </AimBtn>
         </MapDiv>
