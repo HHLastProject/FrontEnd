@@ -42,7 +42,8 @@ const MapModule = ({ list, setList }: MapProps) => {
 
     let timeCheck: NodeJS.Timeout | null = null;
     let guData: GuInformation[] | null = null;
-
+    const { isChanged } = useContext(StateContext);
+    const { setIsChanged } = useContext(DispatchContext);
     const { center, setCenter } = useContext(CenterContext);
 
     const {
@@ -131,12 +132,13 @@ const MapModule = ({ list, setList }: MapProps) => {
     // }
     const zoomChangeHandler = (zoomUnit: number) => {
         setZoom(zoomUnit);
-        const changeRange =
-            setRange as React.Dispatch<React.SetStateAction<number>>;
+
         if (zoomUnit > 14 && zoomUnit < 20) {
-            changeRange(returnRadius(zoomUnit));
+            setIsChanged && setIsChanged(true);
+            setRange && setRange(returnRadius(zoomUnit));
         } else {
-            changeRange(0);
+            setIsChanged && setIsChanged(false);
+            setRange && setRange(0);
             /* 클러스터링은 이쪽에서 향후에 컨트z롤 할 것 */
         }
     }

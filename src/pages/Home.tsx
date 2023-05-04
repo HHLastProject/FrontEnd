@@ -67,7 +67,7 @@ const Home = () => {
     const [list, setList] = useState<ShopData[] | null>(null);
     const [center, setCenter] = useState<Coordinate>(defaultCenter.center);
     // const [isMoving, setIsMoving] = useState<boolean>(false);
-    // const [isChanged, setIsChanged] = useState<boolean>(false);
+    const [isChanged, setIsChanged] = useState<boolean>(true);
     const [activeShop, setActiveShop] = useState<number>(0);
     const [markers, setMarkers] = useState<Markers[] | null[]>([]);
     const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
@@ -80,8 +80,8 @@ const Home = () => {
 
     // const stateList = { userCoord, shopCoord, category, range, list, center, isMoving, isChanged, activeShop };
     // const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged, setActiveShop };
-    const stateList = { userCoord, shopCoord, category, range, activeShop };
-    const dispatchList = { setRange, setCategory, setUserCoord, setShopCoord, setActiveShop };
+    const stateList = { userCoord, shopCoord, category, range, isChanged, activeShop };
+    const dispatchList = { setRange, setCategory, setUserCoord, setShopCoord, setIsChanged, setActiveShop };
     // const listArr = { list, setList }
     const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
 
@@ -141,19 +141,7 @@ const Home = () => {
     /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
     useEffect(() => {
         const newPayload = { lng: center.lng, lat: center.lat, range: range };
-        // mutateAsync(newPayload)
-        //     .then((data: ShopData[]) => {
-        //         const listPivot = list?.map((element) => element?.shopId).sort() as number[];
-        //         const dataPivot = data?.map((element) => element?.shopId).sort() as number[];
-        //         const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
-        //         if (!equal(listPivot, dataPivot)) {
-        //             setList(data);
-        //             const searchResult = data?.filter(
-        //                 (item: ShopData) => item.category === category);
-        //             setMarkers(convert(category ? searchResult : data));
-        //             setShopCoord(shopCoordList(data));
-        //         }
-        //     });
+        console.log("리렌더링됐다");
         mutate(newPayload);
     }, [range, center]);
 

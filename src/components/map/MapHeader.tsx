@@ -14,7 +14,7 @@ const MapHeader = () => {
 
     // const temp: React.Dispatch<React.SetStateAction<number>> =
     //     setRange as React.Dispatch<React.SetStateAction<number>>;
-
+    // if (isChanged) return <></>;
     return (
         <HeaderContainer>
             <HFlex etc="padding: 0px 5px;" width='100%'>

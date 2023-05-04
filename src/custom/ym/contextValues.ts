@@ -9,7 +9,7 @@ export interface States {
     shopCoord: (Coordinate | null)[],
     // center: Coordinate,
     // isMoving: boolean,
-    // isChanged: boolean,
+    isChanged: boolean,
     activeShop: number,
 }
 
@@ -21,7 +21,7 @@ export const states: States = {
     shopCoord: [],
     // center: { lat: 37.5108407, lng: 127.0468975 },
     // isMoving: false,
-    // isChanged: false,
+    isChanged: false,
     activeShop: 0,
 }
 
@@ -33,7 +33,7 @@ export interface Dispatches {
     setShopCoord: React.Dispatch<React.SetStateAction<Coordinate[]>> | null,
     // setCenter: React.Dispatch<React.SetStateAction<Coordinate>> | null,
     // setIsMoving: React.Dispatch<React.SetStateAction<boolean>> | null,
-    // setIsChanged: React.Dispatch<React.SetStateAction<boolean>> | null,
+    setIsChanged: React.Dispatch<React.SetStateAction<boolean>> | null,
     setActiveShop: React.Dispatch<React.SetStateAction<number>> | null
 }
 export const dispatches: Dispatches = {
@@ -44,7 +44,7 @@ export const dispatches: Dispatches = {
     setShopCoord: null,
     // setCenter: null,
     // setIsMoving: null,
-    // setIsChanged: null,
+    setIsChanged: null,
     setActiveShop: null,
 }
 export interface BookmarkContext {

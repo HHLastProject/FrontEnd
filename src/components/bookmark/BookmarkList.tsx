@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { HFlex } from '../../custom/ym/styleStore'
 import { Categories } from '../ui/element/tags/Categories'
 import uuid from 'react-uuid'
 import { FolderData } from '../../custom/ym/types'
 import BookmarkLoginComp from './BookmarkLoginComp'
 import BookmarkLogoutComp from './BookmarkLogoutComp'
 import { ScrapContext } from '../../pages/Bookmark'
-import SlideBox from '../ui/container/slide/SlideBox'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import styled from 'styled-components'
 
@@ -38,14 +36,12 @@ const BookmarkList = () => {
                 slidesPerView={'auto'}
                 style={{ boxSizing: 'border-box' }}
             >
-                {/* <HFlex gap='4px' height='fit-content' etc="padding:8px 20px;"> */}
                 {
                     folderList?.map((element) => {
                         if (folder === element) {
                             return (
-                                <SwiperSlide style={{ width: 'fit-content' }}>
+                                <SwiperSlide key={uuid()} style={{ width: 'fit-content' }}>
                                     <Categories.Active
-                                        key={uuid()}
                                         name={element.folderName}
                                         onClick={() => folderClickHandler(element)}
                                         draggable={false}
@@ -54,9 +50,8 @@ const BookmarkList = () => {
                             );
                         } else {
                             return (
-                                <SwiperSlide style={{ width: 'fit-content' }}>
+                                <SwiperSlide key={uuid()} style={{ width: 'fit-content' }}>
                                     <Categories.Inactive
-                                        key={uuid()}
                                         name={element.folderName}
                                         onClick={() => folderClickHandler(element)}
                                         draggable={false}
@@ -66,7 +61,6 @@ const BookmarkList = () => {
                         }
                     })
                 }
-                {/* </HFlex> */}
             </Swiper>
             {
                 isLogin
