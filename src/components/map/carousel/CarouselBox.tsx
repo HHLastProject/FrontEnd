@@ -65,13 +65,16 @@ const CarouselBox = ({ list, setList }: ListContextDefault) => {
     }, [list]);
 
     useEffect(() => {
-        const activeChange = setActiveShop as React.Dispatch<React.SetStateAction<number>>;
-        activeChange(list[now]?.shopId as number);
+        if (list) {
+            setActiveShop && setActiveShop(list[now] as ShopData ? list[now].shopId : 0);
+        }
     }, [now]);
 
     useEffect(() => {
-        const index = list?.findIndex((element) => element?.shopId === activeShop);
-        swiper?.slideTo(index);
+        if (list) {
+            const index = list?.findIndex((element) => element?.shopId === activeShop);
+            swiper?.slideTo(index);
+        }
     }, [activeShop])
 
     return (
