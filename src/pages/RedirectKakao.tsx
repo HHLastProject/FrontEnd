@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { loginKeys } from '../apis/queries';
 import { KAKAO_CALLBACK_URL_LOCAL, KAKAO_CALLBACK_URL_S3 } from '../custom/ym/variables';
+import Loading from '../components/loading/Loading';
 
 type Payload = {
     code: string
@@ -40,15 +41,18 @@ const RedirectKakao = () => {
         const payload = {
             code: localStorage.getItem('kakaoAuth') as string,
             /* S3 배포용 */
-            // redirectURL: KAKAO_CALLBACK_URL_S3,
+            redirectURL: KAKAO_CALLBACK_URL_S3,
             /* 로컬 스토리지용 */
-            redirectURL: KAKAO_CALLBACK_URL_LOCAL,
+            // redirectURL: KAKAO_CALLBACK_URL_LOCAL,
         };
         mutate(payload);
     }, []);
 
     return (
-        <div>카카오 로그인 중입니다.</div>
+        <>
+            <Loading />
+            카카오 로그인 중입니다.
+        </>
     )
 }
 
