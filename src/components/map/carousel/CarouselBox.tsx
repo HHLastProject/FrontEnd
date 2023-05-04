@@ -17,7 +17,7 @@ type CarouselProps = {
     children: (ShopData | null)[]
 }
 // const CarouselBox = ({ children }: CarouselProps) => {
-const CarouselBox = ({ list, setList }: ListContextDefault) => {
+const CarouselBox = () => {
     const queryClient = useQueryClient();
     const navi = useNavigate();
     const openDetail = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, shopId: number) => {
@@ -26,6 +26,9 @@ const CarouselBox = ({ list, setList }: ListContextDefault) => {
     }
     const [now, setNow] = useState<number>(0);
     const [swiper, setSwiper] = useState<SwiperCore>();
+
+    const { list } = useContext(StateContext);
+    const { setList } = useContext(DispatchContext);
 
     const { activeShop } = useContext(StateContext);
     const { setActiveShop } = useContext(DispatchContext);
@@ -58,6 +61,7 @@ const CarouselBox = ({ list, setList }: ListContextDefault) => {
         return stringData[0].replace("시", "") + " " + stringData[1];
     }
 
+
     useEffect(() => {
         if (list) {
             setActiveShop && setActiveShop(list[0] ? list[0].shopId : 0);
@@ -66,7 +70,7 @@ const CarouselBox = ({ list, setList }: ListContextDefault) => {
 
     useEffect(() => {
         if (list) {
-            setActiveShop && setActiveShop(list[now] as ShopData ? list[now].shopId : 0);
+            setActiveShop && setActiveShop(list.length > now ? list[now].shopId : 0);
         }
     }, [now]);
 
@@ -86,48 +90,49 @@ const CarouselBox = ({ list, setList }: ListContextDefault) => {
                 onRealIndexChange={swiper => setNow(swiper.realIndex)}
                 parallax
             >
-                {
-                    list?.map((item, index) => {
-                        if (!item) return null;
-                        return <SwiperSlide key={uuid()}>
-                            <Box onClick={(e) => openDetail(e, item.shopId)}>
-                                <VFlex>
-                                    <HFlexSpaceBetween>
-                                        <div style={{ fontSize: '12px', fontWeight: '400' }}>
-                                            <span>검색된 식당</span>
-                                            <span> {list.length}</span>
-                                        </div>
-                                        <CountBox>
-                                            <VFlexCenter>
-                                                {index + 1} / {list.length}
-                                            </VFlexCenter>
-                                        </CountBox>
-                                    </HFlexSpaceBetween>
-                                    <HFlex gap='8px'>
-                                        <PictureDiv pic={`${imgPath.shopThumbnailImg + item.thumbnail}`}>
-                                            <Bookmark>
-                                                {item.isScrap
-                                                    ? <Thumbnail onClick={(e) => toggleScrap(e, item)} src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="즐겨찾기 제거"></Thumbnail>
-                                                    : <Thumbnail onClick={(e) => toggleScrap(e, item)} src={`${process.env.PUBLIC_URL}/icon/book mark white_28.png`} alt="즐겨찾기 추가"></Thumbnail>}
-                                            </Bookmark>
-                                        </PictureDiv>
-                                        <VFlex>
-                                            <ShopName>{item.shopName}</ShopName>
-                                            <Region>{convertAddress(item.address)}</Region>
-                                            <Summary>{`${item.distance} m | 피드 ${item.feedCount}`}</Summary>
-                                            {/* <Summary>{(item as ShopData).distance} m | 피드 {(item as ShopData).reviews}</Summary> */}
-                                        </VFlex>
-                                    </HFlex>
-                                </VFlex>
-                            </Box>
-                        </SwiperSlide>;
-                    })}
+                {list && list.map((item, index) => {
+                    // console.log(item);
+                    if (!item) return null;
+                    return <SwiperSlide key={uuid()}>
+                        <Box onClick={(e) => openDetail(e, item.shopId)}>
+                            <VFlex>
+                                <HFlexSpaceBetween>
+                                    <div style={{ fontSize: '12px', fontWeight: '400' }}>
+                                        <span>검색된 식당</span>
+                                        <span> {list.length}</span>
+                                    </div>
+                                    <CountBox>
+                                        <VFlexCenter>
+                                            {index + 1} / {list.length}
+                                        </VFlexCenter>
+                                    </CountBox>
+                                </HFlexSpaceBetween>
+                                <HFlex gap='8px'>
+                                    <PictureDiv pic={`${imgPath.shopThumbnailImg + item.thumbnail}`}>
+                                        <Bookmark>
+                                            {item.isScrap
+                                                ? <Thumbnail onClick={(e) => toggleScrap(e, item)} src={`${process.env.PUBLIC_URL}/icon/bookmark checked.png`} alt="즐겨찾기 제거"></Thumbnail>
+                                                : <Thumbnail onClick={(e) => toggleScrap(e, item)} src={`${process.env.PUBLIC_URL}/icon/book mark white_28.png`} alt="즐겨찾기 추가"></Thumbnail>}
+                                        </Bookmark>
+                                    </PictureDiv>
+                                    <VFlex>
+                                        <ShopName>{item.shopName}</ShopName>
+                                        <Region>{convertAddress(item.address)}</Region>
+                                        <Summary>{`${item.distance} m | 피드 ${item.feedCount}`}</Summary>
+                                        {/* <Summary>{(item as ShopData).distance} m | 피드 {(item as ShopData).reviews}</Summary> */}
+                                    </VFlex>
+                                </HFlex>
+                            </VFlex>
+                        </Box>
+                    </SwiperSlide>;
+                })
+                }
             </Swiper>
         </CarouselModule>
     )
 }
 
-export default React.memo(CarouselBox);
+export default CarouselBox;
 
 const CarouselModule = styled.div`
     position: absolute;

@@ -81,8 +81,8 @@ const Home = () => {
 
     // const stateList = { userCoord, shopCoord, category, range, list, center, isMoving, isChanged, activeShop };
     // const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged, setActiveShop };
-    const stateList = { userCoord, shopCoord, category, range, isChanged, activeShop };
-    const dispatchList = { setRange, setCategory, setUserCoord, setShopCoord, setIsChanged, setActiveShop };
+    const stateList = { list, userCoord, shopCoord, category, range, isChanged, activeShop, markers };
+    const dispatchList = { setList, setRange, setCategory, setUserCoord, setShopCoord, setIsChanged, setActiveShop, setMarkers };
     // const listArr = { list, setList }
     const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
 
@@ -124,21 +124,24 @@ const Home = () => {
             shopLng = Number(location.state.lng);
             shopLat = Number(location.state.lat);
         }
+        mutate({ lat: userCoord.lat, lng: userCoord.lng, range });
     }, [])
 
-    useEffect(() => {
-        const listPivot = list?.map((element) => element?.shopId).sort() as number[];
-        const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
-        const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
-        if (!equal(listPivot, dataPivot)) {
-            setList(data);
-            const searchResult = data?.filter(
-                (item: ShopData) => item.category === category);
-            setMarkers(convert(category ? searchResult : data));
-            setShopCoord(shopCoordList(data));
-        }
-    }, [isSuccess]);
-    let timeCheck: NodeJS.Timeout | null = null;
+    // useEffect(() => {
+    //     if (isSuccess) {
+    //         const listPivot = list?.map((element) => element?.shopId).sort() as number[];
+    //         const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
+    //         const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
+    //         if (!equal(listPivot, dataPivot)) {
+    //             setList(data);
+    //             const searchResult = data?.filter(
+    //                 (item: ShopData) => item.category === category);
+    //             setMarkers(convert(category ? searchResult : data));
+    //             setShopCoord(shopCoordList(data));
+    //         }
+    //     }
+    // }, [isSuccess]);
+    // let timeCheck: NodeJS.Timeout | null = null;
 
     // const send = (newPayload: {
     //     lng: number;
@@ -178,13 +181,10 @@ const Home = () => {
                     <CenterContext.Provider value={{ center, setCenter }}>
                         <VFlexCenter etc="min-width:390px; height:100%; flex:1;">
                             <MapHeader />
-                            <MapModule
-                                list={markers}
-                                setList={setMarkers}
-                            />
+                            <MapModule />
                         </VFlexCenter>
                         <CategoryButtonBar />
-                        <CarouselBox list={list} setList={setList} />
+                        <CarouselBox />
                     </CenterContext.Provider>
                 </DispatchContext.Provider>
             </StateContext.Provider>

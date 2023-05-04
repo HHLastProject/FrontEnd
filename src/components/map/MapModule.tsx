@@ -13,7 +13,8 @@ import { colorSet } from '../ui/styles/color';
 import { GuInformation } from '../../shared/guCoordInform';
 import useMapDataCall from '../../hooks/useMapDataCall';
 import shopCoordList from '../../custom/ym/shopCoordList';
-
+import { debounce } from 'lodash';
+import { Listener } from 'react-naver-maps';
 export type Coordinate = {
     lng: number,
     lat: number,
@@ -35,33 +36,37 @@ interface MapProps {
     setList: React.Dispatch<React.SetStateAction<Markers[] | null[]>>,
 }
 
-const MapModule = ({ list, setList }: MapProps) => {
+const MapModule = () => {
     const navermaps = useNavermaps();
     const mapRef = useRef(null);
     const [zoom, setZoom] = useState<number>(17);
     const [map, setMap] = useState<naver.maps.Map | null>(null);
-    const [markers, setMarkers] = useState<Markers[] | null[]>([]);
+    const [moving, setMoving] = useState<boolean>(false);
+    // const [markers, setMarkers] = useState<Markers[] | null[]>([]);
     // const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     let timeCheck: NodeJS.Timeout | null = null;
     let guData: GuInformation[] | null = null;
-    const { isChanged } = useContext(StateContext);
-    const { setIsChanged } = useContext(DispatchContext);
     const { center, setCenter } = useContext(CenterContext);
     const { data, mutate, isSuccess, isError, isLoading } = useMapDataCall();
     const {
         range,
         activeShop,
         category,
-        // list,
+        list,
         userCoord,
+        markers,
+        isChanged
     } = useContext(StateContext);
 
     const {
         setActiveShop,
         setShopCoord,
         setCategory,
+        setList,
+        setMarkers,
         setRange,
+        setIsChanged
     } = useContext(DispatchContext);
 
 
@@ -100,23 +105,24 @@ const MapModule = ({ list, setList }: MapProps) => {
 
 
 
-    const centerChangeHandler = (
-        centerOnMap: naver.maps.Coord | NavermapPointType
-    ) => {
+    // const centerChangeHandler = (
+    //     centerOnMap: naver.maps.Coord | NavermapPointType
+    // ) => {
 
-        const newCoord: Coordinate = {
-            lng: centerOnMap.x,
-            lat: centerOnMap.y,
-        }
-        timeCheck && clearTimeout(timeCheck);
-
-        timeCheck = setTimeout(() => {
-            setCenter && setCenter(newCoord);
-            timeCheck = null;
-        }, 100);
-    }
+    //     const newCoord: Coordinate = {
+    //         lng: centerOnMap.x,
+    //         lat: centerOnMap.y,
+    //     }
+    //     // timeCheck && clearTimeout(timeCheck);
+    //     // console.log('실행된');
+    //     // timeCheck = setTimeout(() => {
+    //     setCenter && setCenter(newCoord);
+    //     // timeCheck = null;
+    //     // }, 100);
+    // }
 
     const returnRadius = (value: number) => {
+        console.log('들어온숫자', value);
         switch (value) {
             case 19:
                 return 100;
@@ -137,16 +143,17 @@ const MapModule = ({ list, setList }: MapProps) => {
     //     setZoom(value);
     //     return value;
     // }
-    const zoomChangeHandler = (zoomUnit: number) => {
+    const rangeRefresh = (zoomUnit: number) => {
         setZoom(zoomUnit);
-
+        console.log("바뀐줌", zoomUnit);
         if (zoomUnit > 14 && zoomUnit < 20) {
             setIsChanged && setIsChanged(true);
             setRange && setRange(returnRadius(zoomUnit));
+            zoomHandler(returnRadius(zoomUnit));
         } else {
             setIsChanged && setIsChanged(false);
+            setList && setList(null);
             setRange && setRange(0);
-            /* 클러스터링은 이쪽에서 향후에 컨트z롤 할 것 */
         }
     }
 
@@ -156,8 +163,9 @@ const MapModule = ({ list, setList }: MapProps) => {
             y: userCoord.lat,
         }
         map?.panTo({ lng: tempData.x, lat: tempData.y });
-        const centerDispatch = setCenter as React.Dispatch<React.SetStateAction<Coordinate>>;
-        centerDispatch(userCoord);
+        setCenter && setCenter(userCoord);
+        const newPayload = { lng: center.lng, lat: center.lat, range: range };
+        mutate(newPayload);
     }
 
     const markerClickHandler = (e: naver.maps.PointerEvent, shop: number) => {
@@ -165,24 +173,47 @@ const MapModule = ({ list, setList }: MapProps) => {
 
         dispatch(shop);
     }
-
-
-
-
-    map?.addListener('dragend', () => {
-        if (zoom > 14) {
-            centerChangeHandler(map.getCenter());
-        }
-    });
-
-    map?.addListener('zoom_changed', () => {
-        setZoom(map.getZoom());
-        const newPayload = { lng: center.lng, lat: center.lat, range: range };
-        // console.log("요청했음");
+    const dragAndFetch = (data: Coordinate) => {
+        const newPayload = { lng: data.lng, lat: data.lat, range: range };
         mutate(newPayload);
-    })
+    }
+    const dragHandler = () => {
+        // console.log('움직이는중?', moving);
+        if (zoom > 14) {
+            const newPos: Coordinate = {
+                lng: map?.getCenter().x as number,
+                lat: map?.getCenter().y as number
+            }
+            if (newPos) {
+                setCenter && setCenter(newPos as Coordinate);
+                // const newPayload = { lng: center.lng, lat: center.lat, range: range };
+                dragAndFetch(newPos);
+            }
+        }
+
+    };
+
+    const zoomHandler = (num: number) => {
+        console.log("줌핸들러 range", num);
+        const newPayload = { lng: center.lng, lat: center.lat, range: num };
+
+        mutate(newPayload);
+    }
 
 
+
+    const refreshData = () => {
+        const listPivot = list?.map((element) => element?.shopId).sort() as number[];
+        const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
+        const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
+        if (!equal(listPivot, dataPivot)) {
+            setList && setList(data);
+            const searchResult = data?.filter(
+                (item: ShopData) => item.category === category);
+            setMarkers && setMarkers(convert(category ? searchResult : data));
+            setShopCoord && setShopCoord(shopCoordList(data));
+        }
+    }
 
     const clusterText = (guName: string, num: number) => {
         const clusterHTML = `<div style="cursor:pointer;width:fit-content;min-width:40px;height:fit-content;line-height:22px;font-size:12px;color:${colorSet.primary_02};text-align:center;font-weight:bold;background-color:white;border:2px solid ${colorSet.primary_02};border-radius:5px;"><div style="font-weight:bold;color:${colorSet.primary_01}">${guName}</div>${num}</div>`
@@ -191,7 +222,7 @@ const MapModule = ({ list, setList }: MapProps) => {
     const clusterClickHandler = (lat: number, lng: number) => {
         map?.setCenter({ lat: lat, lng: lng });
         map?.setZoom(15);
-        centerChangeHandler({ x: lng, y: lat });
+        setCenter && setCenter({ lng, lat });
     }
     const createClusterMarkerIcon = (guName: string, count: number) => {
         const result = {
@@ -214,17 +245,30 @@ const MapModule = ({ list, setList }: MapProps) => {
     }
 
     useEffect(() => {
-        const listPivot = list?.map((element) => element?.shopId).sort() as number[];
-        const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
-        const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
-        if (!equal(listPivot, dataPivot)) {
-            setList(data);
-            const searchResult = data?.filter(
-                (item: ShopData) => item.category === category);
-            setMarkers(convert(category ? searchResult : data));
-            setShopCoord && setShopCoord(shopCoordList(data));
+        const newPayload = { lng: center.lng, lat: center.lat, range: range };
+        mutate(newPayload);
+        // if (isSuccess) refreshData();
+    }, []);
+
+    useEffect(() => {
+        if (isSuccess) {
+            console.log('성공');
+            refreshData();
         }
     }, [isSuccess]);
+
+    // useEffect(() => {
+    //     const listPivot = list?.map((element) => element?.shopId).sort() as number[];
+    //     const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
+    //     const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
+    //     if (!equal(listPivot, dataPivot)) {
+    //         setList(data);
+    //         const searchResult = data?.filter(
+    //             (item: ShopData) => item.category === category);
+    //         setMarkers(convert(category ? searchResult : data));
+    //         setShopCoord && setShopCoord(shopCoordList(data));
+    //     }
+    // }, [isSuccess]);
 
     useEffect(() => {
         if (location.state) {
@@ -232,7 +276,7 @@ const MapModule = ({ list, setList }: MapProps) => {
                 shopLng: Number(location.state.lng),
                 shopLat: Number(location.state.lat)
             };
-            centerChangeHandler({ y: searchedShop.shopLat, x: searchedShop.shopLng });
+            setCenter && setCenter({ lat: searchedShop.shopLat, lng: searchedShop.shopLng });
         }
     }, [location.state]);
 
@@ -257,18 +301,27 @@ const MapModule = ({ list, setList }: MapProps) => {
                 defaultZoom={17}
                 ref={e => setMap(e)}
                 disableKineticPan={true}
-                onZoomChanged={(value) => zoomChangeHandler(value)}
+                // onCenterChanged={(value) => {
+                //     const prevCenter = {
+                //         x: center.lng,
+                //         y: center.lat,
+                //     }
+                //     if (value !== prevCenter) setCenter && setCenter({ lng: value.x, lat: value.y })
+                // }}
+                onZoomChanged={(value) => rangeRefresh(value)}
                 zoomOrigin={center}
                 maxZoom={19}
                 minZoom={11}
             >
+                <Listener type='dragend' listener={dragHandler} />
+                {/* <Listener type='zoom_changed' listener={zoomHandler} /> */}
                 <Marker
                     icon={`${process.env.PUBLIC_URL}/markers/icon_mylocation_36.png`}
                     position={center}
                 />
 
                 {zoom > 14
-                    ? list?.map((element: Markers | null) => {
+                    ? markers?.map((element: Markers | null) => {
                         if (element) {
                             return <Marker
                                 key={uuid()}
