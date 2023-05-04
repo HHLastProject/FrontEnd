@@ -167,3 +167,6 @@ export const scrapImg = {
     checked: 'bookmark checked.png',
     notChecked: 'book mark white_28.png'
 }
+
+
+export const clusterHTML = '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-color:gray;border-radius:50%;">dd</div>'

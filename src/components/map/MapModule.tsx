@@ -3,12 +3,14 @@ import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } 
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
 import uuid from 'react-uuid';
 import { CenterContext, DispatchContext, ListContextDefault, Markers, SearchedShop, StateContext } from '../../pages/Home';
-import { NavermapPointType } from '../../custom/ym/variables';
+import { NavermapPointType, clusterHTML } from '../../custom/ym/variables';
 import styled from 'styled-components';
 import MarkerMemo from './MarkerMemo';
 import useGetGooList from '../../hooks/useGetGooList';
 import makeArrayForCluster from '../../hooks/makeArrayForCluster';
 import { useLocation } from 'react-router-dom';
+import { colorSet } from '../ui/styles/color';
+import { GuInformation } from '../../shared/guCoordInform';
 
 export type Coordinate = {
     lng: number,
@@ -39,6 +41,7 @@ const MapModule = ({ list, setList }: MapProps) => {
     // const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     let timeCheck: NodeJS.Timeout | null = null;
+    let guData: GuInformation[] | null = null;
 
     const { center, setCenter } = useContext(CenterContext);
 
@@ -82,9 +85,12 @@ const MapModule = ({ list, setList }: MapProps) => {
 
     const { guList, gooIsSuccess } = useGetGooList();
     if (gooIsSuccess) {
-        const guData = makeArrayForCluster(guList.guList);
+        guData = makeArrayForCluster(guList.guList);
     }
     // const guData = makeArrayForCluster(gooList);
+    // const cluster = new MarKerClustering();
+
+
 
     const centerChangeHandler = (
         centerOnMap: naver.maps.Coord | NavermapPointType
@@ -157,7 +163,23 @@ const MapModule = ({ list, setList }: MapProps) => {
         }
     });
 
-
+    const clusterText = (guName: string, num: number) => {
+        const clusterHTML = `<div style="cursor:pointer;width:fit-content;min-width:40px;height:fit-content;line-height:22px;font-size:12px;color:${colorSet.primary_02};text-align:center;font-weight:bold;background-color:white;border:2px solid ${colorSet.primary_02};border-radius:5px;"><div style="font-weight:bold;color:${colorSet.primary_01}">${guName}</div>${num}</div>`
+        return clusterHTML
+    }
+    const clusterClickHandler = (lat: number, lng: number) => {
+        map?.setCenter({ lat: lat, lng: lng });
+        map?.setZoom(15);
+        centerChangeHandler({ x: lng, y: lat });
+    }
+    const createClusterMarkerIcon = (guName: string, count: number) => {
+        const result = {
+            content: clusterText(guName, count),
+            size: new navermaps.Size(40, 40),
+            anchor: new navermaps.Point(20, 20)
+        }
+        return result
+    }
     useEffect(() => {
         if (location.state) {
             const searchedShop = {
@@ -213,7 +235,14 @@ const MapModule = ({ list, setList }: MapProps) => {
                             return null;
                         }
                     })
-                    : null}
+                    : guData?.map((element) => {
+                        return <Marker
+                            key={uuid()}
+                            icon={createClusterMarkerIcon(element.guName, element.shopCount)}
+                            position={{ lat: element.lat, lng: element.lng }}
+                            onClick={() => clusterClickHandler(element.lat, element.lng)}
+                        />
+                    })}
 
             </NaverMap>
             <AimBtn onClick={aimClickHandler}>

@@ -34,8 +34,8 @@ export interface CenterContextDefault {
 }
 
 export interface ListContextDefault {
-    list: ShopData[] | null[],
-    setList: React.Dispatch<React.SetStateAction<ShopData[] | null[]>> | null
+    list: ShopData[] | null,
+    setList: React.Dispatch<React.SetStateAction<ShopData[] | null>> | null
 }
 
 export interface Markers {
@@ -64,7 +64,7 @@ const Home = () => {
 
     const [range, setRange] = useState(300);
     const [category, setCategory] = useState<categoryTypes | ''>('');
-    const [list, setList] = useState<ShopData[] | null[]>([null]);
+    const [list, setList] = useState<ShopData[] | null>(null);
     const [center, setCenter] = useState<Coordinate>(defaultCenter.center);
     // const [isMoving, setIsMoving] = useState<boolean>(false);
     // const [isChanged, setIsChanged] = useState<boolean>(false);
@@ -125,22 +125,36 @@ const Home = () => {
         }
     }, [])
 
+    useEffect(() => {
+        const listPivot = list?.map((element) => element?.shopId).sort() as number[];
+        const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
+        const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
+        if (!equal(listPivot, dataPivot)) {
+            setList(data);
+            const searchResult = data?.filter(
+                (item: ShopData) => item.category === category);
+            setMarkers(convert(category ? searchResult : data));
+            setShopCoord(shopCoordList(data));
+        }
+    }, [isSuccess]);
+
     /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
     useEffect(() => {
         const newPayload = { lng: center.lng, lat: center.lat, range: range };
-        mutateAsync(newPayload)
-            .then((data: ShopData[]) => {
-                const listPivot = list?.map((element) => element?.shopId).sort() as number[];
-                const dataPivot = data?.map((element) => element?.shopId).sort() as number[];
-                const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
-                if (!equal(listPivot, dataPivot)) {
-                    setList(data);
-                    const searchResult = data?.filter(
-                        (item: ShopData) => item.category === category);
-                    setMarkers(convert(category ? searchResult : data));
-                    setShopCoord(shopCoordList(data));
-                }
-            });
+        // mutateAsync(newPayload)
+        //     .then((data: ShopData[]) => {
+        //         const listPivot = list?.map((element) => element?.shopId).sort() as number[];
+        //         const dataPivot = data?.map((element) => element?.shopId).sort() as number[];
+        //         const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
+        //         if (!equal(listPivot, dataPivot)) {
+        //             setList(data);
+        //             const searchResult = data?.filter(
+        //                 (item: ShopData) => item.category === category);
+        //             setMarkers(convert(category ? searchResult : data));
+        //             setShopCoord(shopCoordList(data));
+        //         }
+        //     });
+        mutate(newPayload);
     }, [range, center]);
 
 
@@ -159,7 +173,7 @@ const Home = () => {
         }
     }, [category]);
 
-    if (isLoading) return <Loading />;
+    // if (isLoading) return <Loading />;
 
     return (
         <VFlex etc={userTextSelectLimit}>
