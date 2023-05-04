@@ -7,6 +7,8 @@ import SearchStore from '../components/search/SearchInput';
 import ListHeader from '../components/home/ListHeader';
 import SearchResultList from '../components/search/SearchResultList';
 import NoResult from '../components/home/NoShop';
+import { Body3, Title5 } from '../components/FontStyle';
+import { VFlex } from '../custom/ym/styleStore';
 
 interface IDataList {
   shopId: number,
@@ -16,7 +18,7 @@ interface IDataList {
   lng : number,
 }
 
-//Link state로 돌아갈 link 값을 받고, 클릭하면 location.state.link로 다시 돌아가는 로직
+//Link state로 검색 후 돌아갈 link 값을 받고, 클릭하면 해당 link로 다시 돌아가는 로직
 function Search() {
   const [inputValue, setInputValue] = useState('');
   const [dataList, setDataList] = useState<undefined | IDataList[] | []>(undefined);
@@ -67,7 +69,16 @@ function Search() {
                 </div>
               )}))
               :
-              <></>
+              <>
+                {
+
+                }
+                <VFlex gap={'12px'}>
+                  <Title5>최근 검색어</Title5>
+                  <br/>
+                  <Body3>검색 내역이 없습니다.</Body3>
+                </VFlex>
+              </>
             }
 
             {/* undefined일 때 아무것도 없고, []일때 결과없음 띄움 */}

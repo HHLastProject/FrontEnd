@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { useGetHomeShopList } from '../custom/jh/useGetHomeShopList';
@@ -21,6 +21,8 @@ import Loading from '../components/loading/Loading';
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
   const [lat, setLat] = useState(37.5108407);
+  // const [lng, setLng] = useState(0);
+  // const [lat, setLat] = useState(0);
   const [orderBy, setOrderBy] = useState<string>('거리순');
   const [range, setRange] = useState(300);
   const [category, setCategory] = useState<categoryTypes>("");
@@ -32,15 +34,13 @@ const List = () => {
     shopList,
     getshopList,
     getshopListIsLoading,
-    getshopListIsError,
   } = useGetHomeShopList({ lng, lat, range });
 
   useEffect(() => {
-    // console.log(lng, lat);
     if (lng !== 0 && lat !== 0) {
       getshopList();
     };
-  }, [lng, lat, range]);
+  }, [lat, range]);
 
   // useEffect(() => {
   //   localStorage.setItem('access_token', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc1MzE3NzA0NiwiaWF0IjoxNjgyOTQxNzkzfQ.nlsXPpfOjW6yuP05IV3Ya0aRp2EvJByOg8N4MTCeRrI`);

@@ -88,6 +88,7 @@ export const iconImgPath: IPathObject = {
   search: {
     loupe: setPublicUrl(`/loupe.png`),
     marker: setPublicUrl(`/images/search/mapfilled_24.png`),
+    searchCircle: setPublicUrl(`/icon/search/search_circle_24.png`)
   },
   map: {
     shopLocation: setPublicUrl(`/images/markers/icon_mappin_36.png`),
