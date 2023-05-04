@@ -21,10 +21,12 @@ export const queryClient = new QueryClient({
 });
 
 root.render(
-  <QueryClientProvider client={queryClient}>
-    <ReactQueryDevtools initialIsOpen={true} />
-    <App />
-  </QueryClientProvider>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={true} />
+      <App />
+    </QueryClientProvider>
+  </React.StrictMode>
 );
 
 reportWebVitals();

@@ -6,7 +6,7 @@ import { categoryTypes } from '../../custom/ym/types';
 import uuid from 'react-uuid';
 
 const CategoryButtonBar = () => {
-    const { category } = useContext(StateContext);
+    const { category, isChanged } = useContext(StateContext);
     const { setCategory } = useContext(DispatchContext);
 
     const changeCategory = setCategory as React.Dispatch<React.SetStateAction<"" | categoryTypes>>;
@@ -20,14 +20,21 @@ const CategoryButtonBar = () => {
     }
 
     return (
-        <CategoryButtons>
-            {FILTER_LIST.map((element) => <FilterBtn
-                selected={category}
-                name={element}
-                key={uuid()}
-                onClick={(e) => filterClickHandler(element)}
-            >{element}</FilterBtn>)}
-        </CategoryButtons>
+        <>
+            {
+                isChanged
+                    ? <CategoryButtons>
+                        {
+                            FILTER_LIST.map((element) => <FilterBtn
+                                selected={category}
+                                name={element}
+                                key={uuid()}
+                                onClick={(e) => filterClickHandler(element)}
+                            >{element}</FilterBtn>)
+                        }
+                    </CategoryButtons >
+                    : null}
+        </>
     )
 }
 
