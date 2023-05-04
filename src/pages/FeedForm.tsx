@@ -161,7 +161,7 @@ function FeedForm() {
                 :
                 <PriviewDiv>
                   <IconPlusWhite24 />
-                  <label>0/1</label>
+                  <>0/1</>
                 </PriviewDiv>
               }
             </ImgPreview>

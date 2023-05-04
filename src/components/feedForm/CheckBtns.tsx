@@ -8,7 +8,7 @@ function CheckBtns({arr, checkList, setCheckList}:{arr: string[], checkList: str
     <>
       {arr?.map((item: string) => {
         return(
-          <TagBtn checkList={checkList} setCheckList={setCheckList}>
+          <TagBtn key={item} checkList={checkList} setCheckList={setCheckList}>
             {item}
           </TagBtn>
       )})
