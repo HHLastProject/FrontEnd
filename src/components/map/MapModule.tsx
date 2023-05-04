@@ -100,29 +100,8 @@ const MapModule = () => {
     if (gooIsSuccess) {
         guData = makeArrayForCluster(guList.guList);
     }
-    // const guData = makeArrayForCluster(gooList);
-    // const cluster = new MarKerClustering();
-
-
-
-    // const centerChangeHandler = (
-    //     centerOnMap: naver.maps.Coord | NavermapPointType
-    // ) => {
-
-    //     const newCoord: Coordinate = {
-    //         lng: centerOnMap.x,
-    //         lat: centerOnMap.y,
-    //     }
-    //     // timeCheck && clearTimeout(timeCheck);
-    //     // console.log('실행된');
-    //     // timeCheck = setTimeout(() => {
-    //     setCenter && setCenter(newCoord);
-    //     // timeCheck = null;
-    //     // }, 100);
-    // }
 
     const returnRadius = (value: number) => {
-        console.log('들어온숫자', value);
         switch (value) {
             case 19:
                 return 100;
@@ -139,13 +118,8 @@ const MapModule = () => {
         }
     }
 
-    // const initZoom = (value: number) => {
-    //     setZoom(value);
-    //     return value;
-    // }
     const rangeRefresh = (zoomUnit: number) => {
         setZoom(zoomUnit);
-        console.log("바뀐줌", zoomUnit);
         if (zoomUnit > 14 && zoomUnit < 20) {
             setIsChanged && setIsChanged(true);
             setRange && setRange(returnRadius(zoomUnit));
@@ -178,7 +152,7 @@ const MapModule = () => {
         mutate(newPayload);
     }
     const dragHandler = () => {
-        // console.log('움직이는중?', moving);
+
         if (zoom > 14) {
             const newPos: Coordinate = {
                 lng: map?.getCenter().x as number,
@@ -186,7 +160,6 @@ const MapModule = () => {
             }
             if (newPos) {
                 setCenter && setCenter(newPos as Coordinate);
-                // const newPayload = { lng: center.lng, lat: center.lat, range: range };
                 dragAndFetch(newPos);
             }
         }
@@ -194,13 +167,10 @@ const MapModule = () => {
     };
 
     const zoomHandler = (num: number) => {
-        console.log("줌핸들러 range", num);
         const newPayload = { lng: center.lng, lat: center.lat, range: num };
 
         mutate(newPayload);
     }
-
-
 
     const refreshData = () => {
         const listPivot = list?.map((element) => element?.shopId).sort() as number[];
@@ -247,28 +217,13 @@ const MapModule = () => {
     useEffect(() => {
         const newPayload = { lng: center.lng, lat: center.lat, range: range };
         mutate(newPayload);
-        // if (isSuccess) refreshData();
     }, []);
 
     useEffect(() => {
         if (isSuccess) {
-            console.log('성공');
             refreshData();
         }
     }, [isSuccess]);
-
-    // useEffect(() => {
-    //     const listPivot = list?.map((element) => element?.shopId).sort() as number[];
-    //     const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
-    //     const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
-    //     if (!equal(listPivot, dataPivot)) {
-    //         setList(data);
-    //         const searchResult = data?.filter(
-    //             (item: ShopData) => item.category === category);
-    //         setMarkers(convert(category ? searchResult : data));
-    //         setShopCoord && setShopCoord(shopCoordList(data));
-    //     }
-    // }, [isSuccess]);
 
     useEffect(() => {
         if (location.state) {
@@ -301,20 +256,12 @@ const MapModule = () => {
                 defaultZoom={17}
                 ref={e => setMap(e)}
                 disableKineticPan={true}
-                // onCenterChanged={(value) => {
-                //     const prevCenter = {
-                //         x: center.lng,
-                //         y: center.lat,
-                //     }
-                //     if (value !== prevCenter) setCenter && setCenter({ lng: value.x, lat: value.y })
-                // }}
                 onZoomChanged={(value) => rangeRefresh(value)}
                 zoomOrigin={center}
                 maxZoom={19}
                 minZoom={11}
             >
                 <Listener type='dragend' listener={dragHandler} />
-                {/* <Listener type='zoom_changed' listener={zoomHandler} /> */}
                 <Marker
                     icon={`${process.env.PUBLIC_URL}/markers/icon_mylocation_36.png`}
                     position={center}

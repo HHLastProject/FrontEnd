@@ -79,11 +79,8 @@ const Home = () => {
     // 샵 위치
     const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
 
-    // const stateList = { userCoord, shopCoord, category, range, list, center, isMoving, isChanged, activeShop };
-    // const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged, setActiveShop };
     const stateList = { list, userCoord, shopCoord, category, range, isChanged, activeShop, markers };
     const dispatchList = { setList, setRange, setCategory, setUserCoord, setShopCoord, setIsChanged, setActiveShop, setMarkers };
-    // const listArr = { list, setList }
     const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
 
     //검색 페이지에서 받는 위도 경도
@@ -125,36 +122,7 @@ const Home = () => {
             shopLat = Number(location.state.lat);
         }
         mutate({ lat: userCoord.lat, lng: userCoord.lng, range });
-    }, [])
-
-    // useEffect(() => {
-    //     if (isSuccess) {
-    //         const listPivot = list?.map((element) => element?.shopId).sort() as number[];
-    //         const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
-    //         const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
-    //         if (!equal(listPivot, dataPivot)) {
-    //             setList(data);
-    //             const searchResult = data?.filter(
-    //                 (item: ShopData) => item.category === category);
-    //             setMarkers(convert(category ? searchResult : data));
-    //             setShopCoord(shopCoordList(data));
-    //         }
-    //     }
-    // }, [isSuccess]);
-    // let timeCheck: NodeJS.Timeout | null = null;
-
-    // const send = (newPayload: {
-    //     lng: number;
-    //     lat: number;
-    //     range: number;
-    // }) => {
-    //     debounce(mutate(newPayload), 100);
-    // }
-    // useEffect(() => {
-    //     const newPayload = { lng: center.lng, lat: center.lat, range: range };
-    //     // console.log("요청했음");
-    //     send(newPayload);
-    // }, [range, center]);
+    }, []);
 
 
     /* 카테고리 버튼에 대한 데이터 리렌더링 */
@@ -172,7 +140,6 @@ const Home = () => {
         }
     }, [category]);
 
-    // if (isLoading) return <Loading />;
 
     return (
         <VFlex etc={userTextSelectLimit}>
