@@ -9,6 +9,7 @@ export interface ISearchInput {
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   placeholder?: string;
   setDataList: React.Dispatch<React.SetStateAction<never[]>> | ISearchResult[] | any;
+  isFeedForm?: boolean,
   children?: React.ReactNode;
 };
 
@@ -23,18 +24,24 @@ function SearchStore({
   setInputValue,
   placeholder,
   setDataList,
+  isFeedForm,
   children,
 }: ISearchInput) {
   return (
     <SearchStoreStyle>
       <div id='search-input'>
         <img src={iconImgPath.search.loupe} alt="검색하기" />
+        {isFeedForm
+        ?
+        <div style={{width: '100%'}}>{placeholder}</div>
+        :
         <SearchInput
           inputValue={inputValue}
           setInputValue={setInputValue}
           placeholder={placeholder}
           setDataList={setDataList}
         />
+        }
         {children}
       </div>
     </SearchStoreStyle>

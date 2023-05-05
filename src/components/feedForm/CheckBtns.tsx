@@ -25,9 +25,7 @@ const TagBtn = ({children, checkList, setCheckList}: {children: string, checkLis
   //클릭했을때
   const onClickHandler = (value: string) => {
     setIsChecked(pre => !pre);
-    
     if(checkList.length <= 4){
-      console.log(checkList.length);
       if(!isChecked){
         //체크된 값 추가
         setCheckList(pre => {

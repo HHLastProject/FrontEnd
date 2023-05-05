@@ -21,13 +21,18 @@ import Loading from '../components/loading/Loading';
 const List = () => {
   const [lng, setLng] = useState(127.0468975);
   const [lat, setLat] = useState(37.5108407);
-  // const [lng, setLng] = useState(0);
-  // const [lat, setLat] = useState(0);
   const [orderBy, setOrderBy] = useState<string>('거리순');
   const [range, setRange] = useState(300);
   const [category, setCategory] = useState<categoryTypes>("");
-  getUserLocation(setLng, setLat).then((res) => {
-  });
+  
+  const currentLng = Number(localStorage.getItem('lng'));
+  const currentLat = Number(localStorage.getItem('lat'));
+  if(currentLat && currentLng){
+    setLng(currentLng);
+    setLat(currentLat);
+  } else {
+    getUserLocation(setLng, setLat);
+  }
 
   //리스트 데이터
   const {
@@ -42,9 +47,11 @@ const List = () => {
     };
   }, [lat, range]);
 
-  // useEffect(() => {
-  //   localStorage.setItem('access_token', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc1MzE3NzA0NiwiaWF0IjoxNjgyOTQxNzkzfQ.nlsXPpfOjW6yuP05IV3Ya0aRp2EvJByOg8N4MTCeRrI`);
-  // }, []);
+  useEffect(() => {
+    localStorage.setItem('access_token', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc1MzE3NzA0NiwiaWF0IjoxNjgyOTQxNzkzfQ.nlsXPpfOjW6yuP05IV3Ya0aRp2EvJByOg8N4MTCeRrI`);
+    
+  
+  }, []);
 
   //로딩 화면
   if (getshopListIsLoading) { return <Loading/>; }

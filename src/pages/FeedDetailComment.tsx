@@ -16,6 +16,9 @@ import styled from 'styled-components'
 import { IconUploadActive, IconUploadInactive } from '../components/ui/element/icons/IconsStyle'
 import Loading from '../components/loading/Loading'
 import { scrollTop } from '../custom/jh/scrollTop'
+import { Body3 } from '../components/FontStyle'
+import BtnResetStyle from '../components/ui/element/buttons/BtnReset'
+import IconSize from '../components/ui/element/icons/IconSize'
 
 function FeedDetailComment() {
   const navi = useNavigate();
@@ -28,11 +31,10 @@ function FeedDetailComment() {
   const {
     feedDetailCommentData,
     feedDetailCommentIsLoading,
-    feedDetailCommentIsError,
   } = useGetFeedDetailComment(feedId);
 
   const onChangeTextareaHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(e.target.value);
+    setInputValue(e.target.value.trim());
     if(e.target.scrollHeight > 30){
       e.target.rows = 2;
     } else {
@@ -42,17 +44,15 @@ function FeedDetailComment() {
 
   const addFeedDetailComment = (feedId: number) => {
     if(!getToken()) {
-      const result = window.confirm('로그인 하시겠습니까?');
+      const result = window.confirm('로그인이 필요한 기능입니다.\n로그인 하시겠습니까?');
       if(result) {navi(path.login)};
     }
 
     if(inputValue !== ''){
       //댓글 데이터 전송
-      postFeedDetailComment({feedId: feedId, feedComment: inputValue})
-      .then((res) => {
-        alert('댓글이 추가되었습니다.');
-        setInputValue('');
-      });
+      postFeedDetailComment({feedId: feedId, feedComment: inputValue});
+      alert('댓글이 추가되었습니다.');
+      setInputValue('');
     } else {
       alert('댓글을 입력해주세요.');
     }
@@ -100,23 +100,28 @@ function FeedDetailComment() {
             required
           />
           {/* 댓글 추가 버튼 */}
-          <div
-            style={{width: '40px', height: '40px', cursor: 'pointer'}}
+          <BtnResetStyle
             onClick={() => addFeedDetailComment(feedId)}
           >
-            {(inputValue.length === 0)
-            ?
-            <IconUploadInactive/>
-            :
-            <IconUploadActive/>
-            }
-          </div>
+            <IconSize.Size40>
+              {(inputValue.length === 0)
+              ?
+              <IconUploadInactive/>
+              :
+              <IconUploadActive/>
+              }</IconSize.Size40>
+            </BtnResetStyle>
         </TextareaStyle>
 
         {/* 댓글 */}
         <div style={{margin: '12px 0'}}>
           {
-            feedDetailCommentData &&
+            feedDetailCommentData?.length === 0 
+            ?
+            <div>
+              <Body3>댓글이 없습니다.</Body3>
+            </div>
+            :
             <FeedDetailComments
               commentList={feedDetailCommentData}
             />

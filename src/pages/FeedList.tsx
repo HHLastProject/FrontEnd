@@ -52,12 +52,19 @@ function FeedList() {
 
         {/* FEED 리스트 */}
         <div style={{marginBottom: '120px'}}>
-        { feedList?.filter((item: TossedFeedData) => {
+        { feedList?.length === 0 
+          ? 
+          <></> 
+          :
+          feedList?.filter((item: TossedFeedData | null) => {
             if(orderBy !== "태그") return item?.tag.includes(orderBy);
             return item;
           })
-          .filter((item: TossedFeedData) => (category !== "") ? item?.shopCategory === category : item)
+          .filter((item: TossedFeedData | null) => (category !== "") ? item?.shopCategory === category : item)
           .map((item: any, index: number) => {
+            if(item === null || feedList?.length === 0) {
+              return <></>;
+            } else {
             return (
               <div key={item.feedId}>
                 <VFlex gap='12px' etc='padding:20px;'>
@@ -68,7 +75,7 @@ function FeedList() {
                 </VFlex>
                 {(index >=0 && index < feedList.length-1) && <FeedPageHr/>}
               </div>
-            )
+            )}
           })
         }
         </div>
@@ -111,7 +118,7 @@ const FeedPageWriteBtn = styled.button`
   border: none;
   padding: 14px 24px;
   border-radius: 100px;
-  background-color: #B81B1B;
+  background-color: ${colorSet.primary_02};
 `;
 
 const FeedPageHr = styled.hr`

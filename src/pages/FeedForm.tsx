@@ -130,12 +130,13 @@ function FeedForm() {
             to={`${path.search}`}
             state={{link: `${path.feedForm}`}}
           >
-          <SearchStore
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            placeholder='카페 이름 입력하기'
-            setDataList={setInputValue}
-          />
+            <SearchStore
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+              placeholder='카페 이름 입력하기'
+              setDataList={setInputValue}
+              isFeedForm={true}
+            />
           </Link>
         </VFlex>
 
