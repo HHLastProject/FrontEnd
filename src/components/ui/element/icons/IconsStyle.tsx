@@ -111,3 +111,11 @@ export const IconSearchCiarcle24 = () => {
     </IconSize.Size24>
   )
 }
+//검색 돋보기
+export const IconSearchLoupe20 = () => {
+  return(
+    <IconSize.Size20>
+      <img src={iconImgPath.search.loupe} alt="검색하기" />
+    </IconSize.Size20>
+  )
+}
