@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { path } from '../../shared/path';
 import useMypage from '../../hooks/useMypage';
 
-const UserProfile = () => {
+const UserProfile = ({ querySwitch }: { querySwitch: boolean }) => {
 
     const [profilePic, setProfilePic] = useState<string>("");
     const [nickname, setNickname] = useState<string>("");
@@ -17,7 +17,7 @@ const UserProfile = () => {
         navi(path.editNickname);
     }
 
-    const { data } = useMypage();
+    const { data } = useMypage(querySwitch);
 
     useEffect(() => {
         if (data) {

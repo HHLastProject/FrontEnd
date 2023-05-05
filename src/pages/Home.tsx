@@ -116,29 +116,28 @@ const Home = () => {
     }
 
 
-    useEffect(() => {
-        if (location.state) {
-            shopLng = Number(location.state.lng);
-            shopLat = Number(location.state.lat);
-        }
-        mutate({ lat: userCoord.lat, lng: userCoord.lng, range });
-    }, []);
+    // useEffect(() => {
+    //     if (location.state) {
+    //         shopLng = Number(location.state.lng);
+    //         shopLat = Number(location.state.lat);
+    //     }
+    //     mutate({ lat: userCoord.lat, lng: userCoord.lng, range: 1000 });
+    // }, []);
 
 
-    /* 카테고리 버튼에 대한 데이터 리렌더링 */
-    useEffect(() => {
-        if (category) {
-            setList(prev => {
-                const searchResult = data?.filter(
-                    (item: ShopData) => item.category === category);
-                setMarkers(convert(searchResult));
-                return searchResult;
-            });
-        } else {
-            setList(data);
-            setMarkers(convert(data));
-        }
-    }, [category]);
+    // /* 카테고리 버튼에 대한 데이터 리렌더링 */
+    // useEffect(() => {
+    //     if (category) {
+    //         setList((prev) => {
+    //             const searchResult = prev?.filter(
+    //                 (item: ShopData) => item.category === category);
+    //             return searchResult;
+    //         });
+    //     } else {
+    //         setList(data);
+    //         setMarkers(convert(data));
+    //     }
+    // }, [category]);
 
 
     return (

@@ -49,7 +49,7 @@ const TextRename = ({ value, dispatch, disableDispatch }: InputTextRenameProps) 
     return (
         <InputBox>
             <HFlexSpaceBetween gap='20px' height={"100%"}>
-                <Input value={value} onChange={inputChangeHandler} placeholder='닉네임' />
+                <Input value={value} onChange={inputChangeHandler} placeholder='닉네임' minLength={1} maxLength={8} />
                 <Buttons.Others.IconButton
                     width={16}
                     height={16}

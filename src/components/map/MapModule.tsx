@@ -3,7 +3,7 @@ import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } 
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
 import uuid from 'react-uuid';
 import { CenterContext, DispatchContext, ListContextDefault, Markers, SearchedShop, StateContext } from '../../pages/Home';
-import { NavermapPointType, ShopData, clusterHTML } from '../../custom/ym/variables';
+import { MapCoordPayload, NavermapPointType, ShopData, clusterHTML } from '../../custom/ym/variables';
 import styled from 'styled-components';
 import MarkerMemo from './MarkerMemo';
 import useGetGooList from '../../hooks/useGetGooList';
@@ -15,6 +15,7 @@ import useMapDataCall from '../../hooks/useMapDataCall';
 import shopCoordList from '../../custom/ym/shopCoordList';
 import { debounce } from 'lodash';
 import { Listener } from 'react-naver-maps';
+import { Buttons } from '../ui/element/buttons/Buttons';
 export type Coordinate = {
     lng: number,
     lat: number,
@@ -42,11 +43,19 @@ const MapModule = () => {
     const [zoom, setZoom] = useState<number>(17);
     const [map, setMap] = useState<naver.maps.Map | null>(null);
     const [moving, setMoving] = useState<boolean>(false);
+    const [editedList, setEditedList] = useState<ShopData[] | null>(null);
+    const [prevPos, setPrevPos] = useState<Coordinate>({
+        lat: 37.5108407,
+        lng: 127.0468975
+    });
     // const [markers, setMarkers] = useState<Markers[] | null[]>([]);
     // const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     let timeCheck: NodeJS.Timeout | null = null;
     let guData: GuInformation[] | null = null;
+
+    const [refreshHover, setRefreshHover] = useState<boolean>(false);
+
     const { center, setCenter } = useContext(CenterContext);
     const { data, mutate, isSuccess, isError, isLoading } = useMapDataCall();
     const {
@@ -119,27 +128,27 @@ const MapModule = () => {
     }
 
     const rangeRefresh = (zoomUnit: number) => {
-        setZoom(zoomUnit);
         if (zoomUnit > 14 && zoomUnit < 20) {
-            setIsChanged && setIsChanged(true);
+            // console.log(zoomUnit);
+            // console.log(returnRadius(zoomUnit));
             setRange && setRange(returnRadius(zoomUnit));
-            zoomHandler(returnRadius(zoomUnit));
         } else {
-            setIsChanged && setIsChanged(false);
-            setList && setList(null);
+            setList && setList([]);
             setRange && setRange(0);
         }
     }
 
     const aimClickHandler = () => {
-        const tempData: NavermapPointType = {
-            x: userCoord.lng,
-            y: userCoord.lat,
-        }
-        map?.panTo({ lng: tempData.x, lat: tempData.y });
-        setCenter && setCenter(userCoord);
-        const newPayload = { lng: center.lng, lat: center.lat, range: range };
-        mutate(newPayload);
+        const tempPrev = { ...prevPos }; // 이전 위치
+        const tempCenter = { ...center }; // 변경됐던 위치
+        console.log('tempprev', tempPrev);
+        console.log('tempCenter', tempCenter)
+        map?.panTo(prevPos);             // 이전 위치로 돌아감
+        setPrevPos(tempCenter);        // 이전 위치정보에는 변경됐던 좌표를 넣음
+        setCenter && setCenter(tempPrev);  // 현재 위치를 다시 이전 위치 좌표로 할당
+        console.log('prevPos', prevPos);
+        console.log('center', center);
+        refreshData();
     }
 
     const markerClickHandler = (e: naver.maps.PointerEvent, shop: number) => {
@@ -147,44 +156,41 @@ const MapModule = () => {
 
         dispatch(shop);
     }
-    const dragAndFetch = (data: Coordinate) => {
-        const newPayload = { lng: data.lng, lat: data.lat, range: range };
-        mutate(newPayload);
-    }
-    const dragHandler = () => {
 
-        if (zoom > 14) {
-            const newPos: Coordinate = {
-                lng: map?.getCenter().x as number,
-                lat: map?.getCenter().y as number
-            }
-            if (newPos) {
-                setCenter && setCenter(newPos as Coordinate);
-                dragAndFetch(newPos);
-            }
+
+
+
+    const reMutate = () => {
+        const newPayload: MapCoordPayload = {
+            lat: map?.getCenter().y as number,
+            lng: map?.getCenter().x as number,
+            range: 1000
         }
-
-    };
-
-    const zoomHandler = (num: number) => {
-        const newPayload = { lng: center.lng, lat: center.lat, range: num };
-
+        setPrevPos({ ...center });
+        setCenter && setCenter({ lat: newPayload.lat, lng: newPayload.lng });
+        localStorage.setItem("lat", String(newPayload.lat));
+        localStorage.setItem("lng", String(newPayload.lng));
         mutate(newPayload);
     }
+
+
+
+    const refreshListByRange = (data: ShopData[]) => {
+        const result = data?.filter((element) => element.distance <= range);
+        setList && setList(result);
+        // console.log(result);
+        return result;
+    }
+
 
     const refreshData = () => {
-        const listPivot = list?.map((element) => element?.shopId).sort() as number[];
-        const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
-        const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
-        if (!equal(listPivot, dataPivot)) {
-            setList && setList(data);
-            const searchResult = data?.filter(
-                (item: ShopData) => item.category === category);
-            setMarkers && setMarkers(convert(category ? searchResult : data));
-            setShopCoord && setShopCoord(shopCoordList(data));
-        }
+        refreshListByRange(data);
     }
 
+
+
+
+    /* 클러스터 */
     const clusterText = (guName: string, num: number) => {
         const clusterHTML = `<div style="cursor:pointer;width:fit-content;min-width:40px;height:fit-content;line-height:22px;font-size:12px;color:${colorSet.primary_02};text-align:center;font-weight:bold;background-color:white;border:2px solid ${colorSet.primary_02};border-radius:5px;"><div style="font-weight:bold;color:${colorSet.primary_01}">${guName}</div>${num}</div>`
         return clusterHTML
@@ -202,7 +208,8 @@ const MapModule = () => {
         }
         return result
     }
-    const convert = (data: ShopData[] | null[]) => {
+
+    const convert = (data: ShopData[] | null[] | null) => {
         if (data) {
             return data?.map((element) => {
                 return {
@@ -214,15 +221,18 @@ const MapModule = () => {
         } else return [null];
     }
 
+
+
+
     useEffect(() => {
-        const newPayload = { lng: center.lng, lat: center.lat, range: range };
+        const newPayload = { lng: center.lng, lat: center.lat, range: 1000 };
+        localStorage.setItem("lng", String(center.lng));
+        localStorage.setItem("lat", String(center.lat));
         mutate(newPayload);
     }, []);
 
     useEffect(() => {
-        if (isSuccess) {
-            refreshData();
-        }
+        isSuccess && refreshListByRange(data);
     }, [isSuccess]);
 
     useEffect(() => {
@@ -235,6 +245,10 @@ const MapModule = () => {
         }
     }, [location.state]);
 
+    useEffect(() => {
+        refreshData();
+    }, [range]);
+
 
     /* 메모리누수 방지 */
     useEffect(() => {
@@ -246,6 +260,10 @@ const MapModule = () => {
     }, [timeCheck]);
 
     useEffect(() => {
+
+    }, [category]);
+
+    useEffect(() => {
         list && (setActiveShop && setActiveShop(list[0]?.shopId as number));
     }, [list]);
 
@@ -253,30 +271,32 @@ const MapModule = () => {
         <MapDiv style={{ width: '100%', height: '100%' }} id="react-naver-map">
             <NaverMap
                 center={center}
-                defaultZoom={17}
-                ref={e => setMap(e)}
-                disableKineticPan={true}
-                onZoomChanged={(value) => rangeRefresh(value)}
+                ref={(e) => setMap(e)}
+                onZoomChanged={(value) => {
+                    setZoom(value);
+                    rangeRefresh(value);
+                }}
                 zoomOrigin={center}
+                disableKineticPan={true}
+                defaultZoom={17}
                 maxZoom={19}
                 minZoom={11}
             >
-                <Listener type='dragend' listener={dragHandler} />
                 <Marker
                     icon={`${process.env.PUBLIC_URL}/markers/icon_mylocation_36.png`}
                     position={center}
                 />
 
                 {zoom > 14
-                    ? markers?.map((element: Markers | null) => {
-                        if (element) {
+                    ? list?.map((element: ShopData | null) => {
+                        if (element?.category === category || category === "") {
                             return <Marker
                                 key={uuid()}
-                                onClick={(e) => markerClickHandler(e, element.shopId)}
+                                onClick={(e) => markerClickHandler(e, element?.shopId as number)}
                                 icon={element?.shopId === activeShop
                                     ? activeIcon
                                     : icon}
-                                defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />
+                                defaultPosition={new navermaps.LatLng(element?.lat as number, element?.lng as number)} />
                         } else {
                             return null;
                         }
@@ -294,12 +314,34 @@ const MapModule = () => {
             <AimBtn onClick={aimClickHandler}>
                 <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
             </AimBtn>
+            {zoom > 14
+                ? <RefreshBtnDiv
+                    onMouseEnter={() => setRefreshHover(true)}
+                    onMouseLeave={() => setRefreshHover(false)}
+                    onClick={reMutate}
+                >
+                    {
+                        refreshHover
+                            ? <Buttons.Medium.RefreshHover>이 위치에서 검색</Buttons.Medium.RefreshHover>
+                            : <Buttons.Medium.Refresh>이 위치에서 검색</Buttons.Medium.Refresh>
+                    }
+                </RefreshBtnDiv>
+                : null}
+
         </MapDiv>
     );
 }
 
 export default MapModule;
 
+const RefreshBtnDiv = styled.div`
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    bottom: 234px;
+    left: 50%;
+    transform: translateX(-50%);
+`
 
 const AimBtn = styled.button`
     position: absolute;

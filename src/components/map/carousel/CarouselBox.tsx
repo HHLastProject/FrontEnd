@@ -5,13 +5,14 @@ import { DispatchContext, EachData, ListContextDefault, StateContext } from '../
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import uuid from 'react-uuid';
-import { ShopData } from '../../../custom/ym/variables';
+import { BODY_5, ShopData } from '../../../custom/ym/variables';
 import { dispatches, states } from '../../../custom/ym/contextValues';
 import { apiPath, imgPath } from '../../../shared/path';
 import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
 import { keys, mapQueryKeys } from '../../../apis/queries';
 import { api_token } from '../../../shared/api';
 import SwiperCore from 'swiper';
+import { colorSet } from '../../ui/styles/color';
 
 type CarouselProps = {
     children: (ShopData | null)[]
@@ -27,7 +28,7 @@ const CarouselBox = () => {
     const [now, setNow] = useState<number>(0);
     const [swiper, setSwiper] = useState<SwiperCore>();
 
-    const { list } = useContext(StateContext);
+    const { list, category } = useContext(StateContext);
     const { setList } = useContext(DispatchContext);
 
     const { activeShop } = useContext(StateContext);
@@ -48,9 +49,10 @@ const CarouselBox = () => {
 
     const toggleScrap = React.useCallback((e: React.MouseEvent<HTMLImageElement, MouseEvent>, item: ShopData) => {
         e.stopPropagation();
-
-        mutate(item.shopId);
-        item.isScrap = !item.isScrap;
+        if (localStorage.getItem("access_token")) {
+            mutate(item.shopId);
+            item.isScrap = !item.isScrap;
+        }
     }, []);
 
     const convertAddress = (text: string) => {
@@ -87,19 +89,26 @@ const CarouselBox = () => {
                 onRealIndexChange={swiper => setNow(swiper.realIndex)}
                 parallax
             >
-                {list && list.map((item, index) => {
+                {list && list.filter((element) => {
+                    if (category === "") return element;
+                    if (element.category === category) {
+                        return element;
+                    } else {
+                        return null;
+                    }
+                }).map((item, index, arr) => {
                     if (!item) return null;
                     return <SwiperSlide key={uuid()}>
                         <Box onClick={(e) => openDetail(e, item.shopId)}>
                             <VFlex>
                                 <HFlexSpaceBetween>
                                     <div style={{ fontSize: '12px', fontWeight: '400' }}>
-                                        <span>검색된 식당</span>
-                                        <span> {list.length}</span>
+                                        <span>검색된 카페</span>
+                                        <span> {arr.length}</span>
                                     </div>
                                     <CountBox>
                                         <VFlexCenter>
-                                            {index + 1} / {list.length}
+                                            {index + 1}/{arr.length}
                                         </VFlexCenter>
                                     </CountBox>
                                 </HFlexSpaceBetween>
@@ -194,13 +203,15 @@ const PictureDiv = styled.div<{ pic: string }>`
 `;
 
 const CountBox = styled.span`
-    background-color: #909096;
-    border-radius: 8px;
-    padding: 3px 8px;
+    /* background-color: #909096; */
+    /* border-radius: 8px; */
+    /* padding: 3px 8px; */
     width : fit-content;
-    height : 22px;
-    font-size: 12px;
-    color : white;
+    /* height : 22px; */
+    font-size: ${BODY_5.fontSize};
+    line-height: ${BODY_5.lineHeight};
+    font-weight: ${BODY_5.fontWeight};
+    color: '#717176'
 `;
 const Bookmark = styled.button`
     position: absolute;
