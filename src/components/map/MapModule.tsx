@@ -209,41 +209,26 @@ const MapModule = () => {
         return result
     }
 
-    const convert = (data: ShopData[] | null[] | null) => {
-        if (data) {
-            return data?.map((element) => {
-                return {
-                    shopId: element?.shopId,
-                    lat: element?.lat,
-                    lng: element?.lng
-                } as Markers;
-            })
-        } else return [null];
-    }
-
-
-
-
     useEffect(() => {
-        const newPayload = { lng: center.lng, lat: center.lat, range: 1000 };
-        localStorage.setItem("lng", String(center.lng));
-        localStorage.setItem("lat", String(center.lat));
-        mutate(newPayload);
+        if (location.state) {
+            const searchedShop = {
+                lng: Number(location.state.lng),
+                lat: Number(location.state.lat),
+                range: 1000,
+            };
+            setCenter && setCenter({ lat: searchedShop.lat, lng: searchedShop.lng });
+            mutate(searchedShop);
+        } else {
+            const newPayload = { lng: center.lng, lat: center.lat, range: 1000 };
+            localStorage.setItem("lng", String(center.lng));
+            localStorage.setItem("lat", String(center.lat));
+            mutate(newPayload);
+        }
     }, []);
 
     useEffect(() => {
         isSuccess && refreshListByRange(data);
     }, [isSuccess]);
-
-    useEffect(() => {
-        if (location.state) {
-            const searchedShop = {
-                shopLng: Number(location.state.lng),
-                shopLat: Number(location.state.lat)
-            };
-            setCenter && setCenter({ lat: searchedShop.shopLat, lng: searchedShop.shopLng });
-        }
-    }, [location.state]);
 
     useEffect(() => {
         refreshData();
