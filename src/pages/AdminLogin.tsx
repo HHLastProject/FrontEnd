@@ -33,7 +33,7 @@ const AdminLogin = () => {
         <div style={{ backgroundColor: 'white', height: '100vh' }}>
             <VFlexCenter gap="20px">
                 <input placeholder="ID" value={id} onChange={(e) => setId(e.target.value)} />
-                <input placeholder="Password" value={pw} onChange={(e) => setPw(e.target.value)} />
+                <input type='password' placeholder="Password" value={pw} onChange={(e) => setPw(e.target.value)} />
                 <HFlex width='fit-content' height='fit-content' gap='5px'>
                     <button onClick={loginButtonHandler}>로그인</button>
                     <button onClick={() => navi(-1)}>뒤로가기</button>

@@ -9,6 +9,7 @@ import useMapDataCall from '../hooks/useMapDataCall';
 import { dispatches, states } from '../custom/ym/contextValues';
 import CategoryButtonBar from '../components/map/CategoryButtonBar';
 import { useLocation } from 'react-router-dom';
+import { debounce } from '../custom/jh/debounce';
 import { getUserLocation } from '../custom/jh/getUserLocation';
 import { getRealtimeLocation } from '../custom/jh/getUserLocation';
 import shopCoordList from '../custom/ym/shopCoordList';
@@ -78,11 +79,8 @@ const Home = () => {
     // 샵 위치
     const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
 
-    // const stateList = { userCoord, shopCoord, category, range, list, center, isMoving, isChanged, activeShop };
-    // const dispatchList = { setRange, setCategory, setList, setUserCoord, setShopCoord, setCenter, setIsMoving, setIsChanged, setActiveShop };
-    const stateList = { userCoord, shopCoord, category, range, isChanged, activeShop };
-    const dispatchList = { setRange, setCategory, setUserCoord, setShopCoord, setIsChanged, setActiveShop };
-    // const listArr = { list, setList }
+    const stateList = { list, userCoord, shopCoord, category, range, isChanged, activeShop, markers };
+    const dispatchList = { setList, setRange, setCategory, setUserCoord, setShopCoord, setIsChanged, setActiveShop, setMarkers };
     const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
 
     //검색 페이지에서 받는 위도 경도
@@ -118,50 +116,29 @@ const Home = () => {
     }
 
 
-    useEffect(() => {
-        if (location.state) {
-            shopLng = Number(location.state.lng);
-            shopLat = Number(location.state.lat);
-        }
-    }, [])
-
-    useEffect(() => {
-        const listPivot = list?.map((element) => element?.shopId).sort() as number[];
-        const dataPivot = data?.map((element: ShopData) => element?.shopId).sort() as number[];
-        const equal = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
-        if (!equal(listPivot, dataPivot)) {
-            setList(data);
-            const searchResult = data?.filter(
-                (item: ShopData) => item.category === category);
-            setMarkers(convert(category ? searchResult : data));
-            setShopCoord(shopCoordList(data));
-        }
-    }, [isSuccess]);
-
-    /* 비동기 처리를 위해 mutateAsync로 프로미스를 반환받고 state dispatch 진행 */
-    useEffect(() => {
-        const newPayload = { lng: center.lng, lat: center.lat, range: range };
-        console.log("리렌더링됐다");
-        mutate(newPayload);
-    }, [range, center]);
+    // useEffect(() => {
+    //     if (location.state) {
+    //         shopLng = Number(location.state.lng);
+    //         shopLat = Number(location.state.lat);
+    //     }
+    //     mutate({ lat: userCoord.lat, lng: userCoord.lng, range: 1000 });
+    // }, []);
 
 
-    /* 카테고리 버튼에 대한 데이터 리렌더링 */
-    useEffect(() => {
-        if (category) {
-            setList(prev => {
-                const searchResult = data?.filter(
-                    (item: ShopData) => item.category === category);
-                setMarkers(convert(searchResult));
-                return searchResult;
-            });
-        } else {
-            setList(data);
-            setMarkers(convert(data));
-        }
-    }, [category]);
+    // /* 카테고리 버튼에 대한 데이터 리렌더링 */
+    // useEffect(() => {
+    //     if (category) {
+    //         setList((prev) => {
+    //             const searchResult = prev?.filter(
+    //                 (item: ShopData) => item.category === category);
+    //             return searchResult;
+    //         });
+    //     } else {
+    //         setList(data);
+    //         setMarkers(convert(data));
+    //     }
+    // }, [category]);
 
-    // if (isLoading) return <Loading />;
 
     return (
         <VFlex etc={userTextSelectLimit}>
@@ -170,13 +147,10 @@ const Home = () => {
                     <CenterContext.Provider value={{ center, setCenter }}>
                         <VFlexCenter etc="min-width:390px; height:100%; flex:1;">
                             <MapHeader />
-                            <MapModule
-                                list={markers}
-                                setList={setMarkers}
-                            />
+                            <MapModule />
                         </VFlexCenter>
                         <CategoryButtonBar />
-                        <CarouselBox list={list} setList={setList} />
+                        <CarouselBox />
                     </CenterContext.Provider>
                 </DispatchContext.Provider>
             </StateContext.Provider>

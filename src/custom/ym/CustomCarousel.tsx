@@ -11,12 +11,6 @@ const CustomCarousel = ({ children }: CarouselContainerProps) => {
     )
 }
 
-const ContentsBoxContainer = () => {
-    return (
-        <></>
-    )
-}
-
 export default CustomCarousel;
 
 

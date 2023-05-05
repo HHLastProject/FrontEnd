@@ -3,7 +3,7 @@ import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } 
 import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
 import uuid from 'react-uuid';
 import { CenterContext, DispatchContext, ListContextDefault, Markers, SearchedShop, StateContext } from '../../pages/Home';
-import { NavermapPointType, clusterHTML } from '../../custom/ym/variables';
+import { MapCoordPayload, NavermapPointType, ShopData, clusterHTML } from '../../custom/ym/variables';
 import styled from 'styled-components';
 import MarkerMemo from './MarkerMemo';
 import useGetGooList from '../../hooks/useGetGooList';
@@ -11,7 +11,11 @@ import makeArrayForCluster from '../../hooks/makeArrayForCluster';
 import { useLocation } from 'react-router-dom';
 import { colorSet } from '../ui/styles/color';
 import { GuInformation } from '../../shared/guCoordInform';
-
+import useMapDataCall from '../../hooks/useMapDataCall';
+import shopCoordList from '../../custom/ym/shopCoordList';
+import { debounce } from 'lodash';
+import { Listener } from 'react-naver-maps';
+import { Buttons } from '../ui/element/buttons/Buttons';
 export type Coordinate = {
     lng: number,
     lat: number,
@@ -33,28 +37,45 @@ interface MapProps {
     setList: React.Dispatch<React.SetStateAction<Markers[] | null[]>>,
 }
 
-const MapModule = ({ list, setList }: MapProps) => {
+const MapModule = () => {
     const navermaps = useNavermaps();
     const mapRef = useRef(null);
     const [zoom, setZoom] = useState<number>(17);
     const [map, setMap] = useState<naver.maps.Map | null>(null);
+    const [moving, setMoving] = useState<boolean>(false);
+    const [editedList, setEditedList] = useState<ShopData[] | null>(null);
+    const [prevPos, setPrevPos] = useState<Coordinate>({
+        lat: 37.5108407,
+        lng: 127.0468975
+    });
+    // const [markers, setMarkers] = useState<Markers[] | null[]>([]);
     // const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     let timeCheck: NodeJS.Timeout | null = null;
     let guData: GuInformation[] | null = null;
-    const { isChanged } = useContext(StateContext);
-    const { setIsChanged } = useContext(DispatchContext);
-    const { center, setCenter } = useContext(CenterContext);
 
+    const [refreshHover, setRefreshHover] = useState<boolean>(false);
+
+    const { center, setCenter } = useContext(CenterContext);
+    const { data, mutate, isSuccess, isError, isLoading } = useMapDataCall();
     const {
+        range,
         activeShop,
-        // list,
+        category,
+        list,
         userCoord,
+        markers,
+        isChanged
     } = useContext(StateContext);
 
     const {
         setActiveShop,
+        setShopCoord,
+        setCategory,
+        setList,
+        setMarkers,
         setRange,
+        setIsChanged
     } = useContext(DispatchContext);
 
 
@@ -88,26 +109,6 @@ const MapModule = ({ list, setList }: MapProps) => {
     if (gooIsSuccess) {
         guData = makeArrayForCluster(guList.guList);
     }
-    // const guData = makeArrayForCluster(gooList);
-    // const cluster = new MarKerClustering();
-
-
-
-    const centerChangeHandler = (
-        centerOnMap: naver.maps.Coord | NavermapPointType
-    ) => {
-
-        const newCoord: Coordinate = {
-            lng: centerOnMap.x,
-            lat: centerOnMap.y,
-        }
-        timeCheck && clearTimeout(timeCheck);
-
-        timeCheck = setTimeout(() => {
-            setCenter && setCenter(newCoord);
-            timeCheck = null;
-        }, 100);
-    }
 
     const returnRadius = (value: number) => {
         switch (value) {
@@ -126,31 +127,28 @@ const MapModule = ({ list, setList }: MapProps) => {
         }
     }
 
-    // const initZoom = (value: number) => {
-    //     setZoom(value);
-    //     return value;
-    // }
-    const zoomChangeHandler = (zoomUnit: number) => {
-        setZoom(zoomUnit);
-
+    const rangeRefresh = (zoomUnit: number) => {
         if (zoomUnit > 14 && zoomUnit < 20) {
-            setIsChanged && setIsChanged(true);
+            // console.log(zoomUnit);
+            // console.log(returnRadius(zoomUnit));
             setRange && setRange(returnRadius(zoomUnit));
         } else {
-            setIsChanged && setIsChanged(false);
+            setList && setList([]);
             setRange && setRange(0);
-            /* 클러스터링은 이쪽에서 향후에 컨트z롤 할 것 */
         }
     }
 
     const aimClickHandler = () => {
-        const tempData: NavermapPointType = {
-            x: userCoord.lng,
-            y: userCoord.lat,
-        }
-        map?.panTo({ lng: tempData.x, lat: tempData.y });
-        const centerDispatch = setCenter as React.Dispatch<React.SetStateAction<Coordinate>>;
-        centerDispatch(userCoord);
+        const tempPrev = { ...prevPos }; // 이전 위치
+        const tempCenter = { ...center }; // 변경됐던 위치
+        console.log('tempprev', tempPrev);
+        console.log('tempCenter', tempCenter)
+        map?.panTo(prevPos);             // 이전 위치로 돌아감
+        setPrevPos(tempCenter);        // 이전 위치정보에는 변경됐던 좌표를 넣음
+        setCenter && setCenter(tempPrev);  // 현재 위치를 다시 이전 위치 좌표로 할당
+        console.log('prevPos', prevPos);
+        console.log('center', center);
+        refreshData();
     }
 
     const markerClickHandler = (e: naver.maps.PointerEvent, shop: number) => {
@@ -159,12 +157,40 @@ const MapModule = ({ list, setList }: MapProps) => {
         dispatch(shop);
     }
 
-    map?.addListener('dragend', () => {
-        if (zoom > 14) {
-            centerChangeHandler(map.getCenter());
-        }
-    });
 
+
+
+    const reMutate = () => {
+        const newPayload: MapCoordPayload = {
+            lat: map?.getCenter().y as number,
+            lng: map?.getCenter().x as number,
+            range: 1000
+        }
+        setPrevPos({ ...center });
+        setCenter && setCenter({ lat: newPayload.lat, lng: newPayload.lng });
+        localStorage.setItem("lat", String(newPayload.lat));
+        localStorage.setItem("lng", String(newPayload.lng));
+        mutate(newPayload);
+    }
+
+
+
+    const refreshListByRange = (data: ShopData[]) => {
+        const result = data?.filter((element) => element.distance <= range);
+        setList && setList(result);
+        // console.log(result);
+        return result;
+    }
+
+
+    const refreshData = () => {
+        refreshListByRange(data);
+    }
+
+
+
+
+    /* 클러스터 */
     const clusterText = (guName: string, num: number) => {
         const clusterHTML = `<div style="cursor:pointer;width:fit-content;min-width:40px;height:fit-content;line-height:22px;font-size:12px;color:${colorSet.primary_02};text-align:center;font-weight:bold;background-color:white;border:2px solid ${colorSet.primary_02};border-radius:5px;"><div style="font-weight:bold;color:${colorSet.primary_01}">${guName}</div>${num}</div>`
         return clusterHTML
@@ -172,7 +198,7 @@ const MapModule = ({ list, setList }: MapProps) => {
     const clusterClickHandler = (lat: number, lng: number) => {
         map?.setCenter({ lat: lat, lng: lng });
         map?.setZoom(15);
-        centerChangeHandler({ x: lng, y: lat });
+        setCenter && setCenter({ lng, lat });
     }
     const createClusterMarkerIcon = (guName: string, count: number) => {
         const result = {
@@ -182,15 +208,46 @@ const MapModule = ({ list, setList }: MapProps) => {
         }
         return result
     }
+
+    const convert = (data: ShopData[] | null[] | null) => {
+        if (data) {
+            return data?.map((element) => {
+                return {
+                    shopId: element?.shopId,
+                    lat: element?.lat,
+                    lng: element?.lng
+                } as Markers;
+            })
+        } else return [null];
+    }
+
+
+
+
+    useEffect(() => {
+        const newPayload = { lng: center.lng, lat: center.lat, range: 1000 };
+        localStorage.setItem("lng", String(center.lng));
+        localStorage.setItem("lat", String(center.lat));
+        mutate(newPayload);
+    }, []);
+
+    useEffect(() => {
+        isSuccess && refreshListByRange(data);
+    }, [isSuccess]);
+
     useEffect(() => {
         if (location.state) {
             const searchedShop = {
                 shopLng: Number(location.state.lng),
                 shopLat: Number(location.state.lat)
             };
-            centerChangeHandler({ y: searchedShop.shopLat, x: searchedShop.shopLng });
+            setCenter && setCenter({ lat: searchedShop.shopLat, lng: searchedShop.shopLng });
         }
     }, [location.state]);
+
+    useEffect(() => {
+        refreshData();
+    }, [range]);
 
 
     /* 메모리누수 방지 */
@@ -203,6 +260,10 @@ const MapModule = ({ list, setList }: MapProps) => {
     }, [timeCheck]);
 
     useEffect(() => {
+
+    }, [category]);
+
+    useEffect(() => {
         list && (setActiveShop && setActiveShop(list[0]?.shopId as number));
     }, [list]);
 
@@ -210,11 +271,14 @@ const MapModule = ({ list, setList }: MapProps) => {
         <MapDiv style={{ width: '100%', height: '100%' }} id="react-naver-map">
             <NaverMap
                 center={center}
-                defaultZoom={17}
-                ref={e => setMap(e)}
-                disableKineticPan={true}
-                onZoomChanged={(value) => zoomChangeHandler(value)}
+                ref={(e) => setMap(e)}
+                onZoomChanged={(value) => {
+                    setZoom(value);
+                    rangeRefresh(value);
+                }}
                 zoomOrigin={center}
+                disableKineticPan={true}
+                defaultZoom={17}
                 maxZoom={19}
                 minZoom={11}
             >
@@ -224,15 +288,15 @@ const MapModule = ({ list, setList }: MapProps) => {
                 />
 
                 {zoom > 14
-                    ? list?.map((element: Markers | null) => {
-                        if (element) {
+                    ? list?.map((element: ShopData | null) => {
+                        if (element?.category === category || category === "") {
                             return <Marker
                                 key={uuid()}
-                                onClick={(e) => markerClickHandler(e, element.shopId)}
+                                onClick={(e) => markerClickHandler(e, element?.shopId as number)}
                                 icon={element?.shopId === activeShop
                                     ? activeIcon
                                     : icon}
-                                defaultPosition={new navermaps.LatLng(element.lat, element.lng)} />
+                                defaultPosition={new navermaps.LatLng(element?.lat as number, element?.lng as number)} />
                         } else {
                             return null;
                         }
@@ -250,12 +314,34 @@ const MapModule = ({ list, setList }: MapProps) => {
             <AimBtn onClick={aimClickHandler}>
                 <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
             </AimBtn>
+            {zoom > 14
+                ? <RefreshBtnDiv
+                    onMouseEnter={() => setRefreshHover(true)}
+                    onMouseLeave={() => setRefreshHover(false)}
+                    onClick={reMutate}
+                >
+                    {
+                        refreshHover
+                            ? <Buttons.Medium.RefreshHover>이 위치에서 검색</Buttons.Medium.RefreshHover>
+                            : <Buttons.Medium.Refresh>이 위치에서 검색</Buttons.Medium.Refresh>
+                    }
+                </RefreshBtnDiv>
+                : null}
+
         </MapDiv>
     );
 }
 
 export default MapModule;
 
+const RefreshBtnDiv = styled.div`
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    bottom: 234px;
+    left: 50%;
+    transform: translateX(-50%);
+`
 
 const AimBtn = styled.button`
     position: absolute;

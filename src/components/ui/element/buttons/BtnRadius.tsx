@@ -16,7 +16,23 @@ const Others = ({ onClick, children, ...props }: InternalJSX) => {
     )
 }
 
-export const BtnRadius = { Default, Others };
+const Rounded = ({ onClick, children, ...props }: InternalJSX) => {
+    return (
+        <RoundedContainer onClick={onClick} {...props}>{children}</RoundedContainer>
+    )
+}
+
+export const BtnRadius = { Default, Others, Rounded };
+
+const RoundedContainer = styled.button`
+    width: fit-content;
+    height: fit-content;
+    overflow: hidden;
+    border-radius: 100px;
+    border: 1px solid ${colorSet.lineMedium};
+    padding: 0px;
+    background-color: transparent;
+`
 
 const DefaultContainer = styled.button`
     width: fit-content;
@@ -36,4 +52,9 @@ const OtherContainer = styled.button`
     border: 1px solid ${colorSet.lineMedium};
     background-color: transparent;
     padding: 0px;
+
+    &:hover{
+        color: black;
+        background-color: white;
+    }
 `

@@ -4,27 +4,27 @@ import { colorSet } from '../../styles/color';
 import { ChildrenForBtnContents } from "../../../../custom/ym/types";
 
 
-const White = ({ children }: ChildrenForBtnContents) => {
+const White = ({ children, hover, ref, ...props }: ChildrenForBtnContents) => {
     return (
-        <Content type="white">{children}</Content>
+        <Content type="white" hover={hover} ref={ref} {...props}>{children}</Content>
     );
 };
 
-const Gray = ({ children }: ChildrenForBtnContents) => {
+const Gray = ({ children, hover, ref, ...props }: ChildrenForBtnContents) => {
     return (
-        <Content type="gray">{children}</Content>
+        <Content type="gray" hover={hover} ref={ref} {...props}>{children}</Content>
     );
 };
 
-const Black = ({ children }: ChildrenForBtnContents) => {
+const Black = ({ children, hover, ref, ...props }: ChildrenForBtnContents) => {
     return (
-        <Content type="black">{children}</Content>
+        <Content type="black" hover={hover} ref={ref} {...props}>{children}</Content>
     );
 };
 
 export const BtnTextColor = { White, Gray, Black };
 
-const Content = styled.span<{ type: string }>`
+const Content = styled.span<{ type: string, hover?: string }>`
     padding: 0px;
     margin: 0px;
     font-family: "Pretendard";
@@ -44,4 +44,8 @@ const Content = styled.span<{ type: string }>`
                 return null;
         }
     }}
+
+    &:hover {
+        color: ${({ hover }) => hover ? hover : null};
+    }
 `;
