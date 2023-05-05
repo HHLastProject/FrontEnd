@@ -35,12 +35,11 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
         const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
         if(result){
           deleteFeedComment({feedId: param, commentId: commentId})
-          .then(() => {
+          .then((res) => {
             alert('삭제되었습니다.');
           })
         }
       }
-      
       controlHidden(id);
     }
   }

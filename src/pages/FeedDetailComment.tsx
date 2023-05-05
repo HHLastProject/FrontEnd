@@ -87,9 +87,9 @@ function FeedDetailComment() {
       <DefaultWrap>
         {/* 입력창 */}
         <TextareaStyle
-          padding='8px 8px 8px 16px'
+          padding={'8px 8px 8px 16px'}
           border={`1px solid ${colorSet.lineMedium}`}
-          radius='8px'
+          radius={'8px'}
         >
           <textarea
             maxLength={600}
@@ -134,10 +134,3 @@ function FeedDetailComment() {
 }
 
 export default FeedDetailComment
-
-const CommentPostBtn = styled.button<{width?: string, height?: string}>`
-  width: ${({width}) => width};
-  height: ${({height}) => height};
-  border: none;
-  border-radius: 100px;
-`;
