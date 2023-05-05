@@ -32,14 +32,14 @@ function FeedForm() {
 
   const navi = useNavigate();
   const maxLength = 500;
-  const [comment, setComment] = useState<string | null>(null);
-  const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
+  const [comment, setComment] = useState<string>('');
   const [inputValue, setInputValue] = useState('');//가게 이름 입력
   const [checkList, setCheckList] = useState<string[]>([]);
   const [imgFile, setImgFile] = useState<IImgFile>({
     feedPic: null,
     previewPic: null,
   });
+  const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
 
   //이미지 미리보기
   const previewImg = (e: React.ChangeEvent<HTMLInputElement> | any) => {
@@ -61,24 +61,30 @@ function FeedForm() {
 
   //전송 버튼 눌렀을때
   const onClickSendFeedData = (shopId: number | null) => {
-    //[{tag: '데이터'}, ]
+    setComment(pre => pre.trim());
+    console.log('코멘트',comment);
+
+    //[{tag: '데이터'}, {tag: '데이터'}] 이 형태로 저장하기 위함
     let tags = [];
     if(checkList.length !== 0) {
-      for(let i of checkList)
-      tags.push({tag: i});
+      for(let check of checkList)
+      tags.push({tag: check});
     }
+
     const checkResult = [...tags];
-    const token = getToken();
-    if (shopId && imgFile.feedPic && token) {
+    if (shopId && imgFile.feedPic && getToken()) {
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
       formData.append('shopId', shopId.toString());
-      formData.append('comment', comment ? comment : '');
+      formData.append('comment', comment);
       formData.append('tags', JSON.stringify(checkResult));
+      
       sendFeedData(shopId, formData).then(() => {
         if(isFeedForm){
           navi(`${path.feedList}`);
-        } else {navi(-1)};
+        } else {
+          navi(-1);
+        };
       });
     } else {
       alert("가게명과 사진을 등록해주세요.");
@@ -151,7 +157,7 @@ function FeedForm() {
             type="file"
             name="feedPic"
             onChange={previewImg}
-            style={{ display: 'none' }}
+            hidden
           />
             <ImgPreview
               onClick={inputClickHandler}
@@ -174,6 +180,7 @@ function FeedForm() {
             <Body4 color={colorSet.textMedium}>선택</Body4>
           </FeedFormTitle>
           <FeedFormTextarea
+            value={comment}
             onChange={textCountAndSetHandler}
             maxLength={maxLength}
             placeholder='카페에서의 순간을 작성해 주세요.'
@@ -224,7 +231,7 @@ const Margin = styled.div<{ margin: string }>`
 const FeedFormTextarea = styled.textarea`
   height: 188px;
   padding: 16px;
-  border: 1px solid #DBDBDB;
+  border: 1px solid ${colorSet.lineMedium};
   border-radius: 10px;
   resize: none;
   outline: none;
