@@ -15,6 +15,8 @@ export interface ChildrenForSpan extends ComponentPropsWithoutRef<'span'> {
 
 export interface ChildrenForJSX extends ComponentPropsWithoutRef<'button'> {
     children: React.ReactNode
+    hover?: string,
+    ref?: React.RefObject<HTMLDivElement>,
 };
 
 export type Coordinate = {
@@ -30,6 +32,8 @@ export type rangeTypes = 100 | 200 | 300 | 500 | 1000;
 
 export interface ChildrenForBtnContents extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode
+    hover?: string,
+    ref?: React.RefObject<HTMLSpanElement>
 };
 
 export interface BtnNavProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
 
 const axiosConfig: AxiosRequestConfig = {
   baseURL: `${process.env.REACT_APP_SERVER_URL}`,
@@ -39,5 +39,16 @@ api_token.interceptors.request.use(
     return Promise.reject(error);
   }
 )
+
+// api_token.interceptors.response.use(
+//   (response) => response,
+//   (err: AxiosError) => {
+//     if (err.response && err.response.status === 401) {
+//     } else {
+//       return Promise.reject(err);
+//     }
+//   }
+// )
+
 
 export default api;

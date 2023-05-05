@@ -16,7 +16,7 @@ import BottomNav from '../components/BottomNav'
 import styled from 'styled-components'
 import Search from '../pages/Search'
 import Mypage from '../pages/Mypage'
-import AllFeeds from '../pages/AllFeeds'
+// import AllFeeds from '../pages/AllFeeds'
 import FeedDetail from '../pages/FeedDetail'
 import List from '../pages/List'
 import Home from '../pages/Home'
@@ -26,6 +26,7 @@ import FeedList from '../pages/FeedList'
 import FeedDetailComment from '../pages/FeedDetailComment'
 import EditNickname from '../pages/EditNickname'
 import FolderList from '../pages/FolderList'
+import Error from '../pages/Error'
 
 
 const Router = () => {
@@ -55,9 +56,11 @@ const Router = () => {
             <Route path={path.folderList} element={<FolderList />} />
 
             <Route path={path.mypage} element={<Mypage />} />
-            <Route path={path.allFeeds} element={<AllFeeds />} />
+            {/* <Route path={path.allFeeds} element={<AllFeeds />} /> */}
             <Route path={path.feedDetail} element={<FeedDetail />} />
             <Route path={path.editNickname} element={<EditNickname />} />
+
+            <Route path="/*" element={<Error />} />
           </Routes>
         </PageContainer>
         <BottomNav />

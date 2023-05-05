@@ -3,6 +3,7 @@ import { VFlex } from '../../custom/ym/styleStore';
 import FeedPictures from './FeedPictures';
 import FeedSet from './FeedSet';
 import { useEffect } from 'react';
+import NoMyFeeds from './NoMyFeeds';
 
 const MyFeeds = () => {
 
@@ -16,7 +17,7 @@ const MyFeeds = () => {
                                 <FeedSet>{value?.props?.feedCount}</FeedSet>
                                 <FeedPictures isAll={false}>{value?.props?.feeds}</FeedPictures>
                             </>
-                            : null
+                            : <NoMyFeeds />
                     }
                 }
             </MypageContext.Consumer>

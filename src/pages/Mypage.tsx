@@ -8,6 +8,11 @@ import NoLoginStatus from '../components/mypage/NoLoginStatus';
 import { ReceivedFeed } from '../custom/ym/types';
 import useMypage from '../hooks/useMypage';
 import Loading from '../components/loading/Loading';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import Q from 'q';
+import { mypageKeys } from '../apis/queries';
+import { api_token } from '../shared/api';
+import { apiPath } from '../shared/path';
 
 export type StateContextType = {
     props: Feed | null,
@@ -38,14 +43,17 @@ const Mypage = () => {
 
     const [feedData, setFeedData] = useState<Feed | null>(null);
     const [isLogin, setIsLogin] = useState<boolean>(false);
+    const [querySwitch, setQuerySwitch] = useState<boolean>(false);
 
-    const { data, isSuccess, isError, isLoading, refetch } = useMypage();
+    const { data, isSuccess, isError, isLoading, refetch } = useMypage(querySwitch);
 
     useEffect(() => {
         if (localStorage.getItem("access_token")) {
+            setQuerySwitch(true);
             refetch();
             setIsLogin(true);
         } else {
+            setQuerySwitch(false);
             setIsLogin(false);
         }
         localStorage.setItem("nickname", feedData?.nickname as string);
@@ -63,7 +71,7 @@ const Mypage = () => {
         isError && setIsLogin(false);
     }, [isError]);
 
-    if (isLoading) return <Loading />;
+    if (isLoading && data) return <Loading />;
 
     return (
         <MypageContext.Provider value={{ props: feedData, propsFunc: setFeedData, isLogin: isLogin }}>
@@ -71,7 +79,7 @@ const Mypage = () => {
                 <VFlex gap='40px' height='fit-content'>
                     {isLogin
                         ? <>
-                            <UserProfile />
+                            <UserProfile querySwitch={querySwitch} />
                             <MyFeeds />
                         </>
                         : <NoLoginStatus />}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { BtnPosition } from './BtnPosition'
 import { BtnRadius } from './BtnRadius'
 import { BtnBg } from './BtnBg'
@@ -11,6 +11,7 @@ import BtnNavContents from './BtnNavContents'
 import { BtnNavProps, CategoryStateProp, ChildrenForJSX, DivProp, EditNicknameProps, IconButtonProps, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { colorSet } from '../../styles/color'
 
 
 
@@ -196,8 +197,49 @@ const MediumDefault = ({ onClick, children }: InternalJSX) => {
 };
 
 
+const Refresh = ({ onClick, children }: InternalJSX) => {
+    return (
+        <BtnRadius.Rounded onClick={onClick}>
+            <BtnMediumLength.Default>
+                <BtnSize.Medium>
+                    <BtnBg.White>
+                        <BtnPosition.Center>
+                            <BtnText.Medium>
+                                <BtnTextColor.Gray>
+                                    {children}
+                                </BtnTextColor.Gray>
+                            </BtnText.Medium>
+                        </BtnPosition.Center>
+                    </BtnBg.White>
+                </BtnSize.Medium>
+            </BtnMediumLength.Default>
+        </BtnRadius.Rounded>
+    );
+};
+
+const RefreshMapHoverd = ({ onClick, children }: InternalJSX) => {
+    return (
+        <BtnRadius.Rounded onClick={onClick}>
+            <BtnMediumLength.Default>
+                <BtnSize.Medium>
+                    <BtnBg.Black>
+                        <BtnPosition.Center>
+                            <BtnText.Medium>
+                                <BtnTextColor.White>
+                                    {children}
+                                </BtnTextColor.White>
+                            </BtnText.Medium>
+                        </BtnPosition.Center>
+                    </BtnBg.Black>
+                </BtnSize.Medium>
+            </BtnMediumLength.Default>
+        </BtnRadius.Rounded>
+    );
+};
+
+
 const Medium = {
-    Default: MediumDefault,
+    Default: MediumDefault, Refresh, RefreshHover: RefreshMapHoverd
 };
 
 
