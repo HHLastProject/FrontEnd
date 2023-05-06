@@ -1,21 +1,19 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
-import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
+import { Container as MapDiv, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 import uuid from 'react-uuid';
-import { CenterContext, DispatchContext, ListContextDefault, Markers, SearchedShop, StateContext } from '../../pages/Home';
-import { MapCoordPayload, NavermapPointType, ShopData, clusterHTML } from '../../custom/ym/variables';
+import { CenterContext, DispatchContext, StateContext } from '../../pages/Home';
+import { MapCoordPayload, ShopData } from '../../custom/ym/variables';
 import styled from 'styled-components';
-import MarkerMemo from './MarkerMemo';
 import useGetGooList from '../../hooks/useGetGooList';
 import makeArrayForCluster from '../../hooks/makeArrayForCluster';
 import { useLocation } from 'react-router-dom';
 import { colorSet } from '../ui/styles/color';
 import { GuInformation } from '../../shared/guCoordInform';
 import useMapDataCall from '../../hooks/useMapDataCall';
-import shopCoordList from '../../custom/ym/shopCoordList';
-import { debounce } from 'lodash';
-import { Listener } from 'react-naver-maps';
 import { Buttons } from '../ui/element/buttons/Buttons';
+import { Markers, SearchedShop } from '../../custom/ym/types';
+
+
 export type Coordinate = {
     lng: number,
     lat: number,
