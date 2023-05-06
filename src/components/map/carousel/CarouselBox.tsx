@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { HFlex, HFlexSpaceBetween, VFlex, VFlexCenter } from '../../../custom/ym/styleStore';
-import { DispatchContext, EachData, ListContextDefault, StateContext } from '../../../pages/Home';
+import { DispatchContext, StateContext } from '../../../pages/Home';
 import { useNavigate } from 'react-router-dom';
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import uuid from 'react-uuid';
 import { BODY_5, ShopData } from '../../../custom/ym/variables';
-import { dispatches, states } from '../../../custom/ym/contextValues';
-import { apiPath, imgPath } from '../../../shared/path';
+import { apiPath, imgPath, path } from '../../../shared/path';
 import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
 import { keys, mapQueryKeys } from '../../../apis/queries';
 import { api_token } from '../../../shared/api';
@@ -52,6 +51,8 @@ const CarouselBox = () => {
         if (localStorage.getItem("access_token")) {
             mutate(item.shopId);
             item.isScrap = !item.isScrap;
+        } else {
+            window.confirm("로그인이 필요한 기능입니다.\n로그인을 하시겠습니까?") && navi(path.login);
         }
     }, []);
 
@@ -124,7 +125,6 @@ const CarouselBox = () => {
                                         <ShopName>{item.shopName}</ShopName>
                                         <Region>{convertAddress(item.address)}</Region>
                                         <Summary>{`${item.distance} m | 피드 ${item.feedCount}`}</Summary>
-                                        {/* <Summary>{(item as ShopData).distance} m | 피드 {(item as ShopData).reviews}</Summary> */}
                                     </VFlex>
                                 </HFlex>
                             </VFlex>

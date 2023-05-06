@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { Headers } from '../components/ui/element/headers/Headers';
-import { VFlex } from '../custom/ym/styleStore';
+import { VFlex, VFlexCenter } from '../custom/ym/styleStore';
 import BookmarkList from '../components/bookmark/BookmarkList';
 import { FolderData, PayloadFolderList, PayloadShopList, ReceivedBookmarks, ScrapListEachData } from '../custom/ym/types';
 import useScrapData from '../hooks/useScrapData';
@@ -10,6 +10,9 @@ import { Buttons } from '../components/ui/element/buttons/Buttons';
 import { Modals } from '../components/ui/modal/Modals';
 import useEditScrapData from '../hooks/useEditScrapData';
 import Loading from '../components/loading/Loading';
+import { path } from '../shared/path';
+import { useNavigate } from 'react-router-dom';
+import NoLoginStatus from '../components/mypage/NoLoginStatus';
 
 
 export const ScrapContext = createContext(bookmarkContext);
@@ -25,6 +28,8 @@ const Bookmark = () => {
 
     const { scrapData, isSuccess, isError, isLoading } = useScrapData();
     const { mutate } = useEditScrapData();
+
+    const navi = useNavigate();
 
     const values: BookmarkContext = {
         editMode,
@@ -77,7 +82,11 @@ const Bookmark = () => {
             setScrapList(scrapData?.scrapList);
         }
     }, [isSuccess, scrapData]);
-    if (isLoading && !localStorage.getItem("access_token")) return <><Loading />로그인이 필요합니다</>;
+    if (isLoading && !localStorage.getItem("access_token")) {
+        return <VFlexCenter gap='20px'>
+            <NoLoginStatus />
+        </VFlexCenter>;
+    }
     if (isLoading && localStorage.getItem("access_token")) return <Loading />;
     if (isError) return <div>통신 에러</div>;
 

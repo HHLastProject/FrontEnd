@@ -1,5 +1,4 @@
-import { Markers } from "../../pages/Home"
-import { Coordinate, FolderData, ReceivedBookmarks, ScrapListEachData, categoryTypes } from "./types"
+import { Coordinate, FolderData, Markers, ReceivedBookmarks, ScrapListEachData, categoryTypes } from "./types"
 import { ShopData } from "./variables"
 
 export interface States {

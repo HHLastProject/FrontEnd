@@ -1,21 +1,19 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Container as MapDiv, Overlay, Marker, NaverMap, useNavermaps, useMap } from 'react-naver-maps';
-import { getRealtimeLocation } from '../../custom/jh/getUserLocation';
+import { Container as MapDiv, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 import uuid from 'react-uuid';
-import { CenterContext, DispatchContext, ListContextDefault, Markers, SearchedShop, StateContext } from '../../pages/Home';
-import { MapCoordPayload, NavermapPointType, ShopData, clusterHTML } from '../../custom/ym/variables';
+import { CenterContext, DispatchContext, StateContext } from '../../pages/Home';
+import { MapCoordPayload, ShopData } from '../../custom/ym/variables';
 import styled from 'styled-components';
-import MarkerMemo from './MarkerMemo';
 import useGetGooList from '../../hooks/useGetGooList';
 import makeArrayForCluster from '../../hooks/makeArrayForCluster';
 import { useLocation } from 'react-router-dom';
 import { colorSet } from '../ui/styles/color';
 import { GuInformation } from '../../shared/guCoordInform';
 import useMapDataCall from '../../hooks/useMapDataCall';
-import shopCoordList from '../../custom/ym/shopCoordList';
-import { debounce } from 'lodash';
-import { Listener } from 'react-naver-maps';
 import { Buttons } from '../ui/element/buttons/Buttons';
+import { Markers, SearchedShop } from '../../custom/ym/types';
+
+
 export type Coordinate = {
     lng: number,
     lat: number,
@@ -209,41 +207,26 @@ const MapModule = () => {
         return result
     }
 
-    const convert = (data: ShopData[] | null[] | null) => {
-        if (data) {
-            return data?.map((element) => {
-                return {
-                    shopId: element?.shopId,
-                    lat: element?.lat,
-                    lng: element?.lng
-                } as Markers;
-            })
-        } else return [null];
-    }
-
-
-
-
     useEffect(() => {
-        const newPayload = { lng: center.lng, lat: center.lat, range: 1000 };
-        localStorage.setItem("lng", String(center.lng));
-        localStorage.setItem("lat", String(center.lat));
-        mutate(newPayload);
+        if (location.state) {
+            const searchedShop = {
+                lng: Number(location.state.lng),
+                lat: Number(location.state.lat),
+                range: 1000,
+            };
+            setCenter && setCenter({ lat: searchedShop.lat, lng: searchedShop.lng });
+            mutate(searchedShop);
+        } else {
+            const newPayload = { lng: center.lng, lat: center.lat, range: 1000 };
+            localStorage.setItem("lng", String(center.lng));
+            localStorage.setItem("lat", String(center.lat));
+            mutate(newPayload);
+        }
     }, []);
 
     useEffect(() => {
         isSuccess && refreshListByRange(data);
     }, [isSuccess]);
-
-    useEffect(() => {
-        if (location.state) {
-            const searchedShop = {
-                shopLng: Number(location.state.lng),
-                shopLat: Number(location.state.lat)
-            };
-            setCenter && setCenter({ lat: searchedShop.shopLat, lng: searchedShop.shopLng });
-        }
-    }, [location.state]);
 
     useEffect(() => {
         refreshData();

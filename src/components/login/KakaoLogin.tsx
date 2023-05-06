@@ -17,6 +17,6 @@ export default KakaoLogin;
 
 
 const Button = styled.img`
-    width: 268px;
+    width: 350px;
     object-fit : fill;
 `
