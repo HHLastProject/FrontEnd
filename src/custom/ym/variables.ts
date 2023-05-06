@@ -1,6 +1,4 @@
-import React from "react";
-import { EachData } from "../../pages/Home";
-import { Coordinate, categoryTypes, rangeTypes } from "./types";
+import { CenterContextDefault, categoryTypes, rangeTypes } from "./types";
 
 
 type Font = {
@@ -9,6 +7,15 @@ type Font = {
     fontWeight: string,
     color: string,
 }
+
+export const defaultCenter: CenterContextDefault = {
+    center: {
+        lat: 37.5108407,
+        lng: 127.0468975
+    },
+    setCenter: null,
+}
+
 export const NAVER_KEY: string = "8A68yt_6sjtArfei4u69";
 export const NAVER_CALLBACK_URL_LOCAL: string = "http://localhost:3000/redirect/naver";
 export const NAVER_CALLBACK_URL: string = "http://yongminbucket.s3-website.ap-northeast-2.amazonaws.com/redirect/naver";

@@ -1,62 +1,13 @@
-import React, { createContext, useEffect, useReducer, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import MapModule from '../components/map/MapModule';
 import { VFlex, VFlexCenter } from '../custom/ym/styleStore';
 import MapHeader from '../components/map/MapHeader';
 import CarouselBox from '../components/map/carousel/CarouselBox';
-import { ShopData } from '../custom/ym/variables';
-import { Coordinate, categoryTypes } from '../custom/ym/types';
-import useMapDataCall from '../hooks/useMapDataCall';
+import { ShopData, defaultCenter } from '../custom/ym/variables';
+import { Coordinate, Markers, categoryTypes } from '../custom/ym/types';
 import { dispatches, states } from '../custom/ym/contextValues';
 import CategoryButtonBar from '../components/map/CategoryButtonBar';
-import { useLocation } from 'react-router-dom';
-import { debounce } from '../custom/jh/debounce';
-import { getUserLocation } from '../custom/jh/getUserLocation';
-import { getRealtimeLocation } from '../custom/jh/getUserLocation';
-import shopCoordList from '../custom/ym/shopCoordList';
-import Loading from '../components/loading/Loading';
 import Intro from '../components/home/Intro';
-
-
-export interface EachData {
-    shopId: number,
-    category: string,
-    shopName: string,
-    thumbnail: string,
-    region: string,
-    distance: number,
-    rate: number,
-    reviews: number,
-    lat: number,
-    lng: number
-}
-
-export interface CenterContextDefault {
-    center: Coordinate,
-    setCenter: React.Dispatch<React.SetStateAction<Coordinate>> | null
-}
-
-export interface ListContextDefault {
-    list: ShopData[] | null,
-    setList: React.Dispatch<React.SetStateAction<ShopData[] | null>> | null
-}
-
-export interface Markers {
-    shopId: number,
-    lat: number,
-    lng: number,
-}
-export interface SearchedShop {
-    shopLng: number,
-    shopLat: number
-}
-
-const defaultCenter: CenterContextDefault = {
-    center: {
-        lat: 37.5108407,
-        lng: 127.0468975
-    },
-    setCenter: null,
-}
 
 export const StateContext = createContext(states);
 export const DispatchContext = createContext(dispatches);
@@ -94,7 +45,6 @@ const Home = () => {
         localStorage.setItem("look_around", "true");
         setPass(true);
     }
-
 
     useEffect(() => {
         if (localStorage.getItem("access_token") || localStorage.getItem("look_around")) {
