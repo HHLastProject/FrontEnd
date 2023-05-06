@@ -47,8 +47,15 @@ const Home = () => {
     }
 
     useEffect(() => {
+        // if (!(!localStorage.getItem("access_token")) && !(!localStorage.getItem("look_around"))) {
+        if (localStorage.getItem("access_token") && localStorage.getItem("look_around")) {
+            localStorage.removeItem("look_around");
+        }
         if (localStorage.getItem("access_token") || localStorage.getItem("look_around")) {
             setPass(true);
+        } else {
+            localStorage.removeItem("look_around");
+            setPass(false);
         }
     }, []);
 
