@@ -7,6 +7,8 @@ import deleteFeedComment from '../custom/jh/deleteFeedComment';
 import { controlHidden } from '../custom/jh/controlHidden';
 import BtnResetStyle from './ui/element/buttons/BtnReset';
 import LOCALSTORAGE_KEY from '../shared/locatstorageKey';
+import { orderByTypes, tagsTypes } from '../custom/ym/types';
+import { SelectData } from '../shared/select';
 
 export const SelectBoxId = {
   ORDER_BY_SELECT_ID : 'orderby-select-box',
@@ -31,8 +33,13 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
   const onClickHandler = (order: string) => {
     if(setOrderBy) {
       setOrderBy(order);
-      localStorage.setItem(LOCALSTORAGE_KEY.ORDER_BY, order);
 
+      if(SelectData.ORDER_BY.includes(order)) {
+        localStorage.setItem(LOCALSTORAGE_KEY.shop.ORDER_BY, order);
+      } else if (SelectData.TAG_SELECT.includes(order)) {
+        localStorage.setItem(LOCALSTORAGE_KEY.feed.ORDER_BY, order);
+      };
+      
       //댓글 삭제하기 기능 있을때
       if((orderBy === '삭제하기') && isDeleteComment && param){
         const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
@@ -63,7 +70,7 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
       <SelectBoxStyle>
         <SelectTop/>
         {children}
-        { arr?.map((item) => {
+        { arr?.map((item: string) => {
             return(
               <SelectBoxOrderValue key={item}>
                 <BtnResetStyle

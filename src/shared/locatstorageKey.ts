@@ -1,7 +1,14 @@
 const LOCALSTORAGE_KEY = {
-  ORDER_BY: 'orderBy',
+  shop: {
+    ORDER_BY: 'shop_orderBy',
+    
+    CATEGORY: 'shop_category',
+  },
+  feed: {
+    ORDER_BY: 'feed_orderBy',
+    CATEGORY: 'feed_category',
+  },
   RANGE: 'range',
-  CATEGORY: 'category',
   LNG: 'lng',
   LAT: 'lat',
 }

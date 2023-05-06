@@ -1,3 +1,4 @@
+import { type } from "os";
 import React, { ComponentPropsWithRef, ComponentPropsWithoutRef, ElementType } from "react";
 import { StringLiteralType } from "typescript";
 
@@ -29,6 +30,8 @@ export const NavButtonList: NavButtonInputLimit[] = ["home", "list", "feed", "bo
 
 export type categoryTypes = "카페" | "보드카페" | "사주카페" | "애견카페" | "전통찻집" | "";
 export type rangeTypes = 100 | 200 | 300 | 500 | 1000;
+export type tagsTypes = '분위기 맛집' | '디저트 맛집' | '커피 맛집' | '뷰 맛집' | '태그';
+export type orderByTypes = '거리순' | '인기순' | '피드순';
 
 export interface ChildrenForBtnContents extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode

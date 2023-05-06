@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useGetFeedList from '../custom/jh/useGetFeedList'
 import styled from 'styled-components';
 import { colorSet } from '../components/ui/styles/color';
@@ -7,7 +7,7 @@ import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
 import FeedContentsTest from '../components/feed/FeedContentsTest';
 import { HFlex, VFlex } from '../custom/ym/styleStore';
 import { path } from '../shared/path';
-import {ListCategoryButtonBar} from '../components/home/ListCategoryButtonBar';
+import {ListCategoryButtonBar, PAGE_NAME} from '../components/home/ListCategoryButtonBar';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import SelectBox, { SelectBoxId } from '../components/SelectBox';
 import { TossedFeedData, categoryTypes } from '../custom/ym/types';
@@ -15,16 +15,27 @@ import { OrderByContext, ShopCategory } from '../apis/context';
 import { Heading2, Title4 } from '../components/FontStyle';
 import { SelectData } from '../shared/select';
 import Loading from '../components/loading/Loading';
+import LOCALSTORAGE_KEY from '../shared/locatstorageKey';
 
 function FeedList() {
+  const currentOrderBy = localStorage.getItem(LOCALSTORAGE_KEY.feed.ORDER_BY);
+  const currentCategory = localStorage.getItem(LOCALSTORAGE_KEY.feed.CATEGORY) ? localStorage.getItem(LOCALSTORAGE_KEY.shop.CATEGORY) : '';
+
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();
   const [orderBy, setOrderBy] = useState<string>('태그');
   const [range, setRange] = useState(500);
   const [category, setCategory] = useState<categoryTypes>("");
   
+  useEffect(() => {
+    if(currentOrderBy) { setOrderBy(currentOrderBy); }
+    if(currentCategory as categoryTypes) { 
+      setCategory(currentCategory as categoryTypes);
+    }
+  }, []);
+
   if(feedListIsLoading) { return <Loading/> };
   if(feedListIsError) { alert('에러가 발생했습니다.') };
-  
+
   return (
     <ShopCategory.Provider value={
       {range, setRange, category, setCategory}
@@ -46,7 +57,7 @@ function FeedList() {
         <div style={{ overflow: 'hidden', marginLeft: `20px`}}>
           <HFlex gap='4px' etc={'margin-top: 8px'}>
             <OrderbyFilterBtn/>
-            <ListCategoryButtonBar />
+            <ListCategoryButtonBar pageName={PAGE_NAME.FEED_LIST}/>
           </HFlex>
         </div>
 

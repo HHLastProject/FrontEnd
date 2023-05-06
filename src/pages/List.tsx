@@ -7,8 +7,8 @@ import ListCount from '../components/ListCount';
 import { HomeTabMenuStyle, TabMenuLi, TabMenuUl } from '../components/TabMenu';
 import SelectBox, { SelectBoxId } from '../components/SelectBox';
 import ListHeader from '../components/home/ListHeader';
-import {ListCategoryButtonBar, RangeFilterButtonBar} from '../components/home/ListCategoryButtonBar';
-import { ListTossedData, categoryTypes } from '../custom/ym/types';
+import {ListCategoryButtonBar, PAGE_NAME, RangeFilterButtonBar} from '../components/home/ListCategoryButtonBar';
+import { ListTossedData, categoryTypes, orderByTypes } from '../custom/ym/types';
 import { HFlex } from '../custom/ym/styleStore';
 import { OrderByContext, ShopCategory } from '../apis/context';
 import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
@@ -22,9 +22,9 @@ import LOCALSTORAGE_KEY from '../shared/locatstorageKey';
 const List = () => {
   const currentLng = Number(localStorage.getItem(LOCALSTORAGE_KEY.LNG));
   const currentLat = Number(localStorage.getItem(LOCALSTORAGE_KEY.LAT));
-  const currentOrderBy = localStorage.getItem(LOCALSTORAGE_KEY.ORDER_BY);
   const currentRange = Number(localStorage.getItem(LOCALSTORAGE_KEY.RANGE));
-  const currentCategory = localStorage.getItem(LOCALSTORAGE_KEY.CATEGORY) ? localStorage.getItem(LOCALSTORAGE_KEY.CATEGORY) : '';
+  const currentOrderBy = localStorage.getItem(LOCALSTORAGE_KEY.shop.ORDER_BY);
+  const currentCategory = localStorage.getItem(LOCALSTORAGE_KEY.shop.CATEGORY) ? localStorage.getItem(LOCALSTORAGE_KEY.shop.CATEGORY) : '';
 
   const [lng, setLng] = useState(127.0468975);
   const [lat, setLat] = useState(37.5108407);
@@ -50,7 +50,7 @@ const List = () => {
     if(currentRange){
       setRange(currentRange);
     }
-    if(currentOrderBy){
+    if(currentOrderBy && currentOrderBy as orderByTypes){
       setOrderBy(currentOrderBy);
     }
     if(currentCategory && currentCategory as categoryTypes){
@@ -116,7 +116,7 @@ const List = () => {
           <div style={{ overflow: 'hidden', width: '100%' }}>
             <HFlex gap='4px'>
               <OrderbyFilterBtn/>
-              <ListCategoryButtonBar />
+              <ListCategoryButtonBar pageName={PAGE_NAME.SHOP_LIST}/>
             </HFlex>
           </div>
 
