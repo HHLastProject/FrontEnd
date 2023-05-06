@@ -6,8 +6,10 @@ const BtnResetStyle = styled.button`
   border: none; 
   box-shadow: none; 
   border-radius: 0; 
-  padding: 0; 
-  overflow: visible; 
+  padding: 0;
+  overflow: visible;
+  font-size: inherit;
+  font-weight: inherit;
   cursor: pointer;
 `;
 

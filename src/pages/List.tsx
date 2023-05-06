@@ -17,22 +17,20 @@ import { SelectData } from '../shared/select';
 import { Title4 } from '../components/FontStyle';
 import { VFlex } from '../custom/ym/styleStore';
 import Loading from '../components/loading/Loading';
+import LOCALSTORAGE_KEY from '../shared/locatstorageKey';
 
 const List = () => {
+  const currentLng = Number(localStorage.getItem(LOCALSTORAGE_KEY.LNG));
+  const currentLat = Number(localStorage.getItem(LOCALSTORAGE_KEY.LAT));
+  const currentOrderBy = localStorage.getItem(LOCALSTORAGE_KEY.ORDER_BY);
+  const currentRange = Number(localStorage.getItem(LOCALSTORAGE_KEY.RANGE));
+  const currentCategory = localStorage.getItem(LOCALSTORAGE_KEY.CATEGORY) ? localStorage.getItem(LOCALSTORAGE_KEY.CATEGORY) : '';
+
   const [lng, setLng] = useState(127.0468975);
   const [lat, setLat] = useState(37.5108407);
   const [orderBy, setOrderBy] = useState<string>('거리순');
   const [range, setRange] = useState(300);
   const [category, setCategory] = useState<categoryTypes>("");
-  
-  const currentLng = Number(localStorage.getItem('lng'));
-  const currentLat = Number(localStorage.getItem('lat'));
-  if(currentLat && currentLng){
-    setLng(currentLng);
-    setLat(currentLat);
-  } else {
-    getUserLocation(setLng, setLat);
-  }
 
   //리스트 데이터
   const {
@@ -42,16 +40,29 @@ const List = () => {
   } = useGetHomeShopList({ lng, lat, range });
 
   useEffect(() => {
+    if(currentLat && currentLng){
+      setLng(currentLng);
+      setLat(currentLat);
+    } else {
+      getUserLocation(setLng, setLat);
+    }
+
+    if(currentRange){
+      setRange(currentRange);
+    }
+    if(currentOrderBy){
+      setOrderBy(currentOrderBy);
+    }
+    if(currentCategory && currentCategory as categoryTypes){
+      setCategory(currentCategory as categoryTypes);
+    }
+  }, []);
+
+  useEffect(() => {
     if (lng !== 0 && lat !== 0) {
       getshopList();
     };
   }, [lat, range]);
-
-  useEffect(() => {
-    localStorage.setItem('access_token', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc1MzE3NzA0NiwiaWF0IjoxNjgyOTQxNzkzfQ.nlsXPpfOjW6yuP05IV3Ya0aRp2EvJByOg8N4MTCeRrI`);
-    
-  
-  }, []);
 
   //로딩 화면
   if (getshopListIsLoading) { return <Loading/>; }

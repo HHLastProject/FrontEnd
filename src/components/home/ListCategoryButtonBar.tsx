@@ -5,14 +5,19 @@ import { categoryTypes, rangeTypes } from '../../custom/ym/types';
 import { fontType } from '../ui/styles/typo';
 import { ShopCategory } from '../../apis/context';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import LOCALSTORAGE_KEY from '../../shared/locatstorageKey';
 
 export const ListCategoryButtonBar = () => {
   const {category, setCategory} = useContext(ShopCategory); //선택한 카테고리 이름
 
   const filterClickHandler = (buttonName: categoryTypes) => {
-    if(setCategory) { setCategory(buttonName); }
+    if(setCategory) { 
+      setCategory(buttonName);
+      localStorage.setItem(LOCALSTORAGE_KEY.CATEGORY, buttonName);
+    }
     if((category === buttonName) && setCategory ) {
       setCategory('');
+      localStorage.removeItem(LOCALSTORAGE_KEY.CATEGORY);
     }
   };
 
@@ -49,7 +54,10 @@ export const RangeFilterButtonBar = () => {
   const {range, setRange} = useContext(ShopCategory);
 
   const filterClickHandler = (range: rangeTypes) => {
-    if(setRange) {setRange(range);}
+    if(setRange) {
+      setRange(range);
+      localStorage.setItem(LOCALSTORAGE_KEY.RANGE, String(range));
+    }
   };
 
   return (

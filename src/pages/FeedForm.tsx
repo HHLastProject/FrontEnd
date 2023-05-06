@@ -78,7 +78,7 @@ function FeedForm() {
       formData.append('shopId', shopId.toString());
       formData.append('comment', comment);
       formData.append('tags', JSON.stringify(checkResult));
-      
+
       sendFeedData(shopId, formData).then(() => {
         if(isFeedForm){
           navi(`${path.feedList}`);
@@ -180,7 +180,7 @@ function FeedForm() {
             <Body4 color={colorSet.textMedium}>선택</Body4>
           </FeedFormTitle>
           <FeedFormTextarea
-            value={comment}
+            value={inputValue}
             onChange={textCountAndSetHandler}
             maxLength={maxLength}
             placeholder='카페에서의 순간을 작성해 주세요.'

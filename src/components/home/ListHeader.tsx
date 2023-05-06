@@ -10,7 +10,7 @@ import { controlVisible } from '../../custom/jh/controlHidden';
 import { SelectBoxId } from '../SelectBox';
 import BtnResetStyle from '../ui/element/buttons/BtnReset';
 import { IconSize16, IconSize24 } from '../ui/element/icons/IconSize';
-import { deleteToken, getToken } from '../../apis/getToken';
+import { getToken } from '../../apis/getToken';
 
 //close == true : 뒤로가기 버튼이 x로 바뀜
 //scrap == true : 스크랩 버튼
