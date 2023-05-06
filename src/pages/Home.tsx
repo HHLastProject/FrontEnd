@@ -14,6 +14,7 @@ import { getUserLocation } from '../custom/jh/getUserLocation';
 import { getRealtimeLocation } from '../custom/jh/getUserLocation';
 import shopCoordList from '../custom/ym/shopCoordList';
 import Loading from '../components/loading/Loading';
+import Intro from '../components/home/Intro';
 
 
 export interface EachData {
@@ -62,16 +63,14 @@ export const DispatchContext = createContext(dispatches);
 export const CenterContext = createContext(defaultCenter);
 
 const Home = () => {
-
+    const [pass, setPass] = useState<boolean>(false);
     const [range, setRange] = useState(300);
     const [category, setCategory] = useState<categoryTypes | ''>('');
     const [list, setList] = useState<ShopData[] | null>(null);
     const [center, setCenter] = useState<Coordinate>(defaultCenter.center);
-    // const [isMoving, setIsMoving] = useState<boolean>(false);
     const [isChanged, setIsChanged] = useState<boolean>(true);
     const [activeShop, setActiveShop] = useState<number>(0);
     const [markers, setMarkers] = useState<Markers[] | null[]>([]);
-    const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     // 실시간 유저 위치
     const [userCoord, setUserCoord] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
@@ -81,12 +80,6 @@ const Home = () => {
 
     const stateList = { list, userCoord, shopCoord, category, range, isChanged, activeShop, markers };
     const dispatchList = { setList, setRange, setCategory, setUserCoord, setShopCoord, setIsChanged, setActiveShop, setMarkers };
-    const { data, mutate, isSuccess, isError, isLoading, mutateAsync } = useMapDataCall();
-
-    //검색 페이지에서 받는 위도 경도
-    const location = useLocation();
-    let shopLng = 0;
-    let shopLat = 0;
 
     const userTextSelectLimit = `
     -ms-user-select: none; 
@@ -97,48 +90,22 @@ const Home = () => {
     overflow : hidden;
     `;
 
-    /* HTTPS로 전환할 경우, 현재 사용자 위치 가져올 것 */
-    // useEffect(() => {
-    //     getRealtimeLocation(setUserCoord);
-    //     setCenter(userCoord);
-    // }, []);
-
-    const convert = (data: ShopData[] | null[]) => {
-        if (data) {
-            return data?.map((element) => {
-                return {
-                    shopId: element?.shopId,
-                    lat: element?.lat,
-                    lng: element?.lng
-                } as Markers;
-            })
-        } else return [null];
+    const lookaroundHandler = () => {
+        localStorage.setItem("look_around", "true");
+        setPass(true);
     }
 
 
-    // useEffect(() => {
-    //     if (location.state) {
-    //         shopLng = Number(location.state.lng);
-    //         shopLat = Number(location.state.lat);
-    //     }
-    //     mutate({ lat: userCoord.lat, lng: userCoord.lng, range: 1000 });
-    // }, []);
+    useEffect(() => {
+        if (localStorage.getItem("access_token") || localStorage.getItem("look_around")) {
+            setPass(true);
+        }
+    }, []);
 
-
-    // /* 카테고리 버튼에 대한 데이터 리렌더링 */
-    // useEffect(() => {
-    //     if (category) {
-    //         setList((prev) => {
-    //             const searchResult = prev?.filter(
-    //                 (item: ShopData) => item.category === category);
-    //             return searchResult;
-    //         });
-    //     } else {
-    //         setList(data);
-    //         setMarkers(convert(data));
-    //     }
-    // }, [category]);
-
+    /*
+    로그인 상태에 따라 Intro를 보일 것인지 말것인지 얼리 리턴
+    */
+    if (!pass) return <Intro dispatch={lookaroundHandler} />;
 
     return (
         <VFlex etc={userTextSelectLimit}>
