@@ -13,13 +13,14 @@ const BottomNav = () => {
         navi(`/${(page === "home" ? "" : page)}`);
     }
     const stateChecker = (checker: string) => {
+
         return checker === active ? true : false;
     }
 
 
     useEffect(() => {
         const pageUrl = window.location.href.split('/')[3];
-        pageUrl && setActive(pageUrl);
+        pageUrl && setActive(pageUrl ? pageUrl : "home");
     }, []);
 
     if (localStorage.getItem("admin_token") !== null) {
