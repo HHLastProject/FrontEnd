@@ -65,7 +65,7 @@ function FeedList() {
         <div style={{marginBottom: '120px'}}>
         { feedList?.length === 0 
           ? 
-          <></> 
+          <></>
           :
           feedList?.filter((item: TossedFeedData | null) => {
             if(orderBy !== "태그") return item?.tag.includes(orderBy);
