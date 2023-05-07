@@ -12,7 +12,7 @@ import { OrderbyFilterBtn } from '../components/ui/element/filter/FilterBtn';
 import SelectBox, { SelectBoxId } from '../components/SelectBox';
 import { TossedFeedData, categoryTypes } from '../custom/ym/types';
 import { OrderByContext, ShopCategory } from '../apis/context';
-import { Heading2, Title4 } from '../components/FontStyle';
+import { Heading1, Title4 } from '../components/FontStyle';
 import { SelectData } from '../shared/select';
 import Loading from '../components/loading/Loading';
 import LOCALSTORAGE_KEY from '../shared/locatstorageKey';
@@ -50,7 +50,7 @@ function FeedList() {
       <FeedContainer>
         {/* 제목 */}
         <div style={{margin: '10px 20px'}}>
-          <Heading2>Feed</Heading2>
+          <Heading1>Feed</Heading1>
         </div>
 
         {/* 필터버튼 */}
