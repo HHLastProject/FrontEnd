@@ -22,6 +22,7 @@ import { changeScrap } from '../custom/jh/changeScrap';
 import Loading from '../components/loading/Loading';
 import { Title3 } from '../components/FontStyle';
 import { FeedIdContext } from '../apis/context';
+import { scrollTop } from '../custom/jh/scrollTop';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -61,6 +62,10 @@ function ShopDetail() {
     alert("페이지를 불러올 수 없어 이전 페이지로 돌아갑니다.");
     navi(-1);
   };
+
+  useEffect(() => {
+    scrollTop();
+  }, []);
 
   useEffect(() => {
     getShopDetailFeedList();
