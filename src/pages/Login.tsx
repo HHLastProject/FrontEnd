@@ -19,7 +19,7 @@ const Login = () => {
                         <LogoImage src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="로고" />
                     </VFlexCenter>
                 </div>
-                <div>
+                <div style={{ textAlign: 'center' }}>
                     <KakaoLogin />
                     {/* <NaverLogin /> */}
                     <AdminButton onClick={adminLoginHandler}>관리자로 로그인하기</AdminButton>
@@ -49,7 +49,7 @@ const LogoText = styled.span`
     font-weight : 400;
 `
 
-const AdminButton = styled.button`
+export const AdminButton = styled.button`
     cursor : pointer;
     font-size : 16px;
     color : #717176;

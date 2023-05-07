@@ -1,6 +1,7 @@
 import { type } from "os";
 import React, { ComponentPropsWithRef, ComponentPropsWithoutRef, ElementType } from "react";
 import { StringLiteralType } from "typescript";
+import { ShopData } from "./variables";
 
 export type Font = {
     fontSize: string,
@@ -230,4 +231,37 @@ export interface PayloadShopList {
 
 export interface PayloadForModifyScrapData {
     folderList: PayloadFolderList[]
+}
+
+export interface EachData {
+    shopId: number,
+    category: string,
+    shopName: string,
+    thumbnail: string,
+    region: string,
+    distance: number,
+    rate: number,
+    reviews: number,
+    lat: number,
+    lng: number
+}
+
+export interface CenterContextDefault {
+    center: Coordinate,
+    setCenter: React.Dispatch<React.SetStateAction<Coordinate>> | null
+}
+
+export interface ListContextDefault {
+    list: ShopData[] | null,
+    setList: React.Dispatch<React.SetStateAction<ShopData[] | null>> | null
+}
+
+export interface Markers {
+    shopId: number,
+    lat: number,
+    lng: number,
+}
+export interface SearchedShop {
+    shopLng: number,
+    shopLat: number
 }
