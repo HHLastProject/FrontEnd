@@ -33,6 +33,7 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
   const onClickHandler = (order: string) => {
     if(setOrderBy) {
       setOrderBy(order);
+      console.log(orderBy);
 
       if(SelectData.ORDER_BY.includes(order)) {
         localStorage.setItem(LOCALSTORAGE_KEY.shop.ORDER_BY, order);
@@ -41,11 +42,11 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
       };
       
       //댓글 삭제하기 기능 있을때
-      if((orderBy === '삭제하기') && isDeleteComment && param){
+      if((order === '삭제하기') && isDeleteComment && param){
         const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
         if(result){
           deleteFeedComment({feedId: param, commentId: commentId})
-          .then((res) => { alert('삭제되었습니다.');});
+          .then(() => { alert('삭제되었습니다.') });
         }
       }
       controlHidden(id);

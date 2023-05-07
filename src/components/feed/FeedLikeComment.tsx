@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { path } from "../../shared/path";
 import { fontType } from "../ui/styles/typo";
 import usePutLike from "../../custom/jh/usePutLike";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { getToken } from "../../apis/getToken";
 import BtnResetStyle from "../ui/element/buttons/BtnReset";
 import { confirmLogin } from "../../custom/jh/confirm";

@@ -19,6 +19,7 @@ import { scrollTop } from '../custom/jh/scrollTop'
 import { Body3 } from '../components/FontStyle'
 import BtnResetStyle from '../components/ui/element/buttons/BtnReset'
 import IconSize from '../components/ui/element/icons/IconSize'
+import { confirmLogin } from '../custom/jh/confirm'
 
 function FeedDetailComment() {
   const navi = useNavigate();
@@ -44,8 +45,7 @@ function FeedDetailComment() {
 
   const addFeedDetailComment = (feedId: number) => {
     if(!getToken()) {
-      const result = window.confirm('로그인이 필요한 기능입니다.\n로그인 하시겠습니까?');
-      if(result) {navi(path.login)};
+      if(confirmLogin()) {navi(path.login)};
     }
 
     if(inputValue !== ''){
