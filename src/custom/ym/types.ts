@@ -265,3 +265,24 @@ export interface SearchedShop {
     shopLng: number,
     shopLat: number
 }
+
+export interface MapStates {
+    activeShop: number,
+    category: categoryTypes,
+    center: Coordinate,
+    list: ShopData[],
+    range: number
+}
+
+export interface MapDispatches {
+    setActiveShop: React.Dispatch<React.SetStateAction<number>>,
+    setCategory: React.Dispatch<React.SetStateAction<categoryTypes>>,
+    setCenter: React.Dispatch<React.SetStateAction<Coordinate>>,
+    setList: React.Dispatch<React.SetStateAction<ShopData[]>>,
+    setRange: React.Dispatch<React.SetStateAction<number>>,
+}
+
+export interface MapProps {
+    states: MapStates;
+    dispatches: MapDispatches;
+}

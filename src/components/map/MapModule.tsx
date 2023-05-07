@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Container as MapDiv, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 import uuid from 'react-uuid';
-import { CenterContext, DispatchContext, StateContext } from '../../pages/Home';
 import { MapCoordPayload, ShopData } from '../../custom/ym/variables';
 import styled from 'styled-components';
 import useGetGooList from '../../hooks/useGetGooList';
@@ -11,87 +10,28 @@ import { colorSet } from '../ui/styles/color';
 import { GuInformation } from '../../shared/guCoordInform';
 import useMapDataCall from '../../hooks/useMapDataCall';
 import { Buttons } from '../ui/element/buttons/Buttons';
-import { Markers, SearchedShop } from '../../custom/ym/types';
+import { Coordinate, MapProps } from '../../custom/ym/types';
 
 
-export type Coordinate = {
-    lng: number,
-    lat: number,
-};
-type JsonData = {
-    shopName: string,
-    category: string,
-    jibunAddress: string,
-    roadAddress: string,
-    lat: number,
-    lng: number
-};
-type MapModuleProps = {
-    category: string
-};
-
-interface MapProps {
-    list: Markers[] | null[],
-    setList: React.Dispatch<React.SetStateAction<Markers[] | null[]>>,
-}
-
-const MapModule = () => {
+const MapModule = ({ states, dispatches }: MapProps) => {
     const navermaps = useNavermaps();
-    const mapRef = useRef(null);
     const [zoom, setZoom] = useState<number>(17);
     const [map, setMap] = useState<naver.maps.Map | null>(null);
-    const [moving, setMoving] = useState<boolean>(false);
-    const [editedList, setEditedList] = useState<ShopData[] | null>(null);
     const [prevPos, setPrevPos] = useState<Coordinate>({
         lat: 37.5108407,
         lng: 127.0468975
     });
-    // const [markers, setMarkers] = useState<Markers[] | null[]>([]);
-    // const [search, setSearch] = useState<SearchedShop>({ shopLng: 0, shopLat: 0 });
 
     let timeCheck: NodeJS.Timeout | null = null;
     let guData: GuInformation[] | null = null;
 
     const [refreshHover, setRefreshHover] = useState<boolean>(false);
-
-    const { center, setCenter } = useContext(CenterContext);
+    const { range, activeShop, category, list, center } = states;
+    const { setRange, setActiveShop, setList, setCenter } = dispatches;
     const { data, mutate, isSuccess, isError, isLoading } = useMapDataCall();
-    const {
-        range,
-        activeShop,
-        category,
-        list,
-        userCoord,
-        markers,
-        isChanged
-    } = useContext(StateContext);
-
-    const {
-        setActiveShop,
-        setShopCoord,
-        setCategory,
-        setList,
-        setMarkers,
-        setRange,
-        setIsChanged
-    } = useContext(DispatchContext);
-
-
-    const defaultSearchResult: SearchedShop = {
-        shopLat: 0,
-        shopLng: 0,
-    }
 
     //검색 페이지에서 받는 위도 경도
     const location = useLocation();
-    if (location.state) {
-        const searchedShop = {
-            shopLng: Number(location.state.lng),
-            shopLat: Number(location.state.lat)
-        };
-
-        // setSearch(searchedShop);
-    }
 
     const icon = {
         url: `${process.env.PUBLIC_URL}/markers/non_selected_shop.png`,
@@ -127,25 +67,19 @@ const MapModule = () => {
 
     const rangeRefresh = (zoomUnit: number) => {
         if (zoomUnit > 14 && zoomUnit < 20) {
-            // console.log(zoomUnit);
-            // console.log(returnRadius(zoomUnit));
-            setRange && setRange(returnRadius(zoomUnit));
+            setRange(returnRadius(zoomUnit));
         } else {
-            setList && setList([]);
-            setRange && setRange(0);
+            setList([]);
+            setRange(0);
         }
     }
 
     const aimClickHandler = () => {
         const tempPrev = { ...prevPos }; // 이전 위치
-        const tempCenter = { ...center }; // 변경됐던 위치
-        console.log('tempprev', tempPrev);
-        console.log('tempCenter', tempCenter)
+        const tempCenter = { ...states.center }; // 변경됐던 위치
         map?.panTo(prevPos);             // 이전 위치로 돌아감
         setPrevPos(tempCenter);        // 이전 위치정보에는 변경됐던 좌표를 넣음
         setCenter && setCenter(tempPrev);  // 현재 위치를 다시 이전 위치 좌표로 할당
-        console.log('prevPos', prevPos);
-        console.log('center', center);
         refreshData();
     }
 
@@ -155,9 +89,6 @@ const MapModule = () => {
         dispatch(shop);
     }
 
-
-
-
     const reMutate = () => {
         const newPayload: MapCoordPayload = {
             lat: map?.getCenter().y as number,
@@ -165,7 +96,7 @@ const MapModule = () => {
             range: 1000
         }
         setPrevPos({ ...center });
-        setCenter && setCenter({ lat: newPayload.lat, lng: newPayload.lng });
+        setCenter({ lat: newPayload.lat, lng: newPayload.lng });
         localStorage.setItem("lat", String(newPayload.lat));
         localStorage.setItem("lng", String(newPayload.lng));
         mutate(newPayload);
@@ -175,7 +106,7 @@ const MapModule = () => {
 
     const refreshListByRange = (data: ShopData[]) => {
         const result = data?.filter((element) => element.distance <= range);
-        setList && setList(result);
+        setList(result);
         // console.log(result);
         return result;
     }
@@ -184,7 +115,6 @@ const MapModule = () => {
     const refreshData = () => {
         refreshListByRange(data);
     }
-
 
 
 
@@ -214,7 +144,7 @@ const MapModule = () => {
                 lat: Number(location.state.lat),
                 range: 1000,
             };
-            setCenter && setCenter({ lat: searchedShop.lat, lng: searchedShop.lng });
+            setCenter({ lat: searchedShop.lat, lng: searchedShop.lng });
             mutate(searchedShop);
         } else {
             const newPayload = { lng: center.lng, lat: center.lat, range: 1000 };
@@ -233,21 +163,21 @@ const MapModule = () => {
     }, [range]);
 
 
-    /* 메모리누수 방지 */
-    useEffect(() => {
-        return () => {
-            if (timeCheck) {
-                clearTimeout(timeCheck);
-            }
-        }
-    }, [timeCheck]);
+    // /* 메모리누수 방지 */
+    // useEffect(() => {
+    //     return () => {
+    //         if (timeCheck) {
+    //             clearTimeout(timeCheck);
+    //         }
+    //     }
+    // }, [timeCheck]);
 
     useEffect(() => {
 
     }, [category]);
 
     useEffect(() => {
-        list && (setActiveShop && setActiveShop(list[0]?.shopId as number));
+        list && (setActiveShop(list[0]?.shopId as number));
     }, [list]);
 
     return (

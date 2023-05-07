@@ -77,10 +77,6 @@ const CreateFolderModalContents = ({
     }
 
     const addListHandler = () => {
-        // const payload = {
-        //     folderList: [...beforeList, newFolder]
-        // }
-        // mutate(payload);
         if (beforeList.length > 10) {
             alert("폴더는 최대 10개까지만 생성 가능합니다.");
         } else {

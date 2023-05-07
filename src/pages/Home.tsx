@@ -4,33 +4,22 @@ import { VFlex, VFlexCenter } from '../custom/ym/styleStore';
 import MapHeader from '../components/map/MapHeader';
 import CarouselBox from '../components/map/carousel/CarouselBox';
 import { ShopData, defaultCenter } from '../custom/ym/variables';
-import { Coordinate, Markers, categoryTypes } from '../custom/ym/types';
+import { Coordinate, MapDispatches, MapStates, categoryTypes } from '../custom/ym/types';
 import { dispatches, states } from '../custom/ym/contextValues';
 import CategoryButtonBar from '../components/map/CategoryButtonBar';
 import Intro from '../components/home/Intro';
 
-export const StateContext = createContext(states);
-export const DispatchContext = createContext(dispatches);
-export const CenterContext = createContext(defaultCenter);
-
 const Home = () => {
     const [pass, setPass] = useState<boolean>(false);
-    const [range, setRange] = useState(300);
-    const [category, setCategory] = useState<categoryTypes | ''>('');
-    const [list, setList] = useState<ShopData[] | null>(null);
-    const [center, setCenter] = useState<Coordinate>(defaultCenter.center);
-    const [isChanged, setIsChanged] = useState<boolean>(true);
+
     const [activeShop, setActiveShop] = useState<number>(0);
-    const [markers, setMarkers] = useState<Markers[] | null[]>([]);
+    const [category, setCategory] = useState<categoryTypes | ''>('');
+    const [center, setCenter] = useState<Coordinate>(defaultCenter.center);
+    const [list, setList] = useState<ShopData[]>([]);
+    const [range, setRange] = useState(300);
 
-    // 실시간 유저 위치
-    const [userCoord, setUserCoord] = useState<Coordinate>({ lat: 37.5108407, lng: 127.0468975 });
-
-    // 샵 위치
-    const [shopCoord, setShopCoord] = useState<Coordinate[]>([]);
-
-    const stateList = { list, userCoord, shopCoord, category, range, isChanged, activeShop, markers };
-    const dispatchList = { setList, setRange, setCategory, setUserCoord, setShopCoord, setIsChanged, setActiveShop, setMarkers };
+    const stateList: MapStates = { activeShop, category, center, list, range };
+    const dispatchList: MapDispatches = { setList, setRange, setCategory, setActiveShop, setCenter };
 
     const userTextSelectLimit = `
     -ms-user-select: none; 
@@ -47,7 +36,6 @@ const Home = () => {
     }
 
     useEffect(() => {
-        // if (!(!localStorage.getItem("access_token")) && !(!localStorage.getItem("look_around"))) {
         if (localStorage.getItem("access_token") && localStorage.getItem("look_around")) {
             localStorage.removeItem("look_around");
         }
@@ -66,18 +54,12 @@ const Home = () => {
 
     return (
         <VFlex etc={userTextSelectLimit}>
-            <StateContext.Provider value={{ ...stateList }}>
-                <DispatchContext.Provider value={{ ...dispatchList }}>
-                    <CenterContext.Provider value={{ center, setCenter }}>
-                        <VFlexCenter etc="min-width:390px; height:100%; flex:1;">
-                            <MapHeader />
-                            <MapModule />
-                        </VFlexCenter>
-                        <CategoryButtonBar />
-                        <CarouselBox />
-                    </CenterContext.Provider>
-                </DispatchContext.Provider>
-            </StateContext.Provider>
+            <VFlexCenter etc="min-width:390px; height:100%; flex:1;">
+                <MapHeader range={range} />
+                <MapModule states={stateList} dispatches={dispatchList} />
+            </VFlexCenter>
+            <CategoryButtonBar category={category} setCategory={setCategory} />
+            <CarouselBox states={stateList} dispatches={dispatchList} />
         </VFlex>
     );
 }
