@@ -42,7 +42,7 @@ function Search() {
 
           {/* 검색 결과 */}
           <div className='search-result-list'>
-            {(dataList !== undefined) 
+            {(dataList !== undefined)
               ? 
               ((dataList?.length !== 0) && dataList?.map((item: IDataList) => {
               // state로 받는 값에 따라 링크가 달라짐
@@ -70,14 +70,11 @@ function Search() {
               )}))
               :
               <>
-                {
-
-                }
-                <VFlex gap={'12px'}>
+                {/* <VFlex gap={'12px'}>
                   <Title5>최근 검색어</Title5>
                   <br/>
                   <Body3>검색 내역이 없습니다.</Body3>
-                </VFlex>
+                </VFlex> */}
               </>
             }
 
