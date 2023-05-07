@@ -28,12 +28,11 @@ interface ISelectBox {
 function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
   if(!id) id = 'select-box';
   const {commentId} = useContext(CommentIdContext);
-  const {orderBy, setOrderBy} = useContext(OrderByContext);
+  const {setOrderBy} = useContext(OrderByContext);
 
   const onClickHandler = (order: string) => {
     if(setOrderBy) {
       setOrderBy(order);
-      console.log(orderBy);
 
       if(SelectData.ORDER_BY.includes(order)) {
         localStorage.setItem(LOCALSTORAGE_KEY.shop.ORDER_BY, order);

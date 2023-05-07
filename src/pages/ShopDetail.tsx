@@ -86,12 +86,14 @@ function ShopDetail() {
       <div style={{padding: '0 0 120px 0'}}>
         <ShopDetailThumbnail>
           <ThumbnailDiv>
-            <img
-              id={`shop-detail-thumbnail`}
-              src={`${imgPath.shopThumbnailImg + shopDetailData?.thumbnail}`}
-              alt={shopDetailData?.shopName}
-              onError={(e) => displayHandler(`shop-detail-thumbnail`)}
-            />
+            {shopDetailData &&
+              <img
+                id={`shop-detail-thumbnail`}
+                src={`${imgPath.shopThumbnailImg + shopDetailData?.thumbnail}`}
+                alt={shopDetailData?.shopName}
+                onError={(e) => displayHandler(`shop-detail-thumbnail`)}
+              />
+            }
           </ThumbnailDiv>
           <ShopDetailStoreName
             shopName={shopDetailData?.shopName}
