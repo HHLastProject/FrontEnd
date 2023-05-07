@@ -14,6 +14,7 @@ export const usePutLike = ({feedId, setLikeResult}: {feedId: number, setLikeResu
     onSuccess: (res) => {
       setLikeResult(res.isLike);
       queryClient.invalidateQueries(queryKeys.GET_FEEDS);
+      queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
     },
     onError: (error) => {
       throw error;

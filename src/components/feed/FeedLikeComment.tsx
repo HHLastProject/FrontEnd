@@ -20,7 +20,6 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
   const token = getToken();
   const navi = useNavigate();
   const [likeResult, setLikeResult] = useState(isLike);
-  console.log('islike',isLike);
   const {changeLike} = usePutLike({feedId, setLikeResult});
 
   const onClickLike = () => {

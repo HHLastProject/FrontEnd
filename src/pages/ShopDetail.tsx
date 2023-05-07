@@ -34,11 +34,11 @@ function ShopDetail() {
   const {
     shopDetailData,
     shopDetailIsLoading,
+    getShopDetailData,
     shopDetailIsError
   } = useGetShopDetail(shopId, setScrap);
   const {
     shopDetailFeedList,
-    getShopDetailFeedList,
     shopDetailFeedIsLoading,
     shopDetailFeedIsError,
   } = useGetShopDetailFeed(shopId);
@@ -65,11 +65,8 @@ function ShopDetail() {
 
   useEffect(() => {
     scrollTop();
+    getShopDetailData();
   }, []);
-
-  useEffect(() => {
-    getShopDetailFeedList();
-  }, [feedId]);
 
   if (shopDetailIsLoading) return <Loading/>;
 
