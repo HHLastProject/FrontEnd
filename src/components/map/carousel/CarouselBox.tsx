@@ -164,10 +164,14 @@ const Box = styled.div`
     border-radius: 12px;
     background-color: white;
     -ms-user-select: none; 
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+
+    &:hover{
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5), 0px 2px 6px 2px rgba(0, 0, 0, 0.5);
+    }
 `;
 
 const Summary = styled.span`
