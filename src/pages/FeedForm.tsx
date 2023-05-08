@@ -61,8 +61,6 @@ function FeedForm() {
 
   //전송 버튼 눌렀을때
   const onClickSendFeedData = (shopId: number | null) => {
-    setComment(pre => pre.trim());
-
     //[{tag: '데이터'}, {tag: '데이터'}] 이 형태로 저장하기 위함
     let tags = [];
     if(checkList.length !== 0) {
@@ -75,7 +73,7 @@ function FeedForm() {
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
       formData.append('shopId', shopId.toString());
-      formData.append('comment', comment);
+      formData.append('comment', comment.trim());
       formData.append('tags', JSON.stringify(checkResult));
 
       sendFeedData(shopId, formData).then(() => {

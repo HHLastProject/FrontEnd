@@ -50,8 +50,7 @@ function FeedDetailComment() {
 
     if(inputValue !== ''){
       //댓글 데이터 전송
-      setInputValue(pre => pre.trim());
-      postFeedDetailComment({feedId: feedId, feedComment: inputValue});
+      postFeedDetailComment({feedId: feedId, feedComment: inputValue.trim()});
       alert('댓글이 추가되었습니다.');
       setInputValue('');
     } else {
@@ -102,17 +101,17 @@ function FeedDetailComment() {
           />
 
           {/* 댓글 추가 버튼 */}
-          <BtnResetStyle
-            onClick={() => addFeedDetailComment(feedId)}
-          >
-            <IconSize.Size40>
-              {(inputValue.trim().length === 0)
-              ?
-              <IconUploadInactive/>
-              :
+          <IconSize.Size40>
+            {(inputValue.trim().length === 0)
+            ?
+            <IconUploadInactive/>
+            :
+            <BtnResetStyle
+              onClick={() => addFeedDetailComment(feedId)}
+            >
               <IconUploadActive/>
-              }</IconSize.Size40>
             </BtnResetStyle>
+            }</IconSize.Size40>
         </TextareaStyle>
 
         {/* 댓글 */}
