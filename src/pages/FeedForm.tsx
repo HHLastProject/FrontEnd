@@ -15,6 +15,7 @@ import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
 import BtnResetStyle from '../components/ui/element/buttons/BtnReset';
 import { SelectData } from '../shared/select';
 import CheckBtns from '../components/feedForm/CheckBtns';
+import { Body4, Body5, Title3, Title4 } from '../components/FontStyle';
 
 interface IImgFile {
   feedPic: File | null;
@@ -264,21 +265,4 @@ const FeedFormTitle = styled.div`
 const CommentTextCount = styled.div`
   display: flex;
   justify-content: flex-end;
-`;
-
-export const Title4 = styled.label<{ color?: string }>`
-  color: ${({ color }) => color};
-  ${fontType.title_4}
-`;
-export const Title3 = styled.label<{ color?: string }>`
-  color: ${({ color }) => color};
-  ${fontType.title_3}
-`;
-export const Body4 = styled.label<{ color?: string }>`
-  color: ${({ color }) => color};
-  ${fontType.body_4}
-`;
-export const Body5 = styled.label<{ color?: string }>`
-  color: ${({ color }) => color};
-  ${fontType.body_5}
 `;
