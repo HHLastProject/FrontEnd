@@ -28,7 +28,7 @@ const White = ({ children }: ChildrenForJSX) => {
 }
 export const TagBg = { LineLight, Primary01, BgMedium, White };
 
-const Paint = styled.div<{ bc: string }>`
+export const Paint = styled.div<{ bc: string }>`
     width: fit-content;
     height: fit-content;
     background-color: ${({ bc }) => bc};

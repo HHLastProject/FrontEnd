@@ -18,7 +18,7 @@ import { FeedIdContext } from '../../../apis/context';
 
 const FeedModalContents = ({ target, stateDispatch }: { target: number, stateDispatch: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const navi = useNavigate();
-    const {setFeedId} = useContext(FeedIdContext);
+    const { setFeedId } = useContext(FeedIdContext);
 
     const { mutate } = useMutation({
         mutationKey: feedKeys.DELETE_MYFEED,
@@ -27,7 +27,7 @@ const FeedModalContents = ({ target, stateDispatch }: { target: number, stateDis
             return res.data.msg;
         },
         onSuccess: () => {
-            if(setFeedId) {setFeedId(target)};
+            if (setFeedId) { setFeedId(target) };
             queryClient.invalidateQueries(["GET_USER_FEED"]);
             queryClient.invalidateQueries(queryKeys.GET_FEEDS);
         }
@@ -70,27 +70,28 @@ const CreateFolderModalContents = ({
     const { createFolder } = useCreateFolder();
 
     const checkValidation = (text: string) => {
-        return beforeList.filter((element) => element !== text).length === beforeList.length
+        return beforeList.filter((element) => element !== text)
+            .length === beforeList.length
             ? true
             : false;
     }
 
     const addListHandler = () => {
-        // const payload = {
-        //     folderList: [...beforeList, newFolder]
-        // }
-        // mutate(payload);
-        const a = { folderId: 9999999, folderName: newFolder };
-        listDispatch(prev => {
-            const newList = [...prev, a];
+        if (beforeList.length > 10) {
+            alert("폴더는 최대 10개까지만 생성 가능합니다.");
+        } else {
+            const a = { folderId: 9999999, folderName: newFolder };
+            listDispatch(prev => {
+                const newList = [...prev, a];
 
-            const payload = {
-                folderList: newList.map((element) => element.folderName),
-            }
-            createFolder(payload);
-            return newList;
-        });
-        dispatch(prev => false);
+                const payload = {
+                    folderList: newList.map((element) => element.folderName),
+                }
+                createFolder(payload);
+                return newList;
+            });
+            dispatch(prev => false);
+        }
     }
 
     useEffect(() => {

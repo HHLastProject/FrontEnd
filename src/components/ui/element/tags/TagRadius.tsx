@@ -17,7 +17,7 @@ const BorderColor = ({ children }: ChildrenForJSX) => {
 
 export const TagRadius = { Default, BorderColor };
 
-const Round = styled.div<{ hasBorder: boolean }>`
+export const Round = styled.div<{ hasBorder: boolean }>`
     flex:none;
     width: fit-content;
     height: fit-content;

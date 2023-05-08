@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { HFlex, HFlexSpaceBetween, VFlex, VFlexCenter } from '../../../custom/ym/styleStore';
-import { DispatchContext, StateContext } from '../../../pages/Home';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from "swiper/react";
 import uuid from 'react-uuid';
@@ -12,12 +11,13 @@ import { keys, mapQueryKeys } from '../../../apis/queries';
 import { api_token } from '../../../shared/api';
 import SwiperCore from 'swiper';
 import { colorSet } from '../../ui/styles/color';
+import { MapProps } from '../../../custom/ym/types';
 
 type CarouselProps = {
     children: (ShopData | null)[]
 }
 // const CarouselBox = ({ children }: CarouselProps) => {
-const CarouselBox = () => {
+const CarouselBox = ({ states, dispatches }: MapProps) => {
     const queryClient = useQueryClient();
     const navi = useNavigate();
     const openDetail = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, shopId: number) => {
@@ -27,11 +27,9 @@ const CarouselBox = () => {
     const [now, setNow] = useState<number>(0);
     const [swiper, setSwiper] = useState<SwiperCore>();
 
-    const { list, category } = useContext(StateContext);
-    const { setList } = useContext(DispatchContext);
+    const { activeShop, category, list } = states;
+    const { setActiveShop } = dispatches;
 
-    const { activeShop } = useContext(StateContext);
-    const { setActiveShop } = useContext(DispatchContext);
     const { mutate } = useMutation({
         mutationKey: keys.PUT_TOGGLE_BOOKMARK,
         mutationFn: async (payload: number) => {
@@ -79,7 +77,7 @@ const CarouselBox = () => {
             const index = list?.findIndex((element) => element?.shopId === activeShop);
             swiper?.slideTo(index);
         }
-    }, [activeShop])
+    }, [activeShop]);
 
     return (
         <CarouselModule onClick={(e) => e.stopPropagation()}>
@@ -164,10 +162,14 @@ const Box = styled.div`
     border-radius: 12px;
     background-color: white;
     -ms-user-select: none; 
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+
+    &:hover{
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5), 0px 2px 6px 2px rgba(0, 0, 0, 0.5);
+    }
 `;
 
 const Summary = styled.span`
