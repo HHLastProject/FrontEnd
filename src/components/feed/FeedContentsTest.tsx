@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react'
+import { memo, useState } from 'react'
 import FeedProfile from '../FeedProfile';
 import FeedPicture from './FeedPicture';
 import FeedComment from './FeedComment';

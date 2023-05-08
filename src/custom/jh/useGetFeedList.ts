@@ -11,7 +11,6 @@ export const useGetFeedList = () => {
       // const {data} = await api_token.get(`${apiPath.feedList}`, {
       //   params: {pageNumber: pageNumber},
       // });
-      // console.log(data);
       return data;
     },
     onSuccess: (data) => {

@@ -53,7 +53,6 @@ function FeedForm() {
             feedPic: e.target.files[0],
             previewPic: fileReader.result
           });
-          console.log('onload', imgFile);
         };
       };
     };
@@ -62,7 +61,6 @@ function FeedForm() {
   //전송 버튼 눌렀을때
   const onClickSendFeedData = (shopId: number | null) => {
     setComment(pre => pre.trim());
-    console.log('코멘트',comment);
 
     //[{tag: '데이터'}, {tag: '데이터'}] 이 형태로 저장하기 위함
     let tags = [];

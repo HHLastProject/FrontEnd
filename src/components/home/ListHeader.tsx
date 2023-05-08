@@ -21,15 +21,6 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
   const token = getToken();
   const [isLogin, setIsLogin] = useState(token ? true : false);
 
-  // const onClickLogout = () => {
-  //   const result = window.confirm('로그아웃 하시겠습니까?');
-  //   if(result) {
-  //     deleteToken();
-  //     alert('로그아웃 되었습니다.');
-  //     setIsLogin(false);
-  //   }
-  // }
-
   return (
     <HeaderContainer
       id='header'

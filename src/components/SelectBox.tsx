@@ -1,14 +1,13 @@
 import styled from 'styled-components'
 import { colorSet } from './ui/styles/color';
-import { fontType } from './ui/styles/typo';
 import { ReactNode, useContext, useEffect } from 'react';
 import { CommentIdContext, OrderByContext } from '../apis/context';
 import deleteFeedComment from '../custom/jh/deleteFeedComment';
 import { controlHidden } from '../custom/jh/controlHidden';
 import BtnResetStyle from './ui/element/buttons/BtnReset';
 import LOCALSTORAGE_KEY from '../shared/locatstorageKey';
-import { orderByTypes, tagsTypes } from '../custom/ym/types';
 import { SelectData } from '../shared/select';
+import { Body1 } from './FontStyle';
 
 export const SelectBoxId = {
   ORDER_BY_SELECT_ID : 'orderby-select-box',
@@ -39,8 +38,8 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
       } else if (SelectData.TAG_SELECT.includes(order)) {
         localStorage.setItem(LOCALSTORAGE_KEY.feed.ORDER_BY, order);
       };
-      
-      //댓글 삭제하기 기능 있을때
+
+      //댓글 삭제하기
       if((order === '삭제하기') && isDeleteComment && param){
         const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
         if(result){
@@ -70,22 +69,23 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
       <SelectBoxStyle>
         <SelectTop/>
         {children}
-        { arr?.map((item: string) => {
-            return(
-              <SelectBoxOrderValue key={item}>
+        {arr?.map((item: string) => {
+          return(
+            <div style={{padding: '20px'}} key={item}>
+              <Body1>
                 <BtnResetStyle
                   onClick={() => {onClickHandler(item);}}
                 >
                   {item}
                 </BtnResetStyle>
-              </SelectBoxOrderValue>
-            )
-          })
-        }
+              </Body1>
+            </div>
+          )
+        })}
       </SelectBoxStyle>
-      <BottomSheet
-          onClick={() => controlHidden(id)}
-        />
+      <BottomSheetStyle
+        onClick={() => controlHidden(id)}
+      />
     </div>
   )
 }
@@ -101,24 +101,20 @@ const SelectBoxStyle = styled.div`
   background-color: #fff;
 `;
 
-const SelectBoxOrderValue = styled.div`
-  padding: 20px;
-  ${fontType.body_1}
-`;
-
 const SelectTop = () => {
   return(
-    <div style={{
-      width:"100%", 
-      display: "flex",
-      justifyContent: "center",
-      padding: "12px 0 16px 0", 
-      }}
-    >
+    <JustifyCenter padding='12px 0 16px 0'>
       <SmallbarSpan/>
-    </div>
+    </JustifyCenter>
   )
 };
+
+const JustifyCenter = styled.div<{padding: string}>`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: ${({padding})=> padding};
+`;
 
 const SmallbarSpan = styled.span`
   width: 60px;
@@ -127,26 +123,9 @@ const SmallbarSpan = styled.span`
   background-color: ${colorSet.lineMedium};
 `;
 
-const BottomSheet = ({onClick, hidden}: {onClick: React.MouseEventHandler<HTMLDivElement>, hidden?: boolean}) => {
-  return(
-    <>
-    <BottomSheetStyle>
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-        onClick={onClick}
-      />
-    </BottomSheetStyle>
-    </>
-  )
-}
-
 const BottomSheetStyle = styled.div`
   width: 100%;
   height: 100%;
   background-color: #000000;
   opacity: 0.5;
 `;
-

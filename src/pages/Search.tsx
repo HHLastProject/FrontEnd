@@ -7,8 +7,6 @@ import SearchStore from '../components/search/SearchInput';
 import ListHeader from '../components/home/ListHeader';
 import SearchResultList from '../components/search/SearchResultList';
 import NoResult from '../components/home/NoShop';
-import { Body3, Title5 } from '../components/FontStyle';
-import { VFlex } from '../custom/ym/styleStore';
 
 interface IDataList {
   shopId: number,
@@ -72,7 +70,6 @@ function Search() {
               <>
                 {/* <VFlex gap={'12px'}>
                   <Title5>최근 검색어</Title5>
-                  <br/>
                   <Body3>검색 내역이 없습니다.</Body3>
                 </VFlex> */}
               </>
