@@ -35,7 +35,7 @@ function FeedDetailComment() {
   } = useGetFeedDetailComment(feedId);
 
   const onChangeTextareaHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(e.target.value.trim());
+    setInputValue(e.target.value);
     if(e.target.scrollHeight > 30){
       e.target.rows = 2;
     } else {
@@ -50,6 +50,7 @@ function FeedDetailComment() {
 
     if(inputValue !== ''){
       //댓글 데이터 전송
+      setInputValue(pre => pre.trim());
       postFeedDetailComment({feedId: feedId, feedComment: inputValue});
       alert('댓글이 추가되었습니다.');
       setInputValue('');
@@ -99,12 +100,13 @@ function FeedDetailComment() {
             placeholder='댓글 입력하기'
             required
           />
+
           {/* 댓글 추가 버튼 */}
           <BtnResetStyle
             onClick={() => addFeedDetailComment(feedId)}
           >
             <IconSize.Size40>
-              {(inputValue.length === 0)
+              {(inputValue.trim().length === 0)
               ?
               <IconUploadInactive/>
               :

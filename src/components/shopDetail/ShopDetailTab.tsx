@@ -5,6 +5,7 @@ import { colorSet } from '../ui/styles/color';
 import { fontType } from '../ui/styles/typo';
 import ListCount from '../ListCount';
 import { scrollToId } from '../../custom/jh/scrollEvent';
+import { Centered } from '../ui/styles/sharedComp';
 
 type TTabEl = {id: string, value: string, checkId: string};
 
@@ -38,7 +39,7 @@ function ShopDetailTab({tabEl, listCount}: {tabEl: TTabEl[], listCount?: number}
                 hidden
               />
               <label htmlFor={item.checkId} className='detail-tab-div'>
-                <Centered>
+                <Centered align={true} justify={true}>
                   {(tabValue === item.value) && <IconTabPoint24/>}
                   {item.value}
                   {(item.value === '피드') 
@@ -100,10 +101,4 @@ const ShopDetailTabStyle = styled.div`
       }
     }
   }
-`;
-
-const Centered = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
