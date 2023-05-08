@@ -123,9 +123,7 @@ function FeedForm() {
       </ListHeader>
       <FeedFormContainer>
         <VFlex>
-          <Margin margin={`0 0 20px 0`}>
-            <Title3>새로운 기록</Title3>
-          </Margin>
+          <Title3 style={{marginBottom: '20px'}}>새로운 기록</Title3>
           <FeedFormTitle>
             <Title4>방문한 카페</Title4>
             <Body4 color={colorSet.textMedium}>필수</Body4>
@@ -178,7 +176,6 @@ function FeedForm() {
             <Body4 color={colorSet.textMedium}>선택</Body4>
           </FeedFormTitle>
           <FeedFormTextarea
-            value={inputValue}
             onChange={textCountAndSetHandler}
             maxLength={maxLength}
             placeholder='카페에서의 순간을 작성해 주세요.'
@@ -194,7 +191,6 @@ function FeedForm() {
         <VFlex>
           <FeedFormTitle>
             <Title4>태그</Title4>
-            {/* <Body4 color={colorSet.textMedium}>3개까지 선택</Body4> */}
             <Body4 color={colorSet.textMedium}>선택</Body4>
           </FeedFormTitle>
           <HFlex gap={'4px'}>
