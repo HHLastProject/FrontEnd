@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { IconTabPoint24 } from '../ui/element/icons/IconsStyle';
 import styled from 'styled-components';
+import { IconTabPoint24 } from '../ui/element/icons/IconsStyle';
 import { colorSet } from '../ui/styles/color';
 import { fontType } from '../ui/styles/typo';
 import ListCount from '../ListCount';
+import { scrollToId } from '../../custom/jh/scrollEvent';
 
 type TTabEl = {id: string, value: string, checkId: string};
 
@@ -17,47 +18,37 @@ function ShopDetailTab({tabEl, listCount}: {tabEl: TTabEl[], listCount?: number}
   const [tabValue, setTabValue] = useState<string>('정보');
 
   //탭 눌렀을때
-  const tabOnclickHandler = (id: string, value: string, checkId: string) => {
+  const tabOnclickHandler = (id: string, value: string) => {
     setTabValue(value);
-    scrollToTabInfo(id);
-  };
-
-  //스크롤 이벤트
-  const scrollToTabInfo = (id: string) => {
-    const container = document.getElementById('page-container');
-    if(container) {
-      const el = document.getElementById(id)?.offsetTop;
-      container.scrollTo({top: el, behavior: 'smooth'});
-    }
+    scrollToId(id);
   };
 
   return (
     <ShopDetailTabStyle>
-      <ul id='detail-tab'>
+      <ul>
         {tabEl?.map((item: TTabEl) => {
           return(
             <li key={item.value}>
-              {(item.value === tabEl[0].value) 
-                ?
-                <input
-                  onChange={(e) => tabOnclickHandler(item.id, item.value, item.checkId)}
-                  type="radio" id={item.checkId} name='detail-tab' defaultChecked hidden
-                />
-                :
-                <input
-                  onChange={(e) => tabOnclickHandler(item.id, item.value, item.checkId)}
-                  type="radio" id={item.checkId} name='detail-tab' hidden
-                />
-              }
-              <div className='detail-tab-div'>
-                <div style={{display: 'flex', alignItems: 'center'}}>
+              <input
+                type="radio" 
+                id={item.checkId} 
+                name='detail-tab'
+                onChange={(e) => tabOnclickHandler(item.id, item.value)}
+                defaultChecked={(item.value === tabEl[0].value) ? true : false}
+                hidden
+              />
+              <label htmlFor={item.checkId} className='detail-tab-div'>
+                <Centered>
                   {(tabValue === item.value) && <IconTabPoint24/>}
-                  <label htmlFor={item.checkId}>
-                    {item.value}
-                    {(item.value === '피드') && <span style={{margin: '4px'}}><ListCount>{listCount}</ListCount></span>}
-                  </label>
-                </div>
-              </div>
+                  {item.value}
+                  {(item.value === '피드') 
+                    && 
+                    <span style={{marginLeft: '4px'}}>
+                      <ListCount>{listCount}</ListCount>
+                    </span>
+                  }
+                </Centered>
+              </label>
             </li>
           )
         })}
@@ -70,7 +61,7 @@ export default ShopDetailTab
 
 const ShopDetailTabStyle = styled.div`
   width: 100%;
-  
+
   ul {
     display: flex;
     flex-direction: row;
@@ -78,17 +69,14 @@ const ShopDetailTabStyle = styled.div`
     text-align: center;
 
     li {
-      width: 33.33%; 
+      width: ${100/3}%;
     }
 
     label {
       width: 100%;
+      height: 100%;
       line-height: 50px;
       display: block;
-      cursor: pointer;
-    }
-
-    .detail-tab-div {
       cursor: pointer;
     }
 
@@ -112,4 +100,10 @@ const ShopDetailTabStyle = styled.div`
       }
     }
   }
+`;
+
+const Centered = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

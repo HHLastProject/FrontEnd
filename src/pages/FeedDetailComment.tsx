@@ -15,11 +15,11 @@ import useGetFeedDetailComment from '../custom/jh/useGetFeedDetailComment'
 import styled from 'styled-components'
 import { IconUploadActive, IconUploadInactive } from '../components/ui/element/icons/IconsStyle'
 import Loading from '../components/loading/Loading'
-import { scrollTop } from '../custom/jh/scrollTop'
 import { Body3 } from '../components/FontStyle'
 import BtnResetStyle from '../components/ui/element/buttons/BtnReset'
 import IconSize from '../components/ui/element/icons/IconSize'
 import { confirmLogin } from '../custom/jh/confirm'
+import { scrollTop } from '../custom/jh/scrollEvent'
 
 function FeedDetailComment() {
   const navi = useNavigate();

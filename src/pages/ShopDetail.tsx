@@ -22,7 +22,7 @@ import { changeScrap } from '../custom/jh/changeScrap';
 import Loading from '../components/loading/Loading';
 import { Title3 } from '../components/FontStyle';
 import { FeedIdContext } from '../apis/context';
-import { scrollTop } from '../custom/jh/scrollTop';
+import { scrollTop } from '../custom/jh/scrollEvent';
 
 function ShopDetail() {
   const navi = useNavigate();
