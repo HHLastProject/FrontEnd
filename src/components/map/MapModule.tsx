@@ -228,16 +228,8 @@ const MapModule = ({ states, dispatches }: MapProps) => {
                 <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
             </AimBtn>
             {zoom > 14
-                ? <RefreshBtnDiv
-                    onMouseEnter={() => setRefreshHover(true)}
-                    onMouseLeave={() => setRefreshHover(false)}
-                    onClick={reMutate}
-                >
-                    {
-                        refreshHover
-                            ? <Buttons.Medium.RefreshHover>이 위치에서 검색</Buttons.Medium.RefreshHover>
-                            : <Buttons.Medium.Refresh>이 위치에서 검색</Buttons.Medium.Refresh>
-                    }
+                ? <RefreshBtnDiv onClick={reMutate}>
+                    <Buttons.Medium.Refresh>이 위치에서 검색</Buttons.Medium.Refresh>
                 </RefreshBtnDiv>
                 : null}
 

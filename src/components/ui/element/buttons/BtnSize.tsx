@@ -8,11 +8,11 @@ const Large = ({ children }: ChildrenForJSX) => {
     )
 }
 
-const Medium = ({ children }: ChildrenForJSX) => {
-    return (
-        <MediumContainer>{children}</MediumContainer>
-    )
-}
+// const Medium = ({ children }: ChildrenForJSX) => {
+//     return (
+//         <MediumContainer>{children}</MediumContainer>
+//     )
+// }
 
 
 const Small = ({ children }: ChildrenForJSX) => {
@@ -28,7 +28,6 @@ const Nav = ({ children }: ChildrenForJSX) => {
 }
 
 
-export const BtnSize = { Large, Medium, Small, Nav };
 
 
 const NavContainer = styled.div`
@@ -40,7 +39,7 @@ const LargeContainer = styled.div`
     width: 100%;
     height: 56px;
 `
-const MediumContainer = styled.div`
+export const Medium = styled.div`
     width: 100%;
     height: 44px;
 `
@@ -48,3 +47,5 @@ const SmallContainer = styled.div`
     width: 100%;
     height: 32px;
 `
+
+export const BtnSize = { Large, Medium, Small, Nav };
