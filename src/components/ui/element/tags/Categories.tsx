@@ -1,11 +1,12 @@
 import React from 'react'
-import { TagRadius } from './TagRadius';
-import { TagBg } from './TagBg';
-import { TagSize } from './TagSize';
-import { TagTextColor } from './TagTextColor';
+import { Round, TagRadius } from './TagRadius';
+import { Paint, TagBg } from './TagBg';
+import { CategorySizing, TagSize } from './TagSize';
+import { TagTextColor, WhiteText } from './TagTextColor';
 import { TagContent } from './TagContent';
 import { CategoryStateProp, ChildrenForBtnContents, InternalJSX, NavStateProp } from '../../../../custom/ym/types';
 import { BtnPropertyThrower, Buttons } from '../buttons/Buttons';
+import styled from 'styled-components';
 
 const Inactive = ({ children, isActive = false, ...props }: NavStateProp) => {
     return (

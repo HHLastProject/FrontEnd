@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 import { colorSet } from './ui/styles/color';
-import { fontType } from './ui/styles/typo';
 import { ReactNode, useContext, useEffect } from 'react';
 import { CommentIdContext, OrderByContext } from '../apis/context';
 import deleteFeedComment from '../custom/jh/deleteFeedComment';
 import { controlHidden } from '../custom/jh/controlHidden';
+import BtnResetStyle from './ui/element/buttons/BtnReset';
+import LOCALSTORAGE_KEY from '../shared/locatstorageKey';
+import { SelectData } from '../shared/select';
+import { Body1 } from './FontStyle';
 
 export const SelectBoxId = {
   ORDER_BY_SELECT_ID : 'orderby-select-box',
@@ -24,23 +27,26 @@ interface ISelectBox {
 function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
   if(!id) id = 'select-box';
   const {commentId} = useContext(CommentIdContext);
-  const {orderBy, setOrderBy} = useContext(OrderByContext);
+  const {setOrderBy} = useContext(OrderByContext);
 
   const onClickHandler = (order: string) => {
     if(setOrderBy) {
       setOrderBy(order);
 
-      //댓글 삭제하기 기능 있을때
-      if((orderBy === '삭제하기') && isDeleteComment && param){
+      if(SelectData.ORDER_BY.includes(order)) {
+        localStorage.setItem(LOCALSTORAGE_KEY.shop.ORDER_BY, order);
+      } else if (SelectData.TAG_SELECT.includes(order)) {
+        localStorage.setItem(LOCALSTORAGE_KEY.feed.ORDER_BY, order);
+      };
+
+      //댓글 삭제하기
+      if((order === '삭제하기') && isDeleteComment && param){
         const result = window.confirm('해당 댓글을 삭제하시겠습니까?');
         if(result){
           deleteFeedComment({feedId: param, commentId: commentId})
-          .then(() => {
-            alert('삭제되었습니다.');
-          })
+          .then(() => { alert('삭제되었습니다.') });
         }
       }
-      
       controlHidden(id);
     }
   }
@@ -63,23 +69,23 @@ function SelectBox({children, id, arr, param, isDeleteComment} : ISelectBox) {
       <SelectBoxStyle>
         <SelectTop/>
         {children}
-        { arr?.map((item) => {
-            return(
-              <div 
-                className='selectBox-order-value'
-                style={{cursor: 'pointer'}}
-                onClick={() => {onClickHandler(item);}}
-                key={item}
-              >
-                {item}
-              </div>
-            )
-          })
-        }
+        {arr?.map((item: string) => {
+          return(
+            <div style={{padding: '20px'}} key={item}>
+              <Body1>
+                <BtnResetStyle
+                  onClick={() => {onClickHandler(item);}}
+                >
+                  {item}
+                </BtnResetStyle>
+              </Body1>
+            </div>
+          )
+        })}
       </SelectBoxStyle>
-      <BottomSheet
-          onClick={() => controlHidden(id)}
-        />
+      <BottomSheetStyle
+        onClick={() => controlHidden(id)}
+      />
     </div>
   )
 }
@@ -93,25 +99,22 @@ const SelectBoxStyle = styled.div`
   z-index: 10000;
   border-radius: 20px 20px 0 0;
   background-color: #fff;
-  .selectBox-order-value {
-    padding: 20px;
-    ${fontType.body_1}
-  }
 `;
 
 const SelectTop = () => {
   return(
-    <div style={{
-      width:"100%", 
-      display: "flex",
-      justifyContent: "center",
-      padding: "12px 0 16px 0", 
-      }}
-    >
+    <JustifyCenter padding='12px 0 16px 0'>
       <SmallbarSpan/>
-    </div>
+    </JustifyCenter>
   )
 };
+
+const JustifyCenter = styled.div<{padding: string}>`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: ${({padding})=> padding};
+`;
 
 const SmallbarSpan = styled.span`
   width: 60px;
@@ -120,26 +123,9 @@ const SmallbarSpan = styled.span`
   background-color: ${colorSet.lineMedium};
 `;
 
-const BottomSheet = ({onClick, hidden}: {onClick: React.MouseEventHandler<HTMLDivElement>, hidden?: boolean}) => {
-  return(
-    <>
-    <BottomSheetStyle>
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
-        onClick={onClick}
-      />
-    </BottomSheetStyle>
-    </>
-  )
-}
-
 const BottomSheetStyle = styled.div`
   width: 100%;
   height: 100%;
   background-color: #000000;
   opacity: 0.5;
 `;
-

@@ -25,7 +25,7 @@ const TagSizing = styled.div`
     padding: 7px 12px;
 `
 
-const CategorySizing = styled.div`
+export const CategorySizing = styled.div`
     white-space: nowrap;
     width: fit-content;
     height: fit-content;

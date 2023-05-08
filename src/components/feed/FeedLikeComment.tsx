@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { path } from "../../shared/path";
 import { fontType } from "../ui/styles/typo";
 import usePutLike from "../../custom/jh/usePutLike";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { getToken } from "../../apis/getToken";
 import BtnResetStyle from "../ui/element/buttons/BtnReset";
+import { confirmLogin } from "../../custom/jh/confirm";
 
 interface IFeedLikeComment {
   isLike: boolean,
@@ -19,7 +20,6 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
   const token = getToken();
   const navi = useNavigate();
   const [likeResult, setLikeResult] = useState(isLike);
-  const likeCountRef = useRef(likeCount);
   const {changeLike} = usePutLike({feedId, setLikeResult});
 
   const onClickLike = () => {
@@ -27,7 +27,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
       changeLike(); //서버 전송
       setLikeResult(prev => !prev);
     } else {
-      alert('로그인 후 이용 가능합니다.');
+      if(confirmLogin()){ navi(path.login) };
     }
   }
 
@@ -44,7 +44,7 @@ function FeedLikeComment({feedId, isLike, likeCount, feedCommentCount}: IFeedLik
             :
             <IconLikeInactive24 />
           }
-          <label>{likeResult ? likeCountRef.current + 1 : likeCountRef.current}</label>
+          <label>{likeCount}</label>
         </AlignCenter>
       </BtnResetStyle>
 

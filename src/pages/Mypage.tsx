@@ -8,11 +8,6 @@ import NoLoginStatus from '../components/mypage/NoLoginStatus';
 import { ReceivedFeed } from '../custom/ym/types';
 import useMypage from '../hooks/useMypage';
 import Loading from '../components/loading/Loading';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import Q from 'q';
-import { mypageKeys } from '../apis/queries';
-import { api_token } from '../shared/api';
-import { apiPath } from '../shared/path';
 
 export type StateContextType = {
     props: Feed | null,
@@ -48,6 +43,7 @@ const Mypage = () => {
     const { data, isSuccess, isError, isLoading, refetch } = useMypage(querySwitch);
 
     useEffect(() => {
+        console.log("기본");
         if (localStorage.getItem("access_token")) {
             setQuerySwitch(true);
             refetch();
@@ -60,6 +56,7 @@ const Mypage = () => {
     }, []);
 
     useEffect(() => {
+        console.log("isSuccess");
         if (isSuccess) {
             setFeedData(data as Feed);
             setIsLogin(true);
@@ -68,7 +65,9 @@ const Mypage = () => {
     }, [isSuccess, data]);
 
     useEffect(() => {
+        console.log("isError");
         isError && setIsLogin(false);
+        console.log(`isError:${isError}, isSuccess:${isSuccess}`);
     }, [isError]);
 
     if (isLoading && data) return <Loading />;

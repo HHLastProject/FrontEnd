@@ -8,13 +8,15 @@ export const useGetFeedList = () => {
     queryKey: queryKeys.GET_FEEDS,
     queryFn: async () => {
       const {data} = await api_token.get(`${apiPath.feedList}`);
+      // const {data} = await api_token.get(`${apiPath.feedList}`, {
+      //   params: {pageNumber: pageNumber},
+      // });
       return data;
     },
     onSuccess: (data) => {
       return data;
     },
     onError: (error) => {
-      console.log(error);
       return error;
     },
   });

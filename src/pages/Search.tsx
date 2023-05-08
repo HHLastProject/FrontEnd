@@ -16,7 +16,7 @@ interface IDataList {
   lng : number,
 }
 
-//Link state로 돌아갈 link 값을 받고, 클릭하면 location.state.link로 다시 돌아가는 로직
+//Link state로 검색 후 돌아갈 link 값을 받고, 클릭하면 해당 link로 다시 돌아가는 로직
 function Search() {
   const [inputValue, setInputValue] = useState('');
   const [dataList, setDataList] = useState<undefined | IDataList[] | []>(undefined);
@@ -40,7 +40,7 @@ function Search() {
 
           {/* 검색 결과 */}
           <div className='search-result-list'>
-            {(dataList !== undefined) 
+            {(dataList !== undefined)
               ? 
               ((dataList?.length !== 0) && dataList?.map((item: IDataList) => {
               // state로 받는 값에 따라 링크가 달라짐
@@ -67,7 +67,12 @@ function Search() {
                 </div>
               )}))
               :
-              <></>
+              <>
+                {/* <VFlex gap={'12px'}>
+                  <Title5>최근 검색어</Title5>
+                  <Body3>검색 내역이 없습니다.</Body3>
+                </VFlex> */}
+              </>
             }
 
             {/* undefined일 때 아무것도 없고, []일때 결과없음 띄움 */}

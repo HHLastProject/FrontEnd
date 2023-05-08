@@ -105,11 +105,7 @@ const SpaceBetween = styled.div`
   justify-content: space-between;
 ` ;
 
-const FloatRight = styled.div`
-  float: right;
-`;
-
-const CommentPre = styled.div`
+const CommentPre = styled.pre`
   ${fontType.body_3}
 `;
 

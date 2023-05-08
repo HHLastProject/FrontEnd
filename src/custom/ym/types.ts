@@ -1,3 +1,4 @@
+import { type } from "os";
 import React, { ComponentPropsWithRef, ComponentPropsWithoutRef, ElementType } from "react";
 import { StringLiteralType } from "typescript";
 import { ShopData } from "./variables";
@@ -30,6 +31,8 @@ export const NavButtonList: NavButtonInputLimit[] = ["home", "list", "feed", "bo
 
 export type categoryTypes = "카페" | "보드카페" | "사주카페" | "애견카페" | "전통찻집" | "";
 export type rangeTypes = 100 | 200 | 300 | 500 | 1000;
+export type tagsTypes = '분위기 맛집' | '디저트 맛집' | '커피 맛집' | '뷰 맛집' | '태그';
+export type orderByTypes = '거리순' | '인기순' | '피드순';
 
 export interface ChildrenForBtnContents extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode
@@ -261,4 +264,25 @@ export interface Markers {
 export interface SearchedShop {
     shopLng: number,
     shopLat: number
+}
+
+export interface MapStates {
+    activeShop: number,
+    category: categoryTypes,
+    center: Coordinate,
+    list: ShopData[],
+    range: number
+}
+
+export interface MapDispatches {
+    setActiveShop: React.Dispatch<React.SetStateAction<number>>,
+    setCategory: React.Dispatch<React.SetStateAction<categoryTypes>>,
+    setCenter: React.Dispatch<React.SetStateAction<Coordinate>>,
+    setList: React.Dispatch<React.SetStateAction<ShopData[]>>,
+    setRange: React.Dispatch<React.SetStateAction<number>>,
+}
+
+export interface MapProps {
+    states: MapStates;
+    dispatches: MapDispatches;
 }

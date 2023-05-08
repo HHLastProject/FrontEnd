@@ -5,14 +5,37 @@ import { categoryTypes, rangeTypes } from '../../custom/ym/types';
 import { fontType } from '../ui/styles/typo';
 import { ShopCategory } from '../../apis/context';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import LOCALSTORAGE_KEY from '../../shared/locatstorageKey';
 
-export const ListCategoryButtonBar = () => {
+export type TPageName = 'SHOP_LIST' | 'FEED_LIST';
+interface IPageName {
+  [key: string]: TPageName;
+}
+
+export const PAGE_NAME: IPageName = {
+  SHOP_LIST : 'SHOP_LIST',
+  FEED_LIST : 'FEED_LIST',
+}
+
+export const ListCategoryButtonBar = ({pageName}: {pageName: TPageName}) => {
   const {category, setCategory} = useContext(ShopCategory); //선택한 카테고리 이름
 
   const filterClickHandler = (buttonName: categoryTypes) => {
-    if(setCategory) { setCategory(buttonName); }
+    if(setCategory) {
+      setCategory(buttonName);
+      if(pageName === PAGE_NAME.SHOP_LIST){
+        localStorage.setItem(LOCALSTORAGE_KEY.shop.CATEGORY, buttonName);
+      } else if (pageName === PAGE_NAME.FEED_LIST) {
+        localStorage.setItem(LOCALSTORAGE_KEY.feed.CATEGORY, buttonName);
+      }
+    }
     if((category === buttonName) && setCategory ) {
       setCategory('');
+      if(pageName === PAGE_NAME.SHOP_LIST){
+        localStorage.removeItem(LOCALSTORAGE_KEY.shop.CATEGORY);
+      } else if (pageName === PAGE_NAME.FEED_LIST) {
+        localStorage.removeItem(LOCALSTORAGE_KEY.feed.CATEGORY);
+      }
     }
   };
 
@@ -49,7 +72,10 @@ export const RangeFilterButtonBar = () => {
   const {range, setRange} = useContext(ShopCategory);
 
   const filterClickHandler = (range: rangeTypes) => {
-    if(setRange) {setRange(range);}
+    if(setRange) {
+      setRange(range);
+      localStorage.setItem(LOCALSTORAGE_KEY.RANGE, String(range));
+    }
   };
 
   return (

@@ -87,7 +87,7 @@ export const IconUploadInactive = () => {
   )
 }
 
-//탭 눌렀을때 옆에 추가되는 이미지
+//상세페이지 탭 눌렀을때 옆에 추가되는 이미지
 export const IconTabPoint24 = () => {
   return(
     <IconSize24>
@@ -95,11 +95,27 @@ export const IconTabPoint24 = () => {
     </IconSize24>
   )
 }
-
+//태그 선택 버튼 누를 시 추가되는 x버튼
 export const IconXRount16 = () => {
   return(
     <IconSize.Size20>
       <img src={iconImgPath.cancel.xRound16} alt="x버튼" />
+    </IconSize.Size20>
+  )
+}
+//검색 기록 아이콘
+export const IconSearchCiarcle24 = () => {
+  return(
+    <IconSize.Size24>
+      <img src={iconImgPath.search.searchCircle} alt="검색기록" />
+    </IconSize.Size24>
+  )
+}
+//검색 돋보기
+export const IconSearchLoupe20 = () => {
+  return(
+    <IconSize.Size20>
+      <img src={iconImgPath.search.loupe} alt="검색하기" />
     </IconSize.Size20>
   )
 }

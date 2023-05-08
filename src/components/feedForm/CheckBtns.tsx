@@ -8,7 +8,7 @@ function CheckBtns({arr, checkList, setCheckList}:{arr: string[], checkList: str
     <>
       {arr?.map((item: string) => {
         return(
-          <TagBtn checkList={checkList} setCheckList={setCheckList}>
+          <TagBtn key={item} checkList={checkList} setCheckList={setCheckList}>
             {item}
           </TagBtn>
       )})
@@ -25,9 +25,7 @@ const TagBtn = ({children, checkList, setCheckList}: {children: string, checkLis
   //클릭했을때
   const onClickHandler = (value: string) => {
     setIsChecked(pre => !pre);
-    
     if(checkList.length <= 4){
-      console.log(checkList.length);
       if(!isChecked){
         //체크된 값 추가
         setCheckList(pre => {

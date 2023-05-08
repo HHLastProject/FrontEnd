@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { BtnPosition } from './BtnPosition'
-import { BtnRadius } from './BtnRadius'
+import { BtnRadius, RoundedContainer } from './BtnRadius'
 import { BtnBg } from './BtnBg'
 import { BtnTextColor } from './BtnContent'
 import { BtnBorder } from './BtnBorder'
@@ -12,6 +12,7 @@ import { BtnNavProps, CategoryStateProp, ChildrenForJSX, DivProp, EditNicknamePr
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { colorSet } from '../../styles/color'
+import { VFlexCenter } from '../../../../custom/ym/styleStore'
 
 
 
@@ -198,8 +199,26 @@ const MediumDefault = ({ onClick, children }: InternalJSX) => {
 
 
 const Refresh = ({ onClick, children }: InternalJSX) => {
+
+    const Wrapper = styled(BtnRadius.Rounded)`
+    &:hover >${BtnMediumLength.Default} {
+            >${BtnSize.Medium} {
+            >${BtnBg.White} {
+                background-color: ${colorSet.primary_01};
+                >${BtnPosition.Center}{
+                    >${BtnText.Medium}{
+                        >${BtnTextColor.Gray}{
+                            color:white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    `;
+
     return (
-        <BtnRadius.Rounded onClick={onClick}>
+        <Wrapper onClick={onClick}>
             <BtnMediumLength.Default>
                 <BtnSize.Medium>
                     <BtnBg.White>
@@ -213,7 +232,7 @@ const Refresh = ({ onClick, children }: InternalJSX) => {
                     </BtnBg.White>
                 </BtnSize.Medium>
             </BtnMediumLength.Default>
-        </BtnRadius.Rounded>
+        </Wrapper>
     );
 };
 

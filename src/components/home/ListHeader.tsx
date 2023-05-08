@@ -10,7 +10,7 @@ import { controlVisible } from '../../custom/jh/controlHidden';
 import { SelectBoxId } from '../SelectBox';
 import BtnResetStyle from '../ui/element/buttons/BtnReset';
 import { IconSize16, IconSize24 } from '../ui/element/icons/IconSize';
-import { deleteToken, getToken } from '../../apis/getToken';
+import { getToken } from '../../apis/getToken';
 
 //close == true : 뒤로가기 버튼이 x로 바뀜
 //scrap == true : 스크랩 버튼
@@ -20,15 +20,6 @@ const ListHeader = ({name, range, close, list, feedForm, children, scrap}: {name
   const backIconSrc = close ? `${process.env.PUBLIC_URL}/icon/x_24.png` : `${process.env.PUBLIC_URL}/icon/back_24.png`;
   const token = getToken();
   const [isLogin, setIsLogin] = useState(token ? true : false);
-
-  // const onClickLogout = () => {
-  //   const result = window.confirm('로그아웃 하시겠습니까?');
-  //   if(result) {
-  //     deleteToken();
-  //     alert('로그아웃 되었습니다.');
-  //     setIsLogin(false);
-  //   }
-  // }
 
   return (
     <HeaderContainer

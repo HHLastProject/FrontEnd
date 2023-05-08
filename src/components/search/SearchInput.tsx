@@ -3,12 +3,16 @@ import { iconImgPath } from '../../shared/path';
 import { debounce } from '../../custom/jh/debounce';
 import { useCallback } from 'react';
 import getSearchResult from '../../custom/jh/useSearchResult';
+import { Body3 } from '../FontStyle';
+import { colorSet } from '../ui/styles/color';
+import { IconSearchLoupe20 } from '../ui/element/icons/IconsStyle';
 
 export interface ISearchInput {
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
   placeholder?: string;
   setDataList: React.Dispatch<React.SetStateAction<never[]>> | ISearchResult[] | any;
+  isFeedForm?: boolean,
   children?: React.ReactNode;
 };
 
@@ -23,19 +27,30 @@ function SearchStore({
   setInputValue,
   placeholder,
   setDataList,
-  children,
+  isFeedForm,
 }: ISearchInput) {
   return (
     <SearchStoreStyle>
       <div id='search-input'>
-        <img src={iconImgPath.search.loupe} alt="검색하기" />
+        <IconSearchLoupe20/>
+        {isFeedForm
+        ?
+        <div style={{width: '100%', marginLeft: '10px'}}>
+          {inputValue.length !== 0
+            ?
+            <Body3>{inputValue}</Body3>
+            :
+            <Body3 color={`${colorSet.textLight}`}>{placeholder}</Body3>
+          }
+        </div>
+        :
         <SearchInput
           inputValue={inputValue}
           setInputValue={setInputValue}
           placeholder={placeholder}
           setDataList={setDataList}
         />
-        {children}
+        }
       </div>
     </SearchStoreStyle>
   )
@@ -51,6 +66,7 @@ const SearchStoreStyle = styled.div`
   align-items: center;
   border: 1px solid #DBDBDB;
   border-radius: 8px;
+
   #search-input {
     width: 100%;
     margin: 19px;

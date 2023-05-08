@@ -55,3 +55,9 @@ export const Body5 = styled.label<{color?: string}>`
   ${fontType.body_5}
   color: ${({color}) => color ? color : colorSet.textStrongMedium};
 `;
+
+export const FontStyle = {
+  Heading: {1: Heading1, 2: Heading2},
+  Body: {1: Body1, 2: Body2, 3: Body3, 4: Body4, 5: Body5},
+  Title: {1: Title1, 2: Title2, 3: Title3, 4: Title4, 5: Title5},
+};

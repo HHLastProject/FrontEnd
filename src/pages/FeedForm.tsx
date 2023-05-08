@@ -15,6 +15,7 @@ import { IconPlusWhite24 } from '../components/ui/element/icons/IconsStyle';
 import BtnResetStyle from '../components/ui/element/buttons/BtnReset';
 import { SelectData } from '../shared/select';
 import CheckBtns from '../components/feedForm/CheckBtns';
+import { Body4, Body5, Title3, Title4 } from '../components/FontStyle';
 
 interface IImgFile {
   feedPic: File | null;
@@ -32,14 +33,14 @@ function FeedForm() {
 
   const navi = useNavigate();
   const maxLength = 500;
-  const [comment, setComment] = useState<string | null>(null);
-  const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
+  const [comment, setComment] = useState<string>('');
   const [inputValue, setInputValue] = useState('');//가게 이름 입력
   const [checkList, setCheckList] = useState<string[]>([]);
   const [imgFile, setImgFile] = useState<IImgFile>({
     feedPic: null,
     previewPic: null,
   });
+  const { count, textCountAndSetHandler } = useTextHandler(maxLength, setComment);
 
   //이미지 미리보기
   const previewImg = (e: React.ChangeEvent<HTMLInputElement> | any) => {
@@ -53,7 +54,6 @@ function FeedForm() {
             feedPic: e.target.files[0],
             previewPic: fileReader.result
           });
-          console.log('onload', imgFile);
         };
       };
     };
@@ -61,24 +61,27 @@ function FeedForm() {
 
   //전송 버튼 눌렀을때
   const onClickSendFeedData = (shopId: number | null) => {
-    //[{tag: '데이터'}, ]
+    //[{tag: '데이터'}, {tag: '데이터'}] 이 형태로 저장하기 위함
     let tags = [];
     if(checkList.length !== 0) {
-      for(let i of checkList)
-      tags.push({tag: i});
+      for(let check of checkList)
+      tags.push({tag: check});
     }
+
     const checkResult = [...tags];
-    const token = getToken();
-    if (shopId && imgFile.feedPic && token) {
+    if (shopId && imgFile.feedPic && getToken()) {
       const formData = new FormData();
       formData.append('feedPic', imgFile.feedPic);
       formData.append('shopId', shopId.toString());
-      formData.append('comment', comment ? comment : '');
+      formData.append('comment', comment.trim());
       formData.append('tags', JSON.stringify(checkResult));
+
       sendFeedData(shopId, formData).then(() => {
         if(isFeedForm){
           navi(`${path.feedList}`);
-        } else {navi(-1)};
+        } else {
+          navi(-1);
+        };
       });
     } else {
       alert("가게명과 사진을 등록해주세요.");
@@ -119,9 +122,7 @@ function FeedForm() {
       </ListHeader>
       <FeedFormContainer>
         <VFlex>
-          <Margin margin={`0 0 20px 0`}>
-            <Title3>새로운 기록</Title3>
-          </Margin>
+          <Title3 style={{marginBottom: '20px'}}>새로운 기록</Title3>
           <FeedFormTitle>
             <Title4>방문한 카페</Title4>
             <Body4 color={colorSet.textMedium}>필수</Body4>
@@ -130,12 +131,13 @@ function FeedForm() {
             to={`${path.search}`}
             state={{link: `${path.feedForm}`}}
           >
-          <SearchStore
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            placeholder='카페 이름 입력하기'
-            setDataList={setInputValue}
-          />
+            <SearchStore
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+              placeholder='카페 이름 입력하기'
+              setDataList={setInputValue}
+              isFeedForm={true}
+            />
           </Link>
         </VFlex>
 
@@ -150,7 +152,7 @@ function FeedForm() {
             type="file"
             name="feedPic"
             onChange={previewImg}
-            style={{ display: 'none' }}
+            hidden
           />
             <ImgPreview
               onClick={inputClickHandler}
@@ -161,7 +163,7 @@ function FeedForm() {
                 :
                 <PriviewDiv>
                   <IconPlusWhite24 />
-                  <label>0/1</label>
+                  <>0/1</>
                 </PriviewDiv>
               }
             </ImgPreview>
@@ -188,7 +190,6 @@ function FeedForm() {
         <VFlex>
           <FeedFormTitle>
             <Title4>태그</Title4>
-            {/* <Body4 color={colorSet.textMedium}>3개까지 선택</Body4> */}
             <Body4 color={colorSet.textMedium}>선택</Body4>
           </FeedFormTitle>
           <HFlex gap={'4px'}>
@@ -223,7 +224,7 @@ const Margin = styled.div<{ margin: string }>`
 const FeedFormTextarea = styled.textarea`
   height: 188px;
   padding: 16px;
-  border: 1px solid #DBDBDB;
+  border: 1px solid ${colorSet.lineMedium};
   border-radius: 10px;
   resize: none;
   outline: none;
@@ -262,21 +263,4 @@ const FeedFormTitle = styled.div`
 const CommentTextCount = styled.div`
   display: flex;
   justify-content: flex-end;
-`;
-
-export const Title4 = styled.label<{ color?: string }>`
-  color: ${({ color }) => color};
-  ${fontType.title_4}
-`;
-export const Title3 = styled.label<{ color?: string }>`
-  color: ${({ color }) => color};
-  ${fontType.title_3}
-`;
-export const Body4 = styled.label<{ color?: string }>`
-  color: ${({ color }) => color};
-  ${fontType.body_4}
-`;
-export const Body5 = styled.label<{ color?: string }>`
-  color: ${({ color }) => color};
-  ${fontType.body_5}
 `;

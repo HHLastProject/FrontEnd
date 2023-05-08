@@ -3,13 +3,19 @@ import { HFlex, VFlex } from '../../custom/ym/styleStore';
 import styled from 'styled-components';
 import { BODY_1 } from '../../custom/ym/variables';
 import { MypageContext } from '../../pages/Mypage';
+import { useNavigate } from 'react-router-dom';
+import { queryClient } from '../..';
+import { mypageKeys } from '../../apis/queries';
 
 const CenterContents = () => {
 
+    const navi = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
     const logoutButtonHandler = () => {
         localStorage.removeItem("access_token");
-        window.location.reload();
+        queryClient.removeQueries(mypageKeys.GET_MYPAGE);
+        navi('/');
+        // window.location.reload();
     }
     useEffect(() => {
         localStorage.getItem("access_token")
@@ -21,7 +27,7 @@ const CenterContents = () => {
         <VFlex height='fit-content'>
             <EachItem>
                 <HFlex>
-                    <ButtonContainer><Text>이용약관</Text></ButtonContainer>
+                    <ButtonContainer onClick={() => alert("미구현 기능입니다.")}><Text>이용약관</Text></ButtonContainer>
                 </HFlex>
             </EachItem>
             {isLogin
@@ -33,7 +39,7 @@ const CenterContents = () => {
                     </EachItem>
                     <EachItem>
                         <HFlex>
-                            <ButtonContainer><Text>탈퇴하기</Text></ButtonContainer>
+                            <ButtonContainer onClick={() => alert("미구현 기능입니다.")}><Text>탈퇴하기</Text></ButtonContainer>
                         </HFlex>
                     </EachItem></>
                 : null}

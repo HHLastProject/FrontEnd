@@ -15,7 +15,11 @@ import useGetFeedDetailComment from '../custom/jh/useGetFeedDetailComment'
 import styled from 'styled-components'
 import { IconUploadActive, IconUploadInactive } from '../components/ui/element/icons/IconsStyle'
 import Loading from '../components/loading/Loading'
-import { scrollTop } from '../custom/jh/scrollTop'
+import { Body3 } from '../components/FontStyle'
+import BtnResetStyle from '../components/ui/element/buttons/BtnReset'
+import IconSize from '../components/ui/element/icons/IconSize'
+import { confirmLogin } from '../custom/jh/confirm'
+import { scrollTop } from '../custom/jh/scrollEvent'
 
 function FeedDetailComment() {
   const navi = useNavigate();
@@ -28,7 +32,6 @@ function FeedDetailComment() {
   const {
     feedDetailCommentData,
     feedDetailCommentIsLoading,
-    feedDetailCommentIsError,
   } = useGetFeedDetailComment(feedId);
 
   const onChangeTextareaHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -42,17 +45,14 @@ function FeedDetailComment() {
 
   const addFeedDetailComment = (feedId: number) => {
     if(!getToken()) {
-      const result = window.confirm('로그인 하시겠습니까?');
-      if(result) {navi(path.login)};
+      if(confirmLogin()) {navi(path.login)};
     }
 
     if(inputValue !== ''){
       //댓글 데이터 전송
-      postFeedDetailComment({feedId: feedId, feedComment: inputValue})
-      .then((res) => {
-        alert('댓글이 추가되었습니다.');
-        setInputValue('');
-      });
+      postFeedDetailComment({feedId: feedId, feedComment: inputValue.trim()});
+      alert('댓글이 추가되었습니다.');
+      setInputValue('');
     } else {
       alert('댓글을 입력해주세요.');
     }
@@ -87,9 +87,9 @@ function FeedDetailComment() {
       <DefaultWrap>
         {/* 입력창 */}
         <TextareaStyle
-          padding='8px 8px 8px 16px'
+          padding={'8px 8px 8px 16px'}
           border={`1px solid ${colorSet.lineMedium}`}
-          radius='8px'
+          radius={'8px'}
         >
           <textarea
             maxLength={600}
@@ -99,24 +99,30 @@ function FeedDetailComment() {
             placeholder='댓글 입력하기'
             required
           />
+
           {/* 댓글 추가 버튼 */}
-          <div
-            style={{width: '40px', height: '40px', cursor: 'pointer'}}
-            onClick={() => addFeedDetailComment(feedId)}
-          >
-            {(inputValue.length === 0)
+          <IconSize.Size40>
+            {(inputValue.trim().length === 0)
             ?
             <IconUploadInactive/>
             :
-            <IconUploadActive/>
-            }
-          </div>
+            <BtnResetStyle
+              onClick={() => addFeedDetailComment(feedId)}
+            >
+              <IconUploadActive/>
+            </BtnResetStyle>
+            }</IconSize.Size40>
         </TextareaStyle>
 
         {/* 댓글 */}
         <div style={{margin: '12px 0'}}>
           {
-            feedDetailCommentData &&
+            feedDetailCommentData?.length === 0 
+            ?
+            <div>
+              <Body3>댓글이 없습니다.</Body3>
+            </div>
+            :
             <FeedDetailComments
               commentList={feedDetailCommentData}
             />
@@ -129,10 +135,3 @@ function FeedDetailComment() {
 }
 
 export default FeedDetailComment
-
-const CommentPostBtn = styled.button<{width?: string, height?: string}>`
-  width: ${({width}) => width};
-  height: ${({height}) => height};
-  border: none;
-  border-radius: 100px;
-`;

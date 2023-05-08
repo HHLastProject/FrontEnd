@@ -1,20 +1,12 @@
-import React, { useContext, useState } from 'react'
 import styled from 'styled-components';
 import { HFlex, VFlex } from '../../custom/ym/styleStore';
-import { Link, useNavigate } from 'react-router-dom';
-import { DispatchContext, StateContext } from '../../pages/Home';
+import { Link } from 'react-router-dom';
 import { BODY_5, TITLE_3 } from '../../custom/ym/variables';
 import { colorSet } from '../ui/styles/color';
 import { path } from '../../shared/path';
 
-const MapHeader = () => {
+const MapHeader = ({ range }: { range: number }) => {
 
-    const { range } = useContext(StateContext);
-    const { setRange } = useContext(DispatchContext);
-
-    // const temp: React.Dispatch<React.SetStateAction<number>> =
-    //     setRange as React.Dispatch<React.SetStateAction<number>>;
-    // if (isChanged) return <></>;
     return (
         <HeaderContainer>
             <HFlex etc="padding: 0px 5px;" width='100%'>
@@ -38,7 +30,7 @@ const MapHeader = () => {
     )
 }
 
-export default React.memo(MapHeader);
+export default MapHeader;
 const AroundSpan = styled.span`
     font-size: ${BODY_5.fontSize};
     line-height: ${BODY_5.lineHeight};

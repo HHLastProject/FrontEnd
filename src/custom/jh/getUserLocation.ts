@@ -16,7 +16,6 @@ export const getUserLocation = async(
     setLng(userLng);
     setLat(userLat);
   }, (err) => {
-    console.log('유저 위치 가져오기 실패');
   });
 };
 
@@ -30,7 +29,6 @@ export function getRealtimeLocation(
     }
     setState(newCoord);
   }, (err) => {
-    alert('위치정보를 가져오지 못했습니다.');
   });
   return null;
 };

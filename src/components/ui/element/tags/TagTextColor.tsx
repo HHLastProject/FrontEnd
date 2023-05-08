@@ -29,7 +29,7 @@ const GrayText = styled.span`
   color : ${colorSet.textMedium};
 `;
 
-const WhiteText = styled.span`
+export const WhiteText = styled.span`
   color : white;
 `;
 

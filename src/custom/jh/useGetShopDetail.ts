@@ -18,18 +18,15 @@ export interface IFeedList {
 };
 
 export const useGetShopDetail = (param: number | undefined, setState:React.Dispatch<React.SetStateAction<boolean>>) => {
-  const {getShopDetailFeedList} = useGetShopDetailFeed(param);
-  const { data, isLoading, isError } = useQuery({
-    queryKey: queryKeys.GET_SHOP_DETAIL,
-    queryFn: async () => {
+  const { data, mutate, isLoading, isError } = useMutation({
+    mutationKey: queryKeys.GET_SHOP_DETAIL,
+    mutationFn: async () => {
       const {data} = await api_token.get(`${apiPath.toShopDetail}/${param}`);
       return data.shop;
     },
     onSuccess: (res) => {
       const {isScrap} = res;
       setState(isScrap);
-      getShopDetailFeedList();
-      // queryClient.invalidateQueries(queryKeys.GET_SHOP_DETAIL_FEED);
     },
     onError: (error) => {
       throw error;
@@ -37,15 +34,16 @@ export const useGetShopDetail = (param: number | undefined, setState:React.Dispa
   });
   return {
     shopDetailData : data,
+    getShopDetailData : mutate,
     shopDetailIsLoading: isLoading,
     shopDetailIsError: isError,
   };
 };
 
 export const useGetShopDetailFeed = (param: number | undefined) => {
-  const { data, mutate, isLoading, isError } = useMutation({
-    mutationKey: queryKeys.GET_SHOP_DETAIL_FEED,
-    mutationFn: async () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: queryKeys.GET_SHOP_DETAIL_FEED,
+    queryFn: async () => {
       const {data} = await api_token.get(`${apiPath.toShopDetail}/${param}/feed2`);
       return data;
     },
@@ -57,7 +55,6 @@ export const useGetShopDetailFeed = (param: number | undefined) => {
   });
   return {
     shopDetailFeedList : data,
-    getShopDetailFeedList : mutate,
     shopDetailFeedIsLoading: isLoading,
     shopDetailFeedIsError: isError,
   };

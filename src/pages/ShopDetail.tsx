@@ -22,6 +22,7 @@ import { changeScrap } from '../custom/jh/changeScrap';
 import Loading from '../components/loading/Loading';
 import { Title3 } from '../components/FontStyle';
 import { FeedIdContext } from '../apis/context';
+import { scrollTop } from '../custom/jh/scrollEvent';
 
 function ShopDetail() {
   const navi = useNavigate();
@@ -33,11 +34,11 @@ function ShopDetail() {
   const {
     shopDetailData,
     shopDetailIsLoading,
+    getShopDetailData,
     shopDetailIsError
   } = useGetShopDetail(shopId, setScrap);
   const {
     shopDetailFeedList,
-    getShopDetailFeedList,
     shopDetailFeedIsLoading,
     shopDetailFeedIsError,
   } = useGetShopDetailFeed(shopId);
@@ -63,8 +64,9 @@ function ShopDetail() {
   };
 
   useEffect(() => {
-    getShopDetailFeedList();
-  }, [feedId]);
+    scrollTop();
+    getShopDetailData();
+  }, []);
 
   if (shopDetailIsLoading) return <Loading/>;
 
@@ -84,12 +86,14 @@ function ShopDetail() {
       <div style={{padding: '0 0 120px 0'}}>
         <ShopDetailThumbnail>
           <ThumbnailDiv>
-            <img
-              id={`shop-detail-thumbnail`}
-              src={`${imgPath.shopThumbnailImg + shopDetailData?.thumbnail}`}
-              alt={shopDetailData?.shopName}
-              onError={(e) => displayHandler(`shop-detail-thumbnail`)}
-            />
+            {shopDetailData &&
+              <img
+                id={`shop-detail-thumbnail`}
+                src={`${imgPath.shopThumbnailImg + shopDetailData?.thumbnail}`}
+                alt={shopDetailData?.shopName}
+                onError={(e) => displayHandler(`shop-detail-thumbnail`)}
+              />
+            }
           </ThumbnailDiv>
           <ShopDetailStoreName
             shopName={shopDetailData?.shopName}
