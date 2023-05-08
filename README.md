@@ -31,22 +31,21 @@ Cafe Log는 지역과 범위에 따라 가맹점 카페들을 소개하고,
 ## 기술 스텍
 <div float: left;>
   <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
-  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
-  <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
-  <img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white">
-  <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black"> 
+  <img src="https://img.shields.io/badge/React-4479A1?style=for-the-badge&logo=React&logoColor=white"> 
+  <img src="https://img.shields.io/badge/Typescript-339933?style=for-the-badge&logo=Typescript&logoColor=white">
+  <img src="https://img.shields.io/badge/Styledcomponents-000000?style=for-the-badge&logo=StyledComponents&logoColor=white">
+  <img src="https://img.shields.io/badge/ReactRouter-342353?style=for-the-badge&logo=ReactRouter&logoColor=white">
+  <img src="https://img.shields.io/badge/TanstackQuery-FCC624?style=for-the-badge&logo=reactquery&logoColor=black"> 
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/axios-339933?style=for-the-badge&logo=axios&logoColor=white">
   <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
-  
   <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=Visual Studio Code&logoColor=white"/>
-  <img src="https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white"/>
-  <img src="https://img.shields.io/badge/AWS-%23232F3E.svg?style=for-the-badge&logo=amazon-aws&logoColor=white"/>
-  <img src="https://img.shields.io/badge/EC2-%23FF9900.svg?style=for-the-badge&logo=AmazonEC2&logoColor=white"/>
+  <img src="https://img.shields.io/badge/yarn-%23000000.svg?style=for-the-badge&logo=yarn&logoColor=white"/>
 </div>
 
 
 ## 시스템 아키텍쳐
-(추후 추가 예정)
+<img src="https://file.notion.so/f/s/2a66890c-9a76-4685-bfbe-660b96058cad/Untitled.png?id=1d004cf9-3eb9-4a60-bda1-4a6d3be9d904&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1683607127760&signature=W7huIuP9bwV3psVY6gXdHCCq31bY4aVmo3gkfeqbg5o&downloadName=Untitled.png" />
 
 ## ERD
 <img src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fa88cb49f-dbec-4e0e-b3cc-aeaf9f892fc1%2FdrawSQL--export-2023-05-05_(1).png?id=d0f7ec1b-68c1-410d-82cd-d5564f30fb06&table=block&spaceId=260f887b-8556-40ce-a271-f96b57122ce0&width=2000&userId=590d24df-8177-46bb-a06f-834b55fe5afd&cache=v2"/>
@@ -75,16 +74,3 @@ Cafe Log는 지역과 범위에 따라 가맹점 카페들을 소개하고,
 
 ## 개발 기간
 2023.3.31~5.12
-
-
-
-Commit rule
-
-
-- FEAT : 새로운 기능의 추가
-- FIX: 버그 수정 
-- DOCS: 문서 수정 
-- STYLE: 스타일 관련 기능(코드 포맷팅, 세미콜론 누락, 코드 자체의 변경이 없는 경우) 
-- REFACTOR: 코드 리펙토링
-- TEST: 테스트 코트, 리펙토링 테스트 코드 추가
-- CHORE: 빌드 업무 수정, 패키지 매니저 수정(ex .gitignore 수정 같은 경우)
