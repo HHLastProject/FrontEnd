@@ -19,7 +19,7 @@ import LOCALSTORAGE_KEY from '../shared/locatstorageKey';
 
 function FeedList() {
   const currentOrderBy = localStorage.getItem(LOCALSTORAGE_KEY.feed.ORDER_BY);
-  const currentCategory = localStorage.getItem(LOCALSTORAGE_KEY.feed.CATEGORY) ? localStorage.getItem(LOCALSTORAGE_KEY.shop.CATEGORY) : '';
+  const currentCategory = localStorage.getItem(LOCALSTORAGE_KEY.feed.CATEGORY) ? localStorage.getItem(LOCALSTORAGE_KEY.feed.CATEGORY) : '';
 
   const {feedList, feedListIsLoading, feedListIsError} = useGetFeedList();
   const [orderBy, setOrderBy] = useState<string>('태그');
