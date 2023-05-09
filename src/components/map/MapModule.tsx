@@ -80,7 +80,7 @@ const MapModule = ({ states, dispatches }: MapProps) => {
         map?.panTo(prevPos);             // 이전 위치로 돌아감
         setPrevPos(tempCenter);        // 이전 위치정보에는 변경됐던 좌표를 넣음
         setCenter && setCenter(tempPrev);  // 현재 위치를 다시 이전 위치 좌표로 할당
-        refreshData();
+        refreshListByRange(list);
     }
 
     const markerClickHandler = (e: naver.maps.PointerEvent, shop: number) => {
@@ -99,10 +99,9 @@ const MapModule = ({ states, dispatches }: MapProps) => {
         setCenter({ lat: newPayload.lat, lng: newPayload.lng });
         localStorage.setItem("lat", String(newPayload.lat));
         localStorage.setItem("lng", String(newPayload.lng));
+        console.log("mutate 전 페이로드", newPayload);
         mutate(newPayload);
     }
-
-
 
     const refreshListByRange = (data: ShopData[]) => {
         const result = data?.filter((element) => element.distance <= range);
@@ -110,12 +109,6 @@ const MapModule = ({ states, dispatches }: MapProps) => {
         // console.log(result);
         return result;
     }
-
-
-    const refreshData = () => {
-        refreshListByRange(data);
-    }
-
 
 
     /* 클러스터 */
@@ -137,6 +130,17 @@ const MapModule = ({ states, dispatches }: MapProps) => {
         return result
     }
 
+    const changeListbyCategory = () => {
+        setList(prev => {
+            if (category === "") {
+                return data?.filter((element: ShopData) => element.distance <= range);
+            } else {
+                return data?.filter((element: ShopData) => element.category === category)
+                    .filter((element: ShopData) => element.distance <= range);
+            }
+        })
+    }
+
     useEffect(() => {
         if (location.state) {
             const searchedShop = {
@@ -155,29 +159,23 @@ const MapModule = ({ states, dispatches }: MapProps) => {
     }, []);
 
     useEffect(() => {
-        isSuccess && refreshListByRange(data);
+        console.log("성공했으면 데이터 보여줘", data);
+        isSuccess && setList(data);
+        changeListbyCategory();
+        // isSuccess && refreshListByRange(data);
     }, [isSuccess]);
 
-    useEffect(() => {
-        refreshData();
-    }, [range]);
-
-
-    // /* 메모리누수 방지 */
     // useEffect(() => {
-    //     return () => {
-    //         if (timeCheck) {
-    //             clearTimeout(timeCheck);
-    //         }
-    //     }
-    // }, [timeCheck]);
+    //     changeListbyCategory();
+    // }, [range]);
 
     useEffect(() => {
-
-    }, [category]);
+        changeListbyCategory();
+    }, [category, range]);
 
     useEffect(() => {
         list && (setActiveShop(list[0]?.shopId as number));
+        // changeListbyCategory();
     }, [list]);
 
     return (
