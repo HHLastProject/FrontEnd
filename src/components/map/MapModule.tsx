@@ -57,15 +57,15 @@ const MapModule = ({ states, dispatches }: MapProps) => {
                 return 300;
             case 16:
                 return 500;
-            case 15:
-                return 1000;
+            // case 15:
+            //     return 1000;
             default:
                 return 300;
         }
     }
 
     const rangeRefresh = (zoomUnit: number) => {
-        if (zoomUnit > 14 && zoomUnit < 20) {
+        if (zoomUnit > 15 && zoomUnit < 20) {
             setRange(returnRadius(zoomUnit));
         } else {
             setList([]);
@@ -92,7 +92,7 @@ const MapModule = ({ states, dispatches }: MapProps) => {
         const newPayload: MapCoordPayload = {
             lat: map?.getCenter().y as number,
             lng: map?.getCenter().x as number,
-            range: 1000
+            range: 500
         }
         setPrevPos({ ...center });
         setCenter({ lat: newPayload.lat, lng: newPayload.lng });
@@ -117,7 +117,7 @@ const MapModule = ({ states, dispatches }: MapProps) => {
     }
     const clusterClickHandler = (lat: number, lng: number) => {
         map?.setCenter({ lat: lat, lng: lng });
-        map?.setZoom(15);
+        map?.setZoom(16);
         setCenter && setCenter({ lng, lat });
     }
     const createClusterMarkerIcon = (guName: string, count: number) => {
@@ -166,12 +166,12 @@ const MapModule = ({ states, dispatches }: MapProps) => {
             const searchedShop = {
                 lng: Number(location.state.lng),
                 lat: Number(location.state.lat),
-                range: 1000,
+                range: 500,
             };
             setCenter({ lat: searchedShop.lat, lng: searchedShop.lng });
             mutate(searchedShop);
         } else {
-            const newPayload = { lng: center.lng, lat: center.lat, range: 1000 };
+            const newPayload = { lng: center.lng, lat: center.lat, range: 500 };
             localStorage.setItem("lng", String(center.lng));
             localStorage.setItem("lat", String(center.lat));
             mutate(newPayload);
@@ -213,21 +213,8 @@ const MapModule = ({ states, dispatches }: MapProps) => {
                     position={center}
                 />
 
-                {zoom > 14
+                {zoom > 15
                     ? memoizedMarkers
-                    // ? list?.map((element: ShopData | null) => {
-                    //     if (element?.category === category || category === "") {
-                    //         return <Marker
-                    //             key={uuid()}
-                    //             onClick={(e) => markerClickHandler(e, element?.shopId as number)}
-                    //             icon={element?.shopId === activeShop
-                    //                 ? activeIcon
-                    //                 : icon}
-                    //             defaultPosition={new navermaps.LatLng(element?.lat as number, element?.lng as number)} />
-                    //     } else {
-                    //         return null;
-                    //     }
-                    // })
                     : guData?.map((element) => {
                         return <Marker
                             key={uuid()}
@@ -241,7 +228,7 @@ const MapModule = ({ states, dispatches }: MapProps) => {
             <AimBtn onClick={aimClickHandler}>
                 <Image src={`${process.env.PUBLIC_URL}/icon/current location_24.png`} alt="" />
             </AimBtn>
-            {zoom > 14
+            {zoom > 15
                 ? <RefreshBtnDiv onClick={reMutate}>
                     <Buttons.Medium.Refresh>이 위치에서 검색</Buttons.Medium.Refresh>
                 </RefreshBtnDiv>
