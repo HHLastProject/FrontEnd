@@ -199,24 +199,6 @@ const MediumDefault = ({ onClick, children }: InternalJSX) => {
 
 
 const Refresh = ({ onClick, children }: InternalJSX) => {
-
-    const Wrapper = styled(BtnRadius.Rounded)`
-    &:hover >${BtnMediumLength.Default} {
-            >${BtnSize.Medium} {
-            >${BtnBg.White} {
-                background-color: ${colorSet.primary_01};
-                >${BtnPosition.Center}{
-                    >${BtnText.Medium}{
-                        >${BtnTextColor.Gray}{
-                            color:white;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    `;
-
     return (
         <Wrapper onClick={onClick}>
             <BtnMediumLength.Default>
@@ -357,3 +339,20 @@ const Icon = styled.img`
     height: 100%;
     object-fit: cover;
 `
+
+const Wrapper = styled(BtnRadius.Rounded)`
+  &:hover > ${BtnMediumLength.Default} {
+    > ${BtnSize.Medium} {
+      > ${BtnBg.White} {
+        background-color: ${colorSet.primary_01};
+        > ${BtnPosition.Center} {
+          > ${BtnText.Medium} {
+            > ${BtnTextColor.Gray} {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+`;

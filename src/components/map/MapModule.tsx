@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Container as MapDiv, Marker, NaverMap, useNavermaps } from 'react-naver-maps';
 import uuid from 'react-uuid';
 import { MapCoordPayload, ShopData } from '../../custom/ym/variables';
@@ -11,7 +11,6 @@ import { GuInformation } from '../../shared/guCoordInform';
 import useMapDataCall from '../../hooks/useMapDataCall';
 import { Buttons } from '../ui/element/buttons/Buttons';
 import { Coordinate, MapProps } from '../../custom/ym/types';
-
 
 const MapModule = ({ states, dispatches }: MapProps) => {
     const navermaps = useNavermaps();
@@ -99,16 +98,16 @@ const MapModule = ({ states, dispatches }: MapProps) => {
         setCenter({ lat: newPayload.lat, lng: newPayload.lng });
         localStorage.setItem("lat", String(newPayload.lat));
         localStorage.setItem("lng", String(newPayload.lng));
-        console.log("mutate 전 페이로드", newPayload);
         mutate(newPayload);
     }
 
     const refreshListByRange = (data: ShopData[]) => {
         const result = data?.filter((element) => element.distance <= range);
         setList(result);
-        // console.log(result);
         return result;
     }
+
+
 
 
     /* 클러스터 */
@@ -141,6 +140,27 @@ const MapModule = ({ states, dispatches }: MapProps) => {
         })
     }
 
+    const memoizedMarkers = useMemo(
+        () =>
+            list?.filter((element) => element.category === category || category === "")
+                .map((element) => (
+                    <Marker
+                        key={element.shopId}
+                        onClick={(e) => markerClickHandler(e, element.shopId)}
+                        icon={
+                            element.shopId === activeShop
+                                ? activeIcon
+                                : icon
+                        }
+                        defaultPosition={new navermaps.LatLng(
+                            element.lat,
+                            element.lng
+                        )}
+                    />
+                )),
+        [list, category, activeShop]
+    );
+
     useEffect(() => {
         if (location.state) {
             const searchedShop = {
@@ -159,15 +179,9 @@ const MapModule = ({ states, dispatches }: MapProps) => {
     }, []);
 
     useEffect(() => {
-        console.log("성공했으면 데이터 보여줘", data);
         isSuccess && setList(data);
         changeListbyCategory();
-        // isSuccess && refreshListByRange(data);
     }, [isSuccess]);
-
-    // useEffect(() => {
-    //     changeListbyCategory();
-    // }, [range]);
 
     useEffect(() => {
         changeListbyCategory();
@@ -175,8 +189,9 @@ const MapModule = ({ states, dispatches }: MapProps) => {
 
     useEffect(() => {
         list && (setActiveShop(list[0]?.shopId as number));
-        // changeListbyCategory();
     }, [list]);
+
+
 
     return (
         <MapDiv style={{ width: '100%', height: '100%' }} id="react-naver-map">
@@ -199,19 +214,20 @@ const MapModule = ({ states, dispatches }: MapProps) => {
                 />
 
                 {zoom > 14
-                    ? list?.map((element: ShopData | null) => {
-                        if (element?.category === category || category === "") {
-                            return <Marker
-                                key={uuid()}
-                                onClick={(e) => markerClickHandler(e, element?.shopId as number)}
-                                icon={element?.shopId === activeShop
-                                    ? activeIcon
-                                    : icon}
-                                defaultPosition={new navermaps.LatLng(element?.lat as number, element?.lng as number)} />
-                        } else {
-                            return null;
-                        }
-                    })
+                    ? memoizedMarkers
+                    // ? list?.map((element: ShopData | null) => {
+                    //     if (element?.category === category || category === "") {
+                    //         return <Marker
+                    //             key={uuid()}
+                    //             onClick={(e) => markerClickHandler(e, element?.shopId as number)}
+                    //             icon={element?.shopId === activeShop
+                    //                 ? activeIcon
+                    //                 : icon}
+                    //             defaultPosition={new navermaps.LatLng(element?.lat as number, element?.lng as number)} />
+                    //     } else {
+                    //         return null;
+                    //     }
+                    // })
                     : guData?.map((element) => {
                         return <Marker
                             key={uuid()}
@@ -235,7 +251,11 @@ const MapModule = ({ states, dispatches }: MapProps) => {
     );
 }
 
+
+
 export default MapModule;
+
+
 
 const RefreshBtnDiv = styled.div`
     position: absolute;
