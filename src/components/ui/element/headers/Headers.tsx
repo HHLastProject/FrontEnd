@@ -10,6 +10,9 @@ import { BtnRadius } from '../buttons/BtnRadius'
 import BookmarkHeaderButtons from './BookmarkHeaderButtons'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../../../../shared/path'
+import MapHeaderLeftSide from './MapHeaderLeftSide'
+import MapHeaderRightSide from './MapHeaderRightSide'
+import { VFlexCenter } from '../../../../custom/ym/styleStore'
 
 
 const BookmarkHeader = ({ children, editClickHandler, ...props }: ChildrenForSpan) => {
@@ -93,11 +96,26 @@ const EditBookmarkHeader = ({ children, BackOnClick, RightOnClick, state, ...pro
     )
 }
 
+const MapHeader = ({ range }: { range: number }) => {
+
+    return (
+        <HeaderContainer>
+            <VFlexCenter>
+                <HFlexSpaceBetween width='100%' height='fit-content' etc="padding: 0px 20px;">
+                    <MapHeaderLeftSide range={range} />
+                    <MapHeaderRightSide />
+                </HFlexSpaceBetween>
+            </VFlexCenter>
+        </HeaderContainer>
+    )
+}
+
 export const Headers = {
     BookmarkHeader,
     BackAndFinish,
     FolderListHeader,
-    EditBookmarkHeader
+    EditBookmarkHeader,
+    MapHeader
 }
 
 const Button = styled.button`

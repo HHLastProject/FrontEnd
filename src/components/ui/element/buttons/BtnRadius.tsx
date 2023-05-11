@@ -22,7 +22,13 @@ const Rounded = ({ onClick, children, ...props }: InternalJSX) => {
     )
 }
 
-export const BtnRadius = { Default, Others, Rounded };
+const Aim = ({ onClick, children, ...props }: InternalJSX) => {
+    return (
+        <AimContainer onClick={onClick} {...props}>{children}</AimContainer>
+    )
+}
+
+export const BtnRadius = { Default, Others, Rounded, Aim };
 
 export const RoundedContainer = styled.button`
     width: fit-content;
@@ -52,5 +58,15 @@ const OtherContainer = styled.button`
     border: 1px solid ${colorSet.lineMedium};
     background-color: transparent;
     padding: 0px;
+`
 
+const AimContainer = styled.button`
+    width: fit-content;
+    height: fit-content;
+    overflow: hidden;
+    border-radius: 4px;
+    border: none;
+    padding: 6px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    background-color: white;
 `
