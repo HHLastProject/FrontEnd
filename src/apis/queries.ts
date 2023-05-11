@@ -29,6 +29,7 @@ export const loginKeys: IQueryKey = {
 
 export const mapQueryKeys: IQueryKey = {
   POST_SHOPS_IN_RANGE: ["POST_SHOPS_IN_RANGE"],
+  GET_GU_LIST: ["GET_GU_LIST"],
 }
 
 export const scrapKeys: IQueryKey = {
