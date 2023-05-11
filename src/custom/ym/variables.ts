@@ -178,3 +178,22 @@ export const scrapImg = {
 
 
 export const clusterHTML = '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background-color:gray;border-radius:50%;">dd</div>'
+
+export const userTextSelectLimit = `
+-ms-user-select: none; 
+-moz-user-select: -moz-none;
+-khtml-user-select: none;
+-webkit-user-select: none;
+position: relative;
+overflow : hidden;
+`;
+
+export const icon = {
+    url: `${process.env.PUBLIC_URL}/markers/non_selected_shop.png`,
+    anchor: new window.naver.maps.Point(0, 0),
+}
+
+export const activeIcon = {
+    url: `${process.env.PUBLIC_URL}/markers/selected_shop.png`,
+    anchor: new window.naver.maps.Point(0, 0),
+}

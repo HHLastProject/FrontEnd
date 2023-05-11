@@ -1,18 +1,14 @@
-import React, { useRef } from 'react'
 import { BtnPosition } from './BtnPosition'
-import { BtnRadius, RoundedContainer } from './BtnRadius'
+import { BtnRadius } from './BtnRadius'
 import { BtnBg } from './BtnBg'
 import { BtnTextColor } from './BtnContent'
-import { BtnBorder } from './BtnBorder'
 import { BtnSize } from './BtnSize'
 import { BtnLargeLength, BtnMediumLength, BtnSmallLength } from './BtnLength'
 import { BtnText } from './BtnText'
 import BtnNavContents from './BtnNavContents'
-import { BtnNavProps, CategoryStateProp, ChildrenForJSX, DivProp, EditNicknameProps, IconButtonProps, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
+import { BtnNavProps, EditNicknameProps, InternalJSX, NavButtonInputLimit, NavStateProp } from '../../../../custom/ym/types'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
 import { colorSet } from '../../styles/color'
-import { VFlexCenter } from '../../../../custom/ym/styleStore'
 
 
 
@@ -80,6 +76,27 @@ const Inactive = ({ onClick, children }: InternalJSX) => {
         </BtnRadius.Default>
     );
 };
+
+const A = ({ onClick, children }: InternalJSX) => {
+    return (
+        <BtnRadius.Default onClick={onClick}>
+            <BtnLargeLength.Short>
+                <BtnSize.Small>
+                    <BtnBg.White>
+                        <BtnPosition.Center>
+                            <BtnText.Medium>
+                                <BtnTextColor.White>
+                                    {children}
+                                </BtnTextColor.White>
+                            </BtnText.Medium>
+                        </BtnPosition.Center>
+                    </BtnBg.White>
+                </BtnSize.Small>
+            </BtnLargeLength.Short>
+        </BtnRadius.Default>
+    );
+};
+
 
 const Done = ({ onClick, children }: InternalJSX) => {
     return (
@@ -218,29 +235,8 @@ const Refresh = ({ onClick, children }: InternalJSX) => {
     );
 };
 
-const RefreshMapHoverd = ({ onClick, children }: InternalJSX) => {
-    return (
-        <BtnRadius.Rounded onClick={onClick}>
-            <BtnMediumLength.Default>
-                <BtnSize.Medium>
-                    <BtnBg.Black>
-                        <BtnPosition.Center>
-                            <BtnText.Medium>
-                                <BtnTextColor.White>
-                                    {children}
-                                </BtnTextColor.White>
-                            </BtnText.Medium>
-                        </BtnPosition.Center>
-                    </BtnBg.Black>
-                </BtnSize.Medium>
-            </BtnMediumLength.Default>
-        </BtnRadius.Rounded>
-    );
-};
-
-
 const Medium = {
-    Default: MediumDefault, Refresh, RefreshHover: RefreshMapHoverd
+    Default: MediumDefault, Refresh,
 };
 
 
@@ -322,7 +318,17 @@ const IconButton = ({ width, height, onClick, fileName, ...props }: EditNickname
     )
 }
 
-const Others = { NavButton, IconButton };
+const AimButton = ({ width, height, onClick, fileName, ...props }: EditNicknameProps) => {
+    return (
+        <BtnRadius.Aim onClick={onClick} {...props}>
+            <IconContainer width={width} height={height}>
+                <Icon src={`${process.env.PUBLIC_URL}/icon/${fileName}`} alt="Icon" />
+            </IconContainer>
+        </BtnRadius.Aim>
+    )
+}
+
+const Others = { NavButton, IconButton, AimButton };
 
 export const Buttons = {
     Large, Medium, Small, Others
@@ -332,6 +338,7 @@ export const Buttons = {
 const IconContainer = styled.div<{ width: number, height: number }>`
     width: ${({ width }) => `${width}px`};
     height: ${({ height }) => `${height}px`};
+    background-color:transparent;
 `
 
 const Icon = styled.img`
