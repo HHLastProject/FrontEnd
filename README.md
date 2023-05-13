@@ -3,9 +3,6 @@
 
 <img src="https://velog.velcdn.com/images/clue97/post/cb5cdb33-c8b2-466c-a98d-cd475a708a2f/image.png"/>
 
-## 목차
-(추후 추가 예정)
-
 ## 프로젝트 소개
 Cafe Log는 지역과 범위에 따라 가맹점 카페들을 소개하고,
 
@@ -52,6 +49,11 @@ Cafe Log는 지역과 범위에 따라 가맹점 카페들을 소개하고,
 
 ## API 명세서
 [API 명세서 이동](https://www.notion.so/bb4ae82cea364e9ab9ac97cb39f099fa?v=19d62894b34c46cc99ee7311e782da6c)
+
+
+
+
+
 
 ## 팀원
 |이름|역할|주특기|
