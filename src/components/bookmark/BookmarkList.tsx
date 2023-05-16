@@ -4,9 +4,9 @@ import uuid from 'react-uuid'
 import { FolderData } from '../../custom/ym/types'
 import BookmarkLoginComp from './BookmarkLoginComp'
 import BookmarkLogoutComp from './BookmarkLogoutComp'
-import { ScrapContext } from '../../pages/Bookmark'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import styled from 'styled-components'
+import { ScrapContext } from './bookmarkContext'
 
 const BookmarkList = () => {
 

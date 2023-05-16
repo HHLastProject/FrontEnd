@@ -19,7 +19,6 @@ const Home = () => {
     const stateList: MapStates = { activeShop, category, center, list, range };
     const dispatchList: MapDispatches = { setList, setRange, setCategory, setActiveShop, setCenter };
 
-
     const lookaroundHandler = () => {
         localStorage.setItem("look_around", "true");
         setPass(true);

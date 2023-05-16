@@ -7,11 +7,11 @@ import { BookmarkChildren, ScrapDataSet } from '../../../../custom/ym/types';
 import { useNavigate } from 'react-router-dom';
 import { imgPath } from '../../../../shared/path';
 import { Buttons } from '../buttons/Buttons';
-import { ScrapContext, ScrapDispatchesContext } from '../../../../pages/Bookmark';
 import { BtnRadius } from '../buttons/BtnRadius';
 import useScrapToggle from '../../../../hooks/useScrapToggle';
 import { queryClient } from '../../../..';
 import { mapQueryKeys } from '../../../../apis/queries';
+import { ScrapContext, ScrapDispatchesContext } from '../../../bookmark/bookmarkContext';
 
 const BookmarkCard = ({ data, idx }: BookmarkChildren) => {
 
@@ -24,9 +24,9 @@ const BookmarkCard = ({ data, idx }: BookmarkChildren) => {
 
     const mode = contextValues.editMode;
     const selected = contextValues.selected;
-    const setMode = contextDispatches.setEditMode as React.Dispatch<React.SetStateAction<boolean>>;
-    const setSelected = contextDispatches.setSelected as React.Dispatch<React.SetStateAction<number[]>>;
-    const setScrapList = contextDispatches.setScrapList as React.Dispatch<React.SetStateAction<ScrapDataSet[]>>;
+    const setMode = contextDispatches.setEditMode;
+    const setSelected = contextDispatches.setSelected;
+    const setScrapList = contextDispatches.setScrapList;
 
     const divClickHandler = () => {
         navi(`/shop/${data.shopId}`)
@@ -53,7 +53,7 @@ const BookmarkCard = ({ data, idx }: BookmarkChildren) => {
         /* 스크랩을 풀면 아예 없어지는 경우의 코드 */
         mutate(data.shopId);
         setScrapList(prev => {
-            return prev.filter((element) => element !== data);
+            return prev?.filter((element) => element !== data);
         });
     }
 

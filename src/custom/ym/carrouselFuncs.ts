@@ -14,7 +14,6 @@ export const openDetail = (
 }
 
 export const toggleScrap = (
-    // e: React.MouseEvent<HTMLImageElement, MouseEvent>,
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     item: ShopData,
     mutate: UseMutateFunction<any, unknown, number, unknown>,

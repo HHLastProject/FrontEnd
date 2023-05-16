@@ -4,7 +4,7 @@ import { api_token } from "../shared/api";
 import { apiPath } from "../shared/path";
 import { ReceivedBookmarks } from "../custom/ym/types";
 
-const useScrapData = () => {
+const useGetScrapData = () => {
     const { data, refetch, isSuccess, isError, isLoading } = useQuery({
         queryKey: scrapKeys.GET_SCRAP,
         queryFn: async () => {
@@ -28,4 +28,4 @@ const useScrapData = () => {
     }
 }
 
-export default useScrapData
+export default useGetScrapData

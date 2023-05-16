@@ -6,8 +6,8 @@ import { FolderData, FolderProp, ReceivedBookmarks, ScrapListEachData } from '..
 import NoExistBookmark from './NoExistBookmark';
 import { useNavigate } from 'react-router-dom';
 import { bookmarkData } from '../../custom/ym/dummydata';
-import useScrapData from '../../hooks/useScrapData';
-import { ScrapContext } from '../../pages/Bookmark';
+import useScrapData from '../../hooks/useGetScrapData';
+import { ScrapContext } from './bookmarkContext';
 
 const BookmarkLoginComp = ({ folderState }: FolderProp) => {
 
