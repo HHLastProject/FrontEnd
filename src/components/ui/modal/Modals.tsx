@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components';
 import FeedContents from '../../feed/FeedContents';
 import { ModalContents } from './ModalContents';
 import { VFlexCenter } from '../../../custom/ym/styleStore';
 import { FolderData } from '../../../custom/ym/types';
 import { useNavigate } from 'react-router-dom';
+import { ScrapDispatchesContext } from '../../bookmark/bookmarkContext';
 
 const Feed = ({ stateDispatch, params }: { stateDispatch: React.Dispatch<React.SetStateAction<boolean>>, params: number }) => {
     const backgroundClickHandler = () => {
@@ -37,16 +38,13 @@ const CreateFolder = ({
     )
 }
 
-const MoveScrapToOtherFolder = ({
-    dispatch,
-}: {
-    dispatch: React.Dispatch<React.SetStateAction<boolean>>,
-}) => {
+const MoveScrapToOtherFolder = () => {
+    const { setModal } = useContext(ScrapDispatchesContext);
     return (
         <ModalContainer>
             <VFlexCenter>
-                <GrayBackground onClick={() => dispatch(prev => false)} />
-                <ModalContents.MoveToOtherFolder dispatch={dispatch} />
+                <GrayBackground onClick={() => setModal(prev => false)} />
+                <ModalContents.MoveToOtherFolder />
             </VFlexCenter>
         </ModalContainer>
     )

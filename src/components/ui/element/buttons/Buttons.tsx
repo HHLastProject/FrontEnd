@@ -10,8 +10,6 @@ import { BtnNavProps, EditNicknameProps, InternalJSX, NavButtonInputLimit, NavSt
 import styled from 'styled-components'
 import { colorSet } from '../../styles/color'
 
-
-
 /*
 버튼 property 전달 component
 */

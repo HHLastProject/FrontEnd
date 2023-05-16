@@ -7,7 +7,7 @@ import { Modals } from '../components/ui/modal/Modals';
 import { queryClient } from '..';
 import { scrapKeys } from '../apis/queries';
 import { FolderData, ReceivedBookmarks } from '../custom/ym/types';
-import useScrapData from '../hooks/useScrapData';
+import useScrapData from '../hooks/useGetScrapData';
 
 const FolderList = () => {
 

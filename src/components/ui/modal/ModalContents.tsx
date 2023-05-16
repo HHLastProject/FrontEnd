@@ -12,9 +12,9 @@ import { BtnRadius } from '../element/buttons/BtnRadius';
 import { Inputs } from '../element/input/Inputs';
 import { Buttons } from '../element/buttons/Buttons';
 import { FolderData, ReceivedBookmarks, ScrapListEachData } from '../../../custom/ym/types';
-import { ScrapContext, ScrapDispatchesContext } from '../../../pages/Bookmark';
 import useCreateFolder from '../../../hooks/useCreateFolder';
 import { FeedIdContext } from '../../../apis/context';
+import { ScrapContext, ScrapDispatchesContext } from '../../bookmark/bookmarkContext';
 
 const FeedModalContents = ({ target, stateDispatch }: { target: number, stateDispatch: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const navi = useNavigate();
@@ -132,19 +132,18 @@ const CreateFolderModalContents = ({
     )
 }
 
-const MoveToOtherFolder = ({ dispatch }: { dispatch: React.Dispatch<React.SetStateAction<boolean>> }) => {
-    const { queryData, selected, scrapList } = useContext(ScrapContext);
-    const { setTargetFolder, setScrapList, setSelected } = useContext(ScrapDispatchesContext);
+const MoveToOtherFolder = () => {
+    const { queryData, selected } = useContext(ScrapContext);
+    const { setScrapList, setSelected, setModal } = useContext(ScrapDispatchesContext);
     const [folderList, setFolderList] = useState<FolderData[] | undefined>(undefined);
 
     const isIncluded = (arr: number[], element: ScrapListEachData) => {
-        // return element.shopId === shopId ? true : false;
         return arr.find((value) => value == element.shopId) ? true : false;
     }
 
     const selectorClickHandler = (name: string) => {
-        const tempSetScrapList = setScrapList as React.Dispatch<React.SetStateAction<ScrapListEachData[] | undefined>>;
-        tempSetScrapList(prev => {
+        // const tempSetScrapList = setScrapList as React.Dispatch<React.SetStateAction<ScrapListEachData[] | undefined>>;
+        setScrapList(prev => {
             const modifiedList = prev?.map((element) => {
                 return isIncluded(selected, element)
                     ? { ...element, folderName: name }
@@ -152,10 +151,8 @@ const MoveToOtherFolder = ({ dispatch }: { dispatch: React.Dispatch<React.SetSta
             });
             return modifiedList;
         });
-        const tempSetSelected = setSelected as React.Dispatch<React.SetStateAction<number[]>>;
-        tempSetSelected(prev => []);
-
-        dispatch(prev => false);
+        setSelected && setSelected(prev => []);
+        setModal(prev => false);
     }
 
     useEffect(() => {
